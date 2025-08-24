@@ -16,70 +16,45 @@
 </head>
 
 <body>
-
-    <!--Header-->
-
-    <div class="header">
-        <div class="container">
-            <h1 class="titulo">AquaTech</h1>
-            <ul class="navbar">
-                <li>
-                    <a href="index.html">Inicial</a>
-                </li>
-                <li>
-                    <a href="simulador.html">Simulador</a>
-                </li>
-                <li>|</li>
-                <li class="agora">
-                    <a href="#">Login</a>
-                </li>
-                <li>
-                    <a href="cadastro.html">Cadastro</a>
-                </li>
-            </ul>
-        </div>
+  <main id="formulario-main">
+    <div class="esquerda">
+      <div class="imagem-lateral">
+        <img src="assets/imgs/banner2.jpg" alt="Família no mercado" />
+      </div>
     </div>
-
-
-    <div class="login">
-        <div class="alerta_erro">
-            <div class="card_erro" id="cardErro">
-                <span id="mensagem_erro"></span>
+    <div class="direita">
+      <div class="voltarCadastro">
+        <a href="./index.html">
+          <span>Voltar</span>
+          <i class="fa-solid fa-arrow-right"></i>
+        </a>
+      </div>
+      <div class="formulario-login">
+        <div class="logo">
+          <h1>Empresa</h1>
+        </div>
+        <div class="formulario">
+          <div class="formulario-principal">
+            <label for="">Endereço de email</label>
+            <input type="email" id="email_input" placeholder="email*" />
+            <div id="output_email"></div>
+            <label for="">Senha</label>
+            <input type="password" id="senha_input" placeholder="senha*" />
+            <div id="output_senha"></div>
+            <div class="parte-checkbox">
+              <input type="checkbox" />
+              <label for="">Lembre-se de mim</label>
             </div>
+            <button onclick="entrar()">Entrar</button>
+          </div>
+          <div class="nao-cliente">
+            <p>Ainda não é um cliente? <span><a href="index.html#contato">Entre em contato</a></span></p>
+          </div>
         </div>
-        <div class="container">
-            <div class="card card-login">
-                <h2>Olá de volta!</h2>
-                <div class="formulario">
-                    <div class="campo">
-                        <span>E-mail:</span>
-                        <input id="email_input" type="text" placeholder="Login">
-                    </div>
-                    <div class="campo">
-                        <span>Senha:</span>
-                        <input id="senha_input" type="password" placeholder="******">
-                    </div>
-                    <button class="botao" onclick="entrar()">Entrar</button>
-                </div>
-
-                <div id="div_aguardar" class="loading-div">
-                    <img src="./assets/circle-loading.gif" id="loading-gif">
-                </div>
-
-                <div id="div_erros_login"></div>
-            </div>
-        </div>
+      </div>
     </div>
 
-    <!--footer inicio-->
-    <div class="footer">
-        <div class="container">
-            <h4>Feito com amor por aluno &hearts; SPTech &copy; 2023</h4>
-            <span class="version">v1.0.0</span>
-        </div>
-    </div>
-    <!--footer fim-->
-
+  </main>
 </body>
 
 </html>
