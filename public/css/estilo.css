@@ -12,17 +12,19 @@ a {
 }
 
 body {
-  font-family: 'Opens-Sans', sans-serif;
+  font-family: 'Open Sans', sans-serif;
 }
 
 h3 {
-  font: 400 36px 'Opens-Sans', sans-serif;
+  font: 400 36px 'Open Sans', sans-serif;
+  margin-bottom: 20px;
 }
 
 :root {
   --verde-escuro: #264653;
   --branco: #ffffff;
   --verde-água: #2A9D8F;
+  --verde-neve: #B7E4C7;
 }
 
 .header {
@@ -89,8 +91,14 @@ h3 {
   height: 90%;
 }
 
+.banner .container h2 {
+  font-size: 48px;
+  font-weight: 400;
+}
+
 .banner .container p {
   text-align: center;
+  font-size: 24px;
 }
 
 .banner .container span {
@@ -120,6 +128,10 @@ h3 {
   padding: 80px 0 100px 0;
 }
 
+.escolha h4 {
+  font-size: 30px;
+  font-weight: 400;
+}
 
 .box img {
   width: 140px;
@@ -141,6 +153,7 @@ h3 {
 .escolha p {
   text-align: center;
   width: 400px;
+  font-size: 18px;
 }
 
 .box {
@@ -167,6 +180,9 @@ h3 {
   position: absolute;
   z-index: 1;
   color: var(--branco);
+  text-align: center;
+  font: 400 40px 'Open Sans', sans-serif;
+  padding: 500px;
 }
 
 /* AVALIAÇÕES */
@@ -187,11 +203,16 @@ h3 {
   padding: 20px 40px;
   border-radius: 30px;
   height: 500px;
+  margin: 0 10px;
+}
+
+.info-avaliador {
+  margin-bottom: 30px;
 }
 
 /* CONTATE-NOS */
 #contato {
-  padding: 90px 0;
+  padding: 70px 0;
   background-color: var(--verde-escuro);
 }
 
@@ -232,15 +253,19 @@ h3 {
 .campo-contato textarea {
   resize: none;
   height: 150px;
+  padding: 10px;
 }
 
 .parte-dois-contato button {
   width: 490px;
   height: 40px;
   margin-top: 20px;
+  background-color: var(--verde-neve);
+  font: 400 16px 'Open Sans', sans-serif;
+  border-radius: 20px;
 }
-/* FOOTER */
 
+/* FOOTER */
 .footer {
   background-color: var(--verde-escuro);
   color: #fff;
@@ -248,25 +273,32 @@ h3 {
   padding: 30px 0;
 }
 
-.footer .container {
-  justify-content: center;
-  text-align: center;
+.footer-parte-um .container {
+  display: flex;
+  justify-content: space-between;
+  padding: 30px 0;
+}
+
+.footer a {
+  color: var(--branco);
 }
 
 .footer-parte-dois {
   display: flex;
   flex-direction: column;
+  justify-content: center;
+  text-align: center;
   padding: 20px 0;
   width: 100%;
   border-top: 1px solid #ffffff;
 }
 
 .footer-parte-dois span {
-  font: 400 14px 'Opens Sans', sans-serif;
+  font: 400 14px 'Open Sans', sans-serif;
 }
 
 .footer-parte-dois p {
-  font: 400 16px 'Opens Sans', sans-serif;
+  font: 400 16px 'Open Sans', sans-serif;
 }
 
 /* LOGIN */
@@ -350,7 +382,7 @@ h3 {
 }
 
 .logo h1 {
-  font: 400 50px 'Opens Sans', sans-serif;
+  font: 400 50px 'Open Sans', sans-serif;
 }
 
 #formulario-main span {
@@ -361,11 +393,11 @@ h3 {
   border: 1px solid #8692A6;
   padding: 10px;
   border-radius: 6px;
-  font: 500 14px 'Opens Sans', sans-serif;
+  font: 500 14px 'Open Sans', sans-serif;
 }
 
 .formulario label {
-  font: 500 16px 'Opens Sans', sans-serif;
+  font: 500 16px 'Open Sans', sans-serif;
   margin-top: 20px;
 }
 
@@ -375,7 +407,7 @@ h3 {
 
 .formulario button {
   color: white;
-  font: 500 18px 'Opens Sans', sans-serif;
+  font: 500 18px 'Open Sans', sans-serif;
   border-radius: 6px;
   width: 380px;
   padding: 5px 10px;
@@ -385,11 +417,11 @@ h3 {
 }
 
 .formulario p {
-  font: 500 16px 'Opens Sans', sans-serif;
+  font: 500 16px 'Open Sans', sans-serif;
 }
 
 .formulario select {
-  font: 500 14px 'Opens Sans', sans-serif;
+  font: 500 14px 'Open Sans', sans-serif;
   border: 1px solid #8692A6;
   border-radius: 6px;
   background-color: white;
