@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./../css/dashboards.css">
+    <title>Dashboard - Página Principal</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div class="div-pai">
+
+      <!-- Cabeçalho -->
+    <header>
+      <div class="header-container">
+        <h2>DASHBOARD</h2>
+        <div class="div-pai-perfil">
+          <div class="div-linha"></div>
+          <div class="div-todo-perfil">
+            <div class="div-filho-perfil">
+              <img src="../assets/imgs/profile.png" alt="imagem de perfil" class="img-perfil" />
+              <img src="../assets/imgs/seta-para-baixo-braca.png" alt="ver opções" class="img-seta" />
+            </div>
+            <div class="div-opcoes">
+              <div class="div-opcao-sair">
+                <a href="../index.html"><span>Sair</span></a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- Sidebar -->
+    <div class="container">
+      <div class="div-sidebar">
+        <div class="div-img">
+          <img src="../assets/imgs/AnteçãoBranco.png" alt="Logomarca" />
+        </div>
+        <div class="div-botoes">
+          <a href="mainPage.html">
+            <div class="div-btComImg div-btEscolhido">
+              <img src="../assets/imgs/main-menu.png" alt="Imagem do ícone da main page" />
+              <div class="txt-bt">Main Page</div>
+            </div>
+          </a>
+
+          <a href="mainPage.html">
+            <div class="div-btComImg">
+              <img src="../assets/imgs/Hospitais.png" alt="Imagem do ícone da main page" />
+              <div class="txt-bt">Hospitais</div>
+            </div>
+          </a>
+        </div>
+      </div>
+
+      <div class="conteudo-principal">
+        <div class="div-flex">
+          <div class="div-kpis">
+            <div class="teste">
+              <div class="kpi kpi-risco">
+                <div class="div-block">
+                  <h1>22</h1>
+                  <p>Hospitais com mais de 50% em risco</p>
+                </div>
+                <div class="div-kpi-img">
+                  <img src="../assets/imgs/AnteçãoBranco.png">
+                </div>
+              </div>
+              <div class="kpi">
+                <div class="div-block">
+                  <h1>02</h1>
+                  <p>Máquinas com mais de 80% ou 0% de CPU</p>
+                </div>
+                <div class="div-kpi-img">
+                  <img src="../assets/imgs/cpu.png">
+                </div>
+              </div>
+            </div>
+            <div class="teste">
+
+              <div class="kpi">
+                <div class="div-block">
+                  <h1>13</h1>
+                  <p>Máquinas com mais de 80% ou 0% de Disco</p>
+                </div>
+                <div class="div-kpi-img">
+                  <img src="../assets/imgs/disco.png">
+                </div>
+              </div>
+              <div class="kpi">
+                <div class="div-block">
+                  <h1>0</h1>
+                  <p>Máquinas com mais de 80% ou 0% de RAM</p>
+                </div>
+                <div class="div-kpi-img">
+                  <img src="../assets/imgs/ram.png">
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="div-graf-barra-1">
+            <div class="metrica-secun">
+              <div class="div-head-metricas">
+                <div class="div-texto">Registro de alertas anuais</div>
+              </div>
+              <div class="div-centralizar-metrica">
+                <canvas id="metrica-barra-1"></canvas>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    
+    </div>
+
+
+  </div>
+</body>
+</html>
+<script src="../js/chart.js"></script>
