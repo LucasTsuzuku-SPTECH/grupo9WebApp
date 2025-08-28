@@ -433,7 +433,7 @@ h3 {
 }
 
 .nao-cliente {
-  margin-top: 100px;
+  margin-top: 50px;
 }
 
 .alarme-sino {
@@ -466,4 +466,34 @@ h3 {
   100% {
     transform: rotate(25deg)
   }
+}
+
+@media(max-width: 900px) {
+  .esquerda {
+    display: none;
+  }
+
+  #formulario-main {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 15px;
+    box-sizing: border-box;
+  }
+
+  .ipt_digitar {
+    width: 300px;
+  }
+
+  .formulario {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .formulario button {
+    width: 7rem;
+  }
+
+
 }
