@@ -39,7 +39,7 @@ h1 {
 
 header {
     background-color: var(--verde-1);
-    width: 100vw;
+    width: 100%;
     height: 102px;
     display: flex;
     align-items: center;
@@ -90,6 +90,17 @@ header {
     color: var(--branco);
     justify-content: space-around;
     text-align: center;
+}
+
+.div-filho-perfil:focus,
+.div-filho-perfil:hover {
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+}
+
+.div-opcao-sair span {
+    color: var(--branco);
+    text-decoration: none;
 }
 
 .div-opcoes {
@@ -225,7 +236,7 @@ header .header-container {
     display: flex;
     justify-content: center;
     width: 100vw;
-    height: 100vh;
+    /* height: 100vh; */
 }
 
 .conteudo-principal {
@@ -334,4 +345,65 @@ header .header-container {
     color: white;
     font-size: 20px;
     border-bottom: 1px solid white;
+}
+
+
+
+/* CONTAS.HTML */
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+table .colunaDelete {
+    text-align: center;
+}
+
+td, th {
+    text-align: left;
+    padding: 10px;
+}
+
+td {
+    border-bottom: 1px solid #008080;
+}
+
+.colunaDelete {
+    text-align: left;
+}
+
+thead {
+    border: 2px solid #2A9D8F;
+}
+
+
+.div-block .div-botao {
+    background-color: var(--verde-3);
+    width: 15rem;
+    height: auto;
+    border-radius: 15px;
+    padding: 4px;
+    text-align: center;
+    color: var(--branco);
+    margin-top: 30px;
+    margin-bottom: 30px;
+    transition: 0.5s;
+}
+
+.div-block .div-botao:hover {
+    color: var(--verde-3);
+    background-color: var(--branco);
+    border: 2px solid var(--verde-3);
+}
+
+.div-block a {
+    text-decoration: none;
+}
+
+
+.div-procura {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
