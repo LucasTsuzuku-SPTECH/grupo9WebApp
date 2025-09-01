@@ -22,7 +22,7 @@
 
 	create table Hospital (
 	id_hospital int primary key auto_increment,
-	nome varchar(100) not null,
+	nomeHospital varchar(100) not null,
 	cnpj varchar(20) unique not null,
 	fk_endereco int,
 	fk_empresa int not null,
@@ -36,8 +36,10 @@
 	email varchar(100) unique not null,
 	senha_hash varchar(200) not null,
 	perfil enum('empresa', 'hospital', 'adminHospital', 'adminEmpresa') not null,
-	fk_empresa int not null,
-	fk_hospital int not null,
+    statusUser varchar(8),
+	fk_empresa int,
+	fk_hospital int,
+    constraint ck_status check(statusUser in ('ativo','inativo')),
 	foreign key (fk_empresa) references EmpresaFabricante(id_empresa),
 	foreign key (fk_hospital) references Hospital(id_hospital)
 	);
@@ -59,7 +61,10 @@
 	foreign key (fk_empresa) references EmpresaFabricante(id_empresa)
 	);	
     
-	  
+    
+    
+    
+    
 -- Inserts
 -- Endereços
 insert into Endereco (logradouro, numero, bairro, cidade, estado, cep) values
@@ -72,27 +77,23 @@ insert into EmpresaFabricante (nome, cnpj, email, fk_endereco) values
 ('VentCare Ltda', '12.345.678/0001-90', 'contato@ventcare.com', 1);
 
 -- Hospitais vinculados à empresa
-insert into Hospital (nome, cnpj, fk_endereco, fk_empresa) values
+insert into Hospital (nomeHospital, cnpj, fk_endereco, fk_empresa) values
 ('Hospital São Lucas', '11.222.333/0001-44', 2, 1),
 ('Hospital Santa Maria', '55.666.777/0001-88', 3, 1);
 
 -- Usuários
-insert into Usuario (nome, email, senha_hash, perfil, fk_empresa, fk_hospital) values
-('Ricardo Almeida', 'ricardo@ventcare.com', 'hash123', 'adminEmpresa', 1, 1),
-('Marina Costa', 'marina@ventcare.com', 'hash456', 'empresa', 1, 1),
-('Dr. Carlos', 'carlos@saolucas.org', 'hash789', 'adminHospital', 1, 1),
-('Ana Paula', 'ana@santamaria.org', 'hash000', 'hospital', 1, 2);
+insert into Usuario (nome, email, senha_hash, perfil,statusUser, fk_empresa, fk_hospital) values
+('Ricardo Almeida', 'ricardo@ventcare.com', 'hash123', 'adminEmpresa','ativo', 1, null),
+('Marina Costa', 'marina@ventcare.com', 'hash456', 'empresa','ativo', 1, null),
+('Dr. Carlos', 'carlos@saolucas.org', 'hash789', 'adminHospital','ativo', null, 1),
+('Ana Paula', 'ana@santamaria.org', 'hash000', 'hospital','ativo', null, 2);
 
--- Modelos
 insert into Modelo (nome, descricao) values
 ('VX-1000', 'Ventilador pulmonar para UTI adulto'),
 ('VX-2000', 'Ventilador pulmonar neonatal'),
 ('AirPlus Pro', 'Modelo portátil para emergências');
 
--- Ventiladores (sempre ligados à mesma empresa)
 insert into Ventilador (numero_serie, fk_modelo, fk_hospital, fk_empresa) values
 ('SN12345', 1, 1, 1),
 ('SN67890', 2, 1, 1),
 ('SN11111', 3, 2, 1);
-    
-    
