@@ -227,6 +227,21 @@ header .header-container {
         margin-left: 0;
     }
 
+    header .header-container {
+        margin-left: 0;
+        display: flex;
+        justify-content: space-around;
+    }
+
+    .div-block .div-procura {
+        display: block;
+    }
+    
+}
+
+button i {
+    font-size: 17px;
+    color: var(--vermelho);
 }
 
 /* FIM SIDEBAR */
@@ -352,6 +367,11 @@ header .header-container {
 
 
 /* CONTAS.HTML */
+
+.mostrarUsuarios {
+    overflow-x: scroll;
+    scrollbar-color: var(--verde-2);
+}
 
 table {
   width: 100%;

@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="./../css/dashboards.css">
     <title>Dashboard - Contas</title>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://kit.fontawesome.com/9f7414eb10.js" crossorigin="anonymous"></script>
 </head>
 <body>
     <div class="div-pai">
@@ -93,7 +93,9 @@
                         <thead>
                             <tr class="nomeColuna">
                                 <th class="colunaUsuario">Nome</th>
+                                <th class="colunaRepresentante">Representante</th>
                                 <th class="colunaEmail">E-mail</th>
+                                <th class="colunaTipoAcesso">Tipo acesso</th>
                                 <th class="colunaStatus">Status</th>
                                 <th class="colunaDelete">Deletar</th>
                             </tr>
@@ -117,9 +119,9 @@
 
 <script>
 const usuarios = [
-    {id: 1,nome: 'João Silva Sptech', email: 'joao@exemplo.com', acesso: 'Ativo' },
-    {id: 2,nome: 'Gabriel Henrique Sptech', email: 'maria@exasdasdasdasdemplo.com', acesso: 'Ativo' },
-    {id: 3,nome: 'Carlos Souza Sptech', email: 'carlos@exemplo.com', acesso: 'Inativo' }
+    {id: 1,nome: 'Hospital 1', representante: 'Carlos Eduardo', email: 'joao@exemplo.com', tipoAcesso:'Admin',  acesso: 'Ativo' },
+    {id: 2,nome: 'Hospital 2', representante: 'Eduardo Carlos', email: 'maria@exasdasdasdasdemplo.com', tipoAcesso:'Admin', acesso: 'Ativo' },
+    {id: 3,nome: 'Hospital 3', representante: 'Eduardo Eduardo', email: 'carlos@exemplo.com', tipoAcesso:'Admin', acesso: 'Inativo' }
 ];
 
 const isSelf = false;
@@ -136,16 +138,18 @@ function adicionarUsuariosNaTabela() {
 
         tr.innerHTML = `
             <td class="colunaUsuario">${usuario.nome}</td>
+            <td class="colunaRepresentante">${usuario.representante}</td>
             <td class="colunaEmail">${usuario.email}</td>
+            <td class="colunaTipoAcesso">${usuario.tipoAcesso}</td>
             <td class="colunaAcesso"
             style="cursor: pointer;"
             onclick="alterarAcesso(${i})">
             ${usuario.acesso}</td>
             <td class="colunaDelete">
                 ${isSelf
-                    ? '<span style="color:gray;opacity:0.5;cursor:not-allowed;"><i class="fa-solid fa-trash"></i></span>'
+                    ? '<span style="color:gray;opacity:0.5;cursor:not-allowed;"><i class="fa-solid fa-trash"></i></i></span>'
                     : `<button style="text-align: center; background-color: transparent; border: none; cursor: pointer;"onclick="deletarUsuario(${usuario.id})">
-                        <img src="../assets/imgs/lixeira.png" alt="Deletar" style="width: 20px; height: 20px; te: center;">
+                        <i class="fa-solid fa-trash"></i>
                     </button>`
                 }
             </td>
