@@ -419,6 +419,10 @@ h3 {
   display: flex;
   align-items: center;
   justify-content: center;
+<<<<<<< HEAD
+=======
+  margin-top: 10px;
+>>>>>>> 110b31bd606ae4eb73d1d00f325c1348bd6e71ec
 }
 
 .logo h1 {
@@ -508,6 +512,7 @@ h3 {
   }
 }
 
+<<<<<<< HEAD
 @media screen and (max-width: 1310px) {
   .sobre2 {
     order: 1;
@@ -558,5 +563,34 @@ h3 {
   .sobre2 {
     order: 1;
   }
+=======
+@media(max-width: 900px) {
+  .esquerda {
+    display: none;
+  }
+
+  #formulario-main {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 15px;
+    box-sizing: border-box;
+  }
+
+  .ipt_digitar {
+    width: 300px;
+  }
+
+  .formulario {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .formulario button {
+    width: 7rem;
+  }
+
+>>>>>>> 110b31bd606ae4eb73d1d00f325c1348bd6e71ec
 
 }
