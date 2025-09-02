@@ -7,4 +7,8 @@ router.get("/contas", function (req, res) {
     contasController.mostrarContas(req, res);
 });
 
+router.delete("/deleteConta/:id", function(req,res){
+    contasController.deletarConta(req,res);
+})
+
 module.exports = router;

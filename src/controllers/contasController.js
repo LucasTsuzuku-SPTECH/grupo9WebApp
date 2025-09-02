@@ -15,6 +15,22 @@ function mostrarContas(req, res) {
         });
 }
 
+
+function deletarConta(req, res) {
+    const id = req.params.id; 
+
+    contasModel.deletarConta(id)
+        .then(() => {
+            res.json({ message: "Usuário deletado com sucesso!" });
+        })
+        .catch((erro) => {
+            console.error(erro);
+            res.status(500).json({ error: "Erro ao deletar usuário" });
+        });
+}
+
+
 module.exports = {
-    mostrarContas
+    mostrarContas,
+    deletarConta
 }
