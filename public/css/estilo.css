@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap");
 
 * {
   padding: 0;
@@ -12,19 +12,19 @@ a {
 }
 
 body {
-  font-family: 'Open Sans', sans-serif;
+  font-family: "Open Sans", sans-serif;
 }
 
 h3 {
-  font: 400 34px 'Open Sans', sans-serif;
+  font: 400 34px "Open Sans", sans-serif;
   margin-bottom: 20px;
 }
 
 :root {
   --verde-escuro: #264653;
   --branco: #ffffff;
-  --verde-água: #2A9D8F;
-  --verde-neve: #B7E4C7;
+  --verde-água: #2a9d8f;
+  --verde-neve: #b7e4c7;
 }
 
 .header {
@@ -84,7 +84,7 @@ h3 {
   padding-top: 80px;
   width: 100%;
   color: white;
-  background: url('../assets/imgs/banner.jpg') no-repeat center;
+  background: url("../assets/imgs/banner.jpg") no-repeat center;
   background-size: cover;
   background-size: cover;
 }
@@ -138,8 +138,14 @@ h3 {
 /* PORQUE CONTRATAR A EMPRESA */
 
 .escolha {
-  background: #DBF1E3;
-  background: linear-gradient(240deg, rgba(219, 241, 227, 1) 0%, rgba(237, 248, 241, 1) 19%, rgba(246, 252, 248, 1) 75%, rgba(255, 255, 255, 1) 100%);
+  background: #dbf1e3;
+  background: linear-gradient(
+    240deg,
+    rgba(219, 241, 227, 1) 0%,
+    rgba(237, 248, 241, 1) 19%,
+    rgba(246, 252, 248, 1) 75%,
+    rgba(255, 255, 255, 1) 100%
+  );
   padding: 80px 0 100px 0;
 }
 
@@ -196,7 +202,7 @@ h3 {
   z-index: 1;
   color: var(--branco);
   text-align: center;
-  font: 400 40px 'Open Sans', sans-serif;
+  font: 400 40px "Open Sans", sans-serif;
   padding: 100px;
 }
 
@@ -277,7 +283,7 @@ h3 {
 
 .campo-contato input,
 .campo-contato textarea {
-  background-color: #F2F2F2;
+  background-color: #f2f2f2;
   border-radius: 10px;
   border: 0;
   width: 100%;
@@ -304,7 +310,7 @@ h3 {
   height: 40px;
   margin-top: 20px;
   background-color: var(--verde-neve);
-  font: 400 16px 'Open Sans', sans-serif;
+  font: 400 16px "Open Sans", sans-serif;
   border-radius: 20px;
 }
 
@@ -337,11 +343,11 @@ h3 {
 }
 
 .footer-parte-dois span {
-  font: 400 14px 'Open Sans', sans-serif;
+  font: 400 14px "Open Sans", sans-serif;
 }
 
 .footer-parte-dois p {
-  font: 400 16px 'Open Sans', sans-serif;
+  font: 400 16px "Open Sans", sans-serif;
 }
 
 /* LOGIN */
@@ -422,7 +428,7 @@ h3 {
 }
 
 .logo h1 {
-  font: 400 50px 'Open Sans', sans-serif;
+  font: 400 50px "Open Sans", sans-serif;
 }
 
 #formulario-main span {
@@ -430,14 +436,14 @@ h3 {
 }
 
 .formulario input {
-  border: 1px solid #8692A6;
+  border: 1px solid #8692a6;
   padding: 10px;
   border-radius: 6px;
-  font: 500 14px 'Open Sans', sans-serif;
+  font: 500 14px "Open Sans", sans-serif;
 }
 
 .formulario label {
-  font: 500 16px 'Open Sans', sans-serif;
+  font: 500 16px "Open Sans", sans-serif;
   margin-top: 15px;
 }
 
@@ -447,7 +453,7 @@ h3 {
 
 .formulario button {
   color: white;
-  font: 500 18px 'Open Sans', sans-serif;
+  font: 500 18px "Open Sans", sans-serif;
   border-radius: 6px;
   width: 380px;
   padding: 5px 10px;
@@ -457,12 +463,12 @@ h3 {
 }
 
 .formulario p {
-  font: 500 16px 'Open Sans', sans-serif;
+  font: 500 16px "Open Sans", sans-serif;
 }
 
 .formulario select {
-  font: 500 14px 'Open Sans', sans-serif;
-  border: 1px solid #8692A6;
+  font: 500 14px "Open Sans", sans-serif;
+  border: 1px solid #8692a6;
   border-radius: 6px;
   background-color: white;
   padding: 10px;
@@ -481,30 +487,30 @@ h3 {
   height: 48px;
   animation-name: bell;
   animation-duration: 4s;
-  background-image: url('https://cdn-icons-png.flaticon.com/512/1157/1157000.png');
+  background-image: url("https://cdn-icons-png.flaticon.com/512/1157/1157000.png");
   background-size: cover;
   animation-iteration-count: infinite;
 }
 
 @keyframes bell {
   0% {
-    transform: rotate(25deg)
+    transform: rotate(25deg);
   }
 
   25% {
-    transform: rotate(-25deg)
+    transform: rotate(-25deg);
   }
 
   50% {
-    transform: rotate(25deg)
+    transform: rotate(25deg);
   }
 
   75% {
-    transform: rotate(-25deg)
+    transform: rotate(-25deg);
   }
 
   100% {
-    transform: rotate(25deg)
+    transform: rotate(25deg);
   }
 }
 
@@ -529,7 +535,6 @@ h3 {
 }
 
 @media screen and (max-width: 980px) {
-
   .container {
     margin: 0 40px;
   }
@@ -560,7 +565,7 @@ h3 {
   }
 }
 
-@media(max-width: 900px) {
+@media (max-width: 900px) {
   .esquerda {
     display: none;
   }
@@ -586,6 +591,4 @@ h3 {
   .formulario button {
     width: 7rem;
   }
-
-
 }
