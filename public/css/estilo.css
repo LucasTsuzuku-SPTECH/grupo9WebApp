@@ -77,6 +77,10 @@ h3 {
   font-weight: 500;
 }
 
+.navbar-mob {
+  display: none;
+}
+
 /* BANNER */
 
 .banner {
@@ -95,10 +99,11 @@ h3 {
   justify-content: center;
   align-items: center;
   height: 90%;
+  text-align: center;
 }
 
 .banner .container h2 {
-  font-size: 48px;
+  font-size: 4vh;
   font-weight: 400;
 }
 
@@ -132,7 +137,7 @@ h3 {
 }
 
 .texto-sobreNos p {
-  width: 500px;
+  max-width: 500px;
 }
 
 /* PORQUE CONTRATAR A EMPRESA */
@@ -167,7 +172,7 @@ h3 {
 
 .escolha p {
   text-align: center;
-  width: 400px;
+  max-width: 400px;
   font-size: 18px;
 }
 
@@ -196,7 +201,7 @@ h3 {
   z-index: 1;
   color: var(--branco);
   text-align: center;
-  font: 400 40px 'Open Sans', sans-serif;
+  font: 400 2vh 'Open Sans', sans-serif;
   padding: 100px;
 }
 
@@ -309,7 +314,7 @@ h3 {
 }
 
 /* FOOTER */
-.footer {
+#footer {
   background-color: var(--verde-escuro);
   color: #fff;
   font-size: 15px;
@@ -321,9 +326,11 @@ h3 {
   display: flex;
   justify-content: space-between;
   padding: 30px 0;
+  flex-wrap: wrap;
+  text-align: center;
 }
 
-.footer a {
+#footer a {
   color: var(--branco);
 }
 
@@ -519,6 +526,10 @@ h3 {
     text-align: start;
   }
 
+  .texto-sobreNos {
+    margin: 0;
+  }
+
   .sobreNos-tudo .img-sobreNos img {
     width: 100%;
   }
@@ -531,22 +542,23 @@ h3 {
 @media screen and (max-width: 980px) {
 
   .container {
-    margin: 0 40px;
+    margin: 0 32px;
   }
 
   /* HEADER */
-  .header .compnav {
+  .header .navbar {
     display: none;
   }
 
-  .header-mob {
+  .navbar-mob {
     display: block;
   }
 
-  .header-mob .container-mob {
+  .header .container {
     display: flex;
     align-items: center;
     justify-content: space-between;
+    margin: 0 32px;
   }
 
   .navbar-mob i {
@@ -554,13 +566,54 @@ h3 {
     color: var(--branco);
   }
 
+  .header .navbar {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+
+  .header .navbar {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    background-color: #264653e6;
+    position: absolute;
+    top: 83px;
+    left: 0px;
+    height: 300px;
+    width: 100%;
+  }
+
+  .header .navbar a {
+    width: 100%;
+    text-align: center;
+    justify-self: center;
+    margin: 0;
+    padding: 10px 0;
+    border-top: 1px solid var(--branco);
+  }
+
+  .header .navbar .ir-login {
+    border-top: 1px solid var(--branco);
+    border-bottom: 0;
+  }
+
   /* SOBRE */
   .sobre2 {
     order: 1;
   }
+
+  .banner .container p {
+    font-size: 2.3vh;
+  }
 }
 
-@media(max-width: 900px) {
+@media screen and (max-width: 900px) {
+
+  .container {
+    margin: 0 20px;
+  }
+
   .esquerda {
     display: none;
   }
@@ -587,5 +640,34 @@ h3 {
     width: 7rem;
   }
 
+}
+
+@media screen and (max-width: 768px) {
+  #contato .container {
+    display: flex;
+    flex-wrap: wrap;
+  }
+
+  .formulario-contato {
+    margin: 0;
+  }
+
+}
+
+@media screen and (max-width: 360px) {
+  .footer-parte-um .container {
+    flex-direction: column;
+    align-items: start;
+  }
+
+  #footer .footer-parte-um .navbar {
+    flex-direction: column;
+    margin: 0;
+    align-items: start;
+  }
+
+  #footer .footer-parte-um .navbar a {
+    margin: 0;
+  }
 
 }
