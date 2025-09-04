@@ -394,7 +394,6 @@ h3 {
 .formulario-login {
   display: flex;
   flex-direction: column;
-  margin-top: 200px;
 }
 
 .formulario {
@@ -538,6 +537,7 @@ h3 {
   .header .compnav {
     display: none;
   }
+
 
   .header-mob {
     display: block;
