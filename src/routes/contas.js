@@ -10,5 +10,9 @@ router.get("/contas", function (req, res) {
 router.delete("/deleteConta/:id", function(req,res){
     contasController.deletarConta(req,res);
 })
+router.put("/alterarAcesso/:id", function(req,res){
+    contasController.alterarAcesso(req,res);
+});
+
 
 module.exports = router;

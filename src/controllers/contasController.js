@@ -29,8 +29,24 @@ function deletarConta(req, res) {
         });
 }
 
+function alterarAcesso(req, res) {
+    const id = req.params.id;
+    const novoStatus = req.body.statusUser;
+
+    contasModel.atualizarAcesso(id, novoStatus)
+        .then(() => {
+            res.json({ message: "Status atualizado com sucesso!" });
+        })
+        .catch((erro) => {
+            console.error(erro);
+            res.status(500).json({ error: "Erro ao atualizar status" });
+        });
+}
+
+
 
 module.exports = {
     mostrarContas,
-    deletarConta
+    deletarConta,
+    alterarAcesso
 }

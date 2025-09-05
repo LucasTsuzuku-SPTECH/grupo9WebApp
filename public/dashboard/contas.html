@@ -124,8 +124,8 @@
 
 <script>
 
-  let id_usuario = sessionStorage.ID_USUARIO;
-  const isSelf = false;
+  let usuarios = []
+
 
   function deletar(id) {
 
@@ -166,9 +166,27 @@
 
   }
 
+  function alterarAcesso(index) {
+    const usuario = usuarios[index];
+    const novoStatus = usuario.statusUser === "Ativo" ? "Inativo" : "Ativo";
+
+    fetch(`/contas/alterarAcesso/${usuario.id_usuario}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ statusUser: novoStatus })
+    })
+    .then(res => res.json())
+    .then(() => {
+        usuarios[index].statusUser = novoStatus;
+        listar(usuarios);
+    })
+    .catch(err => console.error(err));
+}
+
 
 
   function listar(data) {
+    usuarios = data
     const tbody = document.getElementById('tbody_usuarios');
     tbody.innerHTML = '';
 

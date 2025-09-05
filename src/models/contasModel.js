@@ -19,7 +19,19 @@ function deletarConta(id){
     return database.executar(instrucaoSql);
 
 }
+
+function atualizarAcesso(id, novoStatus) {
+    console.log(`ALTERANDO STATUS DO USUÁRIO ${id} PARA ${novoStatus}`);
+    var instrucaoSql = `
+        UPDATE Usuario
+        SET statusUser = '${novoStatus}'
+        WHERE id_usuario = ${id};
+    `;
+    return database.executar(instrucaoSql);
+}
+
 module.exports={
     listarTodasContas,
-    deletarConta
+    deletarConta,
+    atualizarAcesso
 }
