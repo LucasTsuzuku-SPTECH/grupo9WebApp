@@ -16,7 +16,7 @@ body {
 }
 
 h3 {
-  font: 400 34px 'Open Sans', sans-serif;
+  font: 400 4.8vh 'Open Sans', sans-serif;
   margin-bottom: 20px;
 }
 
@@ -84,7 +84,7 @@ h3 {
 /* BANNER */
 
 .banner {
-  height: 90vh;
+  height: 95vh;
   padding-top: 80px;
   width: 100%;
   color: white;
@@ -103,13 +103,13 @@ h3 {
 }
 
 .banner .container h2 {
-  font-size: 4vh;
+  font-size: 5vh;
   font-weight: 400;
 }
 
 .banner .container p {
   text-align: center;
-  font-size: 24px;
+  font-size: 3vh;
 }
 
 .banner .container span {
@@ -133,7 +133,7 @@ h3 {
 }
 
 .img-sobreNos img {
-  width: 450px;
+  width: 400px;
 }
 
 .texto-sobreNos p {
@@ -149,7 +149,7 @@ h3 {
 }
 
 .escolha h4 {
-  font-size: 30px;
+  font-size: 4vh;
   font-weight: 400;
 }
 
@@ -173,7 +173,7 @@ h3 {
 .escolha p {
   text-align: center;
   max-width: 400px;
-  font-size: 18px;
+  font-size: 2.6vh;
 }
 
 .box {
@@ -201,7 +201,7 @@ h3 {
   z-index: 1;
   color: var(--branco);
   text-align: center;
-  font: 400 2vh 'Open Sans', sans-serif;
+  font: 400 4vh 'Open Sans', sans-serif;
   padding: 100px;
 }
 
@@ -515,7 +515,7 @@ h3 {
   }
 }
 
-@media screen and (max-width: 1310px) {
+@media screen and (max-width: 1269px) {
   .sobre2 {
     order: 1;
   }
@@ -524,6 +524,7 @@ h3 {
     width: 100%;
     margin: 50px 0;
     text-align: start;
+    flex-wrap: wrap;
   }
 
   .texto-sobreNos {
@@ -573,7 +574,7 @@ h3 {
   }
 
   .header .navbar {
-    display: flex;
+    display: none;
     flex-direction: column;
     justify-content: space-around;
     background-color: #264653e6;
@@ -605,6 +606,10 @@ h3 {
 
   .banner .container p {
     font-size: 2.3vh;
+  }
+
+  .box img {
+    width: 50px;
   }
 }
 
@@ -643,6 +648,16 @@ h3 {
 }
 
 @media screen and (max-width: 768px) {
+
+  .frase-banner img {
+    height: 70vh;
+    object-fit: cover;
+  }
+
+  #frase .frase-banner p {
+    padding: 20px;
+  }
+
   #contato .container {
     display: flex;
     flex-wrap: wrap;
