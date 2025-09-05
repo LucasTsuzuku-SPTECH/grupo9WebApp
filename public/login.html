@@ -2,17 +2,17 @@
 <html lang="pt-br">
 
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <title>AquaTech | Login</title>
+  <title>Zephyrus | Login</title>
 
-    <script src="./js/sessao.js"></script>
+  <script src="./js/sessao.js"></script>
 
-    <link rel="stylesheet" href="./css/estilo.css">
-    <link rel="icon" href="./assets/icon/favicon2.ico">
-    <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link rel="stylesheet" href="./css/estilo.css" />
+  <link rel="icon" href="./assets/imgs/Zephyrus_1png.png" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" />
 </head>
 
 <body>
@@ -31,29 +31,32 @@
       </div>
       <div class="formulario-login">
         <div class="logo">
-          <h1>Empresa</h1>
+          <h1>Zephyrus</h1>
         </div>
         <div class="formulario">
           <div class="formulario-principal">
             <label for="">Endereço de email</label>
-            <input type="email" id="email_input" placeholder="email*" class="ipt_digitar"/>
+            <input type="email" id="email_input" placeholder="email*" class="ipt_digitar" />
             <div id="output_email"></div>
             <label for="">Senha</label>
-            <input type="password" id="senha_input" placeholder="senha*" class="ipt_digitar"/>
+            <input type="password" id="senha_input" placeholder="senha*" class="ipt_digitar" />
             <div id="output_senha"></div>
             <div class="parte-checkbox">
-              <input type="checkbox" />
-              <label for="">Lembre-se de mim</label>
+              <input type="checkbox" id="lembrarCheck" />
+              <label for="lembrarCheck">Lembre-se de mim</label>
             </div>
+
             <button onclick="entrar()">Entrar</button>
           </div>
           <div class="nao-cliente">
-            <p>Ainda não é um cliente? <span><a href="index.html#contato">Entre em contato</a></span></p>
+            <p>
+              Ainda não é um cliente?
+              <span><a href="index.html#contato">Entre em contato</a></span>
+            </p>
           </div>
         </div>
       </div>
     </div>
-
   </main>
 </body>
 
@@ -61,74 +64,65 @@
 
 <script>
 
+  window.onload = () => {
+  const lembrarEmail = localStorage.getItem("email")
+  const lembrarSenha = localStorage.getItem("senha")
+  if (lembrarEmail && lembrarSenha) {
+    email_input.value = lembrarEmail
+    senha_input.value = lembrarSenha
 
-    function entrar() {
-        aguardar();
+    document.getElementById("lembrarCheck").checked = true
+  }
+}
 
-        var emailVar = email_input.value;
-        var senhaVar = senha_input.value;
+function entrar() {
+  const emailVar = email_input.value
+  const senhaVar = senha_input.value
+  const lembrar = document.getElementById("lembrarCheck").checked
 
-        if (emailVar == "" || senhaVar == "") {
-            cardErro.style.display = "block"
-            mensagem_erro.innerHTML = "(Mensagem de erro para todos os campos em branco)";
-            finalizarAguardar();
-            return false;
-        }
-        else {
-          console.log("else do entrar, deu ruim")
-            // setInterval(sumirMensagem, 5000)
-        }
+  if (!emailVar || !senhaVar) {
+    cardErro.style.display = "block"
+    mensagem_erro.innerHTML = "(Mensagem de erro para todos os campos em branco)"
+    finalizarAguardar()
+    return false
+  }
 
-        console.log("FORM LOGIN: ", emailVar);
-        console.log("FORM SENHA: ", senhaVar);
+  if (lembrar) {
+    localStorage.setItem("email", emailVar)
+    localStorage.setItem("senha", senhaVar)
+  } else {
+    localStorage.removeItem("email")
+    localStorage.removeItem("senha")
+  }
 
-        fetch("/usuarios/autenticar", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({
-                emailServer: emailVar,
-                senhaServer: senhaVar
-            })
-        }).then(function (resposta) {
-            console.log("ESTOU NO THEN DO entrar()!")
-
-            if (resposta.ok) {
-                console.log(resposta);
-
-                resposta.json().then(json => {
-                    console.log(json);
-                    console.log(JSON.stringify(json));
-                    sessionStorage.EMAIL_USUARIO = json.email;
-                    sessionStorage.NOME_USUARIO = json.nome;
-                    sessionStorage.ID_USUARIO = json.id_usuario;
-                    sessionStorage.CARGO_USUARIO=json.perfil;
-                    setTimeout(function () {
-                        window.location = "../dashboard/mainPage.html";
-                    }, 1000); 
-
-                });
-
-            } else {
-
-                console.log("Houve um erro ao tentar realizar o login!");
-
-                resposta.text().then(texto => {
-                    console.error(texto);
-                    finalizarAguardar(texto);
-                });
-            }
-
-        }).catch(function (erro) {
-            console.log(erro);
-        })
-
-        return false;
+  fetch("/usuarios/autenticar", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ emailServer: emailVar, senhaServer: senhaVar })
+  })
+  .then(resposta => {
+    if (resposta.ok) {
+      resposta.json().then(json => {
+        sessionStorage.EMAIL_USUARIO = json.email
+        sessionStorage.NOME_USUARIO = json.nome
+        sessionStorage.ID_USUARIO = json.id_usuario
+        sessionStorage.CARGO_USUARIO = json.perfil
+        setTimeout(() => window.location = "../dashboard/mainPage.html", 1000)
+      })
+    } else {
+      resposta.text().then(texto => {
+        console.error(texto)
+        finalizarAguardar(texto)
+      })
     }
+  })
+  .catch(erro => console.log(erro))
 
-    // function sumirMensagem() {
-    //     cardErro.style.display = "none"
-    // }
+  return false
+}
 
+
+  // function sumirMensagem() {
+  //     cardErro.style.display = "none"
+  // }
 </script>

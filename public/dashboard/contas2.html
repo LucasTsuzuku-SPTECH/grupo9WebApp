@@ -1,16 +1,18 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="./../css/dashboards.css">
-    <title>Dashboard - Contas</title>
-    <script src="https://kit.fontawesome.com/9f7414eb10.js" crossorigin="anonymous"></script>
-</head>
-<body>
-    <div class="div-pai">
 
-      <!-- Cabeçalho -->
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="./../css/dashboards.css">
+  <title>Dashboard - Contas</title>
+  <script src="https://kit.fontawesome.com/9f7414eb10.js" crossorigin="anonymous"></script>
+</head>
+
+<body>
+  <div class="div-pai">
+
+    <!-- Cabeçalho -->
     <header>
       <div class="header-container">
         <h2>DASHBOARD - CONTROLE DE USUÁRIOS</h2>
@@ -64,79 +66,81 @@
       <div class="conteudo-principal">
 
         <div class="div-flex">
-            <div class="div-block">
-                <a href="../cadastro.html">
-                    <div class="div-botao">
-                        <h3>Adicionar novo usuário</h3>
-                    </div>
-                </a>
+          <div class="div-block">
+            <a href="../cadastro.html">
+              <div class="div-botao">
+                <h3>Adicionar novo usuário</h3>
+              </div>
+            </a>
 
-                <div class="div-procura">
-                    <div class="ipt_procura">
-                        <input type="text">
-                    </div>
-                    <div class="ipt_procura">
-                        <input type="text">
-                    </div>
-                    <div class="ipt_procura">
-                        <select name="" id="">
-                            <option value="" >Selecione o tipo de Status</option>
-                            <option value="">Ativo</option>
-                            <option value="">Inativo</option>
-                        </select>
-                    </div>
-                </div>
+            <div class="div-procura">
+              <div class="div-ipt-procura">
+                <label for="">Procure pelo nome:</label>
+                <input type="text" class="ipt_procura">
+              </div>
+              <div class="div-ipt-procura">
+                <label for="">Procure pelo e-mail:</label>
+                <input type="text" class="ipt_procura">
+              </div>
+              <div class="div-ipt-procura">
+                <label for="">filtre por atividade:</label>
+                <select name="" id="select_atividade" onclick="teste()" class="ipt_procura">
+                      <option value="">Selecione o tipo de Status</option>
+                      <option value="">Ativo</option>
+                      <option value="">Inativo</option>
+                    </select>
+                  </div>
+              </div>
 
 
-                <div class="mostrarUsuarios">
-                    <table>
-                        <thead>
-                            <tr class="nomeColuna">
-                                <th class="colunaUsuario">Nome</th>
-                                <th class="colunaRepresentante">Representante</th>
-                                <th class="colunaEmail">E-mail</th>
-                                <th class="colunaTipoAcesso">Tipo acesso</th>
-                                <th class="colunaStatus">Status</th>
-                                <th class="colunaDelete">Deletar</th>
-                            </tr>
-                        </thead>
-                        <tbody id="tbody_usuarios">
-                        </tbody>
-                    </table>
-                </div>
+              <div class="mostrarUsuarios">
+                <table>
+                  <thead>
+                    <tr class="nomeColuna">
+                      <th class="colunaUsuario">Nome</th>
+                      <th class="colunaRepresentante">Representante</th>
+                      <th class="colunaEmail">E-mail</th>
+                      <th class="colunaTipoAcesso">Tipo acesso</th>
+                      <th class="colunaStatus">Status</th>
+                      <th class="colunaDelete">Deletar</th>
+                    </tr>
+                  </thead>
+                  <tbody id="tbody_usuarios">
+                  </tbody>
+                </table>
+              </div>
             </div>
+          </div>
+
         </div>
+
       </div>
-    
-    </div>
-
-
-  </div>
 </body>
+
 </html>
 <script src="../js/chart.js"></script>
 
 
 <script>
-const usuarios = [
-    {id: 1,nome: 'Hospital 1', representante: 'Carlos Eduardo', email: 'joao@exemplo.com', tipoAcesso:'Admin',  acesso: 'Ativo' },
-    {id: 2,nome: 'Hospital 2', representante: 'Eduardo Carlos', email: 'maria@exasdasdasdasdemplo.com', tipoAcesso:'Admin', acesso: 'Ativo' },
-    {id: 3,nome: 'Hospital 3', representante: 'Eduardo Eduardo', email: 'carlos@exemplo.com', tipoAcesso:'Admin', acesso: 'Inativo' }
-];
+  const usuarios = [
+    { id: 1, nome: 'Hospital 1', representante: 'Carlos Eduardo', email: 'joao@exemplo.com', tipoAcesso: 'Admin', acesso: 'Ativo' },
+    { id: 2, nome: 'Hospital 2', representante: 'Eduardo Carlos', email: 'maria@exasdasdasdasdemplo.com', tipoAcesso: 'Admin', acesso: 'Ativo' },
+    { id: 3, nome: 'Hospital 3', representante: 'Eduardo Eduardo', email: 'carlos@exemplo.com', tipoAcesso: 'Admin', acesso: 'Inativo' }
+  ];
 
-const isSelf = false;
+  const isSelf = false;
 
-function adicionarUsuariosNaTabela() {
+  function adicionarUsuariosNaTabela() {
     const tbody = document.getElementById('tbody_usuarios');
-    
+
     tbody.innerHTML = '';
 
     for (let i = 0; i < usuarios.length; i++) {
-        const usuario = usuarios[i];
+      const usuario = usuarios[i];
 
-        const tr = document.createElement('tr');
+      const tr = document.createElement('tr');
 
-        tr.innerHTML = `
+      tr.innerHTML = `
             <td class="colunaUsuario">${usuario.nome}</td>
             <td class="colunaRepresentante">${usuario.representante}</td>
             <td class="colunaEmail">${usuario.email}</td>
@@ -147,47 +151,47 @@ function adicionarUsuariosNaTabela() {
             ${usuario.acesso}</td>
             <td class="colunaDelete">
                 ${isSelf
-                    ? '<span style="color:gray;opacity:0.5;cursor:not-allowed;"><i class="fa-solid fa-trash"></i></i></span>'
-                    : `<button style="text-align: center; background-color: transparent; border: none; cursor: pointer;"onclick="deletarUsuario(${usuario.id})">
+          ? '<span style="color:gray;opacity:0.5;cursor:not-allowed;"><i class="fa-solid fa-trash"></i></i></span>'
+          : `<button style="text-align: center; background-color: transparent; border: none; cursor: pointer;"onclick="deletarUsuario(${usuario.id})">
                         <i class="fa-solid fa-trash"></i>
                     </button>`
-                }
+        }
             </td>
         `;
 
-        if(usuario.acesso == "Inativo") {
-            tr.style.backgroundColor = 'yellow';
-        }else {
-            if(i % 2 == 0) {
-                tr.style.backgroundColor = '#B7E4C7';
-            }else {
-                tr.style.backgroundColor = 'transparent';
-            } 
+      if (usuario.acesso == "Inativo") {
+        tr.style.backgroundColor = 'yellow';
+      } else {
+        if (i % 2 == 0) {
+          tr.style.backgroundColor = '#B7E4C7';
+        } else {
+          tr.style.backgroundColor = 'transparent';
         }
-        tbody.appendChild(tr);
+      }
+      tbody.appendChild(tr);
     }
-}
+  }
 
-function alterarAcesso(index) {
+  function alterarAcesso(index) {
     const usuario = usuarios[index];
     const tdAcesso = document.getElementsByClassName('colunaAcesso')[index];
-    
+
     if (usuario.acesso == 'Ativo') {
-        usuario.acesso = 'Inativo';
+      usuario.acesso = 'Inativo';
     } else {
-        usuario.acesso = 'Ativo';
+      usuario.acesso = 'Ativo';
     }
 
     tdAcesso.innerHTML = usuario.acesso;
     adicionarUsuariosNaTabela();
-}
+  }
 
-function deletarUsuario(id) {
+  function deletarUsuario(id) {
     alert('Usuário com ID ' + id + ' deletado.');
     tr.style.display = 'none';
-}
+  }
 
-adicionarUsuariosNaTabela();
+  adicionarUsuariosNaTabela();
 
 
 </script>
