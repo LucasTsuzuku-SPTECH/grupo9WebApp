@@ -6,13 +6,13 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-  <title>AquaTech | Cadastro</title>
+  <title>Zephyrus | Cadastro</title>
 
   <script src="./js/sessao.js"></script>
 
   <link rel="stylesheet" href="./css/estilo.css" />
-  <link rel="icon" href="./assets/icon/favicon2.ico" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" />
+    <link rel="icon" href="./assets/imgs/Zephyrus_1png.png" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" />
 </head>
 
   <main id="formulario-main">
@@ -44,6 +44,12 @@
             <label for="">Repita a senha</label>
             <input type="password" id="confirmacao_senha_input" placeholder="senha*" class="ipt_digitar"/>
             <div id="output_senha"></div>
+            <label for=""> Empresa/Hospital </label>
+            <select name="" id="EmpresaHospital">
+              <option disabled selected value="">Selecione uma opção</option>
+              <option value="Empresa">Empresa</option>
+              <option value="Hospital">Hospital</option>
+            </select>
             <button onclick="cadastrar()">Entrar</button>
           </div>
           <div class="nao-cliente">
