@@ -1,137 +1,126 @@
 <!DOCTYPE html>
 <html lang="pt-br">
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <title>Zephyrus | Login</title>
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <script src="./js/sessao.js"></script>
+  <title>Zephyrus | Login</title>
 
-    <link rel="stylesheet" href="./css/estilo.css" />
-    <link rel="icon" href="./assets/imgs/Zephyrus_1png.png" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" />
-  </head>
+  <script src="./js/sessao.js"></script>
 
-  <body>
-    <main id="formulario-main">
-      <div class="esquerda">
-        <div class="imagem-lateral">
-          <img src="assets/imgs/fundoLogin.jpg" alt="Família no mercado" />
-        </div>
+  <link rel="stylesheet" href="./css/estilo.css" />
+  <link rel="icon" href="./assets/imgs/Zephyrus_1png.png" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" />
+</head>
+
+<body>
+  <main id="formulario-main">
+    <div class="esquerda">
+      <div class="imagem-lateral">
+        <img src="assets/imgs/fundoLogin.jpg" alt="Família no mercado" />
       </div>
-      <div class="direita">
-        <div class="voltarCadastro">
-          <a href="./index.html">
-            <span>Voltar</span>
-            <i class="fa-solid fa-arrow-right"></i>
-          </a>
+    </div>
+    <div class="direita">
+      <div class="voltarCadastro">
+        <a href="./index.html">
+          <span>Voltar</span>
+          <i class="fa-solid fa-arrow-right"></i>
+        </a>
+      </div>
+      <div class="formulario-login">
+        <div class="logo">
+          <h1>Zephyrus</h1>
         </div>
-        <div class="formulario-login">
-          <div class="logo">
-            <h1>Zephyrus</h1>
+        <div class="formulario">
+          <div class="formulario-principal">
+            <label for="">Endereço de email</label>
+            <input type="email" id="email_input" placeholder="email*" class="ipt_digitar" />
+            <div id="output_email"></div>
+            <label for="">Senha</label>
+            <input type="password" id="senha_input" placeholder="senha*" class="ipt_digitar" />
+            <div id="output_senha"></div>
+            <div class="parte-checkbox">
+              <input type="checkbox" id="lembrarCheck" />
+              <label for="lembrarCheck">Lembre-se de mim</label>
+            </div>
+
+            <button onclick="entrar()">Entrar</button>
           </div>
-          <div class="formulario">
-            <div class="formulario-principal">
-              <label for="">Endereço de email</label>
-              <input
-                type="email"
-                id="email_input"
-                placeholder="email*"
-                class="ipt_digitar"
-              />
-              <div id="output_email"></div>
-              <label for="">Senha</label>
-              <input
-                type="password"
-                id="senha_input"
-                placeholder="senha*"
-                class="ipt_digitar"
-              />
-              <div id="output_senha"></div>
-              <div class="parte-checkbox">
-                <input type="checkbox" />
-                <label for="">Lembre-se de mim</label>
-              </div>
-              <button onclick="entrar()">Entrar</button>
-            </div>
-            <div class="nao-cliente">
-              <p>
-                Ainda não é um cliente?
-                <span><a href="index.html#contato">Entre em contato</a></span>
-              </p>
-            </div>
+          <div class="nao-cliente">
+            <p>
+              Ainda não é um cliente?
+              <span><a href="index.html#contato">Entre em contato</a></span>
+            </p>
           </div>
         </div>
       </div>
-    </main>
-  </body>
+    </div>
+  </main>
+</body>
+
 </html>
 
 <script>
-  function entrar() {
-    aguardar();
 
-    var emailVar = email_input.value;
-    var senhaVar = senha_input.value;
+  window.onload = () => {
+  const lembrarEmail = localStorage.getItem("email")
+  const lembrarSenha = localStorage.getItem("senha")
+  if (lembrarEmail && lembrarSenha) {
+    email_input.value = lembrarEmail
+    senha_input.value = lembrarSenha
 
-    if (emailVar == "" || senhaVar == "") {
-      cardErro.style.display = "block";
-      mensagem_erro.innerHTML =
-        "(Mensagem de erro para todos os campos em branco)";
-      finalizarAguardar();
-      return false;
-    } else {
-      console.log("else do entrar, deu ruim");
-      // setInterval(sumirMensagem, 5000)
-    }
-
-    console.log("FORM LOGIN: ", emailVar);
-    console.log("FORM SENHA: ", senhaVar);
-
-    fetch("/usuarios/autenticar", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        emailServer: emailVar,
-        senhaServer: senhaVar,
-      }),
-    })
-      .then(function (resposta) {
-        console.log("ESTOU NO THEN DO entrar()!");
-
-        if (resposta.ok) {
-          console.log(resposta);
-
-          resposta.json().then((json) => {
-            console.log(json);
-            console.log(JSON.stringify(json));
-            sessionStorage.EMAIL_USUARIO = json.email;
-            sessionStorage.NOME_USUARIO = json.nome;
-            sessionStorage.ID_USUARIO = json.id_usuario;
-            sessionStorage.CARGO_USUARIO = json.perfil;
-            setTimeout(function () {
-              window.location = "../dashboard/mainPage.html";
-            }, 1000);
-          });
-        } else {
-          console.log("Houve um erro ao tentar realizar o login!");
-
-          resposta.text().then((texto) => {
-            console.error(texto);
-            finalizarAguardar(texto);
-          });
-        }
-      })
-      .catch(function (erro) {
-        console.log(erro);
-      });
-
-    return false;
+    document.getElementById("lembrarCheck").checked = true
   }
+}
+
+function entrar() {
+  const emailVar = email_input.value
+  const senhaVar = senha_input.value
+  const lembrar = document.getElementById("lembrarCheck").checked
+
+  if (!emailVar || !senhaVar) {
+    cardErro.style.display = "block"
+    mensagem_erro.innerHTML = "(Mensagem de erro para todos os campos em branco)"
+    finalizarAguardar()
+    return false
+  }
+
+  if (lembrar) {
+    localStorage.setItem("email", emailVar)
+    localStorage.setItem("senha", senhaVar)
+  } else {
+    localStorage.removeItem("email")
+    localStorage.removeItem("senha")
+  }
+
+  fetch("/usuarios/autenticar", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ emailServer: emailVar, senhaServer: senhaVar })
+  })
+  .then(resposta => {
+    if (resposta.ok) {
+      resposta.json().then(json => {
+        sessionStorage.EMAIL_USUARIO = json.email
+        sessionStorage.NOME_USUARIO = json.nome
+        sessionStorage.ID_USUARIO = json.id_usuario
+        sessionStorage.CARGO_USUARIO = json.perfil
+        setTimeout(() => window.location = "../dashboard/mainPage.html", 1000)
+      })
+    } else {
+      resposta.text().then(texto => {
+        console.error(texto)
+        finalizarAguardar(texto)
+      })
+    }
+  })
+  .catch(erro => console.log(erro))
+
+  return false
+}
+
 
   // function sumirMensagem() {
   //     cardErro.style.display = "none"
