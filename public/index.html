@@ -17,32 +17,31 @@
       crossorigin="anonymous"
     ></script>
   </head>
+  <link rel="stylesheet" href="./css/estilo.css">
+  <link rel="icon" href="./assets/icon/favicon2.ico">
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <script src="https://kit.fontawesome.com/9f7414eb10.js" crossorigin="anonymous"></script>
+</head>
 
-  <body>
-    <header class="header">
-      <div class="container compnav">
-        <h1 class="titulo">Zephyrus</h1>
-        <nav class="navbar">
-          <a href="#home">Home</a>
-          <a href="#sobreNos">Sobre Nós</a>
-          <a href="#avaliacoes">Avaliações</a>
-          <a href="#contato">Contato</a>
-          <a href="login.html" class="ir-login">
-            <div>Entrar</div>
-          </a>
-        </nav>
-      </div>
-      <div class="header-mob">
-        <div class="container">
-          <div class="logo-mob">
-            <h1 class="titulo">Zephyrus</h1>
-          </div>
-          <div class="navbar-mob">
-            <i class="fa-solid fa-bars"></i>
-          </div>
-        </div>
-      </div>
-    </header>
+<body>
+  <header class="header">
+    <div class="container compnav">
+      <h1 class="titulo">Zephyrus</h1>
+      <a class="navbar-mob" onclick="mostrarNavbar()">
+        <i id="icone" class="fa-solid fa-bars"></i>
+      </a>
+      <nav class="navbar" id="navbar">
+        <a href="#home">Home</a>
+        <a href="#sobreNos">Sobre Nós</a>
+        <a href="#avaliacoes">Avaliações</a>
+        <a href="#contato">Contato</a>
+        <a href="login.html" class="ir-login">
+          <div>Entrar</div>
+        </a>
+      </nav>
+    </div>
+  </header>
+  <main>
     <section id="home">
       <div class="banner">
         <div class="container">
@@ -239,6 +238,48 @@
           <p>Copyright © 2025 Empresa. Todos os Direitos Reservados.</p>
         </div>
       </div>
-    </footer>
-  </body>
+    </div>
+
+  </section>
+  </main>
+  <footer id="footer">
+    <div class="footer-parte-um">
+      <div class="container">
+        <h1 class="titulo">Zephyrus</h1>
+        <nav class="navbar">
+          <a href="#home">Home</a>
+          <a href="#sobreNos">Sobre Nós</a>
+          <a href="#avaliacoes">Avaliações</a>
+          <a href="#contato">Contato</a>
+        </nav>
+      </div>
+    </div>
+    <div class="footer-parte-dois">
+      <div class="container">
+        <span>Não há intenção de violar os direitos autorais de uso de imagem.</span>
+        <p>Copyright © 2025 Empresa. Todos os Direitos Reservados.</p>
+      </div>
+    </div>
+  </footer>
+</body>
+
 </html>
+<script>
+  function mostrarNavbar() {
+    const larguraTela = window.innerWidth;
+    var menu = document.getElementById("navbar");
+    var icone = document.getElementById("icone");
+
+    if (larguraTela < 980) {
+      if (getComputedStyle(menu).display == 'none') {
+        menu.style.display = "flex";
+        icone.classList.remove("fa-bars");
+        icone.classList.add("fa-times");
+      } else {
+        menu.style.display = "none";
+        icone.classList.remove("fa-times");
+        icone.classList.add("fa-bars");
+      }
+    }
+  }
+</script>
