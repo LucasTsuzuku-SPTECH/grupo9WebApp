@@ -6,9 +6,11 @@
     --verde-3: #2A9D8F;
     --verde-4: #264653;
     --vermelho: #E60E3A;
-    
 }
 
+a {
+      text-decoration: none;
+}
 * {
     box-sizing: border-box;
     margin: 0;
@@ -45,6 +47,19 @@ header {
     display: flex;
     align-items: center;
     justify-content: center;
+}
+
+/* .div-hamburguer {
+    display: block;
+    height: 200px;
+} */
+.header-container i {
+    font-size: 30px;
+    display: none;
+}
+
+.navbar {
+    display: none;
 }
 
 
@@ -145,8 +160,8 @@ header .header-container {
 
 .div-pai .div-sidebar {
     background-color: var(--verde-4);
-    /* position: fixed; */
-    position: absolute;
+    position: fixed;
+    /* position: absolute; */
     top: 0;
     left: 0;
     width: 250px;
@@ -237,6 +252,64 @@ header .header-container {
         display: block;
     } */
     
+}
+
+@media screen and (max-width: 570px) {
+    .header-container h2 {
+        display: none;
+    }
+    .header-container h2{
+        display: none;
+    }
+}
+
+@media screen and (max-width: 683px) {
+    .div-procura{
+        flex-direction: column;
+    }
+}
+
+@media screen and (max-width: 1342px) {
+    /* .navbar-mob {
+        display: block;
+    } */
+
+    .navbar-mob i {
+        display: block;
+        font-size: 30px;
+        color: var(--verde-4);
+        cursor: pointer;
+    }
+/* 
+    .navbar {
+        display: block;
+        align-items: center;
+        flex-wrap: wrap;
+    } */
+
+    .navbar a {
+        width: 100%;
+        text-align: center;
+        justify-self: center;
+        margin: 0;
+        padding: 10px 0;
+        border-top: 1px solid var(--branco);
+        color: var(--branco);
+    }
+
+    .navbar {
+        display: none;
+        flex-direction: column;
+        justify-content: space-around;
+        background-color: #264653e6;
+        position: absolute;
+        top: 83px;
+        left: 0px;
+        height: 200px;
+        width: 20em;
+        border-radius: 15px;
+    }
+
 }
 
 button i {
@@ -370,7 +443,16 @@ button i {
 
 .mostrarUsuarios {
     overflow-x: scroll;
+    overflow-y: scroll;
     scrollbar-color: var(--verde-2);
+    margin-top: 30px;
+    height: 200px;
+    margin-bottom: 40px;
+    /* border: var(--verde-3) 2px solid; */
+}
+
+select, option {
+    cursor: pointer;
 }
 
 table {
@@ -400,7 +482,7 @@ thead {
 }
 
 
-.div-block .div-botao {
+.div-block a {
     background-color: var(--verde-3);
     width: 15rem;
     height: 4rem;
@@ -413,18 +495,27 @@ thead {
     color: var(--branco);
     margin-top: 30px;
     margin-bottom: 30px;
-    transition: 0.5s;
+    transition: transform 0.2s ease-in-out;
     border: 2px solid var(--verde-3);
+    text-decoration: none;
 }
 
-.div-block .div-botao:hover {
+.div-block a:hover {
+
+    transform: translateY(-3px);
+}
+
+.div-block a:active {
     color: var(--verde-3);
     background-color: var(--branco);
     border: 2px solid var(--verde-3);
 }
 
-.div-block a {
-    text-decoration: none;
+.div-block .div-links-contas {
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    flex-wrap: wrap;
 }
 
 

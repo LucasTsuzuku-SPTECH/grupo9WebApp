@@ -5,7 +5,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="./../css/dashboards.css">
-  <title>Dashboard - Contas</title>
+  <title>Dashboard - Contas hospital</title>
   <script src="https://kit.fontawesome.com/9f7414eb10.js" crossorigin="anonymous"></script>
   
 </head>
@@ -27,7 +27,7 @@
           </a>
         </nav>
       </div>
-        <h2>DASHBOARD - CONTROLE DE USUÁRIOS</h2>
+        <h2>DASHBOARD - CONTROLE (Hospital)</h2>
         <div class="div-pai-perfil">
           <div class="div-linha"></div>
           <div class="div-todo-perfil">
@@ -59,13 +59,6 @@
             </div>
           </a>
 
-          <a href="mainPage.html">
-            <div class="div-btComImg">
-              <img src="../assets/imgs/Hospitais.png" alt="Imagem do ícone de Hospitais" />
-              <div class="txt-bt">Hospitais</div>
-            </div>
-          </a>
-
           <a href="contas.html">
             <div class="div-btComImg div-btEscolhido">
               <img src="../assets/imgs/multiplasPessoas.png" alt="Imagem do ícone das contas registradas" />
@@ -88,7 +81,7 @@
 
               <a href="../cadastro.html">
                 <!-- <div class="div-botao"> -->
-                  <h3>Adicionar novo hospital</h3>
+                  <h3>Adicionar nova máquina</h3>
                 <!-- </div> -->
               </a>
             </div>
@@ -133,6 +126,48 @@
                   </tbody>
                 </table>
               </div>
+
+
+              <div class="div-procura">
+              <div class="div-ipt-procura">
+                <label for="">Procure pelo N° de série:</label>
+                <input type="text" class="ipt_procura">
+              </div>
+              <div class="div-ipt-procura">
+                <label for="">filtre andar</label>
+                <select name="" id="select_hospital" onclick="filtroAndar()" class="ipt_procura">
+                      <option value="">Selecione o tipo de Status</option>
+                      <option value="">Andar 1</option>
+                      <option value="">Andar 2</option>
+                    </select>
+              </div>
+              <div class="div-ipt-procura">
+                <label for="">filtre por sala:</label>
+                <select name="" id="select_atividade" onclick="filtroSala()" class="ipt_procura">
+                      <option value="">Selecione o tipo de Status</option>
+                      <option value="">Sala 1</option>
+                      <option value="">Sala 2</option>
+                    </select>
+                  </div>
+              </div>
+
+              <div class="mostrarUsuarios">
+                <table>
+                  <thead>
+                    <tr class="nomeColuna">
+                      <th class="colunaModelo">Modelo</th>
+                      <th class="colunaNumero">NumeroSerie</th>
+                      <th class="colunaAndar">Andar</th> <!-- Fazer um update-->
+                      <th class="colunaSala">Sala</th>  <!-- Fazer um update-->
+                      <th class="colunaStatus">Status</th> <!-- True or false (1 ou 0)-->
+                      <th class="colunaDelete">Deletar</th>
+                    </tr>
+                  </thead>
+                  <tbody id="tbody_maquinas">
+                  </tbody>
+                </table>
+              </div>
+
             </div>
           </div>
 
@@ -163,44 +198,97 @@
   }
 </script>
 
-
 <script>
-  const usuarios = [
-    { id: 1, nome: 'Hospital 1', representante: 'Carlos Eduardo', email: 'joao@exemplo.com', tipoAcesso: 'Admin', acesso: 'Ativo' },
-    { id: 2, nome: 'Hospital 2', representante: 'Eduardo Carlos', email: 'maria@exasdasdasdasdemplo.com', tipoAcesso: 'Admin', acesso: 'Ativo' },
-    { id: 3, nome: 'Hospital 3', representante: 'Eduardo Eduardo', email: 'carlos@exemplo.com', tipoAcesso: 'Admin', acesso: 'Inativo' }
-  ];
 
-  const isSelf = false;
+  let usuarios = []
 
-  function adicionarUsuariosNaTabela() {
+
+  function deletar(id) {
+
+    fetch(`/contas/deleteConta/${id}`, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json"
+      }
+    })
+      .then(res => {
+        return res.json();
+      })
+      .then(() => {
+        puxarDados();
+      })
+      .catch(err => console.error(err));
+  }
+
+
+  function puxarDados() {
+    const perfil = Number(sessionStorage.CARGO_USUARIO);
+
+    fetch("/contas/contas", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json"
+      },
+    })
+      .then(res => {
+        if (!res.ok) {
+          throw new Error("Erro na resposta da API");
+        }
+        return res.json();
+      })
+      .then(data => {
+        listar(data)
+      })
+
+  }
+
+  function alterarAcesso(index) {
+    const usuario = usuarios[index];
+    const novoStatus = usuario.statusUser === "Ativo" ? "Inativo" : "Ativo";
+
+    fetch(`/contas/alterarAcesso/${usuario.id_usuario}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ statusUser: novoStatus })
+    })
+    .then(res => res.json())
+    .then(() => {
+        usuarios[index].statusUser = novoStatus;
+        listar(usuarios);
+    })
+    .catch(err => console.error(err));
+}
+
+
+
+  function listar(data) {
+    usuarios = data
     const tbody = document.getElementById('tbody_usuarios');
-
     tbody.innerHTML = '';
 
-    for (let i = 0; i < usuarios.length; i++) {
-      const usuario = usuarios[i];
+    for (let i = 0; i < data.length; i++) {
+      const usuario = data[i];
 
       const tr = document.createElement('tr');
 
       tr.innerHTML = `
-            <td class="colunaUsuario">${usuario.nome}</td>
-            <td class="colunaRepresentante">${usuario.representante}</td>
-            <td class="colunaEmail">${usuario.email}</td>
-            <td class="colunaTipoAcesso">${usuario.tipoAcesso}</td>
-            <td class="colunaAcesso"
-            style="cursor: pointer;"
-            onclick="alterarAcesso(${i})">
-            ${usuario.acesso}</td>
-            <td class="colunaDelete">
-                ${isSelf
-          ? '<span style="color:gray;opacity:0.5;cursor:not-allowed;"><i class="fa-solid fa-trash"></i></i></span>'
-          : `<button style="text-align: center; background-color: transparent; border: none; cursor: pointer;"onclick="deletarUsuario(${usuario.id})">
-                        <i class="fa-solid fa-trash"></i>
-                    </button>`
-        }
-            </td>
-        `;
+          <td class="colunaUsuario">${usuario.nomeHospital == null ? "Fly" : usuario.nomeHospital}</td>
+          <td class="colunaRepresentante">${usuario.nome}</td>
+          <td class="colunaEmail">${usuario.email}</td>
+          <td class="colunaTipoAcesso">${usuario.perfil}</td>
+          <td class="colunaAcesso"
+              style="cursor: pointer;"
+              onclick="alterarAcesso(${i})">
+              ${usuario.statusUser}
+          </td>
+         <td class="colunaDelete">
+  <button onclick="deletar(${usuario.id_usuario})" 
+          style="background: transparent; border: none; cursor: pointer;">
+      <img src="../assets/imgs/lixeira.png" alt="Deletar" style="width: 20px; height: 20px;">
+  </button>
+</td>
+
+      `;
 
       if (usuario.acesso == "Inativo") {
         tr.style.backgroundColor = 'yellow';
@@ -213,28 +301,11 @@
       }
       tbody.appendChild(tr);
     }
+
+
+
   }
 
-  function alterarAcesso(index) {
-    const usuario = usuarios[index];
-    const tdAcesso = document.getElementsByClassName('colunaAcesso')[index];
-
-    if (usuario.acesso == 'Ativo') {
-      usuario.acesso = 'Inativo';
-    } else {
-      usuario.acesso = 'Ativo';
-    }
-
-    tdAcesso.innerHTML = usuario.acesso;
-    adicionarUsuariosNaTabela();
-  }
-
-  function deletarUsuario(id) {
-    alert('Usuário com ID ' + id + ' deletado.');
-    tr.style.display = 'none';
-  }
-
-  adicionarUsuariosNaTabela();
 
 
 </script>

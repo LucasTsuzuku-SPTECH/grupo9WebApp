@@ -6,6 +6,8 @@
     <link rel="stylesheet" href="./../css/dashboards.css">
     <title>Dashboard - Página Principal</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+      <script src="https://kit.fontawesome.com/9f7414eb10.js" crossorigin="anonymous"></script>
+
 </head>
 <body>
     <div class="div-pai">
@@ -13,7 +15,18 @@
       <!-- Cabeçalho -->
     <header>
       <div class="header-container">
-        <h2>DASHBOARD</h2>
+        <div class="div-hamburguer">
+          <a class="navbar-mob" onclick="mostrarNavbar()">
+          <i id="icone" class="fa-solid fa-bars"></i>
+        </a>
+        <nav class="navbar" id="navbar">
+          <a href="./mainPage.html">Página principal</a>
+          <a href="./mainPage.html">Hospitais</a>
+          <a href="./contas.html">Contas</a>
+          </a>
+        </nav>
+      </div>
+        <h2>DASHBOARD - PÁGINA PRINCIPAL</h2>
         <div class="div-pai-perfil">
           <div class="div-linha"></div>
           <div class="div-todo-perfil">
@@ -35,7 +48,7 @@
     <div class="container">
       <div class="div-sidebar">
         <div class="div-img">
-          <img src="../assets/imgs/AnteçãoBranco.png" alt="Logomarca" />
+          <img src="../assets/imgs/Zephyrus_2png.png" alt="Logomarca" />
         </div>
         <div class="div-botoes">
           <a href="mainPage.html">
@@ -127,3 +140,23 @@
 </body>
 </html>
 <script src="../js/chart.js"></script>
+
+<script>
+  function mostrarNavbar() {
+    const larguraTela = window.innerWidth;
+    var menu = document.getElementById("navbar");
+    var icone = document.getElementById("icone");
+
+    if (larguraTela < 1342) {
+      if (getComputedStyle(menu).display == 'none') {
+        menu.style.display = "flex";
+        icone.classList.remove("fa-bars");
+        icone.classList.add("fa-times");
+      } else {
+        menu.style.display = "none";
+        icone.classList.remove("fa-times");
+        icone.classList.add("fa-bars");
+      }
+    }
+  }
+</script>
