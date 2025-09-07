@@ -11,7 +11,7 @@
   
 </head>
 
-<body>
+<body onload="puxarDados()">
   <div class="div-pai">
 
     <!-- Cabeçalho -->
@@ -97,7 +97,7 @@
             <div class="div-procura">
               <div class="div-ipt-procura">
                 <label for="">Procure pelo nome:</label>
-                <input type="text" class="ipt_procura">
+                <input type="text" id="ipt_representante" class="ipt_procura" oninput="buscarRepresentante(ipt_representante.value)">
               </div>
               <div class="div-ipt-procura">
                 <label for="">filtre por hospital</label>
@@ -168,9 +168,8 @@
 
   let usuarios = []
 
-
   function deletar(id) {
-
+    console.log("Me chamou deletar(id)")
     fetch(`/contas/deleteConta/${id}`, {
       method: "DELETE",
       headers: {
@@ -188,6 +187,7 @@
 
 
   function puxarDados() {
+    console.log("Me chamou puxar(Dados)")
     const perfil = Number(sessionStorage.CARGO_USUARIO);
 
     fetch("/contas/contas", {
@@ -228,6 +228,8 @@
 
 
   function listar(data) {
+    console.log("Me chamou listar(data)")
+    console.log(data)
     usuarios = data
     const tbody = document.getElementById('tbody_usuarios');
     tbody.innerHTML = '';
@@ -268,10 +270,72 @@
       tbody.appendChild(tr);
     }
 
+  }
 
+  function buscarRepresentante(representante){
+    
+    console.log("Me chamou buscarRepresentante")
+    
+    if(representante =='') {
+      puxarDados();
+      return
+    }
+
+    
+
+    console.log(usuarios)
+    let dadosFiltroRepresentante = [];
+    for (let i = 0; i < usuarios.length; i++) {
+      if(usuarios[i].nome.replace(" ","").toLowerCase().includes(representante.replace(" ","").toLowerCase())){
+        dadosFiltroRepresentante.push(usuarios[i])
+      }
+    }
+    console.log("Dados filtrados por representante: ")
+    console.log(dadosFiltroRepresentante)
+
+    /* Repetição codigo listar dados */
+
+    const tbody = document.getElementById('tbody_usuarios');
+    tbody.innerHTML = '';
+
+    for (let i = 0; i < dadosFiltroRepresentante.length; i++) {
+      const usuario = dadosFiltroRepresentante[i];
+
+      const tr = document.createElement('tr');
+
+      tr.innerHTML = `
+          <td class="colunaUsuario">${usuario.nomeHospital == null ? "Fly" : usuario.nomeHospital}</td>
+          <td class="colunaRepresentante">${usuario.nome}</td>
+          <td class="colunaEmail">${usuario.email}</td>
+          <td class="colunaTipoAcesso">${usuario.perfil}</td>
+          <td class="colunaAcesso"
+              style="cursor: pointer;"
+              onclick="alterarAcesso(${i})">
+              ${usuario.statusUser}
+          </td>
+         <td class="colunaDelete">
+  <button onclick="deletar(${usuario.id_usuario})" 
+          style="background: transparent; border: none; cursor: pointer;">
+      <img src="../assets/imgs/lixeira.png" alt="Deletar" style="width: 20px; height: 20px;">
+  </button>
+</td>
+
+      `;
+
+      if (usuario.acesso == "Inativo") {
+        tr.style.backgroundColor = 'yellow';
+      } else {
+        if (i % 2 == 0) {
+          tr.style.backgroundColor = '#B7E4C7';
+        } else {
+          tr.style.backgroundColor = 'transparent';
+        }
+      }
+      tbody.appendChild(tr);
+    }
 
   }
 
-
-
+  
 </script>
+
