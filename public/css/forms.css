@@ -1,0 +1,176 @@
+@import url("https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap");
+
+* {
+    padding: 0;
+    margin: 0;
+    border: 0;
+    box-sizing: border-box;
+}
+
+a {
+    text-decoration: none;
+}
+
+body {
+    font-family: "Open Sans", sans-serif;
+}
+
+:root {
+    --verde-escuro: #264653;
+    --branco: #ffffff;
+    --verde-água: #2a9d8f;
+    --verde-neve: #b7e4c7;
+}
+
+h1 {
+    font: 400 4vh 'Open Sans', sans-serif;
+}
+
+/* LOGIN */
+#formulario-main {
+    display: flex;
+}
+
+.esquerda {
+    width: 55%;
+}
+
+.direita {
+    width: 45%;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+}
+
+.imagem-lateral img {
+    width: 100%;
+    height: 100vh;
+    object-fit: cover;
+    filter: brightness(0.7);
+}
+
+.imagem-lateral {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.voltarCadastro,
+.voltarCadastro a {
+    align-self: flex-start;
+    margin-left: 40px;
+    margin-top: 15px;
+    display: flex;
+    color: var(--verde-escuro);
+    align-items: center;
+}
+
+.voltarCadastro span {
+    color: var(--verde-escuro);
+}
+
+.voltarCadastro i {
+    font-size: 32px;
+    margin-right: 10px;
+}
+
+.formulario-login {
+    display: flex;
+    flex-direction: column;
+}
+
+.formulario {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.formulario-cadastro {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.formulario-principal {
+    display: flex;
+    flex-direction: column;
+}
+
+.campo {
+    display: flex;
+    flex-direction: column;
+}
+
+.juntar {
+    display: flex;
+}
+
+.caixa_menor {
+    width: 80px;
+}
+
+.caixa_maior {
+    width: 290px;
+    margin-right: 10px;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.logo h1 {
+    font: 400 50px "Open Sans", sans-serif;
+}
+
+#formulario-main span {
+    color: var(--verde-escuro);
+}
+
+.formulario input {
+    border: 1px solid #8692a6;
+    padding: 10px;
+    border-radius: 6px;
+    font: 500 14px "Open Sans", sans-serif;
+}
+
+.formulario label {
+    font: 500 16px "Open Sans", sans-serif;
+    margin-top: 15px;
+}
+
+.parte-checkbox {
+    margin-top: 10px;
+}
+
+.formulario button {
+    color: white;
+    font: 500 18px "Open Sans", sans-serif;
+    border-radius: 6px;
+    width: 380px;
+    padding: 5px 10px;
+    background-color: var(--verde-escuro);
+    margin-top: 15px;
+    cursor: pointer;
+}
+
+.formulario p {
+    font: 500 16px "Open Sans", sans-serif;
+}
+
+.formulario select {
+    font: 500 14px "Open Sans", sans-serif;
+    border: 1px solid #8692a6;
+    border-radius: 6px;
+    background-color: white;
+    padding: 10px;
+}
+
+.formulario option:hover {
+    background-color: #008080;
+}
+
+.nao-cliente {
+    margin-top: 50px;
+}

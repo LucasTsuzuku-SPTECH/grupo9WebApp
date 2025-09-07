@@ -16,7 +16,7 @@ body {
 }
 
 h3 {
-  font: 400 4.8vh 'Open Sans', sans-serif;
+  font: 400 4vh 'Open Sans', sans-serif;
   margin-bottom: 20px;
 }
 
@@ -103,13 +103,13 @@ h3 {
 }
 
 .banner .container h2 {
-  font-size: 5vh;
+  font-size: 4.6vh;
   font-weight: 400;
 }
 
 .banner .container p {
   text-align: center;
-  font-size: 3vh;
+  font-size: 2.5vh;
 }
 
 .banner .container span {
