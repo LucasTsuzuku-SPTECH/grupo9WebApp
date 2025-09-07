@@ -16,7 +16,7 @@
 	nome varchar(100) not null,
 	cnpj varchar(20) unique not null,
 	email varchar(100),
-	fk_endereco int,
+	fk_endereco int unique,
 	foreign key (fk_endereco) references Endereco(id_endereco)
 	);
 
@@ -24,7 +24,7 @@
 	id_hospital int primary key auto_increment,
 	nomeHospital varchar(100) not null,
 	cnpj varchar(20) unique not null,
-	fk_endereco int,
+	fk_endereco int unique,
 	fk_empresa int not null,
 	foreign key (fk_endereco) references Endereco(id_endereco),
 	foreign key (fk_empresa) references EmpresaFabricante(id_empresa)
