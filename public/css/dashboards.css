@@ -115,8 +115,11 @@ header {
 }
 
 .div-opcao-sair span {
+    background-color: transparent;
     color: var(--branco);
     text-decoration: none;
+    background-color: var(--verde-4);
+
 }
 
 .div-opcoes {

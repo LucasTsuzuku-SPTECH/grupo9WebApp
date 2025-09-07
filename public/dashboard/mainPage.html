@@ -37,7 +37,7 @@
             </div>
             <div class="div-opcoes">
               <div class="div-opcao-sair">
-                <a href="../index.html"><span>Sair</span></a>
+                <button style="border: none;" onclick="Sair()" id="sair" ><span>Sair</span></button>
               </div>
             </div>
           </div>
@@ -159,5 +159,18 @@
         icone.classList.add("fa-bars");
       }
     }
+  }
+  function Sair(){
+      const sair = document.getElementById("sair")
+
+      if(sair){
+        localStorage.removeItem("email")
+        localStorage.removeItem("senha")
+
+        sessionStorage.clear()
+        console.log(sessionStorage)
+
+        window.location.href = "../index.html"
+        }
   }
 </script>

@@ -42,6 +42,7 @@
             <label for="">Senha</label>
             <input type="password" id="senha_input" placeholder="senha*" class="ipt_digitar" />
             <div id="output_senha"></div>
+            <div id="erro" style="display: none; color: red"> E-mail ou Senha inválido!</div>
             <div class="parte-checkbox">
               <input type="checkbox" id="lembrarCheck" />
               <label for="lembrarCheck">Lembre-se de mim</label>
@@ -80,12 +81,13 @@ function entrar() {
   const emailVar = email_input.value
   const senhaVar = senha_input.value
   const lembrar = document.getElementById("lembrarCheck").checked
+  const erro = document.getElementById("erro")
+
 
   if (!emailVar || !senhaVar) {
-    cardErro.style.display = "block"
-    mensagem_erro.innerHTML = "(Mensagem de erro para todos os campos em branco)"
-    finalizarAguardar()
-    return false
+      erro.style.display = "block"
+      erro.innerHTML = "Preencha todos os campos!"
+      return false
   }
 
   if (lembrar) {
@@ -113,6 +115,8 @@ function entrar() {
     } else {
       resposta.text().then(texto => {
         console.error(texto)
+        erro.style.display = "block"
+        erro.innerHTML = "E-mail ou senha inválidos!"
         finalizarAguardar(texto)
       })
     }
