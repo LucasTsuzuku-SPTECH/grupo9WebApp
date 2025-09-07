@@ -39,7 +39,7 @@
     statusUser varchar(8),
 	fk_empresa int,
 	fk_hospital int,
-    constraint ck_status check(statusUser in ('ativo','inativo')),
+    constraint ck_status check(statusUser in ('Ativo','Inativo')),
 	foreign key (fk_empresa) references EmpresaFabricante(id_empresa),
 	foreign key (fk_hospital) references Hospital(id_hospital)
 	);
@@ -83,10 +83,10 @@ insert into Hospital (nomeHospital, cnpj, fk_endereco, fk_empresa) values
 
 -- Usuários
 insert into Usuario (nome, email, senha_hash, perfil,statusUser, fk_empresa, fk_hospital) values
-('Ricardo Almeida', 'ricardo@ventcare.com', 'hash123', 'adminEmpresa','ativo', 1, null),
-('Marina Costa', 'marina@ventcare.com', 'hash456', 'empresa','ativo', 1, null),
-('Dr. Carlos', 'carlos@saolucas.org', 'hash789', 'adminHospital','ativo', null, 1),
-('Ana Paula', 'ana@santamaria.org', 'hash000', 'hospital','ativo', null, 2);
+('Ricardo Almeida', 'ricardo@ventcare.com', 'hash123', 'adminEmpresa','Ativo', 1, null),
+('Marina Costa', 'marina@ventcare.com', 'hash456', 'empresa','Ativo', 1, null),
+('Dr. Carlos', 'carlos@saolucas.org', 'hash789', 'adminHospital','Ativo', null, 1),
+('Ana Paula', 'ana@santamaria.org', 'hash000', 'hospital','Ativo', null, 2);
 
 insert into Modelo (nome, descricao) values
 ('VX-1000', 'Ventilador pulmonar para UTI adulto'),
