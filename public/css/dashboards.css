@@ -115,6 +115,7 @@ header {
   color: var(--branco);
   text-decoration: none;
   background-color: var(--verde-4);
+  cursor: pointer;
 }
 
 .div-opcoes {
