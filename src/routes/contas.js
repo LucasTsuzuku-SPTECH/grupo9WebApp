@@ -7,12 +7,18 @@ router.get("/contas", function (req, res) {
     contasController.mostrarContas(req, res);
 });
 
+router.get("/contasHospital", function (req, res) {
+    contasController.mostrarContasHospital(req, res);
+});
+
 router.delete("/deleteConta/:id", function(req,res){
     contasController.deletarConta(req,res);
 })
 router.put("/alterarAcesso/:id", function(req,res){
     contasController.alterarAcesso(req,res);
 });
+
+
 
 
 module.exports = router;

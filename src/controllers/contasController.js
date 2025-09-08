@@ -15,6 +15,21 @@ function mostrarContas(req, res) {
         });
 }
 
+function mostrarContasHospital(req, res) {
+    contasModel.listarHospitalContas()
+        .then((resultado) => {
+            if (resultado.length > 0) {
+                res.status(200).json(resultado);
+            } else {
+                res.status(204).send("Nenhum usuário encontrado!");
+            }
+        })
+        .catch((erro) => {
+            console.error(erro);
+            res.status(500).json(erro.sqlMessage);
+        });
+}
+
 
 function deletarConta(req, res) {
     const id = req.params.id; 
@@ -47,6 +62,7 @@ function alterarAcesso(req, res) {
 
 module.exports = {
     mostrarContas,
+    mostrarContasHospital,
     deletarConta,
     alterarAcesso
 }
