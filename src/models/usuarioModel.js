@@ -20,6 +20,15 @@ function cadastrar(nome, email, senha, perfil, fk_empresa, fk_hospital) {
     return database.executar(instrucaoSql);
 }
 
+function cadastrar(nome, email, senha, perfil, fk_empresa, fk_hospital) {
+    var instrucaoSql = `
+        INSERT INTO Usuario (nome, email, senha_hash, perfil, fk_empresa, fk_hospital, statusUser) 
+        VALUES ('${nome}', '${email}', '${senha}','hospital', ${fk_empresa}, ${fk_hospital}, 'ativo');
+    `;
+    console.log("Executando a instrução SQL: \n" + instrucaoSql);
+    return database.executar(instrucaoSql);
+}
+
 function listar(){
     const instrucao = "SELECT id_hospital, nomeHospital FROM Hospital;";
     return database.executar(instrucao);
