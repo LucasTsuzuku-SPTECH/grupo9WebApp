@@ -55,6 +55,10 @@
           <label for="hospital_input" id="labelHospital" style="display:none">Hospital</label>
           <input type="text" id="hospital_input" placeholder="Nome do hospital" style="display:none"
             class="ipt_digitar" />
+          <div class="parte-checkbox">
+            <input type="checkbox" id="mostrarSenha">
+            <label for="mostrarSenha" id="">Mostrar senha</label>
+          </div>
 
 
 
@@ -77,6 +81,22 @@
 
 
 <script>
+
+  
+  var senhaVar = document.getElementById("senha_input")
+  var confirmacaoSenha = document.getElementById("confirmacao_senha_input")
+  var mostrarSenha = document.getElementById("mostrarSenha")
+
+  mostrarSenha.addEventListener("change", () => {
+  if(mostrarSenha.checked){
+    senhaVar.type = 'text'
+    confirmacaoSenha.type = 'text'
+  } else {
+    senhaVar.type = 'password'
+    confirmacaoSenha.type = 'password'
+  }
+  })
+
 const perfilSelect = document.getElementById("perfil");
 const hospitalLabel = document.getElementById("labelHospital");
 const hospitalInput = document.getElementById("hospital_input");
