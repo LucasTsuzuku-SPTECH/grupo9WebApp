@@ -209,7 +209,7 @@
 
   function alterarAcesso(index) {
     const usuario = usuarios[index];
-    const novoStatus = usuario.statusUser === "Ativo" ? "Inativo" : "Ativo";
+    const novoStatus = usuario.statusUser.toLowerCase() === "ativo" ? "inativo" : "ativo";
 
     fetch(`/contas/alterarAcesso/${usuario.id_usuario}`, {
         method: "PUT",
@@ -247,7 +247,7 @@
               <button
               style="cursor: pointer; padding: 3px"
               onclick="alterarAcesso(${i})">
-              ${usuario.statusUser}</button>
+              ${usuario.statusUser.charAt(0).toUpperCase() + usuario.statusUser.slice(1)}</button>
           </td>
          <td class="colunaDelete">
   <button onclick="deletar(${usuario.id_usuario})" 
@@ -258,7 +258,7 @@
 
       `;
 
-      if (usuario.statusUser == "Inativo") {
+      if (usuario.statusUser == "inativo") {
         tr.style.backgroundColor = 'yellow';
       } else {
         if (i % 2 == 0) {
@@ -323,7 +323,7 @@
 
       `;
 
-      if (usuario.statusUser == "Inativo") {
+      if (usuario.statusUser == "inativo") {
         tr.style.backgroundColor = 'yellow';
       } else {
         if (i % 2 == 0) {
@@ -397,7 +397,7 @@
 
       `;
 
-      if (usuario.statusUser == "Inativo") {
+      if (usuario.statusUser == "inativo") {
         tr.style.backgroundColor = 'yellow';
       } else {
         if (i % 2 == 0) {
@@ -456,7 +456,7 @@
 
       `;
 
-      if (usuario.statusUser == "Inativo") {
+      if (usuario.statusUser == "inativo") {
         tr.style.backgroundColor = 'yellow';
       } else {
         if (i % 2 == 0) {
