@@ -110,37 +110,31 @@
       localStorage.removeItem("senha")
     }
 
-    fetch("/usuarios/autenticar", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ emailServer: emailVar, senhaServer: senhaVar })
-    })
-      .then(resposta => {
-        if (resposta.ok) {
-          resposta.json().then(json => {
-            sessionStorage.EMAIL_USUARIO = json.email
-            sessionStorage.NOME_USUARIO = json.nome
-            sessionStorage.ID_USUARIO = json.id_usuario
-            sessionStorage.CARGO_USUARIO = json.perfil
-
-            setTimeout(() => window.location = "../dashboard/mainPage.html", 1000)
-            // var perfil = json.perfil;
-            // if (perfil == "adminEmpresa" || perfil == 'empresa') {
-            //   setTimeout(() => window.location = "../dashboard/Empresa/mainPage.html", 1000)
-            // }else{
-            //   setTimeout(() => window.location = "../dashboard/Hospital/mainPage.html", 1000)
-            // }
-          })
-        } else {
-          resposta.text().then(texto => {
-            console.error(texto)
-            erro.style.display = "block"
-            erro.innerHTML = "E-mail ou senha inválidos!"
-            finalizarAguardar(texto)
-          })
-        }
+  fetch("/usuarios/autenticar", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ emailServer: emailVar, senhaServer: senhaVar })
+  })
+  .then(resposta => {
+    if (resposta.ok) {
+      resposta.json().then(json => {
+        sessionStorage.EMAIL_USUARIO = json.email
+        sessionStorage.NOME_USUARIO = json.nome
+        sessionStorage.ID_USUARIO = json.id_usuario
+        sessionStorage.CARGO_USUARIO = json.perfil
+        sessionStorage.HOSPITAL_USUARIO = json.fk_hospital
+        setTimeout(() => window.location = "../dashboard/mainPage.html", 1000)
       })
-      .catch(erro => console.log(erro))
+    } else {
+      resposta.text().then(texto => {
+        console.error(texto)
+        erro.style.display = "block"
+        erro.innerHTML = "E-mail ou senha inválidos!"
+        finalizarAguardar(texto)
+      })
+    }
+  })
+  .catch(erro => console.log(erro))
 
     return false
   }
