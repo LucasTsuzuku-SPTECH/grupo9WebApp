@@ -402,43 +402,45 @@ button i {
 }
 
 .teste {
-  display: flex;
+    display: flex;
 }
 
 .container .div-centralizar-metrica {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: auto;
-  height: 100%;
-  background-color: var(--branco);
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.6);
-  border-radius: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: auto;
+    height: 100%;
+    background-color: var(--branco);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.6);
+    border-radius: 10px;
 }
 
 .container .div-head-metricas {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
 }
 
 .div-texto {
-  color: white;
-  font-size: 20px;
-  border-bottom: 1px solid white;
+    color: white;
+    font-size: 20px;
+    border-bottom: 1px solid white;
 }
 
 /* CONTAS.HTML */
 
 .mostrarUsuarios {
-  overflow-x: scroll;
-  overflow-y: scroll;
-  scrollbar-color: var(--verde-2);
-  margin-top: 30px;
-  height: 200px;
-  margin-bottom: 40px;
-  /* border: var(--verde-3) 2px solid; */
+    position: absolute;
+    z-index: -10;
+    overflow-x: scroll;
+    overflow-y: scroll;
+    scrollbar-color: var(--verde-2);
+    margin-top: 30px;
+    height: 200px;
+    margin-bottom: 40px;
+    /* border: var(--verde-3) 2px solid; */
 }
 
 select,
@@ -447,7 +449,9 @@ option {
 }
 
 table {
-  width: 100%;
+    position: relative;
+    z-index: 0;
+    width: 100%;
   border-collapse: collapse;
 }
 
@@ -540,6 +544,56 @@ thead {
   border-bottom: 2px solid var(--vermelho);
   outline: none;
   /* border-bottom: 2px solid linear-gradient(to right, #6E035C 0%, #B94FFA 50%, #6E035C 100%); */
+}
+
+ 
+/* ALERTA */
+
+.div-block .div-alerta {
+    width: 500px;
+    height: 250px;
+    padding: 20px;
+    background-color: var(--branco);
+    position: absolute;
+    z-index: 100;
+    border-radius: 15px;
+    border: 2px var(--verde-3) solid;
+    text-align: center;
+    margin-left: 80px;
+    display: none;
+    justify-content: space-between;
+    flex-direction: column;
+}
+
+
+.div-block .div-alerta .div-img img {
+    width: 100px;
+    height: 100px;
+}
+
+
+.div-block .div-alerta .div-escolha {
+    display: flex;
+    justify-content: space-evenly;
+}
+.div-block .div-alerta .botao {
+    cursor: pointer;
+    height: 40px;
+    width: 80px;
+    border-radius: 8px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.div-block .div-alerta .sim {
+    background-color: var(--vermelho);
+    color: var(--branco);
+}
+
+.div-block .div-alerta .nao {
+    background-color: var(--verde-3);
+    color: black;
 }
 
 #Imagem_manutencao {
