@@ -38,13 +38,18 @@ function deletarMaquina(id){
 //     return database.executar(instrucaoSql);
 // }
 
-function cadastrar(){
-    
+function cadastrar(modelo, serie, fk_empresa, fk_hospital){
+    var instrucaoSql=`
+    insert into Ventilador (numero_serie, fk_modelo, fk_hospital, fk_empresa) values
+('${serie}', '${modelo}', ${fk_hospital}, ${fk_empresa});
+    `
+    return database.executar(instrucaoSql);
 }
 
 module.exports={
     listarTodasMaquinas,
     deletarMaquina,
     vincularHospital,
+    cadastrar,
     // atualizarAcesso
 }

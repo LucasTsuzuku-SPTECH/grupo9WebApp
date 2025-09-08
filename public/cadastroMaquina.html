@@ -36,9 +36,13 @@
       <div class="formulario">
         <div class="formulario-principal">
           <label for="">Modelo</label>
-          <input type="email" id="email_input" placeholder="email*" class="ipt_digitar" />
+          <select name="modelo" id="modelo_select">
+            <option value="1">modelo 1</option>
+            <option value="2">modelo 2</option>
+            <option value="3">modelo 3</option>
+          </select>
           <label for="">Número de Série</label>
-          <input type="nome" id="nome_input" placeholder="email*" class="ipt_digitar" />
+          <input type="serie" id="serie_input" placeholder="número de série*" class="ipt_digitar" />
           <div id="output_email"></div>
 
           <label for="perfil"> Vinculado ao Hospital </label>
@@ -46,9 +50,7 @@
             <option selected value="" id="perfil_selecionado">Hospital</option>
           </select>
 
-
-
-          <button onclick="cadastrar()">Entrar</button>
+          <button onclick="cadastrar()">Cadastrar</button>
 
 
 
@@ -71,32 +73,14 @@ const perfilSelect = document.getElementById("perfil");
 const hospitalLabel = document.getElementById("labelHospital");
 const hospitalInput = document.getElementById("hospital_input");
 
-perfilSelect.addEventListener("change", () => {
-    if (perfilSelect.value === "Hospital") {
-        hospitalLabel.style.display = "block";
-        hospitalInput.style.display = "block";
-    } else {
-        hospitalLabel.style.display = "none";
-        hospitalInput.style.display = "none";
-    }
-});
-
 function cadastrar() {
-    var emailVar = email_input.value;
-    var nomeVar = nome_input.value;
-    var senhaVar = senha_input.value;
-    var confirmarSenha = confirmacao_senha_input.value;
+    var modeloVar = modelo_select.value;
+    var serieVar = serie_input.value;
+    var hospitalVar = sessionStorage.HOSPITAL_USUARIO;
 
-    let hospitalVar = "";
-    if (perfilSelect.value === "Hospital") {
-        hospitalVar = hospitalInput.value;
-    }
-
-    if (confirmarSenha != senhaVar) {
-        alert("As senhas não coincidem");
-        return;
-    } else {
-        if (nomeVar == "" || emailVar == "" || senhaVar == "") {
+        if (modeloVar == "" || serieVar == "") {
+          console.log(modeloVar, serieVar)
+          console.log("Cadastro não permitido")
             finalizarAguardar();
             return false;
         }
@@ -107,7 +91,8 @@ function cadastrar() {
                 "Content-Type": "application/json",
             },
             body: JSON.stringify({
-                
+                modeloServer: modeloVar,
+                serieServer: serieVar,
                 fkEmpresaServer: 1,
                 fkHospitalServer: sessionStorage.HOSPITAL_USUARIO
             }),
@@ -117,14 +102,13 @@ function cadastrar() {
 
             if (resposta.ok) {
                 setTimeout(() => {
-                    window.location = "login.html";
+                    window.location = "dashboard/contasMaquinas.html";
                 }, "2000");
                 finalizarAguardar();
             } else {
                 throw "Houve um erro ao tentar realizar o cadastro!";
             }
         });
-    }
 }
 
 function carregarHospital(param){
