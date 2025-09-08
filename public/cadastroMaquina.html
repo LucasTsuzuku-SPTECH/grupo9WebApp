@@ -16,7 +16,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" />
 </head>
 
-<main id="formulario-main">
+<main id="formulario-main" onload="carregarHospital(sessionStorage.HOSPITAL_USUARIO)">
   <div class="esquerda">
     <div class="imagem-lateral">
       <img src="assets/imgs/fundoLogin.jpg" />
@@ -43,7 +43,7 @@
 
           <label for="perfil"> Vinculado ao Hospital </label>
           <select name="" id="perfil" disabled>
-            <option selected value="">Hospital xxx</option>
+            <option selected value="" id="perfil_selecionado">Hospital</option>
           </select>
 
 
@@ -101,18 +101,15 @@ function cadastrar() {
             return false;
         }
 
-        fetch("/usuarios/cadastrar", {
+        fetch("/maquinas/cadastrar", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
             },
             body: JSON.stringify({
-                nomeServer: nomeVar,
-                emailServer: emailVar,
-                senhaServer: senhaVar,
-                perfilServer: perfilSelect.value,
+                
                 fkEmpresaServer: 1,
-                fkHospitalServer: 1
+                fkHospitalServer: sessionStorage.HOSPITAL_USUARIO
             }),
         })
         .then(function (resposta) {
@@ -130,5 +127,10 @@ function cadastrar() {
     }
 }
 
+function carregarHospital(param){
+  var select = document.getElementById("perfil_selecionado");
+  select.innerHTML = `${param}`;
+
+}
 
 </script>

@@ -13,6 +13,9 @@ router.delete("/deleteMaquina/:id", function(req,res){
 router.put("/alterarAcesso/:id", function(req,res){
     maquinasController.alterarAcesso(req,res);
 });
+router.post("/cadastrar", function(req,res){
+    maquinasController.cadastrar(req,res);
+});
 
 
 module.exports = router;

@@ -10,6 +10,13 @@ where fk_hospital = 1;`
     return database.executar(instrucaoSql); 
 }
 
+function vincularHospital(id){
+    var instrucaoSql=`
+    select h.nome from Hospital h
+    inner join Usuario u on u.fk_hospital = h.id_hospital
+    where u.fk_empresa = ${id} limit 1;`
+    return database.executar(instrucaoSql);
+}
 
 
 function deletarMaquina(id){
@@ -31,8 +38,13 @@ function deletarMaquina(id){
 //     return database.executar(instrucaoSql);
 // }
 
+function cadastrar(){
+    
+}
+
 module.exports={
     listarTodasMaquinas,
     deletarMaquina,
+    vincularHospital,
     // atualizarAcesso
 }

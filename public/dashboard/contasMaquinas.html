@@ -81,7 +81,7 @@
         <div class="div-flex">
           <div class="div-block">
             <div class="div-links-contas">
-              <a href="../cadastro-maquina.html">
+              <a href="../cadastroMaquina.html">
                 <!-- <div class="div-botao"> -->
                   <h3>Adicionar nova máquina</h3>
                 <!-- </div> -->
@@ -114,17 +114,15 @@
                 <table>
                   <thead>
                     <tr class="nomeColuna">
-                      <th class="colunaUsuario">Hospital | Empresa</th>
-                      <th class="colunaRepresentante">Representante</th>
-                      <th class="colunaEmail">E-mail</th>
-                      <th class="colunaTipoAcesso">Tipo acesso</th>
+                      <th class="colunaUsuario">Modelo</th>
+                      <th class="colunaRepresentante">Localização</th>
                       <th class="colunaStatus">Status</th>
                       <th class="colunaDelete">Deletar</th>
                     </tr>
                   </thead>
                   <tbody id="tbody_usuarios">
                   </tbody>
-                </table>
+                </table>  
               </div>
             </div>
           </div>
@@ -190,8 +188,6 @@
       },
     })
       .then(res => {
-        console.log("VOU VALIDAR O IF")
-        console.log('Esse é o resultado do res', res)
         if (!res.ok) {
           throw new Error("Erro na resposta da API");
         }
@@ -223,7 +219,6 @@
 
 
   function listar(data) {
-    console.log("Me chamou listar(data)")
     console.log(data)
     usuarios = data
     const tbody = document.getElementById('tbody_usuarios');
@@ -235,18 +230,16 @@
       const tr = document.createElement('tr');
 
       tr.innerHTML = `
-          <td class="colunaUsuario">${usuario.nomeHospital == null ? "Fly" : usuario.nomeHospital}</td>
+          <td class="colunaUsuario">${usuario.numero_serie == null ? "Fly" : usuario.numero_serie}</td>
           <td class="colunaRepresentante">${usuario.nome}</td>
-          <td class="colunaEmail">${usuario.email}</td>
-          <td class="colunaTipoAcesso">${usuario.perfil}</td>
           <td class="colunaAcesso">
               <button
               style="cursor: pointer; padding: 3px"
               onclick="alterarAcesso(${i})">
-              ${usuario.statusUser}</button>
+              Alterar</button>
           </td>
          <td class="colunaDelete">
-  <button onclick="deletar(${usuario.id_usuario})" 
+  <button onclick="deletar(${usuario.id_ventilador})" 
           style="background: transparent; border: none; cursor: pointer;">
       <img src="../assets/imgs/lixeira.png" alt="Deletar" style="width: 20px; height: 20px;">
   </button>
@@ -300,15 +293,13 @@
       const tr = document.createElement('tr');
 
       tr.innerHTML = `
-          <td class="colunaUsuario">${usuario.nomeHospital == null ? "Fly" : usuario.nomeHospital}</td>
+          <td class="colunaUsuario">${usuario.numero_serie == null ? "Fly" : usuario.numero_serie}</td>
           <td class="colunaRepresentante">${usuario.nome}</td>
-          <td class="colunaEmail">${usuario.email}</td>
-          <td class="colunaTipoAcesso">${usuario.perfil}</td>
           <td class="colunaAcesso">
               <button
               style="cursor: pointer; padding: 3px"
               onclick="alterarAcesso(${i})">
-              ${usuario.statusUser}</button>
+              Alterar</button>
           </td>
          <td class="colunaDelete">
           <button onclick="deletar(${usuario.id_usuario})" 
@@ -337,13 +328,13 @@
     
     const selectHospitais = document.getElementById('select_hospital');
     for(let i = 0; i < usuarios.length; i++){
-      if(usuarios[i].nomeHospital == null || usuarios[i].nomeHospital == '' || hospitais.includes(usuarios[i].nomeHospital)){
+      if(usuarios[i].numero_serie == null || usuarios[i].numero_serie == '' || hospitais.includes(usuarios[i].numero_serie)){
 
       } else {
-        hospitais.push(usuarios[i].nomeHospital)
+        hospitais.push(usuarios[i].numero_serie)
         selectHospitais.innerHTML += 
         `
-        <option value="${usuarios[i].nomeHospital}">${usuarios[i].nomeHospital}</option>
+        <option value="${usuarios[i].numero_serie}">${usuarios[i].numero_serie}</option>
         `
       }      
     }
@@ -371,18 +362,16 @@
 
       const tr = document.createElement('tr');
 
-      if(usuario.nomeHospital == hospitalSelecionado) {
+      if(usuario.numero_serie == hospitalSelecionado) {
 
         tr.innerHTML = `
-          <td class="colunaUsuario">${usuario.nomeHospital == null ? "Fly" : usuario.nomeHospital}</td>
+          <td class="colunaUsuario">${usuario.numero_serie == null ? "Fly" : usuario.numero_serie}</td>
           <td class="colunaRepresentante">${usuario.nome}</td>
-          <td class="colunaEmail">${usuario.email}</td>
-          <td class="colunaTipoAcesso">${usuario.perfil}</td>
           <td class="colunaAcesso">
               <button
               style="cursor: pointer; padding: 3px"
               onclick="alterarAcesso(${i})">
-              ${usuario.statusUser}</button>
+              Alterar</button>
           </td>
          <td class="colunaDelete">
           <button onclick="deletar(${usuario.id_usuario})" 
@@ -433,15 +422,13 @@
       if(usuario.statusUser == atividadeSelecionado) {
 
         tr.innerHTML = `
-          <td class="colunaUsuario">${usuario.nomeHospital == null ? "Fly" : usuario.nomeHospital}</td>
+          <td class="colunaUsuario">${usuario.numero_serie == null ? "Fly" : usuario.numero_serie}</td>
           <td class="colunaRepresentante">${usuario.nome}</td>
-          <td class="colunaEmail">${usuario.email}</td>
-          <td class="colunaTipoAcesso">${usuario.perfil}</td>
           <td class="colunaAcesso">
               <button
               style="cursor: pointer; padding: 3px"
               onclick="alterarAcesso(${i})">
-              ${usuario.statusUser}</button>
+              Alterar</button>
           </td>
          <td class="colunaDelete">
           <button onclick="deletar(${usuario.id_usuario})" 
