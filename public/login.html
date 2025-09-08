@@ -110,6 +110,7 @@ function entrar() {
         sessionStorage.NOME_USUARIO = json.nome
         sessionStorage.ID_USUARIO = json.id_usuario
         sessionStorage.CARGO_USUARIO = json.perfil
+        sessionStorage.HOSPITAL_USUARIO = json.fk_hospital
         setTimeout(() => window.location = "../dashboard/mainPage.html", 1000)
       })
     } else {
