@@ -10,6 +10,16 @@ on u.fk_hospital = h.id_hospital;`
 }
 
 
+function listarHospitalContas(){
+    console.log("ACESSEI O CONTASMODEL");
+    var instrucaoSql=`
+   select *  from Usuario u
+left join Hospital h 
+on u.fk_hospital = h.id_hospital
+where u.perfil = 'hospital';`
+    return database.executar(instrucaoSql); 
+}
+
 
 function deletarConta(id){
     console.log("entrei no contasmodel");
@@ -32,6 +42,7 @@ function atualizarAcesso(id, novoStatus) {
 
 module.exports={
     listarTodasContas,
+    listarHospitalContas,
     deletarConta,
     atualizarAcesso
 }

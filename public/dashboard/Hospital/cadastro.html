@@ -50,7 +50,7 @@
           <select name="" id="perfil">
             <option disabled selected value="">Selecione uma opção</option>
             <option id="funcEmpresa" value="Empresa">Funcionário Empresa</option>
-            <option id="adiministradorHospital" value="adminHospital" s>Admin Hospital</option>
+            <option id="adminHospital" value="Hospital" s>Admin Hospital</option>
           </select>
           <label for="hospital_select" id="labelHospital" style="display:none">Hospital</label>
           <select id="hospital_select" style="display:none" class="ipt_digitar"></select>
@@ -101,7 +101,7 @@ const hospitalLabel = document.getElementById("labelHospital")
 const hospitalSelect = document.getElementById("hospital_select")
 
 perfilSelect.addEventListener("change", () => {
-    if (perfilSelect.value === "adminHospital") {
+    if (perfilSelect.value === "Hospital") {
         hospitalLabel.style.display = "block";
         hospitalSelect.style.display = "block";
         carregarHospitais()
@@ -131,7 +131,7 @@ perfilSelect.addEventListener("change", () => {
     var confirmarSenha = confirmacao_senha_input.value;
 
     let hospitalVar = "";
-    if (perfilSelect.value === "adminHospital") {
+    if (perfilSelect.value === "Hospital") {
         hospitalVar = hospitalSelect.value;
         fkHospital = hospitalSelect.value
         fkEmpresa = null

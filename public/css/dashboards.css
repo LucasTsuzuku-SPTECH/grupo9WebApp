@@ -546,7 +546,7 @@ thead {
   /* border-bottom: 2px solid linear-gradient(to right, #6E035C 0%, #B94FFA 50%, #6E035C 100%); */
 }
 
-
+ 
 /* ALERTA */
 
 .div-block .div-alerta {
@@ -596,3 +596,9 @@ thead {
     color: black;
 }
 
+#Imagem_manutencao {
+  display: flex;
+  flex-direction: row;
+  width: 50%;
+  height: auto;
+}

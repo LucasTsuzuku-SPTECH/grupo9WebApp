@@ -86,10 +86,61 @@
       </div>
 
       <div class="conteudo-principal">
-        <div class="div-flex" style="flex-direction: column;">
-          <img src="../assets/imgs/emManutencao.jpg" alt="Dashoboard em manutenção..." id="Imagem_manutencao">
-          <p style="font-size:xx-large; padding: 5%;">Em progresso...</p>
-          
+        <div class="div-flex">
+          <div class="div-kpis">
+            <div class="teste">
+              <div class="kpi kpi-risco">
+                <div class="div-block">
+                  <h1>22</h1>
+                  <p>Hospitais com mais de 50% em risco</p>
+                </div>
+                <div class="div-kpi-img">
+                  <img src="../assets/imgs/AnteçãoBranco.png">
+                </div>
+              </div>
+              <div class="kpi">
+                <div class="div-block">
+                  <h1>02</h1>
+                  <p>Máquinas com mais de 80% ou 0% de CPU</p>
+                </div>
+                <div class="div-kpi-img">
+                  <img src="../assets/imgs/cpu.png">
+                </div>
+              </div>
+            </div>
+            <div class="teste">
+
+              <div class="kpi">
+                <div class="div-block">
+                  <h1>13</h1>
+                  <p>Máquinas com mais de 80% ou 0% de Disco</p>
+                </div>
+                <div class="div-kpi-img">
+                  <img src="../assets/imgs/disco.png">
+                </div>
+              </div>
+              <div class="kpi">
+                <div class="div-block">
+                  <h1>0</h1>
+                  <p>Máquinas com mais de 80% ou 0% de RAM</p>
+                </div>
+                <div class="div-kpi-img">
+                  <img src="../assets/imgs/ram.png">
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="div-graf-barra-1">
+            <div class="metrica-secun">
+              <div class="div-head-metricas">
+                <div class="div-texto">Registro de alertas anuais</div>
+              </div>
+              <div class="div-centralizar-metrica">
+                <canvas id="metrica-barra-1"></canvas>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
 
