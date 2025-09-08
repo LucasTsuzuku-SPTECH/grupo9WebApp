@@ -1,10 +1,13 @@
+const { json } = require("express");
 var maquinasModel = require("../models/maquinasModel");
 
 function mostrarMaquinas(req, res) {
+    console.log("CHEGUEI NA FUNÇÃO MOSTRARMAQUINA")
     maquinasModel.listarTodasMaquinas()
         .then((resultado) => {
             if (resultado.length > 0) {
                 res.status(200).json(resultado);
+                console.log(json(resultado))
             } else {
                 res.status(204).send("Nenhuma máquina encontrada!");
             }
