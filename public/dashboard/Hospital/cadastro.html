@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>Zephyrus | Cadastro</title>
+
+  <script src="./js/sessao.js"></script>
+
+  <link rel="stylesheet" href="./css/estilo.css" />
+  <link rel="stylesheet" href="./../css/dashboards.css">
+    <link rel="icon" href="../assets/imgs/Zephyrus_2png.png" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" />
+</head>
+
+<main id="formulario-main">
+  <div class="esquerda">
+    <div class="imagem-lateral">
+      <img src="assets/imgs/fundoLogin.jpg" />
+    </div>
+  </div>
+  <div class="direita">
+    <div class="voltarCadastro">
+      <a href="./dashboard/contas.html">
+        <span>Voltar</span>
+        <i class="fa-solid fa-arrow-right"></i>
+      </a>
+    </div>
+    <div class="formulario-login">
+      <div class="logo">
+        <h1>Empresa</h1>
+      </div>
+      <div class="formulario">
+        <div class="formulario-principal">
+          <label for="">Endereço de email</label>
+          <input type="email" id="email_input" placeholder="email*" class="ipt_digitar" />
+          <label for="">Insira o seu nome</label>
+          <input type="nome" id="nome_input" placeholder="email*" class="ipt_digitar" />
+          <div id="output_email"></div>
+          <label for="">Senha</label>
+          <input type="password" id="senha_input" placeholder="senha*" class="ipt_digitar" />
+          <label for="">Repita a senha</label>
+          <input type="password" id="confirmacao_senha_input" placeholder="senha*" class="ipt_digitar" />
+          <div id="output_senha"></div>
+
+          <label for="perfil"> Perfil </label>
+          <select name="" id="perfil">
+            <option disabled selected value="">Selecione uma opção</option>
+            <option id="funcEmpresa" value="Empresa">Funcionário Empresa</option>
+            <option id="adminHospital" value="Hospital" s>Admin Hospital</option>
+          </select>
+          <label for="hospital_select" id="labelHospital" style="display:none">Hospital</label>
+          <select id="hospital_select" style="display:none" class="ipt_digitar"></select>
+          <div class="parte-checkbox">
+            <input type="checkbox" id="mostrarSenha">
+            <label for="mostrarSenha" id="">Mostrar senha</label>
+          </div>
+
+
+
+          <button onclick="cadastrar()">Entrar</button>
+
+
+
+        </div>
+        <div class="nao-cliente">
+        </div>
+      </div>
+    </div>
+  </div>
+
+</main>
+</body>
+
+</html>
+
+
+
+<script>
+
+  
+  var senhaVar = document.getElementById("senha_input")
+  var confirmacaoSenha = document.getElementById("confirmacao_senha_input")
+  var mostrarSenha = document.getElementById("mostrarSenha")
+
+  mostrarSenha.addEventListener("change", () => {
+  if(mostrarSenha.checked){
+    senhaVar.type = 'text'
+    confirmacaoSenha.type = 'text'
+  } else {
+    senhaVar.type = 'password'
+    confirmacaoSenha.type = 'password'
+  }
+  })
+
+const perfilSelect = document.getElementById("perfil")
+const hospitalLabel = document.getElementById("labelHospital")
+const hospitalSelect = document.getElementById("hospital_select")
+
+perfilSelect.addEventListener("change", () => {
+    if (perfilSelect.value === "Hospital") {
+        hospitalLabel.style.display = "block";
+        hospitalSelect.style.display = "block";
+        carregarHospitais()
+    } else {
+        hospitalLabel.style.display = "none";
+        hospitalSelect.style.display = "none";
+    }
+});
+
+  async function carregarHospitais() {
+    const resposta = await fetch("/usuarios/listar")
+    const hospitais = await resposta.json()
+
+    hospitalSelect.innerHTML = '<option disabled selected value="">Selecione o hospital</option>'
+    hospitais.forEach(hospital => {
+      const option = document.createElement("option")
+      option.value = hospital.id_hospital
+      option.text = hospital.nomeHospital
+      hospitalSelect.appendChild(option)
+    });
+  }
+
+  async function cadastrar() {
+    var emailVar = email_input.value;
+    var nomeVar = nome_input.value;
+    var senhaVar = senha_input.value;
+    var confirmarSenha = confirmacao_senha_input.value;
+
+    let hospitalVar = "";
+    if (perfilSelect.value === "Hospital") {
+        hospitalVar = hospitalSelect.value;
+        fkHospital = hospitalSelect.value
+        fkEmpresa = null
+    
+    } else if (perfilSelect.value = "Empresa"){
+      fkEmpresa = 1
+      fkHospital = null
+    }
+
+    if (confirmarSenha != senhaVar) {
+        alert("As senhas não coincidem");
+        return;
+    } else {
+        if (nomeVar == "" || emailVar == "" || senhaVar == "") {
+            finalizarAguardar();
+            return false;
+        }
+
+        fetch("/usuarios/cadastrar", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                nomeServer: nomeVar,
+                emailServer: emailVar,
+                senhaServer: senhaVar,
+                perfilServer: perfilSelect.value,
+                fkEmpresaServer: fkEmpresa,
+                fkHospitalServer: fkHospital
+            }),
+        })
+        .then(function (resposta) {
+            console.log("resposta: ", resposta);
+
+            if (resposta.ok) {
+                setTimeout(() => {
+                    window.location = "login.html";
+                }, "2000");
+                finalizarAguardar();
+            } else {
+                throw "Houve um erro ao tentar realizar o cadastro!";
+            }
+        });
+    }
+}
+
+
+</script>

@@ -4,12 +4,12 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="./../css/dashboards.css">
+  <link rel="stylesheet" href="./../../css/dashboards.css">
   <link rel="icon" href="../assets/imgs/Zephyrus_2png.png" />
   <title>Dashboard - Página Principal</title>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script src="https://kit.fontawesome.com/9f7414eb10.js" crossorigin="anonymous"></script>
-  <script src="../js/sessao.js"></script>
+  <script src="../../js/sessao.js"></script>
 
 </head>
 
@@ -62,21 +62,7 @@
             </div>
           </a>
 
-          <a href="mainPage.html" id="todos_hospital">
-            <div class="div-btComImg">
-              <img src="../assets/imgs/Hospitais.png" alt="Imagem do ícone de Hospitais" />
-              <div class="txt-bt">Hospitais</div>
-            </div>
-          </a>
-
-          <a href="contasHospital.html" id="contas_hospital">
-            <div class="div-btComImg">
-              <img src="../assets/imgs/multiplasPessoas.png" alt="Imagem do ícone das contas registradas" />
-              <div class="txt-bt">Contas</div>
-            </div>
-          </a>
-
-          <a href="contas.html" id="contas_empresa">
+          <a href="contasHospital.html">
             <div class="div-btComImg">
               <img src="../assets/imgs/multiplasPessoas.png" alt="Imagem do ícone das contas registradas" />
               <div class="txt-bt">Contas</div>
@@ -154,17 +140,6 @@
 <script src="../js/chart.js"></script>
 
 <script>
-  
-  var perfil = sessionStorage.getItem('CARGO_USUARIO')
-  console.log(perfil)
-
-  if (perfil == "adminEmpresa" || perfil == 'empresa'){
-    contas_hospital.style.display = 'none';
-  }else{
-    contas_empresa.style.display = 'none';
-    todos_hospital.style.display = 'none';
-  }
-
   function mostrarNavbar() {
     const larguraTela = window.innerWidth;
     var menu = document.getElementById("navbar");

@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="./../css/dashboards.css">
+  <link rel="icon" href="../assets/imgs/Zephyrus_2png.png" />  
+  <title>Dashboard - Contas hospital</title>
+  <script src="https://kit.fontawesome.com/9f7414eb10.js" crossorigin="anonymous"></script>
+  
+</head>
+
+<body>
+  <div class="div-pai">
+
+    <!-- Cabeçalho -->
+    <header>
+      <div class="header-container">
+        <div class="div-hamburguer">
+          <a class="navbar-mob" onclick="mostrarNavbar()">
+          <i id="icone" class="fa-solid fa-bars"></i>
+        </a>
+        <nav class="navbar" id="navbar">
+          <a href="./mainPage.html">Página principal</a>
+          <a href="./mainPage.html">Hospitais</a>
+          <a href="./contas.html">Contas</a>
+          </a>
+        </nav>
+      </div>
+        <h2>DASHBOARD - CONTROLE (Hospital)</h2>
+        <div class="div-pai-perfil">
+          <div class="div-linha"></div>
+          <div class="div-todo-perfil">
+            <div class="div-filho-perfil">
+              <img src="../assets/imgs/profile.png" alt="imagem de perfil" class="img-perfil" />
+              <img src="../assets/imgs/seta-para-baixo-braca.png" alt="ver opções" class="img-seta" />
+            </div>
+            <div class="div-opcoes">
+              <div class="div-opcao-sair">
+                <a href="../index.html"><span>Sair</span></a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- Sidebar -->
+    <div class="container">
+      <div class="div-sidebar">
+        <div class="div-img">
+          <img src="../assets/imgs/Zephyrus_2png.png" alt="Logomarca" />
+        </div>
+        <div class="div-botoes">
+          <a href="mainPage.html">
+            <div class="div-btComImg ">
+              <img src="../assets/imgs/main-menu.png" alt="Imagem do ícone da main page" />
+              <div class="txt-bt">Main Page</div>
+            </div>
+          </a>
+
+          <a href="contas.html">
+            <div class="div-btComImg div-btEscolhido">
+              <img src="../assets/imgs/multiplasPessoas.png" alt="Imagem do ícone das contas registradas" />
+              <div class="txt-bt">Contas</div>
+            </div>
+          </a>
+        </div>
+      </div>
+
+      <div class="conteudo-principal">
+
+        <div class="div-flex">
+          <div class="div-block">
+            <div class="div-links-contas">
+              <a href="../cadastro.html">
+                <!-- <div class="div-botao"> -->
+                  <h3>Adicionar novo usuário</h3>
+                <!-- </div> -->
+              </a>
+
+              <a href="../cadastro.html">
+                <!-- <div class="div-botao"> -->
+                  <h3>Adicionar nova máquina</h3>
+                <!-- </div> -->
+              </a>
+            </div>
+
+            <div class="div-procura">
+              <div class="div-ipt-procura">
+                <label for="">Procure pelo nome:</label>
+                <input type="text" class="ipt_procura">
+              </div>
+            
+              <div class="div-ipt-procura">
+                <label for="">filtre por atividade:</label>
+                <select name="" id="select_atividade" onclick="teste()" class="ipt_procura">
+                      <option value="">Selecione o tipo de Status</option>
+                      <option value="">Ativo</option>
+                      <option value="">Inativo</option>
+                    </select>
+                  </div>
+              </div>
+
+
+              <div class="mostrarUsuarios">
+                <table>
+                  <thead>
+                    <tr class="nomeColuna">
+                      <th class="colunaUsuario">Nome</th>
+                      <th class="colunaRepresentante">Representante</th>
+                      <th class="colunaEmail">E-mail</th>
+                      <th class="colunaTipoAcesso">Tipo acesso</th>
+                      <th class="colunaStatus">Status</th>
+                      <th class="colunaDelete">Deletar</th>
+                    </tr>
+                  </thead>
+                  <tbody id="tbody_usuarios">
+                  </tbody>
+                </table>
+              </div>
+
+
+              <div class="div-procura">
+              <div class="div-ipt-procura">
+                <label for="">Procure pelo N° de série:</label>
+                <input type="text" class="ipt_procura">
+              </div>
+              <div class="div-ipt-procura">
+                <label for="">filtre andar</label>
+                <select name="" id="select_hospital" onclick="filtroAndar()" class="ipt_procura">
+                      <option value="">Selecione o tipo de Status</option>
+                      <option value="">Andar 1</option>
+                      <option value="">Andar 2</option>
+                    </select>
+              </div>
+              <div class="div-ipt-procura">
+                <label for="">filtre por sala:</label>
+                <select name="" id="select_atividade" onclick="filtroSala()" class="ipt_procura">
+                      <option value="">Selecione o tipo de Status</option>
+                      <option value="">Sala 1</option>
+                      <option value="">Sala 2</option>
+                    </select>
+                  </div>
+              </div>
+
+              <div class="mostrarUsuarios">
+                <table>
+                  <thead>
+                    <tr class="nomeColuna">
+                      <th class="colunaModelo">Modelo</th>
+                      <th class="colunaNumero">NumeroSerie</th>
+                      <th class="colunaAndar">Andar</th> <!-- Fazer um update-->
+                      <th class="colunaSala">Sala</th>  <!-- Fazer um update-->
+                      <th class="colunaStatus">Status</th> <!-- True or false (1 ou 0)-->
+                      <th class="colunaDelete">Deletar</th>
+                    </tr>
+                  </thead>
+                  <tbody id="tbody_maquinas">
+                  </tbody>
+                </table>
+              </div>
+
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+</body>
+
+</html>
+
+<script>
+  function mostrarNavbar() {
+    const larguraTela = window.innerWidth;
+    var menu = document.getElementById("navbar");
+    var icone = document.getElementById("icone");
+
+    if (larguraTela < 1342) {
+      if (getComputedStyle(menu).display == 'none') {
+        menu.style.display = "flex";
+        icone.classList.remove("fa-bars");
+        icone.classList.add("fa-times");
+      } else {
+        menu.style.display = "none";
+        icone.classList.remove("fa-times");
+        icone.classList.add("fa-bars");
+      }
+    }
+  }
+</script>
+
+<script>
+
+  let usuarios = []
+
+
+  function deletar(id) {
+
+    fetch(`/contas/deleteConta/${id}`, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json"
+      }
+    })
+      .then(res => {
+        return res.json();
+      })
+      .then(() => {
+        puxarDados();
+      })
+      .catch(err => console.error(err));
+  }
+
+
+  function puxarDados() {
+    const perfil = Number(sessionStorage.CARGO_USUARIO);
+
+    fetch("/contas/contas", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json"
+      },
+    })
+      .then(res => {
+        if (!res.ok) {
+          throw new Error("Erro na resposta da API");
+        }
+        return res.json();
+      })
+      .then(data => {
+        listar(data)
+      })
+
+  }
+
+  function alterarAcesso(index) {
+    const usuario = usuarios[index];
+    const novoStatus = usuario.statusUser === "Ativo" ? "Inativo" : "Ativo";
+
+    fetch(`/contas/alterarAcesso/${usuario.id_usuario}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ statusUser: novoStatus })
+    })
+    .then(res => res.json())
+    .then(() => {
+        usuarios[index].statusUser = novoStatus;
+        listar(usuarios);
+    })
+    .catch(err => console.error(err));
+}
+
+
+
+  function listar(data) {
+    usuarios = data
+    const tbody = document.getElementById('tbody_usuarios');
+    tbody.innerHTML = '';
+
+    for (let i = 0; i < data.length; i++) {
+      const usuario = data[i];
+
+      const tr = document.createElement('tr');
+
+      tr.innerHTML = `
+          <td class="colunaUsuario">${usuario.nomeHospital == null ? "Fly" : usuario.nomeHospital}</td>
+          <td class="colunaRepresentante">${usuario.nome}</td>
+          <td class="colunaEmail">${usuario.email}</td>
+          <td class="colunaTipoAcesso">${usuario.perfil}</td>
+          <td class="colunaAcesso"
+              style="cursor: pointer;"
+              onclick="alterarAcesso(${i})">
+              ${usuario.statusUser}
+          </td>
+         <td class="colunaDelete">
+  <button onclick="deletar(${usuario.id_usuario})" 
+          style="background: transparent; border: none; cursor: pointer;">
+      <img src="../assets/imgs/lixeira.png" alt="Deletar" style="width: 20px; height: 20px;">
+  </button>
+</td>
+
+      `;
+
+      if (usuario.acesso == "Inativo") {
+        tr.style.backgroundColor = 'yellow';
+      } else {
+        if (i % 2 == 0) {
+          tr.style.backgroundColor = '#B7E4C7';
+        } else {
+          tr.style.backgroundColor = 'transparent';
+        }
+      }
+      tbody.appendChild(tr);
+    }
+
+
+
+  }
+
+
+
+</script>

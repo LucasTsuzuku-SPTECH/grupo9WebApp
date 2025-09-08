@@ -68,75 +68,82 @@
 <script>
 
   window.onload = () => {
-  const lembrarEmail = localStorage.getItem("email")
-  const lembrarSenha = localStorage.getItem("senha")
-  if (lembrarEmail && lembrarSenha) {
-    email_input.value = lembrarEmail
-    senha_input.value = lembrarSenha
+    const lembrarEmail = localStorage.getItem("email")
+    const lembrarSenha = localStorage.getItem("senha")
+    if (lembrarEmail && lembrarSenha) {
+      email_input.value = lembrarEmail
+      senha_input.value = lembrarSenha
 
-    document.getElementById("lembrarCheck").checked = true
+      document.getElementById("lembrarCheck").checked = true
+    }
   }
-} 
 
   var senhaVar = document.getElementById("senha_input")
   var mostrarSenha = document.getElementById("mostrarSenha")
 
   mostrarSenha.addEventListener("change", () => {
-  if(mostrarSenha.checked){
-    senhaVar.type = 'text'
-  } else {
-    senhaVar.type = 'password'
-  }
+    if (mostrarSenha.checked) {
+      senhaVar.type = 'text'
+    } else {
+      senhaVar.type = 'password'
+    }
   })
 
-function entrar() {
-  const emailVar = email_input.value
-  const senhaVar = senha_input.value
-  const lembrar = document.getElementById("lembrarCheck").checked
-  const erro = document.getElementById("erro")
+  function entrar() {
+    const emailVar = email_input.value
+    const senhaVar = senha_input.value
+    const lembrar = document.getElementById("lembrarCheck").checked
+    const erro = document.getElementById("erro")
 
 
-  if (!emailVar || !senhaVar) {
+    if (!emailVar || !senhaVar) {
       erro.style.display = "block"
       erro.innerHTML = "Preencha todos os campos!"
       return false
-  }
-
-  if (lembrar) {
-    localStorage.setItem("email", emailVar)
-    localStorage.setItem("senha", senhaVar)
-  } else {
-    localStorage.removeItem("email")
-    localStorage.removeItem("senha")
-  }
-
-  fetch("/usuarios/autenticar", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ emailServer: emailVar, senhaServer: senhaVar })
-  })
-  .then(resposta => {
-    if (resposta.ok) {
-      resposta.json().then(json => {
-        sessionStorage.EMAIL_USUARIO = json.email
-        sessionStorage.NOME_USUARIO = json.nome
-        sessionStorage.ID_USUARIO = json.id_usuario
-        sessionStorage.CARGO_USUARIO = json.perfil
-        setTimeout(() => window.location = "../dashboard/mainPage.html", 1000)
-      })
-    } else {
-      resposta.text().then(texto => {
-        console.error(texto)
-        erro.style.display = "block"
-        erro.innerHTML = "E-mail ou senha inválidos!"
-        finalizarAguardar(texto)
-      })
     }
-  })
-  .catch(erro => console.log(erro))
 
-  return false
-}
+    if (lembrar) {
+      localStorage.setItem("email", emailVar)
+      localStorage.setItem("senha", senhaVar)
+    } else {
+      localStorage.removeItem("email")
+      localStorage.removeItem("senha")
+    }
+
+    fetch("/usuarios/autenticar", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ emailServer: emailVar, senhaServer: senhaVar })
+    })
+      .then(resposta => {
+        if (resposta.ok) {
+          resposta.json().then(json => {
+            sessionStorage.EMAIL_USUARIO = json.email
+            sessionStorage.NOME_USUARIO = json.nome
+            sessionStorage.ID_USUARIO = json.id_usuario
+            sessionStorage.CARGO_USUARIO = json.perfil
+
+            setTimeout(() => window.location = "../dashboard/mainPage.html", 1000)
+            // var perfil = json.perfil;
+            // if (perfil == "adminEmpresa" || perfil == 'empresa') {
+            //   setTimeout(() => window.location = "../dashboard/Empresa/mainPage.html", 1000)
+            // }else{
+            //   setTimeout(() => window.location = "../dashboard/Hospital/mainPage.html", 1000)
+            // }
+          })
+        } else {
+          resposta.text().then(texto => {
+            console.error(texto)
+            erro.style.display = "block"
+            erro.innerHTML = "E-mail ou senha inválidos!"
+            finalizarAguardar(texto)
+          })
+        }
+      })
+      .catch(erro => console.log(erro))
+
+    return false
+  }
 
 
   // function sumirMensagem() {
