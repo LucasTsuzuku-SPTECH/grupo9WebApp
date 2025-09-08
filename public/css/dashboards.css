@@ -440,6 +440,7 @@ button i {
     margin-top: 30px;
     height: 200px;
     margin-bottom: 40px;
+    width: 65%;
     /* border: var(--verde-3) 2px solid; */
 }
 
