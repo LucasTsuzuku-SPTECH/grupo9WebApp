@@ -190,6 +190,8 @@
       },
     })
       .then(res => {
+        console.log("VOU VALIDAR O IF")
+        console.log('Esse é o resultado do res', res)
         if (!res.ok) {
           throw new Error("Erro na resposta da API");
         }
