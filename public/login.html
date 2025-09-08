@@ -11,8 +11,7 @@
   <script src="./js/sessao.js"></script>
 
   <link rel="stylesheet" href="./css/forms.css" />
-  <link rel="stylesheet" href="./../css/dashboards.css">
-    <link rel="icon" href="../assets/imgs/Zephyrus_2png.png" />
+  <link rel="icon" href="../assets/imgs/Zephyrus_2png.png" />
   <link rel="preconnect" href="https://fonts.gstatic.com" />
 </head>
 
@@ -46,6 +45,8 @@
             <div class="parte-checkbox">
               <input type="checkbox" id="lembrarCheck" />
               <label for="lembrarCheck">Lembre-se de mim</label>
+              <input type="checkbox" id="mostrarSenha">
+              <label for="mostrarSenha" id="">Mostrar senha</label>
             </div>
 
             <button onclick="entrar()">Entrar</button>
@@ -75,7 +76,18 @@
 
     document.getElementById("lembrarCheck").checked = true
   }
-}
+} 
+
+  var senhaVar = document.getElementById("senha_input")
+  var mostrarSenha = document.getElementById("mostrarSenha")
+
+  mostrarSenha.addEventListener("change", () => {
+  if(mostrarSenha.checked){
+    senhaVar.type = 'text'
+  } else {
+    senhaVar.type = 'password'
+  }
+  })
 
 function entrar() {
   const emailVar = email_input.value

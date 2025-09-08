@@ -8,7 +8,7 @@
   <link rel="icon" href="../assets/imgs/Zephyrus_2png.png" />
   <title>Dashboard - Contas</title>
   <script src="https://kit.fontawesome.com/9f7414eb10.js" crossorigin="anonymous"></script>
-  
+  <script src="../js/sessao.js"></script>
 </head>
 
 <body onload="puxarDados()">
@@ -38,7 +38,7 @@
             </div>
             <div class="div-opcoes">
               <div class="div-opcao-sair">
-                <a href="../index.html"><span>Sair</span></a>
+                <a onclick="limparSessao()"><span>Sair</span></a>
               </div>
             </div>
           </div>
@@ -87,7 +87,7 @@
                 <!-- </div> -->
               </a>
 
-              <a href="../cadastro.html">
+              <a href="cadasHosp.html">
                 <!-- <div class="div-botao"> -->
                   <h3>Adicionar novo hospital</h3>
                 <!-- </div> -->
@@ -115,8 +115,8 @@
                 <label for="">Filtrar por atividade:</label>
                     <select name="" id="select_atividade" onchange="selecionarAtividade()" class="ipt_procura">
                       <option value="Ambos">Ambos</option>
-                      <option value="Ativo">Ativo</option>
-                      <option value="Inativo">Inativo</option>
+                      <option value="ativo">Ativo</option>
+                      <option value="inativo">Inativo</option>
                     </select>
                   </div>
               </div>
@@ -215,7 +215,7 @@
 
   function alterarAcesso(index) {
     const usuario = usuarios[index];
-    const novoStatus = usuario.statusUser === "Ativo" ? "Inativo" : "Ativo";
+    const novoStatus = usuario.statusUser.toLowerCase() === "ativo" ? "inativo" : "ativo";
 
     fetch(`/contas/alterarAcesso/${usuario.id_usuario}`, {
         method: "PUT",
@@ -253,7 +253,7 @@
               <button
               style="cursor: pointer; padding: 3px"
               onclick="alterarAcesso(${i})">
-              ${usuario.statusUser}</button>
+              ${usuario.statusUser.charAt(0).toUpperCase() + usuario.statusUser.slice(1)}</button>
           </td>
          <td class="colunaDelete">
   <button onclick="deletar(${usuario.id_usuario})" 
@@ -264,7 +264,7 @@
 
       `;
 
-      if (usuario.statusUser == "Inativo") {
+      if (usuario.statusUser == "inativo") {
         tr.style.backgroundColor = 'yellow';
       } else {
         if (i % 2 == 0) {
@@ -318,7 +318,7 @@
               <button
               style="cursor: pointer; padding: 3px"
               onclick="alterarAcesso(${i})">
-              ${usuario.statusUser}</button>
+              ${usuario.statusUser.charAt(0).toUpperCase() + usuario.statusUser.slice(1)}</button>
           </td>
          <td class="colunaDelete">
           <button onclick="deletar(${usuario.id_usuario})" 
@@ -329,7 +329,7 @@
 
       `;
 
-      if (usuario.statusUser == "Inativo") {
+      if (usuario.statusUser == "inativo") {
         tr.style.backgroundColor = 'yellow';
       } else {
         if (i % 2 == 0) {
@@ -392,7 +392,7 @@
               <button
               style="cursor: pointer; padding: 3px"
               onclick="alterarAcesso(${i})">
-              ${usuario.statusUser}</button>
+              ${usuario.statusUser.charAt(0).toUpperCase() + usuario.statusUser.slice(1)}</button>
           </td>
          <td class="colunaDelete">
           <button onclick="deletar(${usuario.id_usuario})" 
@@ -403,7 +403,7 @@
 
       `;
 
-      if (usuario.statusUser == "Inativo") {
+      if (usuario.statusUser == "inativo") {
         tr.style.backgroundColor = 'yellow';
       } else {
         if (i % 2 == 0) {
@@ -451,7 +451,7 @@
               <button
               style="cursor: pointer; padding: 3px"
               onclick="alterarAcesso(${i})">
-              ${usuario.statusUser}</button>
+              ${usuario.statusUser.charAt(0).toUpperCase() + usuario.statusUser.slice(1)}</button>
           </td>
          <td class="colunaDelete">
           <button onclick="deletar(${usuario.id_usuario})" 
@@ -462,7 +462,7 @@
 
       `;
 
-      if (usuario.statusUser == "Inativo") {
+      if (usuario.statusUser == "inativo") {
         tr.style.backgroundColor = 'yellow';
       } else {
         if (i % 2 == 0) {
@@ -479,6 +479,8 @@
     }
 
   }
+
+  
 
 </script>
 

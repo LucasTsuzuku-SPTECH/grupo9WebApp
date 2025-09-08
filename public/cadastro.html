@@ -52,9 +52,12 @@
             <option id="funcEmpresa" value="Empresa">Funcionário Empresa</option>
             <option id="adminHospital" value="Hospital" s>Admin Hospital</option>
           </select>
-          <label for="hospital_input" id="labelHospital" style="display:none">Hospital</label>
-          <input type="text" id="hospital_input" placeholder="Nome do hospital" style="display:none"
-            class="ipt_digitar" />
+          <label for="hospital_select" id="labelHospital" style="display:none">Hospital</label>
+          <select id="hospital_select" style="display:none" class="ipt_digitar"></select>
+          <div class="parte-checkbox">
+            <input type="checkbox" id="mostrarSenha">
+            <label for="mostrarSenha" id="">Mostrar senha</label>
+          </div>
 
 
 
@@ -77,21 +80,51 @@
 
 
 <script>
-const perfilSelect = document.getElementById("perfil");
-const hospitalLabel = document.getElementById("labelHospital");
-const hospitalInput = document.getElementById("hospital_input");
+
+  
+  var senhaVar = document.getElementById("senha_input")
+  var confirmacaoSenha = document.getElementById("confirmacao_senha_input")
+  var mostrarSenha = document.getElementById("mostrarSenha")
+
+  mostrarSenha.addEventListener("change", () => {
+  if(mostrarSenha.checked){
+    senhaVar.type = 'text'
+    confirmacaoSenha.type = 'text'
+  } else {
+    senhaVar.type = 'password'
+    confirmacaoSenha.type = 'password'
+  }
+  })
+
+const perfilSelect = document.getElementById("perfil")
+const hospitalLabel = document.getElementById("labelHospital")
+const hospitalSelect = document.getElementById("hospital_select")
 
 perfilSelect.addEventListener("change", () => {
     if (perfilSelect.value === "Hospital") {
         hospitalLabel.style.display = "block";
-        hospitalInput.style.display = "block";
+        hospitalSelect.style.display = "block";
+        carregarHospitais()
     } else {
         hospitalLabel.style.display = "none";
-        hospitalInput.style.display = "none";
+        hospitalSelect.style.display = "none";
     }
 });
 
-function cadastrar() {
+  async function carregarHospitais() {
+    const resposta = await fetch("/usuarios/listar")
+    const hospitais = await resposta.json()
+
+    hospitalSelect.innerHTML = '<option disabled selected value="">Selecione o hospital</option>'
+    hospitais.forEach(hospital => {
+      const option = document.createElement("option")
+      option.value = hospital.id_hospital
+      option.text = hospital.nomeHospital
+      hospitalSelect.appendChild(option)
+    });
+  }
+
+  async function cadastrar() {
     var emailVar = email_input.value;
     var nomeVar = nome_input.value;
     var senhaVar = senha_input.value;
@@ -99,7 +132,13 @@ function cadastrar() {
 
     let hospitalVar = "";
     if (perfilSelect.value === "Hospital") {
-        hospitalVar = hospitalInput.value;
+        hospitalVar = hospitalSelect.value;
+        fkHospital = hospitalSelect.value
+        fkEmpresa = null
+    
+    } else if (perfilSelect.value = "Empresa"){
+      fkEmpresa = 1
+      fkHospital = null
     }
 
     if (confirmarSenha != senhaVar) {
@@ -121,8 +160,8 @@ function cadastrar() {
                 emailServer: emailVar,
                 senhaServer: senhaVar,
                 perfilServer: perfilSelect.value,
-                fkEmpresaServer: 1,
-                fkHospitalServer: 1
+                fkEmpresaServer: fkEmpresa,
+                fkHospitalServer: fkHospital
             }),
         })
         .then(function (resposta) {
