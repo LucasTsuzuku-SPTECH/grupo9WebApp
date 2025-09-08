@@ -8,7 +8,7 @@
   <link rel="icon" href="../assets/imgs/Zephyrus_2png.png" />
   <title>Dashboard - Contas</title>
   <script src="https://kit.fontawesome.com/9f7414eb10.js" crossorigin="anonymous"></script>
-  
+  <script src="../js/sessao.js"></script>
 </head>
 
 <body onload="puxarDados()">
@@ -38,7 +38,7 @@
             </div>
             <div class="div-opcoes">
               <div class="div-opcao-sair">
-                <a href="../index.html"><span>Sair</span></a>
+                <a onclick="limparSessao()"><span>Sair</span></a>
               </div>
             </div>
           </div>
@@ -473,6 +473,8 @@
     }
 
   }
+
+  
 
 </script>
 
