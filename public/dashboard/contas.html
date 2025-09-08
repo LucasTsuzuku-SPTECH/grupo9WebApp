@@ -109,8 +109,8 @@
                 <label for="">Filtrar por atividade:</label>
                     <select name="" id="select_atividade" onchange="selecionarAtividade()" class="ipt_procura">
                       <option value="Ambos">Ambos</option>
-                      <option value="Ativo">Ativo</option>
-                      <option value="Inativo">Inativo</option>
+                      <option value="ativo">Ativo</option>
+                      <option value="inativo">Inativo</option>
                     </select>
                   </div>
               </div>
@@ -312,7 +312,7 @@
               <button
               style="cursor: pointer; padding: 3px"
               onclick="alterarAcesso(${i})">
-              ${usuario.statusUser}</button>
+              ${usuario.statusUser.charAt(0).toUpperCase() + usuario.statusUser.slice(1)}</button>
           </td>
          <td class="colunaDelete">
           <button onclick="deletar(${usuario.id_usuario})" 
@@ -386,7 +386,7 @@
               <button
               style="cursor: pointer; padding: 3px"
               onclick="alterarAcesso(${i})">
-              ${usuario.statusUser}</button>
+              ${usuario.statusUser.charAt(0).toUpperCase() + usuario.statusUser.slice(1)}</button>
           </td>
          <td class="colunaDelete">
           <button onclick="deletar(${usuario.id_usuario})" 
@@ -445,7 +445,7 @@
               <button
               style="cursor: pointer; padding: 3px"
               onclick="alterarAcesso(${i})">
-              ${usuario.statusUser}</button>
+              ${usuario.statusUser.charAt(0).toUpperCase() + usuario.statusUser.slice(1)}</button>
           </td>
          <td class="colunaDelete">
           <button onclick="deletar(${usuario.id_usuario})" 
