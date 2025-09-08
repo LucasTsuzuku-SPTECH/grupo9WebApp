@@ -24,7 +24,7 @@
   </div>
   <div class="direita">
     <div class="voltarCadastro">
-      <a href="./dashboard/contas.html">
+      <a href="./dashboard/contasHospital.html">
         <span>Voltar</span>
         <i class="fa-solid fa-arrow-right"></i>
       </a>
@@ -125,7 +125,7 @@ const hospitalSelect = document.getElementById("hospital_select")
 
             if (resposta.ok) {
                 setTimeout(() => {
-                    window.location = "login.html";
+                    window.location = "../dashboard/contasHospital.html";
                 }, "2000");
                 finalizarAguardar();
             } else {
