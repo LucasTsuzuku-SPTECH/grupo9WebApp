@@ -35,10 +35,11 @@
       </div>
       <div class="formulario">
         <div class="formulario-principal">
-          <label for="">Endereço de email</label>
-          <input type="email" id="email_input" placeholder="email*" class="ipt_digitar" />
+
           <label for="">Insira o seu nome</label>
           <input type="nome" id="nome_input" placeholder="nome*" class="ipt_digitar" />
+          <label for="">Endereço de email</label>
+          <input type="email" id="email_input" placeholder="email*" class="ipt_digitar" />  
           <div id="output_email"></div>
           <label for="">Senha</label>
           <input type="password" id="senha_input" placeholder="senha*" class="ipt_digitar" />
@@ -91,13 +92,19 @@
 const hospitalLabel = document.getElementById("labelHospital")
 const hospitalSelect = document.getElementById("hospital_select")
 
-  async function cadastrar() {
+  function cadastrar() {
     var emailVar = email_input.value;
     var nomeVar = nome_input.value;
     var senhaVar = senha_input.value;
     var confirmarSenha = confirmacao_senha_input.value;
+    var fkEmpresaVar = null
+    var fkHospitalVar= Number(sessionStorage.getItem("HOSPITAL_USUARIO"))
 
-
+    console.log("fkhospital"+fkHospitalVar)
+if (!fkHospitalVar) {
+    alert("Não foi possível identificar o hospital. Faça login novamente.");
+    return;
+}
     if (confirmarSenha != senhaVar) {
         alert("As senhas não coincidem");
         return;
@@ -106,6 +113,7 @@ const hospitalSelect = document.getElementById("hospital_select")
             finalizarAguardar();
             return false;
         }
+console.log("antes do fetch"+{ nomeVar, emailVar, senhaVar, fkHospitalVar, fkEmpresaVar });
 
         fetch("/usuarios/cadastrarFunc", {
             method: "POST",
@@ -116,8 +124,8 @@ const hospitalSelect = document.getElementById("hospital_select")
                 nomeServer: nomeVar,
                 emailServer: emailVar,
                 senhaServer: senhaVar,
-                fkEmpresaServer: null,
-                fkHospitalServer: 1
+                fkEmpresaServer: fkEmpresaVar,
+                fkHospitalServer:fkHospitalVar
             }),
         })
         .then(function (resposta) {

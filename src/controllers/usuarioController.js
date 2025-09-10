@@ -103,7 +103,7 @@ function cadastrarFunc(req, res) {
 
         // Passe os valores como parâmetro e vá para o arquivo usuarioModel.js
         
-        usuarioModel.cadastrarFunc(nome, email, senha, perfil, fk_empresa, fk_hospital)
+        usuarioModel.cadastrarFunc(nome, email, senha, fk_empresa, fk_hospital)
             .then(
                 function (resultado) {
                     res.json(resultado);
