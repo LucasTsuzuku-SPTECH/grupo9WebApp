@@ -191,26 +191,20 @@
 
 
   function puxarDados() {
-    console.log("Me chamou puxar(Dados)")
-    const perfil = Number(sessionStorage.CARGO_USUARIO);
+    console.log("Me chamou puxar(Dados)");
+    const fkHospital = Number(sessionStorage.HOSPITAL_USUARIO);
 
-    fetch("/contas/contasHospital", {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json"
-      },
-    })
-      .then(res => {
-        if (!res.ok) {
-          throw new Error("Erro na resposta da API");
-        }
-        return res.json();
-      })
-      .then(data => {
-        listar(data)
-      })
+    fetch(`/contas/contasHospital/${fkHospital}`)
+        .then(res => {
+            if (!res.ok) throw new Error("Erro na resposta da API");
+            return res.json();
+        })
+        .then(data => {
+            listar(data);
+        })
+        .catch(erro => console.error("Erro ao puxar dados:", erro));
+}
 
-  }
 
   function alterarAcesso(index) {
     const usuario = usuarios[index];

@@ -11,13 +11,14 @@ where u.perfil != 'hospital';`
 }
 
 
-function listarHospitalContas(){
+function listarHospitalContas(fk_hospital){
     console.log("ACESSEI O CONTASMODEL");
-    var instrucaoSql=`
-   select *  from Usuario u
-left join Hospital h 
-on u.fk_hospital = h.id_hospital
-where u.perfil = 'hospital';`
+    var instrucaoSql = `
+        select *  
+        from Usuario u
+        left join Hospital h on u.fk_hospital = h.id_hospital
+        where u.perfil = 'hospital' and u.fk_hospital = ${fk_hospital};
+    `;
     return database.executar(instrucaoSql); 
 }
 

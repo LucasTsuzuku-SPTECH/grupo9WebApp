@@ -16,7 +16,8 @@ function mostrarContas(req, res) {
 }
 
 function mostrarContasHospital(req, res) {
-    contasModel.listarHospitalContas()
+    var fk_hospital = req.params.fkHospital; 
+    contasModel.listarHospitalContas(fk_hospital)
         .then((resultado) => {
             if (resultado.length > 0) {
                 res.status(200).json(resultado);
@@ -29,6 +30,7 @@ function mostrarContasHospital(req, res) {
             res.status(500).json(erro.sqlMessage);
         });
 }
+
 
 
 function deletarConta(req, res) {
