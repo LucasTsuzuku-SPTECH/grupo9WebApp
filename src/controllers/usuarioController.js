@@ -25,7 +25,8 @@ function autenticar(req, res) {
                             nome: resultadoAutenticar[0].nome,
                             fk_empresa: resultadoAutenticar[0].fk_empresa,
                             fk_hospital: resultadoAutenticar[0].fk_hospital,
-                            perfil: resultadoAutenticar[0].perfil
+                            perfil: resultadoAutenticar[0].perfil,
+                            statusUser:resultadoAutenticar[0].statusUser
                         });
 
                     } else if (resultadoAutenticar.length == 0) {

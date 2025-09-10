@@ -116,8 +116,23 @@
     body: JSON.stringify({ emailServer: emailVar, senhaServer: senhaVar })
   })
   .then(resposta => {
+    // statusUser=sessionStorage.STATUS=json.statusUser
+    // if(statusUser==ativo)resposta.ok=false
     if (resposta.ok) {
+      
       resposta.json().then(json => {
+        let status=json.statusUser
+        console.log(status)
+
+        if(status=="inativo"){
+        erro.style.display = "block"
+        erro.innerHTML = "conta inválida!"
+        console.log("entrei no if")
+        return
+        }
+
+
+
         sessionStorage.EMAIL_USUARIO = json.email
         sessionStorage.NOME_USUARIO = json.nome
         sessionStorage.ID_USUARIO = json.id_usuario
