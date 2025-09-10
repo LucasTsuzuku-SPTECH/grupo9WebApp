@@ -137,7 +137,7 @@ perfilSelect.addEventListener("change", () => {
         fkEmpresa = null
     
     } else if (perfilSelect.value = "Empresa"){
-      fkEmpresa = 1
+      fkEmpresa = Number(sessionStorage.EMPRESA_USUARIO)
       fkHospital = null
     }
 

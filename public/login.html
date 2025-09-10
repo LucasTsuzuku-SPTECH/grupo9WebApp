@@ -136,6 +136,7 @@
         sessionStorage.ID_USUARIO = json.id_usuario
         sessionStorage.CARGO_USUARIO = json.perfil
         sessionStorage.HOSPITAL_USUARIO = json.fk_hospital
+        sessionStorage.EMPRESA_USUARIO=json.fk_empresa
         setTimeout(() => window.location = "../dashboard/mainPage.html", 1000)
       })
     } else {
