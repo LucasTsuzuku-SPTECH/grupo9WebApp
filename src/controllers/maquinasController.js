@@ -49,12 +49,14 @@ function deletarMaquina(req, res) {
 function cadastrar(req, res){
     var modelo = req.body.modeloServer;
     var serie = req.body.serieServer;
+    var sala = req.body.salaServer;
+    var andar = req.body.andarServer;
     var fk_empresa = req.body.fkEmpresaServer;
     var fk_hospital = req.body.fkHospitalServer;
     
     // Passe os valores como parâmetro e vá para o arquivo usuarioModel.js
             
-    maquinasModel.cadastrar(modelo, serie, fk_empresa, fk_hospital)
+    maquinasModel.cadastrar(modelo, serie, sala, andar, fk_empresa, fk_hospital)
         .then(
             function (resultado) {
                 res.json(resultado);

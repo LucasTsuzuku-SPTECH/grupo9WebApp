@@ -115,7 +115,8 @@
                   <thead>
                     <tr class="nomeColuna">
                       <th class="colunaUsuario">Modelo</th>
-                      <th class="colunaRepresentante">Localização</th>
+                      <th class="colunaSala">Sala</th>
+                      <th class="colunaAndar">Andar</th>
                       <th class="colunaStatus">Status</th>
                       <th class="colunaDelete">Deletar</th>
                     </tr>
@@ -231,7 +232,8 @@
 
       tr.innerHTML = `
           <td class="colunaUsuario">${usuario.numero_serie == null ? "Fly" : usuario.numero_serie}</td>
-          <td class="colunaRepresentante">${usuario.nome}</td>
+          <th class="colunaSala">${usuario.sala}</th>
+          <th class="colunaAndar">${usuario.andar}</th>
           <td class="colunaAcesso">
               <button
               style="cursor: pointer; padding: 3px"
@@ -294,7 +296,8 @@
 
       tr.innerHTML = `
           <td class="colunaUsuario">${usuario.numero_serie == null ? "Fly" : usuario.numero_serie}</td>
-          <td class="colunaRepresentante">${usuario.nome}</td>
+          <th class="colunaSala">${usuario.sala}</th>
+          <th class="colunaAndar">${usuario.andar}</th>
           <td class="colunaAcesso">
               <button
               style="cursor: pointer; padding: 3px"
@@ -366,7 +369,8 @@
 
         tr.innerHTML = `
           <td class="colunaUsuario">${usuario.numero_serie == null ? "Fly" : usuario.numero_serie}</td>
-          <td class="colunaRepresentante">${usuario.nome}</td>
+          <th class="colunaSala">${usuario.sala}</th>
+          <th class="colunaAndar">${usuario.andar}</th>
           <td class="colunaAcesso">
               <button
               style="cursor: pointer; padding: 3px"
@@ -423,7 +427,8 @@
 
         tr.innerHTML = `
           <td class="colunaUsuario">${usuario.numero_serie == null ? "Fly" : usuario.numero_serie}</td>
-          <td class="colunaRepresentante">${usuario.nome}</td>
+          <th class="colunaSala">${usuario.sala}</th>
+          <th class="colunaAndar">${usuario.andar}</th>
           <td class="colunaAcesso">
               <button
               style="cursor: pointer; padding: 3px"
