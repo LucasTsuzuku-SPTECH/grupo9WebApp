@@ -53,6 +53,8 @@
 	create table Ventilador (
 	id_ventilador int primary key auto_increment,
 	numero_serie varchar(50) unique not null,
+    sala int not null,
+    andar int not null,
 	fk_modelo int not null,
 	fk_hospital int not null,
 	fk_empresa int not null,
@@ -93,7 +95,7 @@ insert into Modelo (nome, descricao) values
 ('VX-2000', 'Ventilador pulmonar neonatal'),
 ('AirPlus Pro', 'Modelo portátil para emergências');
 
-insert into Ventilador (numero_serie, fk_modelo, fk_hospital, fk_empresa) values
-('SN12345', 1, 1, 1),
-('SN67890', 2, 1, 1),
-('SN11111', 3, 2, 1);
+insert into Ventilador (numero_serie, sala, andar, fk_modelo, fk_hospital, fk_empresa) values
+('SN12345', 1, 2, 1, 1, 1),
+('SN67890', 1, 1, 2, 1, 1),
+('SN11111', 1, 1, 3, 2, 1);
