@@ -38,10 +38,10 @@ function deletarMaquina(id){
 //     return database.executar(instrucaoSql);
 // }
 
-function cadastrar(modelo, serie, fk_empresa, fk_hospital){
+function cadastrar(modelo, serie, sala, andar, fk_empresa, fk_hospital){
     var instrucaoSql=`
-    insert into Ventilador (numero_serie, fk_modelo, fk_hospital, fk_empresa) values
-('${serie}', '${modelo}', ${fk_hospital}, ${fk_empresa});
+    insert into Ventilador (numero_serie, fk_modelo, sala, andar, fk_hospital, fk_empresa) values
+('${serie}', '${modelo}', ${sala}, ${andar}, ${fk_hospital}, ${fk_empresa});
     `
     return database.executar(instrucaoSql);
 }

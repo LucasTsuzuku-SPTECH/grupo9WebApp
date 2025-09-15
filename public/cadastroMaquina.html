@@ -16,7 +16,8 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" />
 </head>
 
-<main id="formulario-main" onload="carregarHospital(sessionStorage.HOSPITAL_USUARIO)">
+<body onload="carregarHospital()">
+<main id="formulario-main">
   <div class="esquerda">
     <div class="imagem-lateral">
       <img src="assets/imgs/fundoLogin.jpg" />
@@ -43,7 +44,10 @@
           </select>
           <label for="">Número de Série</label>
           <input type="serie" id="serie_input" placeholder="número de série*" class="ipt_digitar" />
-          <div id="output_email"></div>
+          <label for="">Sala</label>
+          <input type="text"  id="sala_input" placeholder="Qual sala se encontra*" class="ipt_digitar" />
+          <label for="">Andar</label>
+          <input type="text"  id="andar_input" placeholder="Qual andar se encontra*" class="ipt_digitar" />
 
           <label for="perfil"> Vinculado ao Hospital </label>
           <select name="" id="perfil" disabled>
@@ -76,9 +80,11 @@ const hospitalInput = document.getElementById("hospital_input");
 function cadastrar() {
     var modeloVar = modelo_select.value;
     var serieVar = serie_input.value;
+    var salaVar = sala_input.value;
+    var andarVar= andar_input.value;
     var hospitalVar = sessionStorage.HOSPITAL_USUARIO;
 
-        if (modeloVar == "" || serieVar == "") {
+        if (modeloVar == "" || serieVar == "" || salaVar == "" || andarVar == "") {
           console.log(modeloVar, serieVar)
           console.log("Cadastro não permitido")
             finalizarAguardar();
@@ -93,6 +99,8 @@ function cadastrar() {
             body: JSON.stringify({
                 modeloServer: modeloVar,
                 serieServer: serieVar,
+                salaServer: salaVar,
+                andarServer: andarVar,
                 fkEmpresaServer: 1,
                 fkHospitalServer: sessionStorage.HOSPITAL_USUARIO
             }),
@@ -111,10 +119,24 @@ function cadastrar() {
         });
 }
 
-function carregarHospital(param){
-  var select = document.getElementById("perfil_selecionado");
-  select.innerHTML = `${param}`;
+function carregarHospital(){
+  console.log("eu fui ativado")
+  let hospital = Number(sessionStorage.HOSPITAL_USUARIO);
+  let select = document.getElementById("perfil_selecionado");
 
+  // fetch(`/maquinas/buscarHospital/${hospital}`, {
+  //     method: "GET",
+  //     headers: {
+  //       "Content-Type": "application/json"
+  //     }
+  //   })
+  //     .then(res => {
+  //       return res.json();
+  //     })
+  //     .then(() => {
+  //       select.innerHTML = `${hospital}`;;
+  //     })
+  //     .catch(err => console.error(err));
 }
 
 </script>
