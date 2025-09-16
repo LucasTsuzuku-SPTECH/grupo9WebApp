@@ -8,7 +8,8 @@
   <link rel="icon" href="../assets/imgs/Zephyrus_2png.png" />
   <title>Dashboard - Contas</title>
   <script src="https://kit.fontawesome.com/9f7414eb10.js" crossorigin="anonymous"></script>
-  <script src="../js/sessao.js"></script>
+  <script src="../../js/sessao.js"></script>
+  
 </head>
 
 <body onload="puxarDados()">
@@ -19,26 +20,26 @@
       <div class="header-container">
         <div class="div-hamburguer">
           <a class="navbar-mob" onclick="mostrarNavbar()">
-          <i id="icone" class="fa-solid fa-bars"></i>
-        </a>
-        <nav class="navbar" id="navbar">
-          <a href="./mainPage.html">Página principal</a>
-          <a href="./mainPage.html">Hospitais</a>
-          <a href="./contas.html">Contas</a>
+            <i id="icone" class="fa-solid fa-bars"></i>
           </a>
-        </nav>
-      </div>
+          <nav class="navbar" id="navbar">
+            <a href="./mainPage.html">Página principal</a>
+            <a href="./mainPage.html">Hospitais</a>
+            <a href="./contas.html">Contas</a>
+            </a>
+          </nav>
+        </div>
         <h2>DASHBOARD - CONTROLE DE USUÁRIOS</h2>
         <div class="div-pai-perfil">
           <div class="div-linha"></div>
           <div class="div-todo-perfil">
             <div class="div-filho-perfil">
-              <img src="../assets/imgs/profile.png" alt="imagem de perfil" class="img-perfil" />
-              <img src="../assets/imgs/seta-para-baixo-braca.png" alt="ver opções" class="img-seta" />
+              <img src="../../assets/imgs/profile.png" alt="imagem de perfil" class="img-perfil" />
+              <img src="../../assets/imgs/seta-para-baixo-braca.png" alt="ver opções" class="img-seta" />
             </div>
             <div class="div-opcoes">
               <div class="div-opcao-sair">
-                <a onclick="limparSessao()"><span>Sair</span></a>
+                <button style="border: none;" onclick="limparSessao()" id="sair" ><span>Sair</span></button>
               </div>
             </div>
           </div>
@@ -50,26 +51,26 @@
     <div class="container">
       <div class="div-sidebar">
         <div class="div-img">
-          <img src="../assets/imgs/Zephyrus_2png.png" alt="Logomarca" />
+          <img src="../../assets/imgs/Zephyrus_2png.png" alt="Logomarca" />
         </div>
         <div class="div-botoes">
           <a href="mainPage.html">
             <div class="div-btComImg ">
-              <img src="../assets/imgs/main-menu.png" alt="Imagem do ícone da main page" />
+              <img src="../../assets/imgs/main-menu.png" alt="Imagem do ícone da main page" />
               <div class="txt-bt">Main Page</div>
             </div>
           </a>
 
           <a href="mainPage.html">
             <div class="div-btComImg">
-              <img src="../assets/imgs/Hospitais.png" alt="Imagem do ícone de Hospitais" />
+              <img src="../../assets/imgs/Hospitais.png" alt="Imagem do ícone de Hospitais" />
               <div class="txt-bt">Hospitais</div>
             </div>
           </a>
 
           <a href="contas.html">
             <div class="div-btComImg div-btEscolhido">
-              <img src="../assets/imgs/multiplasPessoas.png" alt="Imagem do ícone das contas registradas" />
+              <img src="../../assets/imgs/multiplasPessoas.png" alt="Imagem do ícone das contas registradas" />
               <div class="txt-bt">Contas</div>
             </div>
           </a>
@@ -81,68 +82,90 @@
         <div class="div-flex">
           <div class="div-block">
             <div class="div-links-contas">
-              <a href="cadastro.html">
+              <a href="../../cadastro.html">
                 <!-- <div class="div-botao"> -->
-                  <h3>Adicionar novo usuário</h3>
+                <h3>Adicionar novo usuário</h3>
                 <!-- </div> -->
               </a>
 
-              <a href="cadasHosp.html">
-                <!-- <div class="div-botao"> -->
+                <!-- <a href="cadasHosp.html">
                   <h3>Adicionar novo hospital</h3>
-                <!-- </div> -->
-              </a>
+              </a> -->
+
+              <!-- <a href="../../cadastroMaquina.html">
+                <div class="div-botao">
+                  <h3>Adicionar nova máquina</h3>
+                </div>
+              </a> -->
             </div>
 
-            <div class="div-procura">
-              <div class="div-ipt-procura">
-                <label for="">Procure pelo Representante:</label>
-                <input type="text" id="ipt_representante" class="ipt_procura" oninput="buscarRepresentante(ipt_representante.value)" placeholder="Nome do Representante">
+              <div class="div-procura">
+                <div class="div-ipt-procura">
+                  <label for="">Procure pelo Representante:</label>
+                  <input type="text" id="ipt_representante" class="ipt_procura"
+                    oninput="buscarRepresentante(ipt_representante.value)" placeholder="Nome do Representante">
+                </div>
+                <div class="div-ipt-procura">
+                  <label for="">Filtrar por Hospital</label>
+                  <select name="" id="select_hospital" onchange="selecionarHospital()" class="ipt_procura">
+                    <option value="todos">Todos</option>
+                  </select>
+                </div>
+                <div class="div-ipt-procura">
+                  <label for="">Filtrar por atividade:</label>
+                  <select name="" id="select_atividade" onchange="selecionarAtividade()" class="ipt_procura">
+                    <option value="Ambos">Ambos</option>
+                    <option value="ativo">Ativo</option>
+                    <option value="inativo">Inativo</option>
+                  </select>
+                </div>
               </div>
-              <div class="div-ipt-procura">
-                <label for="">Filtrar por Hospital</label>
-                <select name="" id="select_hospital" onchange="selecionarHospital()" class="ipt_procura">
-                  <option value="todos">Todos</option>
-                </select>
-              </div>
-              <div class="div-ipt-procura">
-                <label for="">Filtrar por atividade:</label>
-                    <select name="" id="select_atividade" onchange="selecionarAtividade()" class="ipt_procura">
-                      <option value="Ambos">Ambos</option>
-                      <option value="ativo">Ativo</option>
-                      <option value="inativo">Inativo</option>
-                    </select>
-                  </div>
-              </div>
 
+              <div class="div-alerta" id="divAlerta" style="display: none;">
+  <div class="div-img">
+    <img src="../../assets/imgs/atencao.png" alt="sinal de atenção">
+  </div>
+  <div>Deseja mesmo excluir este usuário?</div>
+  <div class="div-escolha">
+      <div class="botao sim" onclick="deletar(usuarioSelecionado)">Sim</div>
+      <div class="botao nao" id="naoDeletar" onclick="fecharAlerta()">Não</div>
+  </div>
+</div>
 
-              <div class="mostrarUsuarios">
-                <table>
-                  <thead>
-                    <tr class="nomeColuna">
-                      <th class="colunaUsuario">Hospital | Empresa</th>
-                      <th class="colunaRepresentante">Representante</th>
-                      <th class="colunaEmail">E-mail</th>
-                      <th class="colunaTipoAcesso">Tipo acesso</th>
-                      <th class="colunaStatus">Status</th>
-                      <th class="colunaDelete">Deletar</th>
-                    </tr>
-                  </thead>
-                  <tbody id="tbody_usuarios">
-                  </tbody>
-                </table>
-              </div>
-            </div>
-          </div>
-
-        </div>
-
-      </div>
-</body>
-
-</html>
+<div class="mostrarUsuarios">
+  <table>
+    <thead>
+      <tr class="nomeColuna">
+        <th class="colunaUsuario">Hospital | Empresa</th>
+        <th class="colunaRepresentante">Representante</th>
+        <th class="colunaEmail">E-mail</th>
+        <th class="colunaTipoAcesso">Tipo acesso</th>
+        <th class="colunaStatus">Status</th>
+        <th class="colunaDelete">Deletar</th>
+      </tr>
+    </thead>
+    <tbody id="tbody_usuarios">
+    </tbody>
+  </table>
+</div>
 
 <script>
+
+  // if (perfil == "adminEmpresa" || perfil == 'empresa'){
+  //   contas_hospital.style.display = 'none';
+  // }else{
+  //   contas_empresa.style.display = 'none';
+  //   todos_hospital.style.display = 'none';
+  // }
+
+  // if (perfil == 'empresa' || perfil == 'hospital'){
+  //   contas_empresa.style.display = 'none'
+  //   contas_hospital.style.display = 'none'
+  // }
+  let usuarios = [];
+  let hospitais = [];
+  let usuarioSelecionado = null; // Id usuário
+
   function mostrarNavbar() {
     const larguraTela = window.innerWidth;
     var menu = document.getElementById("navbar");
@@ -160,15 +183,24 @@
       }
     }
   }
-</script>
 
-<script>
+  function deletarr(id) {
+    usuarioSelecionado = id;
+    var divAlerta = document.getElementById("divAlerta");
+    divAlerta.style.display = "flex";
+  }
 
-  let usuarios = [];
-  let hospitais = [];
+  function fecharAlerta() {
+    var divAlerta = document.getElementById("divAlerta");
+    divAlerta.style.display = "none";
+  }
 
   function deletar(id) {
-    console.log("Me chamou deletar(id)")
+    if (!id){
+      return;
+    } 
+
+    console.log("Me chamou deletar(id)", id);
     fetch(`/contas/deleteConta/${id}`, {
       method: "DELETE",
       headers: {
@@ -180,13 +212,13 @@
       })
       .then(() => {
         puxarDados();
+        fecharAlerta();
       })
       .catch(err => console.error(err));
   }
 
-
   function puxarDados() {
-    console.log("Me chamou puxar(Dados)")
+    console.log("Me chamou puxar(Dados)");
     const perfil = Number(sessionStorage.CARGO_USUARIO);
 
     fetch("/contas/contas", {
@@ -204,38 +236,35 @@
       .then(data => {
         listar(data)
       })
-
   }
 
+  
   function alterarAcesso(index) {
     const usuario = usuarios[index];
     const novoStatus = usuario.statusUser.toLowerCase() === "ativo" ? "inativo" : "ativo";
 
     fetch(`/contas/alterarAcesso/${usuario.id_usuario}`, {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ statusUser: novoStatus })
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ statusUser: novoStatus })
     })
-    .then(res => res.json())
-    .then(() => {
+      .then(res => res.json())
+      .then(() => {
         usuarios[index].statusUser = novoStatus;
         listar(usuarios);
-    })
-    .catch(err => console.error(err));
-}
-
-
+      })
+      .catch(err => console.error(err));
+  }
 
   function listar(data) {
-    console.log("Me chamou listar(data)")
-    console.log(data)
-    usuarios = data
+    console.log("Me chamou listar(data)");
+    console.log(data);
+    usuarios = data;
     const tbody = document.getElementById('tbody_usuarios');
     tbody.innerHTML = '';
 
     for (let i = 0; i < data.length; i++) {
       const usuario = data[i];
-
       const tr = document.createElement('tr');
 
       tr.innerHTML = `
@@ -250,12 +279,11 @@
               ${usuario.statusUser.charAt(0).toUpperCase() + usuario.statusUser.slice(1)}</button>
           </td>
          <td class="colunaDelete">
-  <button onclick="deletar(${usuario.id_usuario})" 
-          style="background: transparent; border: none; cursor: pointer;">
-      <img src="../assets/imgs/lixeira.png" alt="Deletar" style="width: 20px; height: 20px;">
-  </button>
-</td>
-
+            <button onclick="deletarr(${usuario.id_usuario})" 
+              style="background: transparent; border: none; cursor: pointer;">
+              <img src="../../assets/imgs/lixeira.png" alt="Deletar" style="width: 20px; height: 20px;">
+            </button>
+         </td>
       `;
 
       if (usuario.statusUser == "inativo") {
@@ -269,38 +297,32 @@
       }
       tbody.appendChild(tr);
     }
-
-    preencherSelectHospital()
-
+    preencherSelectHospital();
   }
 
-  function buscarRepresentante(representante){
-    
-    console.log("Me chamou buscarRepresentante")
-    
-    if(representante =='') {
+  function buscarRepresentante(representante) {
+    console.log("Me chamou buscarRepresentante");
+
+    if (representante == '') {
       puxarDados();
       return
     }
 
-    console.log(usuarios)
+    console.log(usuarios);
     let dadosFiltroRepresentante = [];
     for (let i = 0; i < usuarios.length; i++) {
-      if(usuarios[i].nome.replace(" ","").toLowerCase().includes(representante.replace(" ","").toLowerCase())){
+      if (usuarios[i].nome.replace(" ", "").toLowerCase().includes(representante.replace(" ", "").toLowerCase())) {
         dadosFiltroRepresentante.push(usuarios[i])
       }
     }
     console.log("Dados filtrados por representante: ")
     console.log(dadosFiltroRepresentante)
 
-    /* Repetição codigo listar dados */
-
     const tbody = document.getElementById('tbody_usuarios');
     tbody.innerHTML = '';
 
     for (let i = 0; i < dadosFiltroRepresentante.length; i++) {
       const usuario = dadosFiltroRepresentante[i];
-
       const tr = document.createElement('tr');
 
       tr.innerHTML = `
@@ -315,12 +337,11 @@
               ${usuario.statusUser.charAt(0).toUpperCase() + usuario.statusUser.slice(1)}</button>
           </td>
          <td class="colunaDelete">
-          <button onclick="deletar(${usuario.id_usuario})" 
+          <button onclick="deletarr(${usuario.id_usuario})" 
                   style="background: transparent; border: none; cursor: pointer;">
-              <img src="../assets/imgs/lixeira.png" alt="Deletar" style="width: 20px; height: 20px;">
+              <img src="../../assets/imgs/lixeira.png" alt="Deletar" style="width: 20px; height: 20px;">
           </button>
         </td>
-
       `;
 
       if (usuario.statusUser == "inativo") {
@@ -334,49 +355,39 @@
       }
       tbody.appendChild(tr);
     }
-
   }
 
-  function preencherSelectHospital(){
-    
+  function preencherSelectHospital() {
     const selectHospitais = document.getElementById('select_hospital');
-    for(let i = 0; i < usuarios.length; i++){
-      if(usuarios[i].nomeHospital == null || usuarios[i].nomeHospital == '' || hospitais.includes(usuarios[i].nomeHospital)){
-
+    for (let i = 0; i < usuarios.length; i++) {
+      if (usuarios[i].nomeHospital == null || usuarios[i].nomeHospital == '' || hospitais.includes(usuarios[i].nomeHospital)) {
       } else {
         hospitais.push(usuarios[i].nomeHospital)
-        selectHospitais.innerHTML += 
-        `
-        <option value="${usuarios[i].nomeHospital}">${usuarios[i].nomeHospital}</option>
-        `
-      }      
+        selectHospitais.innerHTML +=
+          `<option value="${usuarios[i].nomeHospital}">${usuarios[i].nomeHospital}</option>`
+      }
     }
     console.log(hospitais)
   }
 
-  function selecionarHospital(){
+  function selecionarHospital() {
     console.log("Me chamou selecionarHospital")
     let hospitalSelecionado = select_hospital.value
     console.log(hospitalSelecionado)
 
-    if(hospitalSelecionado == "todos"){
+    if (hospitalSelecionado == "todos") {
       puxarDados()
       return
     }
-
-    /* Repetição codigo listar dados */
 
     const tbody = document.getElementById('tbody_usuarios');
     tbody.innerHTML = '';
 
     for (let i = 0; i < usuarios.length; i++) {
-
       const usuario = usuarios[i];
-
       const tr = document.createElement('tr');
 
-      if(usuario.nomeHospital == hospitalSelecionado) {
-
+      if (usuario.nomeHospital == hospitalSelecionado) {
         tr.innerHTML = `
           <td class="colunaUsuario">${usuario.nomeHospital == null ? "Fly" : usuario.nomeHospital}</td>
           <td class="colunaRepresentante">${usuario.nome}</td>
@@ -389,53 +400,44 @@
               ${usuario.statusUser.charAt(0).toUpperCase() + usuario.statusUser.slice(1)}</button>
           </td>
          <td class="colunaDelete">
-          <button onclick="deletar(${usuario.id_usuario})" 
+          <button onclick="deletarr(${usuario.id_usuario})" 
                   style="background: transparent; border: none; cursor: pointer;">
-              <img src="../assets/imgs/lixeira.png" alt="Deletar" style="width: 20px; height: 20px;">
+              <img src="../../assets/imgs/lixeira.png" alt="Deletar" style="width: 20px; height: 20px;">
           </button>
         </td>
-
       `;
 
-      if (usuario.statusUser == "inativo") {
-        tr.style.backgroundColor = 'yellow';
-      } else {
-        if (i % 2 == 0) {
-          tr.style.backgroundColor = '#B7E4C7';
+        if (usuario.statusUser == "inativo") {
+          tr.style.backgroundColor = 'yellow';
         } else {
-          tr.style.backgroundColor = 'transparent';
+          if (i % 2 == 0) {
+            tr.style.backgroundColor = '#B7E4C7';
+          } else {
+            tr.style.backgroundColor = 'transparent';
+          }
         }
+        tbody.appendChild(tr);
       }
-      tbody.appendChild(tr);
-
-      }
-      
     }
-
   }
 
-  function selecionarAtividade(){
+  function selecionarAtividade() {
     console.log("Me chamou selecionarAtividade")
     let atividadeSelecionado = select_atividade.value
 
-    if(atividadeSelecionado == "Ambos"){
+    if (atividadeSelecionado == "Ambos") {
       puxarDados()
       return
-    } 
-
-    /* Repetição codigo listar dados */
+    }
 
     const tbody = document.getElementById('tbody_usuarios');
     tbody.innerHTML = '';
 
     for (let i = 0; i < usuarios.length; i++) {
-
       const usuario = usuarios[i];
-
       const tr = document.createElement('tr');
 
-      if(usuario.statusUser == atividadeSelecionado) {
-
+      if (usuario.statusUser == atividadeSelecionado) {
         tr.innerHTML = `
           <td class="colunaUsuario">${usuario.nomeHospital == null ? "Fly" : usuario.nomeHospital}</td>
           <td class="colunaRepresentante">${usuario.nome}</td>
@@ -448,33 +450,25 @@
               ${usuario.statusUser.charAt(0).toUpperCase() + usuario.statusUser.slice(1)}</button>
           </td>
          <td class="colunaDelete">
-          <button onclick="deletar(${usuario.id_usuario})" 
+          <button onclick="deletarr(${usuario.id_usuario})" 
                   style="background: transparent; border: none; cursor: pointer;">
-              <img src="../assets/imgs/lixeira.png" alt="Deletar" style="width: 20px; height: 20px;">
+              <img src="../../assets/imgs/lixeira.png" alt="Deletar" style="width: 20px; height: 20px;">
           </button>
         </td>
-
       `;
 
-      if (usuario.statusUser == "inativo") {
-        tr.style.backgroundColor = 'yellow';
-      } else {
-        if (i % 2 == 0) {
-          tr.style.backgroundColor = '#B7E4C7';
+        if (usuario.statusUser == "inativo") {
+          tr.style.backgroundColor = 'yellow';
         } else {
-          tr.style.backgroundColor = 'transparent';
+          if (i % 2 == 0) {
+            tr.style.backgroundColor = '#B7E4C7';
+          } else {
+            tr.style.backgroundColor = 'transparent';
+          }
         }
+        tbody.appendChild(tr);
       }
-      tbody.appendChild(tr);
-
-      }
-
-      
     }
-
   }
 
-  
-
 </script>
-

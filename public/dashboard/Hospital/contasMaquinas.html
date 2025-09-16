@@ -4,11 +4,11 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="./../css/dashboards.css">
-  <link rel="icon" href="../assets/imgs/Zephyrus_2png.png" />
-  <title>Dashboard - Contas Hospital</title>
+  <link rel="stylesheet" href="./../../css/dashboards.css">
+  <link rel="icon" href="../../assets/imgs/Zephyrus_2png.png" />
+  <title>Dashboard - Máquinas</title>
   <script src="https://kit.fontawesome.com/9f7414eb10.js" crossorigin="anonymous"></script>
-  <script src="../js/sessao.js"></script>
+  <script src="../../js/sessao.js"></script>
 </head>
 
 <body onload="puxarDados()">
@@ -33,12 +33,12 @@
           <div class="div-linha"></div>
           <div class="div-todo-perfil">
             <div class="div-filho-perfil">
-              <img src="../assets/imgs/profile.png" alt="imagem de perfil" class="img-perfil" />
-              <img src="../assets/imgs/seta-para-baixo-braca.png" alt="ver opções" class="img-seta" />
+              <img src="../../assets/imgs/profile.png" alt="imagem de perfil" class="img-perfil" />
+              <img src="../../assets/imgs/seta-para-baixo-braca.png" alt="ver opções" class="img-seta" />
             </div>
             <div class="div-opcoes">
               <div class="div-opcao-sair">
-                <a onclick="limparSessao()"><span>Sair</span></a>
+                <button style="border: none;" onclick="limparSessao()" id="sair" ><span>Sair</span></button>
               </div>
             </div>
           </div>
@@ -50,26 +50,19 @@
     <div class="container">
       <div class="div-sidebar">
         <div class="div-img">
-          <img src="../assets/imgs/Zephyrus_2png.png" alt="Logomarca" />
+          <img src="../../assets/imgs/Zephyrus_2png.png" alt="Logomarca" />
         </div>
         <div class="div-botoes">
           <a href="mainPage.html">
             <div class="div-btComImg ">
-              <img src="../assets/imgs/main-menu.png" alt="Imagem do ícone da main page" />
+              <img src="../../assets/imgs/main-menu.png" alt="Imagem do ícone da main page" />
               <div class="txt-bt">Main Page</div>
             </div>
           </a>
-<!-- 
-          <a href="mainPage.html">
-            <div class="div-btComImg">
-              <img src="../assets/imgs/Hospitais.png" alt="Imagem do ícone de Hospitais" />
-              <div class="txt-bt">Hospitais</div>
-            </div>
-          </a> -->
 
           <a href="contas.html">
             <div class="div-btComImg div-btEscolhido">
-              <img src="../assets/imgs/multiplasPessoas.png" alt="Imagem do ícone das contas registradas" />
+              <img src="../../assets/imgs/multiplasPessoas.png" alt="Imagem do ícone das contas registradas" />
               <div class="txt-bt">Contas</div>
             </div>
           </a>
@@ -81,10 +74,15 @@
         <div class="div-flex">
           <div class="div-block">
             <div class="div-links-contas">
-
-              <a href="../cadastroFuncHospital.html">
+              <a href="cadastroMaquina.html">
                 <!-- <div class="div-botao"> -->
-                  <h3>Adicionar novo Funcionário</h3>
+                  <h3>Adicionar nova máquina</h3>
+                <!-- </div> -->
+              </a>
+
+              <a href="cadastroFuncHospital.html">
+                <!-- <div class="div-botao"> -->
+                  <h3>Adicionar novo funcionário</h3>
                 <!-- </div> -->
               </a>
             </div>
@@ -104,8 +102,8 @@
                 <label for="">Filtrar por atividade:</label>
                     <select name="" id="select_atividade" onchange="selecionarAtividade()" class="ipt_procura">
                       <option value="Ambos">Ambos</option>
-                      <option value="ativo">Ativo</option>
-                      <option value="inativo">Inativo</option>
+                      <option value="Ativo">Ativo</option>
+                      <option value="Inativo">Inativo</option>
                     </select>
                   </div>
               </div>
@@ -115,17 +113,16 @@
                 <table>
                   <thead>
                     <tr class="nomeColuna">
-                      <th class="colunaUsuario">Hospital | Empresa</th>
-                      <th class="colunaRepresentante">Representante</th>
-                      <th class="colunaEmail">E-mail</th>
-                      <th class="colunaTipoAcesso">Tipo acesso</th>
+                      <th class="colunaUsuario">Modelo</th>
+                      <th class="colunaSala">Sala</th>
+                      <th class="colunaAndar">Andar</th>
                       <th class="colunaStatus">Status</th>
                       <th class="colunaDelete">Deletar</th>
                     </tr>
                   </thead>
                   <tbody id="tbody_usuarios">
                   </tbody>
-                </table>
+                </table>  
               </div>
             </div>
           </div>
@@ -158,23 +155,13 @@
 </script>
 
 <script>
-// if (perfil == "adminEmpresa" || perfil == 'empresa'){
-//     contas_hospital.style.display = 'none';
-//   }else{
-//     contas_empresa.style.display = 'none';
-//     todos_hospital.style.display = 'none';
-//   }
 
-//   if (perfil == 'empresa' || perfil == 'hospital'){
-//     contas_empresa.style.display = 'none'
-//     contas_hospital.style.display = 'none'
-//   }
-  let usuarios = [];
+  let maquinas = [];
   let hospitais = [];
 
   function deletar(id) {
     console.log("Me chamou deletar(id)")
-    fetch(`/contas/deleteConta/${id}`, {
+    fetch(`/maquinas/deleteMaquina/${id}`, {
       method: "DELETE",
       headers: {
         "Content-Type": "application/json"
@@ -191,42 +178,47 @@
 
 
   function puxarDados() {
-    console.log("Me chamou puxar(Dados)");
-    const fkHospital = Number(sessionStorage.HOSPITAL_USUARIO);
+    console.log("Me chamou puxar(Dados)")
+    const perfil = Number(sessionStorage.CARGO_USUARIO);
 
-    fetch(`/contas/contasHospital/${fkHospital}`)
-        .then(res => {
-            if (!res.ok) throw new Error("Erro na resposta da API");
-            return res.json();
-        })
-        .then(data => {
-            listar(data);
-        })
-        .catch(erro => console.error("Erro ao puxar dados:", erro));
-}
-
-
-  function alterarAcesso(index) {
-    const usuario = usuarios[index];
-    const novoStatus = usuario.statusUser.toLowerCase() === "ativo" ? "inativo" : "ativo";
-
-    fetch(`/contas/alterarAcesso/${usuario.id_usuario}`, {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ statusUser: novoStatus })
+    fetch("/maquinas/maquinas", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json"
+      },
     })
-    .then(res => res.json())
-    .then(() => {
-        usuarios[index].statusUser = novoStatus;
-        listar(usuarios);
-    })
-    .catch(err => console.error(err));
-}
+      .then(res => {
+        if (!res.ok) {
+          throw new Error("Erro na resposta da API");
+        }
+        return res.json();
+      })
+      .then(data => {
+        listar(data)
+      })
+
+  }
+
+//   function alterarAcesso(index) {
+//     const usuario = usuarios[index];
+//     const novoStatus = usuario.statusUser === "Ativo" ? "Inativo" : "Ativo";
+
+//     fetch(`/contas/alterarAcesso/${usuario.id_usuario}`, {
+//         method: "PUT",
+//         headers: { "Content-Type": "application/json" },
+//         body: JSON.stringify({ statusUser: novoStatus })
+//     })
+//     .then(res => res.json())
+//     .then(() => {
+//         usuarios[index].statusUser = novoStatus;
+//         listar(usuarios);
+//     })
+//     .catch(err => console.error(err));
+// }
 
 
 
   function listar(data) {
-    console.log("Me chamou listar(data)")
     console.log(data)
     usuarios = data
     const tbody = document.getElementById('tbody_usuarios');
@@ -237,28 +229,26 @@
 
       const tr = document.createElement('tr');
 
-
       tr.innerHTML = `
-          <td class="colunaUsuario">${usuario.nomeHospital == null ? usuario.nomeHospital : usuario.nomeHospital}</td>
-          <td class="colunaRepresentante">${usuario.nome}</td>
-          <td class="colunaEmail">${usuario.email}</td>
-          <td class="colunaTipoAcesso">${usuario.perfil}</td>
+          <td class="colunaUsuario">${usuario.numero_serie == null ? "Fly" : usuario.numero_serie}</td>
+          <td class="colunaSala">${usuario.sala}</td>
+          <td class="colunaAndar">${usuario.andar}</td>
           <td class="colunaAcesso">
               <button
               style="cursor: pointer; padding: 3px"
               onclick="alterarAcesso(${i})">
-              ${usuario.statusUser.charAt(0).toUpperCase() + usuario.statusUser.slice(1)}</button>
+              Alterar</button>
           </td>
          <td class="colunaDelete">
-  <button onclick="deletar(${usuario.id_usuario})" 
+  <button onclick="deletar(${usuario.id_ventilador})" 
           style="background: transparent; border: none; cursor: pointer;">
-      <img src="../assets/imgs/lixeira.png" alt="Deletar" style="width: 20px; height: 20px;">
+      <img src="../../assets/imgs/lixeira.png" alt="Deletar" style="width: 20px; height: 20px;">
   </button>
 </td>
 
       `;
 
-      if (usuario.statusUser == "inativo") {
+      if (usuario.statusUser == "Inativo") {
         tr.style.backgroundColor = 'yellow';
       } else {
         if (i % 2 == 0) {
@@ -304,26 +294,25 @@
       const tr = document.createElement('tr');
 
       tr.innerHTML = `
-          <td class="colunaUsuario">${usuario.nomeHospital == null ? "Fly" : usuario.nomeHospital}</td>
-          <td class="colunaRepresentante">${usuario.nome}</td>
-          <td class="colunaEmail">${usuario.email}</td>
-          <td class="colunaTipoAcesso">${usuario.perfil}</td>
+          <td class="colunaUsuario">${usuario.numero_serie == null ? "Fly" : usuario.numero_serie}</td>
+          <td class="colunaSala">${usuario.sala}</td>
+          <td class="colunaAndar">${usuario.andar}</td>
           <td class="colunaAcesso">
               <button
               style="cursor: pointer; padding: 3px"
               onclick="alterarAcesso(${i})">
-              ${usuario.statusUser.charAt(0).toUpperCase() + usuario.statusUser.slice(1)}</button>
+              Alterar</button>
           </td>
          <td class="colunaDelete">
           <button onclick="deletar(${usuario.id_usuario})" 
                   style="background: transparent; border: none; cursor: pointer;">
-              <img src="../assets/imgs/lixeira.png" alt="Deletar" style="width: 20px; height: 20px;">
+              <img src="../../assets/imgs/lixeira.png" alt="Deletar" style="width: 20px; height: 20px;">
           </button>
         </td>
 
       `;
 
-      if (usuario.statusUser == "inativo") {
+      if (usuario.statusUser == "Inativo") {
         tr.style.backgroundColor = 'yellow';
       } else {
         if (i % 2 == 0) {
@@ -341,13 +330,13 @@
     
     const selectHospitais = document.getElementById('select_hospital');
     for(let i = 0; i < usuarios.length; i++){
-      if(usuarios[i].nomeHospital == null || usuarios[i].nomeHospital == '' || hospitais.includes(usuarios[i].nomeHospital)){
+      if(usuarios[i].numero_serie == null || usuarios[i].numero_serie == '' || hospitais.includes(usuarios[i].numero_serie)){
 
       } else {
-        hospitais.push(usuarios[i].nomeHospital)
+        hospitais.push(usuarios[i].numero_serie)
         selectHospitais.innerHTML += 
         `
-        <option value="${usuarios[i].nomeHospital}">${usuarios[i].nomeHospital}</option>
+        <option value="${usuarios[i].numero_serie}">${usuarios[i].numero_serie}</option>
         `
       }      
     }
@@ -375,29 +364,28 @@
 
       const tr = document.createElement('tr');
 
-      if(usuario.nomeHospital == hospitalSelecionado) {
+      if(usuario.numero_serie == hospitalSelecionado) {
 
         tr.innerHTML = `
-          <td class="colunaUsuario">${usuario.nomeHospital == null ? "Fly" : usuario.nomeHospital}</td>
-          <td class="colunaRepresentante">${usuario.nome}</td>
-          <td class="colunaEmail">${usuario.email}</td>
-          <td class="colunaTipoAcesso">${usuario.perfil}</td>
+          <td class="colunaUsuario">${usuario.numero_serie == null ? "Fly" : usuario.numero_serie}</td>
+          <td class="colunaSala">${usuario.sala}</td>
+          <td class="colunaAndar">${usuario.andar}</td>
           <td class="colunaAcesso">
               <button
               style="cursor: pointer; padding: 3px"
               onclick="alterarAcesso(${i})">
-              ${usuario.statusUser.charAt(0).toUpperCase() + usuario.statusUser.slice(1)}</button>
+              Alterar</button>
           </td>
          <td class="colunaDelete">
           <button onclick="deletar(${usuario.id_usuario})" 
                   style="background: transparent; border: none; cursor: pointer;">
-              <img src="../assets/imgs/lixeira.png" alt="Deletar" style="width: 20px; height: 20px;">
+              <img src="../../assets/imgs/lixeira.png" alt="Deletar" style="width: 20px; height: 20px;">
           </button>
         </td>
 
       `;
 
-      if (usuario.statusUser == "inativo") {
+      if (usuario.statusUser == "Inativo") {
         tr.style.backgroundColor = 'yellow';
       } else {
         if (i % 2 == 0) {
@@ -437,26 +425,25 @@
       if(usuario.statusUser == atividadeSelecionado) {
 
         tr.innerHTML = `
-          <td class="colunaUsuario">${usuario.nomeHospital == null ? "Fly" : usuario.nomeHospital}</td>
-          <td class="colunaRepresentante">${usuario.nome}</td>
-          <td class="colunaEmail">${usuario.email}</td>
-          <td class="colunaTipoAcesso">${usuario.perfil}</td>
+          <td class="colunaUsuario">${usuario.numero_serie == null ? "Fly" : usuario.numero_serie}</td>
+          <td class="colunaSala">${usuario.sala}</td>
+          <td class="colunaAndar">${usuario.andar}</td>
           <td class="colunaAcesso">
               <button
               style="cursor: pointer; padding: 3px"
               onclick="alterarAcesso(${i})">
-              ${usuario.statusUser.charAt(0).toUpperCase() + usuario.statusUser.slice(1)}</button>
+              Alterar</button>
           </td>
          <td class="colunaDelete">
           <button onclick="deletar(${usuario.id_usuario})" 
                   style="background: transparent; border: none; cursor: pointer;">
-              <img src="../assets/imgs/lixeira.png" alt="Deletar" style="width: 20px; height: 20px;">
+              <img src="../../assets/imgs/lixeira.png" alt="Deletar" style="width: 20px; height: 20px;">
           </button>
         </td>
 
       `;
 
-      if (usuario.statusUser == "inativo") {
+      if (usuario.statusUser == "Inativo") {
         tr.style.backgroundColor = 'yellow';
       } else {
         if (i % 2 == 0) {
@@ -473,8 +460,6 @@
     }
 
   }
-
-  
 
 </script>
 
