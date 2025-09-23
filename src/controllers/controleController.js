@@ -16,6 +16,20 @@ function listarHospitais(req, res) {
         });
 }
 
+async function editarUsuario(req, res){
+  const id = req.params.id;
+  const { nome, email, perfil } = req.body;
+
+  try {
+    const resultado = await controleModel.editarUsuario(id, nome, email, perfil);
+    res.json({ message: "Usuário atualizado com sucesso" });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: "Erro ao editar usuário" });
+  }
+}
+
 module.exports = {
-    listarHospitais
+    listarHospitais,
+    editarUsuario
 };

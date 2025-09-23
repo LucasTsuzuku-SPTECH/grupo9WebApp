@@ -207,7 +207,7 @@ header {
     gap: 20px;
     flex-wrap: wrap;
     justify-content: center;
-    margin-bottom: 20px;
+    margin-bottom: 6vh;
 }
 
 .div-ipt-procura {
@@ -221,12 +221,14 @@ header {
     color: var(--preto);
 }
 
-.ipt_procura {
-    padding: 8px 10px;
-    border: 2px solid var(--verde-3);
-    border-radius: 8px;
-    outline: none;
-    transition: 0.2s;
+.ipt_procura { 
+  padding: 8px 10px; 
+  border: 2px solid var(--verde-3); 
+  border-radius: 8px; 
+  outline: none; 
+  transition: 0.2s; 
+  height: 40px; /* força a altura igual para input e select */ 
+  box-sizing: border-box; /* inclui borda e padding na altura total */ 
 }
 
 .ipt_procura:focus {
@@ -236,7 +238,7 @@ header {
 /* Tabela de usuários */
 .mostrarUsuarios {
     width: 100%;
-    max-width: 900px;
+    max-width: 1200px;
     overflow-x: auto;
     margin-top: 20px;
     border-radius: 12px;
@@ -317,7 +319,6 @@ table td.colunaUsuario {
 
 /* Ajuste para o ícone de delete ficar centralizado */
 table td.colunaDelete {
-    display: flex;
     justify-content: center;
     align-items: center;
 }
@@ -450,3 +451,34 @@ table td.colunaDelete {
   background-color: red;
 }
 
+.navbar-mob {
+  background-color: transparent; 
+  color: var(--verde-4);
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.navbar-mob i {
+  color: var(--verde-4); /* força o ícone amarelo */
+}
+
+.btn-adicionar {
+  background-color: var(--verde-4); /* usa a cor que você definiu */
+  color: #ffffff; /* texto branco */
+  border: 1px solid #ffffff; /* borda branca opcional */
+  padding: 8px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.btn-adicionar:hover {
+  background-color: #1f6e75; /* escurece um pouco ao passar o mouse */
+}
+
+header h2 {
+  font-size: 24px; /* ou o tamanho que você quer */
+  font-weight: 600; /* se quiser controlar a espessura */
+}

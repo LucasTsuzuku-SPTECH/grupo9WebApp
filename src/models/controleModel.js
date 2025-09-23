@@ -13,6 +13,16 @@ function listarHospitais() {
     return database.executar(instrucaoSql);
 }
 
+function editarUsuario(id, nome, email, perfil){
+  const query = `
+    UPDATE Usuario
+    SET nome = '${nome}', email = '${email}', perfil = '${perfil}'
+    WHERE id_usuario = ${id};
+  `;
+  return database.executar(query);
+};
+
 module.exports = {
-    listarHospitais
+    listarHospitais,
+    editarUsuario
 };

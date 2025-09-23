@@ -10,6 +10,12 @@
   <script src="https://kit.fontawesome.com/9f7414eb10.js" crossorigin="anonymous"></script>
   <script src="../../js/sessao.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <!-- CSS Bootstrap -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- JS Bootstrap -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
 </head>
 
 <body onload="puxarDados()">
@@ -24,7 +30,7 @@
             <i id="icone" class="fa-solid fa-bars fa-2x"></i>
           </a>
         </div>
-        <h2>DASHBOARD - PÁGINA PRINCIPAL</h2>
+        <h2>DASHBOARD - CONTROLE DE CONTAS</h2>
         <div class="div-pai-perfil">
           <div class="div-linha"></div>
           <div class="div-todo-perfil">
@@ -60,11 +66,9 @@
       <div class="div-flex">
         <div class="div-block">
           <div class="div-links-contas">
-            <a href="../../cadastro.html">
-              <!-- <div class="div-botao"> -->
-              <h3>Adicionar novo usuário</h3>
-              <!-- </div> -->
-            </a>
+            <button class="btn-adicionar" data-bs-toggle="modal" data-bs-target="#modalAdicionarUsuario">
+              Adicionar novo usuário
+            </button>
           </div>
 
           <div class="div-procura">
@@ -109,6 +113,7 @@
                   <th class="colunaEmail" style="text-align: center;">E-mail</th>
                   <th class="colunaTipoAcesso" style="text-align: center;">Tipo acesso</th>
                   <th class="colunaStatus" style="text-align: center;">Status</th>
+                  <th class="colunaEditar" style="text-align: center;">Editar</th>
                   <th class="colunaDelete" style="text-align: center;">Deletar</th>
                 </tr>
               </thead>
@@ -117,144 +122,228 @@
             </table>
           </div>
 
-          <script>
+          <!-- Modal Adicionar Usuário -->
+          <div class="modal fade" id="modalAdicionarUsuario" tabindex="-1" aria-labelledby="modalLabelUsuario"
+            aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+              <div class="modal-content">
 
-            function toggleSidebar() {
-              const sidebar = document.getElementById("sidebarModal");
-              const icone = document.getElementById("icone");
+                <div class="modal-header">
+                  <h5 class="modal-title" id="modalLabelUsuario">Adicionar Novo Usuário</h5>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+                </div>
 
-              sidebar.classList.toggle("active");
-            }
+                <div class="modal-body">
+                  <form id="formAdicionarUsuario">
+                    <div class="mb-3">
+                      <label for="nomeModal" class="form-label">Nome</label>
+                      <input type="text" class="form-control" id="nomeModal" required>
+                    </div>
+                    <div class="mb-3">
+                      <label for="emailModal" class="form-label">E-mail</label>
+                      <input type="email" class="form-control" id="emailModal" required>
+                    </div>
+                    <div class="mb-3">
+                      <label for="senhaModal" class="form-label">Senha</label>
+                      <input type="password" class="form-control" id="senhaModal" required>
+                    </div>
+                    <div class="mb-3">
+                      <label for="confirmSenhaModal" class="form-label">Confirmar Senha</label>
+                      <input type="password" class="form-control" id="confirmSenhaModal" required>
+                    </div>
+                    <div class="mb-3">
+                      <label for="perfilModal" class="form-label">Perfil</label>
+                      <select class="form-select" id="perfilModal" required>
+                        <option value="" selected disabled>Selecione</option>
+                        <option value="Empresa">Funcionário Empresa</option>
+                        <option value="Hospital">Admin Hospital</option>
+                      </select>
+                    </div>
+                    <div class="mb-3" id="divHospitalModal" style="display:none;">
+                      <label for="hospitalModal" class="form-label">Hospital</label>
+                      <select class="form-select" id="hospitalModal"></select>
+                    </div>
+                  </form>
+                </div>
 
-            // if (perfil == "adminEmpresa" || perfil == 'empresa'){
-            //   contas_hospital.style.display = 'none';
-            // }else{
-            //   contas_empresa.style.display = 'none';
-            //   todos_hospital.style.display = 'none';
-            // }
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                  <button type="button" class="btn btn-primary" onclick="cadastrarModal()">Adicionar</button>
+                </div>
 
-            // if (perfil == 'empresa' || perfil == 'hospital'){
-            //   contas_empresa.style.display = 'none'
-            //   contas_hospital.style.display = 'none'
-            // }
+              </div>
+            </div>
+          </div>
 
-            let usuarios = [];
-            let hospitais = [];
-            let usuarioSelecionado = null; // Id usuário
+          <!-- Modal Editar Usuário -->
+          <div class="modal fade" id="modalEditarUsuario" tabindex="-1" aria-labelledby="modalLabelEditarUsuario"
+            aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+              <div class="modal-content">
 
-            function mostrarNavbar() {
-              const larguraTela = window.innerWidth;
-              var menu = document.getElementById("navbar");
-              var icone = document.getElementById("icone");
+                <div class="modal-header">
+                  <h5 class="modal-title" id="modalLabelEditarUsuario">Editar Usuário</h5>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+                </div>
 
-              if (larguraTela < 1342) {
-                if (getComputedStyle(menu).display == 'none') {
-                  menu.style.display = "flex";
-                  icone.classList.remove("fa-bars");
-                  icone.classList.add("fa-times");
-                } else {
-                  menu.style.display = "none";
-                  icone.classList.remove("fa-times");
-                  icone.classList.add("fa-bars");
-                }
-              }
-            }
+                <div class="modal-body">
+                  <form id="formEditarUsuario">
+                    <div class="mb-3">
+                      <label for="nomeEditar" class="form-label">Nome</label>
+                      <input type="text" class="form-control" id="nomeEditar" required>
+                    </div>
+                    <div class="mb-3">
+                      <label for="emailEditar" class="form-label">E-mail</label>
+                      <input type="email" class="form-control" id="emailEditar" required>
+                    </div>
+                    <div class="mb-3">
+                      <label for="perfilEditar" class="form-label">Perfil</label>
+                      <select class="form-select" id="perfilEditar" required>
+                        <option value="" selected disabled>Selecione</option>
+                        <option value="empresa">Funcionário Empresa</option>
+                        <option value="adminHospital">Admin Hospital</option>
+                      </select>
+                    </div>
+                  </form>
+                </div>
 
-            function deletarr(id) {
-              usuarioSelecionado = id;
-              Swal.fire({
-                title: 'Deseja realmente excluir este usuário?',
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#e63946',
-                cancelButtonColor: '#2a9d8f',
-                confirmButtonText: 'Sim',
-                cancelButtonText: 'Não'
-              }).then((result) => {
-                if (result.isConfirmed) {
-                  deletar(usuarioSelecionado);
-                }
-              })
-            }
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                  <button type="button" class="btn btn-primary" onclick="editarUsuarioModal()">Salvar</button>
+                </div>
 
-            function fecharAlerta() {
-              var divAlerta = document.getElementById("divAlerta");
-              divAlerta.style.display = "none";
-            }
+              </div>
+            </div>
+          </div>
 
-            function deletar(id) {
-              if (!id) {
-                return;
-              }
+</body>
 
-              console.log("Me chamou deletar(id)", id);
-              fetch(`/contas/deleteConta/${id}`, {
-                method: "DELETE",
-                headers: {
-                  "Content-Type": "application/json"
-                }
-              })
-                .then(res => {
-                  return res.json();
-                })
-                .then(() => {
-                  puxarDados();
-                  fecharAlerta();
-                })
-                .catch(err => console.error(err));
-            }
+<script>
 
-            function puxarDados() {
-              console.log("Me chamou puxar(Dados)");
-              const perfil = Number(sessionStorage.CARGO_USUARIO);
+  function toggleSidebar() {
+    const sidebar = document.getElementById("sidebarModal");
+    const icone = document.getElementById("icone");
 
-              fetch("/contas/contas", {
-                method: "GET",
-                headers: {
-                  "Content-Type": "application/json"
-                },
-              })
-                .then(res => {
-                  if (!res.ok) {
-                    throw new Error("Erro na resposta da API");
-                  }
-                  return res.json();
-                })
-                .then(data => {
-                  listar(data)
-                })
-            }
+    sidebar.classList.toggle("active");
+  }
+
+  let usuarios = [];
+  let hospitais = [];
+  let usuarioSelecionado = null; // Id usuário
+
+  function mostrarNavbar() {
+    const larguraTela = window.innerWidth;
+    var menu = document.getElementById("navbar");
+    var icone = document.getElementById("icone");
+
+    if (larguraTela < 1342) {
+      if (getComputedStyle(menu).display == 'none') {
+        menu.style.display = "flex";
+        icone.classList.remove("fa-bars");
+        icone.classList.add("fa-times");
+      } else {
+        menu.style.display = "none";
+        icone.classList.remove("fa-times");
+        icone.classList.add("fa-bars");
+      }
+    }
+  }
+
+  function deletarr(id) {
+    usuarioSelecionado = id;
+    Swal.fire({
+      title: 'Deseja realmente excluir este usuário?',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#e63946',
+      cancelButtonColor: '#2a9d8f',
+      confirmButtonText: 'Sim',
+      cancelButtonText: 'Não'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        deletar(usuarioSelecionado);
+      }
+    })
+  }
+
+  function fecharAlerta() {
+    var divAlerta = document.getElementById("divAlerta");
+    divAlerta.style.display = "none";
+  }
+
+  function deletar(id) {
+    if (!id) {
+      return;
+    }
+
+    console.log("Me chamou deletar(id)", id);
+    fetch(`/contas/deleteConta/${id}`, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json"
+      }
+    })
+      .then(res => {
+        return res.json();
+      })
+      .then(() => {
+        puxarDados();
+        fecharAlerta();
+      })
+      .catch(err => console.error(err));
+  }
+
+  function puxarDados() {
+    console.log("Me chamou puxar(Dados)");
+    const perfil = Number(sessionStorage.CARGO_USUARIO);
+
+    fetch("/contas/contas", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json"
+      },
+    })
+      .then(res => {
+        if (!res.ok) {
+          throw new Error("Erro na resposta da API");
+        }
+        return res.json();
+      })
+      .then(data => {
+        listar(data)
+      })
+  }
 
 
-            function alterarAcesso(index) {
-              const usuario = usuarios[index];
-              const novoStatus = usuario.statusUser.toLowerCase() === "ativo" ? "inativo" : "ativo";
+  function alterarAcesso(index) {
+    const usuario = usuarios[index];
+    const novoStatus = usuario.statusUser.toLowerCase() === "ativo" ? "inativo" : "ativo";
 
-              fetch(`/contas/alterarAcesso/${usuario.id_usuario}`, {
-                method: "PUT",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ statusUser: novoStatus })
-              })
-                .then(res => res.json())
-                .then(() => {
-                  usuarios[index].statusUser = novoStatus;
-                  listar(usuarios);
-                })
-                .catch(err => console.error(err));
-            }
+    fetch(`/contas/alterarAcesso/${usuario.id_usuario}`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ statusUser: novoStatus })
+    })
+      .then(res => res.json())
+      .then(() => {
+        usuarios[index].statusUser = novoStatus;
+        listar(usuarios);
+      })
+      .catch(err => console.error(err));
+  }
 
-            function listar(data) {
-              console.log("Me chamou listar(data)");
-              console.log(data);
-              usuarios = data;
-              const tbody = document.getElementById('tbody_usuarios');
-              tbody.innerHTML = '';
+  function listar(data) {
+    console.log("Me chamou listar(data)");
+    console.log(data);
+    usuarios = data;
+    const tbody = document.getElementById('tbody_usuarios');
+    tbody.innerHTML = '';
 
-              for (let i = 0; i < data.length; i++) {
-                const usuario = data[i];
-                const tr = document.createElement('tr');
+    for (let i = 0; i < data.length; i++) {
+      const usuario = data[i];
+      const tr = document.createElement('tr');
 
-                tr.innerHTML = `
+      tr.innerHTML = `
                   <td class="colunaUsuario">${usuario.nomeHospital == null ? "Fly" : usuario.nomeHospital}</td>
                   <td class="colunaRepresentante">${usuario.nome}</td>
                   <td class="colunaEmail">${usuario.email}</td>
@@ -264,6 +353,12 @@
                     onclick="alterarAcesso(${i})">
                     ${usuario.statusUser.charAt(0).toUpperCase() + usuario.statusUser.slice(1)}</button>
                   </td>
+                  <td class="colunaEditar" style="text-align: center;">
+                    <button onclick="abrirModalEditar(${usuario.id_usuario})" 
+                    style="background: transparent; border: none; cursor: pointer;">
+                    <img src="../../assets/imgs/editar.png" alt="Editar" style="width: 20px; height: 20px;">
+                    </button>
+                  </td>
                   <td class="colunaDelete" style="text-align: center; ">
                     <button onclick="deletarr(${usuario.id_usuario})" 
                     style="background: transparent; border: none; cursor: pointer;">
@@ -271,42 +366,42 @@
                     </button>
                   </td>
                 `;
-                if (i % 2 === 0) {
-                  tr.style.backgroundColor = '#d3d3d3'; // cinza mais escuro
-                } else {
-                  tr.style.backgroundColor = '#ffffff'; // branco
-                }
-                tbody.appendChild(tr);
-              }
-              preencherSelectHospital();
-            }
+      if (i % 2 === 0) {
+        tr.style.backgroundColor = '#d3d3d3'; // cinza mais escuro
+      } else {
+        tr.style.backgroundColor = '#ffffff'; // branco
+      }
+      tbody.appendChild(tr);
+    }
+    preencherSelectHospital();
+  }
 
-            function buscarRepresentante(representante) {
-              console.log("Me chamou buscarRepresentante");
+  function buscarRepresentante(representante) {
+    console.log("Me chamou buscarRepresentante");
 
-              if (representante == '') {
-                puxarDados();
-                return
-              }
+    if (representante == '') {
+      puxarDados();
+      return
+    }
 
-              console.log(usuarios);
-              let dadosFiltroRepresentante = [];
-              for (let i = 0; i < usuarios.length; i++) {
-                if (usuarios[i].nome.replace(" ", "").toLowerCase().includes(representante.replace(" ", "").toLowerCase())) {
-                  dadosFiltroRepresentante.push(usuarios[i])
-                }
-              }
-              console.log("Dados filtrados por representante: ")
-              console.log(dadosFiltroRepresentante)
+    console.log(usuarios);
+    let dadosFiltroRepresentante = [];
+    for (let i = 0; i < usuarios.length; i++) {
+      if (usuarios[i].nome.replace(" ", "").toLowerCase().includes(representante.replace(" ", "").toLowerCase())) {
+        dadosFiltroRepresentante.push(usuarios[i])
+      }
+    }
+    console.log("Dados filtrados por representante: ")
+    console.log(dadosFiltroRepresentante)
 
-              const tbody = document.getElementById('tbody_usuarios');
-              tbody.innerHTML = '';
+    const tbody = document.getElementById('tbody_usuarios');
+    tbody.innerHTML = '';
 
-              for (let i = 0; i < dadosFiltroRepresentante.length; i++) {
-                const usuario = dadosFiltroRepresentante[i];
-                const tr = document.createElement('tr');
+    for (let i = 0; i < dadosFiltroRepresentante.length; i++) {
+      const usuario = dadosFiltroRepresentante[i];
+      const tr = document.createElement('tr');
 
-                tr.innerHTML = `
+      tr.innerHTML = `
                   <td class="colunaUsuario">${usuario.nomeHospital == null ? "Fly" : usuario.nomeHospital}</td>
                   <td class="colunaRepresentante">${usuario.nome}</td>
                   <td class="colunaEmail">${usuario.email}</td>
@@ -316,6 +411,12 @@
                     onclick="alterarAcesso(${i})">
                     ${usuario.statusUser.charAt(0).toUpperCase() + usuario.statusUser.slice(1)}</button>
                   </td>
+                  <td class="colunaEditar" style="text-align: center;">
+                    <button onclick="abrirModalEditar(${usuario.id_usuario})" 
+                    style="background: transparent; border: none; cursor: pointer;">
+                    <img src="../../assets/imgs/editar.png" alt="Editar" style="width: 20px; height: 20px;">
+                    </button>
+                  </td>
                   <td class="colunaDelete" style="text-align: center; ">
                     <button onclick="deletarr(${usuario.id_usuario})" 
                     style="background: transparent; border: none; cursor: pointer;">
@@ -323,47 +424,47 @@
                     </button>
                   </td>
                 `;
-                if (i % 2 === 0) {
-                  tr.style.backgroundColor = '#d3d3d3'; // cinza mais escuro
-                } else {
-                  tr.style.backgroundColor = '#ffffff'; // branco
-                }
-                tbody.appendChild(tr);
-              }
-            }
+      if (i % 2 === 0) {
+        tr.style.backgroundColor = '#d3d3d3'; // cinza mais escuro
+      } else {
+        tr.style.backgroundColor = '#ffffff'; // branco
+      }
+      tbody.appendChild(tr);
+    }
+  }
 
-            function preencherSelectHospital() {
-              const selectHospitais = document.getElementById('select_hospital');
-              for (let i = 0; i < usuarios.length; i++) {
-                if (usuarios[i].nomeHospital == null || usuarios[i].nomeHospital == '' || hospitais.includes(usuarios[i].nomeHospital)) {
-                } else {
-                  hospitais.push(usuarios[i].nomeHospital)
-                  selectHospitais.innerHTML +=
-                    `<option value="${usuarios[i].nomeHospital}">${usuarios[i].nomeHospital}</option>`
-                }
-              }
-              console.log(hospitais)
-            }
+  function preencherSelectHospital() {
+    const selectHospitais = document.getElementById('select_hospital');
+    for (let i = 0; i < usuarios.length; i++) {
+      if (usuarios[i].nomeHospital == null || usuarios[i].nomeHospital == '' || hospitais.includes(usuarios[i].nomeHospital)) {
+      } else {
+        hospitais.push(usuarios[i].nomeHospital)
+        selectHospitais.innerHTML +=
+          `<option value="${usuarios[i].nomeHospital}">${usuarios[i].nomeHospital}</option>`
+      }
+    }
+    console.log(hospitais)
+  }
 
-            function selecionarHospital() {
-              console.log("Me chamou selecionarHospital")
-              let hospitalSelecionado = select_hospital.value
-              console.log(hospitalSelecionado)
+  function selecionarHospital() {
+    console.log("Me chamou selecionarHospital")
+    let hospitalSelecionado = select_hospital.value
+    console.log(hospitalSelecionado)
 
-              if (hospitalSelecionado == "todos") {
-                puxarDados()
-                return
-              }
+    if (hospitalSelecionado == "todos") {
+      puxarDados()
+      return
+    }
 
-              const tbody = document.getElementById('tbody_usuarios');
-              tbody.innerHTML = '';
+    const tbody = document.getElementById('tbody_usuarios');
+    tbody.innerHTML = '';
 
-              for (let i = 0; i < usuarios.length; i++) {
-                const usuario = usuarios[i];
-                const tr = document.createElement('tr');
+    for (let i = 0; i < usuarios.length; i++) {
+      const usuario = usuarios[i];
+      const tr = document.createElement('tr');
 
-                if (usuario.nomeHospital == hospitalSelecionado) {
-                  tr.innerHTML = `
+      if (usuario.nomeHospital == hospitalSelecionado) {
+        tr.innerHTML = `
                   <td class="colunaUsuario">${usuario.nomeHospital == null ? "Fly" : usuario.nomeHospital}</td>
                   <td class="colunaRepresentante">${usuario.nome}</td>
                   <td class="colunaEmail">${usuario.email}</td>
@@ -373,6 +474,12 @@
                     onclick="alterarAcesso(${i})">
                     ${usuario.statusUser.charAt(0).toUpperCase() + usuario.statusUser.slice(1)}</button>
                   </td>
+                  <td class="colunaEditar" style="text-align: center;">
+                    <button onclick="abrirModalEditar(${usuario.id_usuario})" 
+                    style="background: transparent; border: none; cursor: pointer;">
+                    <img src="../../assets/imgs/editar.png" alt="Editar" style="width: 20px; height: 20px;">
+                    </button>
+                  </td>
                   <td class="colunaDelete" style="text-align: center; ">
                     <button onclick="deletarr(${usuario.id_usuario})" 
                     style="background: transparent; border: none; cursor: pointer;">
@@ -380,34 +487,34 @@
                     </button>
                   </td>
                 `;
-                if (i % 2 === 0) {
-                  tr.style.backgroundColor = '#d3d3d3'; // cinza mais escuro
-                } else {
-                  tr.style.backgroundColor = '#ffffff'; // branco
-                }
-                tbody.appendChild(tr);
-                }
-              }
-            }
+        if (i % 2 === 0) {
+          tr.style.backgroundColor = '#d3d3d3'; // cinza mais escuro
+        } else {
+          tr.style.backgroundColor = '#ffffff'; // branco
+        }
+        tbody.appendChild(tr);
+      }
+    }
+  }
 
-            function selecionarAtividade() {
-              console.log("Me chamou selecionarAtividade")
-              let atividadeSelecionado = select_atividade.value
+  function selecionarAtividade() {
+    console.log("Me chamou selecionarAtividade")
+    let atividadeSelecionado = select_atividade.value
 
-              if (atividadeSelecionado == "Ambos") {
-                puxarDados()
-                return
-              }
+    if (atividadeSelecionado == "Ambos") {
+      puxarDados()
+      return
+    }
 
-              const tbody = document.getElementById('tbody_usuarios');
-              tbody.innerHTML = '';
+    const tbody = document.getElementById('tbody_usuarios');
+    tbody.innerHTML = '';
 
-              for (let i = 0; i < usuarios.length; i++) {
-                const usuario = usuarios[i];
-                const tr = document.createElement('tr');
+    for (let i = 0; i < usuarios.length; i++) {
+      const usuario = usuarios[i];
+      const tr = document.createElement('tr');
 
-                if (usuario.statusUser == atividadeSelecionado) {
-                  tr.innerHTML = `
+      if (usuario.statusUser == atividadeSelecionado) {
+        tr.innerHTML = `
                   <td class="colunaUsuario">${usuario.nomeHospital == null ? "Fly" : usuario.nomeHospital}</td>
                   <td class="colunaRepresentante">${usuario.nome}</td>
                   <td class="colunaEmail">${usuario.email}</td>
@@ -417,6 +524,12 @@
                     onclick="alterarAcesso(${i})">
                     ${usuario.statusUser.charAt(0).toUpperCase() + usuario.statusUser.slice(1)}</button>
                   </td>
+                  <td class="colunaEditar" style="text-align: center;">
+                    <button onclick="abrirModalEditar(${usuario.id_usuario})" 
+                    style="background: transparent; border: none; cursor: pointer;">
+                    <img src="../../assets/imgs/editar.png" alt="Editar" style="width: 20px; height: 20px;">
+                    </button>
+                  </td>
                   <td class="colunaDelete" style="text-align: center; ">
                     <button onclick="deletarr(${usuario.id_usuario})" 
                     style="background: transparent; border: none; cursor: pointer;">
@@ -424,14 +537,149 @@
                     </button>
                   </td>
                 `;
-                if (i % 2 === 0) {
-                  tr.style.backgroundColor = '#d3d3d3'; // cinza mais escuro
-                } else {
-                  tr.style.backgroundColor = '#ffffff'; // branco
-                }
-                tbody.appendChild(tr);
-                }
-              }
-            }
+        if (i % 2 === 0) {
+          tr.style.backgroundColor = '#d3d3d3'; // cinza mais escuro
+        } else {
+          tr.style.backgroundColor = '#ffffff'; // branco
+        }
+        tbody.appendChild(tr);
+      }
+    }
+  }
 
-          </script>
+  const perfilModal = document.getElementById("perfilModal");
+  const divHospitalModal = document.getElementById("divHospitalModal");
+  const hospitalModal = document.getElementById("hospitalModal");
+
+  perfilModal.addEventListener("change", () => {
+    if (perfilModal.value === "Hospital") {
+      divHospitalModal.style.display = "block";
+      carregarHospitaisModal();
+    } else {
+      divHospitalModal.style.display = "none";
+    }
+  });
+
+  async function carregarHospitaisModal() {
+    const resposta = await fetch("/usuarios/listar");
+    const hospitais = await resposta.json();
+
+    hospitalModal.innerHTML = '<option disabled selected value="">Selecione o hospital</option>';
+    hospitais.forEach(hospital => {
+      const option = document.createElement("option");
+      option.value = hospital.id_hospital;
+      option.text = hospital.nomeHospital;
+      hospitalModal.appendChild(option);
+    });
+  }
+
+  function cadastrarModal() {
+    const nome = document.getElementById("nomeModal").value;
+    const email = document.getElementById("emailModal").value;
+    const senha = document.getElementById("senhaModal").value;
+    const confirmarSenha = document.getElementById("confirmSenhaModal").value;
+    const perfil = perfilModal.value;
+    let fkHospital = null;
+    let fkEmpresa = 1; // Default, você pode ajustar
+
+    if (perfil === "Hospital") fkHospital = hospitalModal.value;
+
+    if (senha !== confirmarSenha) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Erro',
+        text: 'As senhas não coincidem!',
+      });
+      return;
+    }
+
+    fetch("/usuarios/cadastrar", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        nomeServer: nome,
+        emailServer: email,
+        senhaServer: senha,
+        perfilServer: perfil,
+        fkEmpresaServer: fkEmpresa,
+        fkHospitalServer: fkHospital
+      })
+    })
+      .then(res => {
+        if (!res.ok) throw new Error('Erro ao cadastrar usuário');
+        return res.json();
+      })
+      .then(() => {
+        Swal.fire({
+          icon: 'success',
+          title: 'Sucesso',
+          text: 'Usuário cadastrado com sucesso!',
+          timer: 2000,
+          showConfirmButton: false
+        });
+        document.getElementById("formAdicionarUsuario").reset();
+        const modal = bootstrap.Modal.getInstance(document.getElementById("modalAdicionarUsuario"));
+        modal.hide();
+        puxarDados(); 
+      })
+      .catch(err => {
+        console.error(err);
+        Swal.fire({
+          icon: 'error',
+          title: 'Erro',
+          text: 'Não foi possível cadastrar o usuário!',
+        });
+      });
+  }
+
+  let usuarioEditarId = null;
+
+  function abrirModalEditar(id) {
+    usuarioEditarId = id;
+    const usuario = usuarios.find(u => u.id_usuario === id);
+
+    document.getElementById("nomeEditar").value = usuario.nome;
+    document.getElementById("emailEditar").value = usuario.email;
+    document.getElementById("perfilEditar").value = usuario.perfil;
+
+    const modal = new bootstrap.Modal(document.getElementById("modalEditarUsuario"));
+    modal.show();
+  }
+
+  function editarUsuarioModal() {
+    const nome = document.getElementById("nomeEditar").value;
+    const email = document.getElementById("emailEditar").value;
+    const perfil = document.getElementById("perfilEditar").value;
+
+    fetch(`/controle/editar/${usuarioEditarId}`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ nome, email, perfil })
+    })
+      .then(res => {
+        if (!res.ok) throw new Error('Erro ao editar usuário');
+        return res.json();
+      })
+      .then(() => {
+        const modal = bootstrap.Modal.getInstance(document.getElementById("modalEditarUsuario"));
+        modal.hide();
+        puxarDados();
+        Swal.fire({
+          icon: 'success',
+          title: 'Sucesso',
+          text: 'Usuário editado com sucesso!',
+          timer: 2000,
+          showConfirmButton: false
+        });
+      })
+      .catch(err => {
+        console.error(err);
+        Swal.fire({
+          icon: 'error',
+          title: 'Erro',
+          text: 'Não foi possível editar o usuário!',
+        });
+      });
+  }
+
+</script>

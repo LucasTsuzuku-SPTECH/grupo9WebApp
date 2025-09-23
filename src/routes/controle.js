@@ -7,4 +7,6 @@ router.get("/hospitais", function (req, res) {
     controleController.listarHospitais(req, res);
 });
 
+router.put("/editar/:id", controleController.editarUsuario);
+
 module.exports = router;
