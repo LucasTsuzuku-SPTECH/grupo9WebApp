@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./../../css/dashboards.css">
+    <link rel="icon" href="../assets/imgs/Zephyrus_2png.png" />
+    <title>Dashboard - Página Principal</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://kit.fontawesome.com/9f7414eb10.js" crossorigin="anonymous"></script>
+    <script src="../../js/sessao.js"></script>
+</head>
+
+<body>
+    <div class="div-pai">
+
+        <!-- Cabeçalho -->
+        <header>
+            <div class="header-container">
+                <div class="div-hamburguer">
+                    <!-- Botão Hamburguer -->
+                    <a class="navbar-mob" onclick="toggleSidebar()">
+                        <i id="icone" class="fa-solid fa-bars fa-2x"></i>
+                    </a>
+                </div>
+                <h2>DASHBOARD - PÁGINA PRINCIPAL</h2>
+                <div class="div-pai-perfil">
+                    <div class="div-linha"></div>
+                    <div class="div-todo-perfil">
+                        <div class="div-filho-perfil">
+                            <img src="../../assets/imgs/profile.png" alt="imagem de perfil" class="img-perfil" />
+                            <img src="../../assets/imgs/seta-para-baixo-braca.png" alt="ver opções" class="img-seta" />
+                        </div>
+                        <div class="div-opcoes">
+                            <div class="div-opcao-sair">
+                                <button style="border: none;" onclick="limparSessao()"
+                                    id="sair"><span>Sair</span></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Sidebar Modal -->
+        <div id="sidebarModal" class="sidebar-modal">
+            <div class="sidebar-header">
+                <span>Menu</span>
+                <button onclick="toggleSidebar()" class="btn-fechar">&times;</button>
+            </div>
+            <nav class="sidebar-nav">
+                <a href="./mainPage.html">Página principal</a>
+                <a href="./controleHospitais.html">Hospitais</a>
+                <a href="./contas.html">Contas</a>
+            </nav>
+        </div>
+
+        <!-- KPIs de hospitais -->
+        <div class="kpi">
+            <div class="item">
+                <p>Quantidade Hospitais:</p>
+                <h3 id="qtde_total">0</h3>
+            </div>
+            <div class="item">
+                <p>Quantidade Hospitais Crítico:</p>
+                <h3 id="qtde_critico">0</h3>
+            </div>
+            <div class="item">
+                <p>Quantidade Hospitais Alerta:</p>
+                <h3 id="qtde_alerta">0</h3>
+            </div>
+            <div class="item">
+                <p>Quantidade Hospitais Estável:</p>
+                <h3 id="qtde_estavel">0</h3>
+            </div>
+        </div>
+
+        <!-- Conteúdo principal -->
+        <div class="conteudo-principal"></div>
+        </div>
+    </div>
+</body>
+
+
+</html>
+<script src="../js/chart.js"></script>
+
+<script>
+
+    function toggleSidebar() {
+        const sidebar = document.getElementById("sidebarModal");
+        const icone = document.getElementById("icone");
+
+        sidebar.classList.toggle("active");
+    }
+
+    function mostrarNavbar() {
+        const larguraTela = window.innerWidth;
+        var menu = document.getElementById("navbar");
+        var icone = document.getElementById("icone");
+
+        if (larguraTela < 1342) {
+            if (getComputedStyle(menu).display == 'none') {
+                menu.style.display = "flex";
+                icone.classList.remove("fa-bars");
+                icone.classList.add("fa-times");
+            } else {
+                menu.style.display = "none";
+                icone.classList.remove("fa-times");
+                icone.classList.add("fa-bars");
+            }
+        }
+    }
+    function Sair() {
+        const sair = document.getElementById("sair")
+
+        if (sair) {
+            localStorage.removeItem("email")
+            localStorage.removeItem("senha")
+
+            sessionStorage.clear()
+            console.log(sessionStorage)
+
+            window.location.href = "../../index.html"
+        }
+    }
+
+    // Ao carregar a página, buscar hospitais
+    window.onload = () => {
+        carregarHospitais();
+    };
+
+    function carregarHospitais() {
+        fetch("/controle/hospitais")
+            .then(resposta => resposta.json())
+            .then(hospitais => {
+                const container = document.querySelector(".conteudo-principal");
+                container.innerHTML = "";
+
+                let total = hospitais.length;
+                let estavel = 0, alerta = 0, critico = 0;
+
+                hospitais.forEach(hospital => {
+                    // Status mockado (aleatório por enquanto)
+                    const statusOpcoes = ["estavel", "alerta", "critico"];
+                    const statusClass = statusOpcoes[Math.floor(Math.random() * statusOpcoes.length)];
+
+                    if (statusClass === "estavel") estavel++;
+                    if (statusClass === "alerta") alerta++;
+                    if (statusClass === "critico") critico++;
+
+                    // Criar card
+                    const divHospital = document.createElement("div");
+                    divHospital.classList.add("card-hospital");
+
+                    const nome = document.createElement("h3");
+                    nome.innerText = hospital.nomeHospital;
+
+                    const status = document.createElement("span");
+                    status.innerText = statusClass; // mostra estavel/alerta/critico
+                    status.classList.add("status", statusClass);
+
+                    divHospital.appendChild(nome);
+                    divHospital.appendChild(status);
+
+                    container.appendChild(divHospital);
+                });
+
+                // Atualizar KPIs
+                document.getElementById("qtde_total").innerText = total;
+                document.getElementById("qtde_estavel").innerText = estavel;
+                document.getElementById("qtde_alerta").innerText = alerta;
+                document.getElementById("qtde_critico").innerText = critico;
+            })
+            .catch(erro => {
+                console.error("Erro:", erro);
+            });
+    }
+
+
+</script>

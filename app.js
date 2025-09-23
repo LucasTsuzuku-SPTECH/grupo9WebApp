@@ -19,6 +19,7 @@ var indexRouter = require("./src/routes/index");
 var usuarioRouter = require("./src/routes/usuarios");
 var contasRouter = require("./src/routes/contas");
 var maquinasRouter = require("./src/routes/maquinas");
+var controleRouter = require("./src/routes/controle");
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
@@ -30,6 +31,8 @@ app.use("/", indexRouter);
 app.use("/usuarios", usuarioRouter);
 app.use("/contas", contasRouter);
 app.use("/maquinas", maquinasRouter);
+app.use("/controle", controleRouter);
+
 
 app.listen(PORTA_APP, function () {
     console.log(`

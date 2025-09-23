@@ -73,8 +73,6 @@ function cadastrar(req, res){
         );
 }
 
-
-
 module.exports = {
     mostrarMaquinas,
     deletarMaquina,

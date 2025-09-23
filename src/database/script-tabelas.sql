@@ -1,72 +1,71 @@
-	create database fly;
-	use fly;
+drop database if exists zephyrus;
 
-	create table Endereco (
-	id_endereco int primary key auto_increment,
-	logradouro varchar(150) not null,
-	numero varchar(10),
-	bairro varchar(100),
-	cidade varchar(100) not null,
-	estado char(2) not null,
-	cep varchar(15)
-	);
+-- Criação do banco de dados
+create database zephyrus;
+    
+use zephyrus;
 
-	create table EmpresaFabricante (
-	id_empresa int primary key auto_increment,
-	nome varchar(100) not null,
-	cnpj varchar(20) unique not null,
-	email varchar(100),
-	fk_endereco int unique,
-	foreign key (fk_endereco) references Endereco(id_endereco)
-	);
+create table Endereco (
+id_endereco int primary key auto_increment,
+logradouro varchar(150) not null,
+numero varchar(10),
+bairro varchar(100),
+cidade varchar(100) not null,
+estado char(2) not null,
+cep varchar(15)
+);
 
-	create table Hospital (
-	id_hospital int primary key auto_increment,
-	nomeHospital varchar(100) not null,
-	cnpj varchar(20) unique not null,
-	fk_endereco int unique,
-	fk_empresa int not null,
-	foreign key (fk_endereco) references Endereco(id_endereco),
-	foreign key (fk_empresa) references EmpresaFabricante(id_empresa)
-	);
+create table EmpresaFabricante (
+id_empresa int primary key auto_increment,
+nome varchar(100) not null,
+cnpj varchar(20) unique not null,
+email varchar(100),
+fk_endereco int,
+foreign key (fk_endereco) references Endereco(id_endereco)
+);
 
-	create table Usuario (
-	id_usuario int primary key auto_increment,
-	nome varchar(100) not null,
-	email varchar(100) unique not null,
-	senha_hash varchar(200) not null,
-	perfil enum('empresa', 'hospital', 'adminHospital', 'adminEmpresa') not null,
+create table Hospital (
+id_hospital int primary key auto_increment,
+nomeHospital varchar(100) not null,
+cnpj varchar(20) unique not null,
+fk_endereco int,
+fk_empresa int not null,
+foreign key (fk_endereco) references Endereco(id_endereco),
+foreign key (fk_empresa) references EmpresaFabricante(id_empresa)
+);
+
+create table Usuario (
+id_usuario int primary key auto_increment,
+nome varchar(100) not null,
+email varchar(100) unique not null,
+senha_hash varchar(200) not null,
+perfil enum('empresa', 'hospital', 'adminHospital', 'adminEmpresa') not null,
     statusUser varchar(8),
-	fk_empresa int,
-	fk_hospital int,
+fk_empresa int,
+fk_hospital int,
     constraint ck_status check(statusUser in ('ativo','inativo')),
-	foreign key (fk_empresa) references EmpresaFabricante(id_empresa),
-	foreign key (fk_hospital) references Hospital(id_hospital)
-	);
+foreign key (fk_empresa) references EmpresaFabricante(id_empresa),
+foreign key (fk_hospital) references Hospital(id_hospital)
+);
 
-	create table Modelo (
-	id_modelo int primary key auto_increment,
-	nome varchar(100) not null,
-	descricao varchar(200)
-	);
+create table Modelo (
+id_modelo int primary key auto_increment,
+nome varchar(100) not null,
+descricao varchar(200)
+);
 
-	create table Ventilador (
-	id_ventilador int primary key auto_increment,
-	numero_serie varchar(50) unique not null,
-    sala int not null,
-    andar int not null,
-	fk_modelo int not null,
-	fk_hospital int not null,
-	fk_empresa int not null,
-	foreign key (fk_modelo) references Modelo(id_modelo),
-	foreign key (fk_hospital) references Hospital(id_hospital),
-	foreign key (fk_empresa) references EmpresaFabricante(id_empresa)
-	);	
+create table Ventilador (
+id_ventilador int primary key auto_increment,
+numero_serie varchar(50) unique not null,
+fk_modelo int not null,
+fk_hospital int not null,
+fk_empresa int not null,
+foreign key (fk_modelo) references Modelo(id_modelo),
+foreign key (fk_hospital) references Hospital(id_hospital),
+foreign key (fk_empresa) references EmpresaFabricante(id_empresa)
+);
     
-    
-    
-    
-    
+
 -- Inserts
 -- Endereços
 insert into Endereco (logradouro, numero, bairro, cidade, estado, cep) values
@@ -90,12 +89,28 @@ insert into Usuario (nome, email, senha_hash, perfil,statusUser, fk_empresa, fk_
 ('Dr. Carlos', 'carlos@saolucas.org', 'hash789', 'adminHospital','ativo', null, 1),
 ('Ana Paula', 'ana@santamaria.org', 'hash000', 'hospital','ativo', null, 2);
 
+-- Modelos
 insert into Modelo (nome, descricao) values
 ('VX-1000', 'Ventilador pulmonar para UTI adulto'),
 ('VX-2000', 'Ventilador pulmonar neonatal'),
 ('AirPlus Pro', 'Modelo portátil para emergências');
 
-insert into Ventilador (numero_serie, sala, andar, fk_modelo, fk_hospital, fk_empresa) values
-('SN12345', 1, 2, 1, 1, 1),
-('SN67890', 1, 1, 2, 1, 1),
-('SN11111', 1, 1, 3, 2, 1);
+-- Ventiladores (sempre ligados à mesma empresa)
+insert into Ventilador (numero_serie, fk_modelo, fk_hospital, fk_empresa) values
+('SN12345', 1, 1, 1),
+('SN67890', 2, 1, 1),
+('SN11111', 3, 2, 1);
+
+desc Usuario;
+select * from Usuario;
+select * from Hospital;
+
+create user 'zep_admin'@'%' identified by "Ventilador@123";
+
+GRANT SELECT, INSERT, UPDATE, DELETE ON zephyrus.* TO 'zep_admin'@'%';
+
+flush privileges;
+
+select * from Usuario u
+left join Hospital h 
+on u.fk_hospital = h.id_hospital;

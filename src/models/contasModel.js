@@ -1,17 +1,17 @@
 var database = require("../database/config");
 
-function listarTodasContas(){
+function listarTodasContas() {
     console.log("ACESSEI O CONTASMODEL");
-    var instrucaoSql=`
+    var instrucaoSql = `
    select *  from Usuario u
 left join Hospital h 
 on u.fk_hospital = h.id_hospital
 where u.perfil != 'hospital';`
-    return database.executar(instrucaoSql); 
+    return database.executar(instrucaoSql);
 }
 
 
-function listarHospitalContas(fk_hospital){
+function listarHospitalContas(fk_hospital) {
     console.log("ACESSEI O CONTASMODEL");
     var instrucaoSql = `
         select *  
@@ -19,13 +19,13 @@ function listarHospitalContas(fk_hospital){
         left join Hospital h on u.fk_hospital = h.id_hospital
         where u.perfil = 'hospital' and u.fk_hospital = ${fk_hospital};
     `;
-    return database.executar(instrucaoSql); 
+    return database.executar(instrucaoSql);
 }
 
 
-function deletarConta(id){
+function deletarConta(id) {
     console.log("entrei no contasmodel");
-    var instrucaoSql=`
+    var instrucaoSql = `
     delete from Usuario where id_usuario = ${id}
     `
     return database.executar(instrucaoSql);
@@ -42,7 +42,7 @@ function atualizarAcesso(id, novoStatus) {
     return database.executar(instrucaoSql);
 }
 
-module.exports={
+module.exports = {
     listarTodasContas,
     listarHospitalContas,
     deletarConta,

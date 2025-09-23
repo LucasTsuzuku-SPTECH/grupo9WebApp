@@ -110,45 +110,57 @@
       localStorage.removeItem("senha")
     }
 
-  fetch("/usuarios/autenticar", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ emailServer: emailVar, senhaServer: senhaVar })
-  })
-  .then(resposta => {
-    // statusUser=sessionStorage.STATUS=json.statusUser
-    // if(statusUser==ativo)resposta.ok=false
-    if (resposta.ok) {
-      
-      resposta.json().then(json => {
-        let status=json.statusUser
-        console.log(status)
+    fetch("/usuarios/autenticar", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ emailServer: emailVar, senhaServer: senhaVar })
+    })
+      .then(resposta => {
+        // statusUser=sessionStorage.STATUS=json.statusUser
+        // if(statusUser==ativo)resposta.ok=false
+        if (resposta.ok) {
 
-        if(status=="inativo"){
-        erro.style.display = "block"
-        erro.innerHTML = "conta inválida!"
-        console.log("entrei no if")
-        return
+          resposta.json().then(json => {
+            let status = json.statusUser
+            console.log(status)
+
+            if (status == "inativo") {
+              erro.style.display = "block"
+              erro.innerHTML = "conta inválida!"
+              return
+            }
+
+            sessionStorage.EMAIL_USUARIO = json.email
+            sessionStorage.NOME_USUARIO = json.nome
+            sessionStorage.ID_USUARIO = json.id_usuario
+            sessionStorage.CARGO_USUARIO = json.perfil
+            sessionStorage.HOSPITAL_USUARIO = json.fk_hospital
+            sessionStorage.EMPRESA_USUARIO = json.fk_empresa
+
+            // Redirecionar conforme perfil
+            if (json.perfil == "empresa" || json.perfil == "adminEmpresa") {
+              setTimeout(() => {
+                window.location = "./dashboard/Empresa/mainPage.html"
+              }, 1000)
+            } else if (json.perfil == "hospital" || json.perfil == "adminHospital") {
+              setTimeout(() => {
+                window.location = "./dashboard/Hospital/mainPage.html"
+              }, 1000)
+            } else {
+              erro.style.display = "block"
+              erro.innerHTML = "Perfil não reconhecido!"
+            }
+          })
+        } else {
+          resposta.text().then(texto => {
+            console.error(texto)
+            erro.style.display = "block"
+            erro.innerHTML = "E-mail ou senha inválidos!"
+            finalizarAguardar(texto)
+          })
         }
-
-        sessionStorage.EMAIL_USUARIO = json.email
-        sessionStorage.NOME_USUARIO = json.nome
-        sessionStorage.ID_USUARIO = json.id_usuario
-        sessionStorage.CARGO_USUARIO = json.perfil
-        sessionStorage.HOSPITAL_USUARIO = json.fk_hospital
-        sessionStorage.EMPRESA_USUARIO=json.fk_empresa
-        setTimeout(() => window.location = "../dashboard/mainPage.html", 1000)
       })
-    } else {
-      resposta.text().then(texto => {
-        console.error(texto)
-        erro.style.display = "block"
-        erro.innerHTML = "E-mail ou senha inválidos!"
-        finalizarAguardar(texto)
-      })
-    }
-  })
-  .catch(erro => console.log(erro))
+      .catch(erro => console.log(erro))
 
     return false
   }

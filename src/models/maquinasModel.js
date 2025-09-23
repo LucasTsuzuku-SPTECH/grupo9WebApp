@@ -25,7 +25,6 @@ function deletarMaquina(id){
     delete from Ventilador where id_ventilador = ${id}
     `
     return database.executar(instrucaoSql);
-
 }
 
 // function atualizarAcesso(id, novoStatus) {

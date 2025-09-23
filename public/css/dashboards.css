@@ -1,3 +1,6 @@
+/* ===========================
+   VARIÁVEIS DE CORES
+=========================== */
 :root {
   --branco: #ffffff;
   --preto: #000;
@@ -8,9 +11,9 @@
   --vermelho: #e60e3a;
 }
 
-a {
-  text-decoration: none;
-}
+/* ===========================
+   RESET & BASE
+=========================== */
 * {
   box-sizing: border-box;
   margin: 0;
@@ -21,101 +24,70 @@ body {
   font-family: Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue",
     sans-serif;
   background-color: var(--branco);
-}
-
-.div-pai {
-  display: flex;
-  flex-wrap: wrap;
-}
-
-h2 {
   color: var(--preto);
 }
 
-h1 {
-  color: var(--preto);
+a {
+  text-decoration: none;
+  color: inherit;
 }
 
-/* NAVBAR */
-
+/* ===========================
+   HEADER
+=========================== */
 header {
   background-color: var(--verde-1);
-  width: 100%;
   height: 102px;
+  width: 100%;
   display: flex;
   align-items: center;
-  justify-content: center;
-}
-
-/* .div-hamburguer {
-    display: block;
-    height: 200px;
-} */
-.header-container i {
-  font-size: 30px;
-  display: none;
-}
-
-.navbar {
-  display: none;
-}
-
-/* BOTÃO PARA SAIR */
-
-.div-pai-perfil {
-  display: flex;
   justify-content: space-between;
+  padding: 0 50px;
+}
+
+.header-container {
+  display: flex;
   align-items: center;
-  width: 8vw;
+  justify-content: space-between;
+  width: 100%;
 }
 
-/* '.div-linha' é aquela linha ao lado do perfil (para sair)  */
-.div-linha {
-  height: 5vh;
-  width: 3px;
-  background-color: var(--preto);
+/* Ícone do menu hambúrguer */
+.menu-btn {
+  font-size: 32px;
+  color: var(--verde-4);
+  cursor: pointer;
+  background: none;
+  border: none;
 }
 
-/* '.div-todo-perfil' é todo aquele ' img de perfil e a opção de sair' */
+/* ===========================
+   PERFIL / BOTÃO SAIR
+=========================== */
 .div-todo-perfil {
-  width: 90px;
   position: relative;
+  width: 90px;
 }
 
-/* '.div-filho-perfil' é a parte das imagens de perfil e a seta para baixo*/
 .div-filho-perfil {
   background-color: var(--verde-4);
   border-radius: 15px;
   display: flex;
+  align-items: center;
   justify-content: space-between;
-  align-items: center;
-}
-
-/* '.div-opcao-sair' é a div que está o texto 'Sair'*/
-.div-filho-perfil,
-.div-opcao-sair {
-  display: flex;
-  align-items: center;
   padding: 9px;
-  border-bottom-left-radius: 15px;
-  border-bottom-right-radius: 15px;
-  color: var(--branco);
-  justify-content: space-around;
-  text-align: center;
-}
-
-.div-filho-perfil:focus,
-.div-filho-perfil:hover {
-  border-bottom-left-radius: 0;
-  border-bottom-right-radius: 0;
-}
-
-.div-opcao-sair span {
-  background-color: transparent;
-  color: var(--branco);
-  text-decoration: none;
-  background-color: var(--verde-4);
   cursor: pointer;
+  color: var(--branco);
+}
+
+.div-filho-perfil img {
+  width: 35px;
+  height: 35px;
+}
+
+.div-filho-perfil .img-seta {
+  width: 20px;
+  height: 20px;
 }
 
 .div-opcoes {
@@ -123,479 +95,262 @@ header {
   position: absolute;
   background: var(--verde-4);
   width: 100%;
+  border-bottom-left-radius: 15px;
+  border-bottom-right-radius: 15px;
+}
+
+.div-opcoes span {
+  display: block;
+  padding: 9px;
+  color: var(--branco);
+  cursor: pointer;
 }
 
 .div-todo-perfil:hover .div-opcoes {
-  border-bottom-left-radius: 15px;
-  border-bottom-right-radius: 15px;
   display: block;
 }
 
-.div-todo-perfil .img-perfil {
-  width: 35px;
-  height: 35px;
-}
-
-.div-todo-perfil .img-seta {
-  width: 20px;
-  height: 20px;
-}
-
-header .header-container {
-  width: 100%;
+/* ===========================
+   SIDEBAR (MODAL FIXO)
+=========================== */
+.sidebar-modal {
+  position: fixed;
+  top: 0;
+  left: -300px;
+  width: 250px;
   height: 100%;
+  background-color: var(--verde-4);
+  box-shadow: 2px 0 8px rgba(0,0,0,0.3);
+  transition: left 0.3s ease;
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+  padding-top: 20px;
+}
+
+.sidebar-modal.active {
+  left: 0;
+}
+
+.sidebar-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-left: 300px;
-  margin-right: 50px;
-}
-
-/* FIM DO BOTÃO PARA SAIR */
-
-/* FIM DA NAVBAR */
-
-/* SIDEBAR */
-
-.div-pai .div-sidebar {
-  background-color: var(--verde-4);
-  position: fixed;
-  /* position: absolute; */
-  top: 0;
-  left: 0;
-  width: 250px;
-  height: 100vh;
-}
-
-.div-sidebar .div-img {
-  margin: 30px 20px 20px 30px; /* cima, direita, baixo e esquerda */
-  display: flex;
-  justify-content: center;
-}
-
-.div-sidebar img {
-  width: 100px;
-}
-
-.div-sidebar .div-botoes {
-  margin: 70px 0 10px 0; /* cima, direita, baixo e esquerda */
-}
-
-/* Div que está em volta dos botões (o botão da tela que você está atualmente)*/
-.div-sidebar .div-botoes .div-btComImg {
-  display: flex;
-  margin-bottom: 20px;
-  width: 100%;
-  height: 50px;
-  padding: 7px;
-  justify-content: space-evenly;
-  align-items: center;
-  border-left: 1px solid transparent;
-  transition: all 0.3s ease;
-  font-size: 20px;
-}
-
-.div-sidebar .div-botoes .div-btEscolhido {
-  border-left: 3px solid var(--verde-1);
-  background: var(--verde-3);
-}
-
-.div-sidebar a {
-  height: 60%;
-  text-decoration: none;
+  padding: 15px;
   color: var(--branco);
-}
-
-.div-sidebar .div-botoes .div-btComImg:hover {
-  border-left: 3px solid var(--verde-1);
-  background: var(--verde-2);
-}
-
-/* O ".div-restricoes" é a div para os botões das telas que você NÃO está */
-.div-sidebar .div-botoes .div-restricoes .div-btComImg {
-  background-color: transparent;
-  box-shadow: none;
-}
-
-.div-sidebar .div-botoes .div-btComImg img {
-  width: 25px;
-  height: 25px;
-}
-
-.div-sidebar .div-botoes .div-btComImg button {
-  background-color: transparent;
-  border: 0;
-  color: var(--branco);
-  font-size: 15px;
   font-weight: bold;
+  border-bottom: 1px solid rgba(255,255,255,0.2);
+}
+
+.btn-fechar {
+  background: none;
+  border: none;
+  font-size: 28px;
+  color: var(--branco);
   cursor: pointer;
 }
 
-@media (max-width: 1342px) {
-  .div-sidebar {
-    display: none;
-  }
-
-  .container .conteudo-principal {
-    margin-left: 0;
-  }
-
-  header .header-container {
-    margin-left: 0;
-    display: flex;
-    justify-content: space-around;
-  }
-
-  /* .div-block .div-procura {
-        display: block;
-    } */
-}
-
-@media screen and (max-width: 570px) {
-  .header-container h2 {
-    display: none;
-  }
-  .header-container h2 {
-    display: none;
-  }
-}
-
-@media screen and (max-width: 683px) {
-  .div-procura {
-    flex-direction: column;
-  }
-}
-
-@media screen and (max-width: 1342px) {
-  /* .navbar-mob {
-        display: block;
-    } */
-
-  .navbar-mob i {
-    display: block;
-    font-size: 30px;
-    color: var(--verde-4);
-    cursor: pointer;
-  }
-  /* 
-    .navbar {
-        display: block;
-        align-items: center;
-        flex-wrap: wrap;
-    } */
-
-  .navbar a {
-    width: 100%;
-    text-align: center;
-    justify-self: center;
-    margin: 0;
-    padding: 10px 0;
-    border-top: 1px solid var(--branco);
-    color: var(--branco);
-  }
-
-  .navbar {
-    display: none;
-    flex-direction: column;
-    justify-content: space-around;
-    background-color: #264653e6;
-    position: absolute;
-    top: 83px;
-    left: 0px;
-    height: 200px;
-    width: 20em;
-    border-radius: 15px;
-  }
-}
-
-button i {
-  font-size: 17px;
-  color: var(--vermelho);
-}
-
-/* FIM SIDEBAR */
-
-/* PARTE PRINCIPAL DA TELA (CONTAINER) */
-
-.container {
+.sidebar-nav {
   display: flex;
-  justify-content: center;
-  width: 100vw;
-  /* height: 100vh; */
-}
-
-.conteudo-principal {
-  width: 100%;
-  height: 100%;
-  margin-left: 250px;
-}
-
-.div-flex {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
-  height: auto;
-  flex-wrap: wrap;
-  /* background-color: #264653; */
-}
-
-.div-flex .div-kpis {
-  /* background-color: #264653; */
-  width: 50%;
-  margin-top: 30px;
-  height: auto;
-  flex-wrap: wrap;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.div-flex .div-kpis .kpi-risco {
-  background: var(--vermelho);
-}
-
-.div-graf-barra-1 {
-  background-color: var(--verde-3);
-  width: 50%;
-}
-
-.kpi {
-  width: 230px;
-  height: 115px;
-  margin: 20px;
-  border-radius: 10px;
-  background: var(--verde-1);
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  flex-direction: column;
   padding: 15px;
 }
 
-.kpi h1 {
-  margin: 0;
-}
-.kpi p {
-  margin: 0;
-}
-
-.kpi img {
-  width: 37px;
-  height: 37px;
+.sidebar-nav a {
+  color: var(--branco);
+  padding: 10px 0;
+  transition: background 0.2s;
 }
 
-.div-block {
-  width: 70%;
-}
+.sidebar-nav a:hover {
+  background: rgba(255,255,255,0.1);
+  border-radius: 4px;
+} 
 
-.div-kpi-img {
-  width: 50px;
-  height: 50px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background-color: var(--verde-3);
-  border-radius: 50%;
-}
-
-.kpi-risco .div-kpi-img {
-  background-color: var(--verde-4);
-}
-
-.teste {
+/* Conteúdo principal */
+.conteudo-principal {
+    padding: 30px;
     display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
 }
 
-.container .div-centralizar-metrica {
+/* Links de ação */
+.div-links-contas {
     display: flex;
     justify-content: center;
-    align-items: center;
-    width: auto;
-    height: 100%;
-    background-color: var(--branco);
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.6);
-    border-radius: 10px;
+    gap: 20px;
+    flex-wrap: wrap;
+    margin-bottom: 30px;
 }
 
-.container .div-head-metricas {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 15px;
+.div-links-contas a {
+    background-color: var(--verde-3);
+    color: var(--branco);
+    padding: 15px 25px;
+    border-radius: 12px;
+    font-weight: bold;
+    text-decoration: none;
+    transition: all 0.3s ease;
 }
 
-.div-texto {
-    color: white;
-    font-size: 20px;
-    border-bottom: 1px solid white;
+.div-links-contas a:hover {
+    background-color: var(--verde-2);
+    color: var(--preto);
+    transform: translateY(-3px);
 }
 
-/* CONTAS.HTML */
-
-.mostrarUsuarios {
-    position: absolute;
-    z-index: -10;
-    overflow-x: scroll;
-    overflow-y: scroll;
-    scrollbar-color: var(--verde-2);
-    margin-top: 30px;
-    height: 200px;
-    margin-bottom: 40px;
-    width: 65%;
-    /* border: var(--verde-3) 2px solid; */
-}
-
-select,
-option {
-  cursor: pointer;
-}
-
-table {
-    position: relative;
-    z-index: 0;
-    width: 100%;
-  border-collapse: collapse;
-}
-
-table .colunaDelete {
-  text-align: center;
-}
-
-td,
-th {
-  text-align: left;
-  padding: 10px;
-}
-
-td {
-  border-bottom: 1px solid #008080;
-}
-
-.colunaDelete {
-  text-align: left;
-}
-
-thead {
-  border: 2px solid #2a9d8f;
-}
-
-.div-block a {
-  background-color: var(--verde-3);
-  width: 15rem;
-  height: 4rem;
-  border-radius: 15px;
-  padding: 4px;
-  text-align: center;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: var(--branco);
-  margin-top: 30px;
-  margin-bottom: 30px;
-  transition: transform 0.2s ease-in-out;
-  border: 2px solid var(--verde-3);
-  text-decoration: none;
-}
-
-.div-block a:hover {
-  transform: translateY(-3px);
-}
-
-.div-block a:active {
-  color: var(--verde-3);
-  background-color: var(--branco);
-  border: 2px solid var(--verde-3);
-}
-
-.div-block .div-links-contas {
-  display: flex;
-  justify-content: space-evenly;
-  align-items: center;
-  flex-wrap: wrap;
-}
-
+/* Inputs e selects */
 .div-procura {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  flex-wrap: wrap;
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-bottom: 20px;
 }
-.div-procura .div-ipt-procura {
-  flex-direction: column;
-  height: 5rem;
-  width: 15rem;
-  display: flex;
-  align-items: center;
-  justify-content: space-evenly;
-  border-radius: 7px;
-  border: 2px solid var(--verde-3);
-  margin-bottom: 15px;
-  padding: 4px;
-  /* clip-path: polygon(0 25px, 25px 0, calc(100% - 25px) 0, 100% 25px, 100% calc(100% - 25px), calc(100% - 25px) 100%, 25px 100%, 0 calc(100% - 25px)); */
+
+.div-ipt-procura {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
 }
 
 .div-ipt-procura label {
-  color: black;
-  font-weight: bold;
+    font-weight: bold;
+    color: var(--preto);
 }
 
-.div-ipt-procura .ipt_procura {
-  /* border: 0; */
-  height: 30px;
-  border: none;
-  border-bottom: 2px solid var(--vermelho);
-  outline: none;
-  /* border-bottom: 2px solid linear-gradient(to right, #6E035C 0%, #B94FFA 50%, #6E035C 100%); */
-}
-
- 
-/* ALERTA */
-
-.div-block .div-alerta {
-    width: 500px;
-    height: 250px;
-    padding: 20px;
-    background-color: var(--branco);
-    position: absolute;
-    z-index: 100;
-    border-radius: 15px;
-    border: 2px var(--verde-3) solid;
-    text-align: center;
-    margin-left: 80px;
-    display: none;
-    justify-content: space-between;
-    flex-direction: column;
-}
-
-
-.div-block .div-alerta .div-img img {
-    width: 100px;
-    height: 100px;
-}
-
-
-.div-block .div-alerta .div-escolha {
-    display: flex;
-    justify-content: space-evenly;
-}
-.div-block .div-alerta .botao {
-    cursor: pointer;
-    height: 40px;
-    width: 80px;
+.ipt_procura {
+    padding: 8px 10px;
+    border: 2px solid var(--verde-3);
     border-radius: 8px;
+    outline: none;
+    transition: 0.2s;
+}
+
+.ipt_procura:focus {
+    border-color: var(--verde-2);
+}
+
+/* Tabela de usuários */
+.mostrarUsuarios {
+    width: 100%;
+    max-width: 900px;
+    overflow-x: auto;
+    margin-top: 20px;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    background-color: var(--branco);
+}
+
+.mostrarUsuarios table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.mostrarUsuarios th,
+.mostrarUsuarios td {
+    padding: 12px 15px;
+    text-align: left;
+}
+
+.mostrarUsuarios thead {
+    background-color: var(--verde-3);
+    color: var(--branco);
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+.mostrarUsuarios tbody tr:nth-child(even) {
+    background-color: var(--verde-1);
+}
+
+.mostrarUsuarios tbody tr:hover {
+    background-color: var(--verde-2);
+    cursor: pointer;
+}
+
+/* Botão deletar na tabela */
+.colunaDelete button img {
+    width: 20px;
+    height: 20px;
+}
+
+/* SweetAlert será usado para alertas - não precisa de CSS extra */
+
+/* Responsividade */
+@media (max-width: 768px) {
+    .div-procura {
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .div-links-contas {
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .mostrarUsuarios {
+        max-width: 100%;
+    }
+}
+
+/* Centraliza todos os cabeçalhos da tabela */
+table thead th {
+    text-align: center;
+    white-space: nowrap;  /* impede quebra de linha */
+}
+
+/* Centraliza os conteúdos das células, exceto texto longo se necessário */
+table tbody td {
+    text-align: center;
+    vertical-align: middle;
+}
+
+/* Impede quebra de linha na coluna Usuario */
+table td.colunaUsuario {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* Ajuste para o ícone de delete ficar centralizado */
+table td.colunaDelete {
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
-.div-block .div-alerta .sim {
-    background-color: var(--vermelho);
-    color: var(--branco);
+/* Botões de status de usuário */
+.btn-status {
+    cursor: pointer;
+    padding: 6px 12px;
+    border: none;
+    border-radius: 12px;
+    color: #fff;
+    font-weight: bold;
+    transition: all 0.2s ease;
+    min-width: 80px;
+    text-align: center;
 }
 
-.div-block .div-alerta .nao {
-    background-color: var(--verde-3);
-    color: black;
+/* Status ativo */
+.btn-ativo {
+    background-color: #2a9d8f; /* verde */
+}
+
+.btn-ativo:hover {
+    background-color: #1f7a6c;
+}
+
+/* Status inativo */
+.btn-inativo {
+    background-color: #e63946; /* vermelho */
+}
+
+.btn-inativo:hover {
+    background-color: #b32c38;
 }
 
 #Imagem_manutencao {
@@ -604,3 +359,94 @@ thead {
   width: 50%;
   height: auto;
 }
+
+.kpi {
+  display: flex;
+  justify-content: center;  /* centraliza os itens horizontalmente */
+  align-items: center;      /* centraliza verticalmente */
+  gap: 20px;
+  padding: 20px;
+  margin-top: 5vh;
+  background-color: #f5f5f5;
+  border-bottom: 2px solid var(--verde-3);
+  width: fit-content;      /* largura ajusta ao conteúdo */
+  margin: 3vh auto 0 auto;
+  justify-content: center;
+  box-sizing: border-box;
+}
+
+.kpi .item {
+  text-align: center;           /* centraliza o texto dentro do item */
+  padding: 10px 15px;           /* padding interno em cada KPI */
+  background: #fff;             /* fundo branco para destacar */
+  border-radius: 6px;           /* cantos arredondados */
+  box-shadow: 1px 1px 6px rgba(0,0,0,0.1); /* leve sombra */
+}
+
+.kpi .item:last-child {
+  margin-right: 10px;           /* deixa quase colado com a borda */
+}
+
+.kpi .item p {
+  font-size: 14px;
+  color: #444;
+  margin-bottom: 5px;
+}
+
+.kpi .item h3 {
+  font-size: 20px;
+  font-weight: bold;
+  color: var(--verde-3);
+}
+
+/* Conteúdo principal (cards dos hospitais) */
+.conteudo-principal {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center; /* centraliza os cards */
+  gap: 20px;
+  padding: 30px;
+}
+
+/* Card de hospital */
+.card-hospital {
+  background-color: rgb(183, 228, 199);
+  border: 2px solid var(--verde-3);
+  border-radius: 8px;
+  padding: 20px;
+  width: 220px;
+  height: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.card-hospital h3 {
+  margin-bottom: 15px;
+  text-align: center;
+  font-size: 18px;
+}
+
+/* Bolha de status */
+.status {
+  color: white;
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-weight: bold;
+  text-transform: capitalize;
+  text-align: center;
+}
+
+.status.estavel {
+  background-color: green;
+}
+
+.status.alerta {
+  background-color: goldenrod;
+}
+
+.status.critico {
+  background-color: red;
+}
+
