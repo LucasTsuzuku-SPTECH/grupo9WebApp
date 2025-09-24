@@ -8,56 +8,81 @@
 
   <title>Zephyrus | Login</title>
 
-  <script src="./js/sessao.js"></script>
-
   <link rel="stylesheet" href="./css/forms.css" />
   <link rel="icon" href="../assets/imgs/Zephyrus_2png.png" />
   <link rel="preconnect" href="https://fonts.gstatic.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 
 <body>
-  <main id="formulario-main">
-    <div class="esquerda">
-      <div class="imagem-lateral">
-        <img src="assets/imgs/fundoLogin.jpg" alt="Família no mercado" />
+  <!-- Header -->
+  <header class="header">
+    <div class="container">
+      <div class="logo-titulo">
+        <img src="./assets/imgs/Zephyrus_2png.png" alt="">
+        <h1 class="titulo">Zephyrus</h1>
       </div>
-    </div>
-    <div class="direita">
-      <div class="voltarCadastro">
-        <a href="./index.html">
-          <span>Voltar</span>
-          <i class="fa-solid fa-arrow-right"></i>
-        </a>
-      </div>
-      <div class="formulario-login">
-        <div class="logo">
-          <h1>Zephyrus</h1>
-        </div>
-        <div class="formulario">
-          <div class="formulario-principal">
-            <label for="">Endereço de email</label>
-            <input type="email" id="email_input" placeholder="email*" class="ipt_digitar" />
-            <div id="output_email"></div>
-            <label for="">Senha</label>
-            <input type="password" id="senha_input" placeholder="senha*" class="ipt_digitar" />
-            <div id="output_senha"></div>
-            <div id="erro" style="display: none; color: red"> E-mail ou Senha inválido!</div>
-            <div class="parte-checkbox">
-              <input type="checkbox" id="lembrarCheck" />
-              <label for="lembrarCheck">Lembre-se de mim</label>
-              <input type="checkbox" id="mostrarSenha">
-              <label for="mostrarSenha" id="">Mostrar senha</label>
-            </div>
 
-            <button onclick="entrar()">Entrar</button>
-          </div>
-          <div class="nao-cliente">
-            <p>
-              Ainda não é um cliente?
-              <span><a href="index.html#contato">Entre em contato</a></span>
-            </p>
+      <!-- Menu desktop -->
+      <ul class="navbar" id="navbar">
+        <button class="Btn" onclick="location.href='index.html'">Voltar</button>
+      </ul>
+    </div>
+  </header>
+
+  <main id="login-main">
+    <div class="login-container">
+      <div class="logo">
+        <h1>Login</h1>
+      </div>
+      <div class="formulario">
+        <label for="email_input">Endereço de email</label>
+        <input type="email" id="email_input" placeholder="email*" class="ipt_digitar" />
+        <div id="output_email"></div>
+
+        <label style="margin-top: 15px;" for="senha_input">Senha</label>
+        <div class="senha-container">
+          <input type="password" id="senha_input" placeholder="senha*" class="ipt_digitar" />
+          <span id="toggleSenha" class="toggle-senha">
+            <i style="margin-top: 10px;" class="fa fa-eye"></i>
+          </span>
+        </div>
+
+        <div id="erro" style="display:none; color:red;">E-mail ou Senha inválido!</div>
+
+        <div class="parte-checkbox">
+          <div class="checkbox-grupo">
+            <input type="checkbox" id="lembrarCheck" />
+            <label for="lembrarCheck">Lembre-se de mim</label>
           </div>
         </div>
+
+
+        <button onclick="entrar()" class="btn-login">Entrar</button>
+
+        <div id="div_loader" style="width: 100%; display: none; justify-content: center; align-items: center; margin-top: 20px;">
+          <div class="loader">
+            <div class="bar1"></div>
+            <div class="bar2"></div>
+            <div class="bar3"></div>
+            <div class="bar4"></div>
+            <div class="bar5"></div>
+            <div class="bar6"></div>
+            <div class="bar7"></div>
+            <div class="bar8"></div>
+            <div class="bar9"></div>
+            <div class="bar10"></div>
+            <div class="bar11"></div>
+            <div class="bar12"></div>
+          </div>
+        </div>
+
+        <p class="nao-cliente">
+          Ainda não é um cliente?
+          <span><a href="index.html#contato">Entre em contato</a></span>
+        </p>
       </div>
     </div>
   </main>
@@ -65,7 +90,24 @@
 
 </html>
 
+
 <script>
+
+  const senhaInput = document.getElementById("senha_input");
+  const toggleSenha = document.getElementById("toggleSenha");
+  const iconeSenha = toggleSenha.querySelector("i");
+
+  toggleSenha.addEventListener("click", () => {
+    if (senhaInput.type === "password") {
+      senhaInput.type = "text";
+      iconeSenha.classList.remove("fa-eye");
+      iconeSenha.classList.add("fa-eye-slash");
+    } else {
+      senhaInput.type = "password";
+      iconeSenha.classList.remove("fa-eye-slash");
+      iconeSenha.classList.add("fa-eye");
+    }
+  });
 
   window.onload = () => {
     const lembrarEmail = localStorage.getItem("email")
@@ -78,27 +120,17 @@
     }
   }
 
-  var senhaVar = document.getElementById("senha_input")
-  var mostrarSenha = document.getElementById("mostrarSenha")
-
-  mostrarSenha.addEventListener("change", () => {
-    if (mostrarSenha.checked) {
-      senhaVar.type = 'text'
-    } else {
-      senhaVar.type = 'password'
-    }
-  })
-
   function entrar() {
     const emailVar = email_input.value
     const senhaVar = senha_input.value
     const lembrar = document.getElementById("lembrarCheck").checked
-    const erro = document.getElementById("erro")
-
+    const loader = document.getElementById("div_loader")
 
     if (!emailVar || !senhaVar) {
-      erro.style.display = "block"
-      erro.innerHTML = "Preencha todos os campos!"
+      Swal.fire({
+        icon: 'warning',
+        title: 'Preencha todos os campos!',
+      })
       return false
     }
 
@@ -110,23 +142,24 @@
       localStorage.removeItem("senha")
     }
 
+    loader.style.display = 'flex' 
+
     fetch("/usuarios/autenticar", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ emailServer: emailVar, senhaServer: senhaVar })
     })
       .then(resposta => {
-        // statusUser=sessionStorage.STATUS=json.statusUser
-        // if(statusUser==ativo)resposta.ok=false
-        if (resposta.ok) {
+        loader.style.display = 'none' // esconder loader assim que a resposta chega
 
+        if (resposta.ok) {
           resposta.json().then(json => {
             let status = json.statusUser
-            console.log(status)
-
             if (status == "inativo") {
-              erro.style.display = "block"
-              erro.innerHTML = "conta inválida!"
+              Swal.fire({
+                icon: 'error',
+                title: 'Conta inválida!',
+              })
               return
             }
 
@@ -137,36 +170,41 @@
             sessionStorage.HOSPITAL_USUARIO = json.fk_hospital
             sessionStorage.EMPRESA_USUARIO = json.fk_empresa
 
-            // Redirecionar conforme perfil
-            if (json.perfil == "empresa" || json.perfil == "adminEmpresa") {
-              setTimeout(() => {
+            // Loader e redirecionamento suave
+            loader.style.display = 'flex'
+            setTimeout(() => {
+              if (json.perfil == "empresa" || json.perfil == "adminEmpresa") {
                 window.location = "./dashboard/Empresa/mainPage.html"
-              }, 1000)
-            } else if (json.perfil == "hospital" || json.perfil == "adminHospital") {
-              setTimeout(() => {
+              } else if (json.perfil == "hospital" || json.perfil == "adminHospital") {
                 window.location = "./dashboard/Hospital/mainPage.html"
-              }, 1000)
-            } else {
-              erro.style.display = "block"
-              erro.innerHTML = "Perfil não reconhecido!"
-            }
+              } else {
+                Swal.fire({
+                  icon: 'error',
+                  title: 'Perfil não reconhecido!',
+                })
+                loader.style.display = 'none'
+              }
+            }, 1000)
           })
         } else {
           resposta.text().then(texto => {
-            console.error(texto)
-            erro.style.display = "block"
-            erro.innerHTML = "E-mail ou senha inválidos!"
-            finalizarAguardar(texto)
+            Swal.fire({
+              icon: 'error',
+              title: 'E-mail ou senha inválidos!',
+            })
           })
         }
       })
-      .catch(erro => console.log(erro))
+      .catch(erro => {
+        loader.style.display = 'none'
+        Swal.fire({
+          icon: 'error',
+          title: 'Erro na conexão!',
+          text: erro
+        })
+      })
 
     return false
   }
 
-
-  // function sumirMensagem() {
-  //     cardErro.style.display = "none"
-  // }
 </script>

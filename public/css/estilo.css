@@ -1,14 +1,11 @@
-@import url("https://fonts.googleapis.com/css2?family=Epilogue:wght@300..600&display=swap");
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
 
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-family: 'Epilogue';
-}
-
-body {
-  font-family: "Open Sans", sans-serif;
+  font-family: "Poppins", sans-serif; 
 }
 
 :root {
@@ -17,12 +14,13 @@ body {
   --verde-agua: #2a9d8f;
 }
 
+
 /* ===== HEADER ===== */
 .header {
   position: fixed;
   top: 0;
   width: 100%;
-  background: rgba(38, 70, 83, 0.9); /* fundo translúcido */
+  background: rgba(38, 70, 83, 0.8); /* fundo translúcido */
   backdrop-filter: blur(8px);
   padding: 14px 0;
   z-index: 1000;
@@ -44,7 +42,6 @@ body {
 }
 
 .header .container .logo-titulo img {
-  width: 5vw;  /* Ajuste a largura da imagem conforme necessário */
   height: 10vh; /* A altura será a mesma para manter o círculo perfeito */
 }
 
@@ -78,12 +75,12 @@ body {
   left: 0;
   width: 0%;
   height: 2px;
-  background: var(--verde-agua);
+  background: white;
   transition: width 0.3s ease;
 }
 
 .navbar a:hover {
-  text-shadow: 0 4px 12px rgba(42, 157, 143, 0.4);
+  text-shadow: 0 4px 12px rgba(255, 255, 255, 0.6);
 }
 
 .navbar a:hover::after {
@@ -99,20 +96,51 @@ body {
   transition: color 0.3s ease;
   text-decoration: none; 
 }
-
-
-.ir-login {
-  padding: 10px 24px;
-  border-radius: 25px;
-  background: var(--verde-agua);
-  color: #fff !important;
+ 
+.Btn {
+  width: 130px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: transparent;
+  border: 2px solid white;
+  color: white;
   font-weight: 600;
-  transition: all 0.3s ease;
+  border-radius: 10px;
+  gap: 8px;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  transition: .3s;
+  z-index: 1; /* texto acima do ::before */
 }
 
-.ir-login:hover {
-  background: #21867a;
-  box-shadow: 0 4px 12px rgba(42, 157, 143, 0.4);
+.Btn::before {
+  width: 150px;
+  height: 130px;
+  position: absolute;
+  content: "";
+  background-color: white;
+  border-radius: 50%;
+  left: -120%;
+  top: 0;
+  transition: .3s;
+  z-index: -10; /* atrás do texto */
+}
+
+.Btn:hover::before {
+  transform: translate(100%, -50%);
+  border-radius: 0;
+}
+
+.Btn:hover {
+  color: var(--verde-escuro); /* muda cor do texto ao passar o mouse */
+}
+
+.Btn:active {
+  transform: translate(1px,1px);
+  box-shadow: 0 4px 12px rgba(255, 255, 255, 0.6);
 }
 
 /* ===== SIDEBAR MODAL ===== */
@@ -122,7 +150,7 @@ body {
   right: -300px; /* começa escondido */
   width: 280px;
   height: 100vh;
-  background: #264653f2; /* verde escuro translúcido */
+  background: rgba(38, 70, 83, 1); /* verde escuro translúcido */
   display: flex;
   flex-direction: column;
   padding-top: 80px;
@@ -175,9 +203,9 @@ body {
   height: 100vh;
   padding-top: 80px;
   width: 100%;
-  background: linear-gradient(rgba(38, 70, 83, 0.7),
-      rgba(38, 70, 83, 0.7)),
-      url("../assets/imgs/banner.jpg") no-repeat center/cover;
+  background: linear-gradient(rgba(0, 0, 0, 0.7),
+      rgba(0, 0, 0, 0.7)),
+      url("../assets/imgs/banner2.jpeg") no-repeat center/cover;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -209,7 +237,7 @@ body {
 
 .banner .cta-buttons a {
   padding: 14px 30px;
-  border-radius: 30px;
+  border-radius: 10px;
   font-size: 16px;
   font-weight: 600;
   transition: all 0.3s ease;
@@ -240,6 +268,7 @@ body {
 .banner .cta-buttons .btn-secondary:hover {
   background: #fff;
   color: var(--verde-escuro);
+  box-shadow: 0 6px 14px rgba(255, 255, 255, 0.4);
 }
 
 /* ===== SEÇÃO SOBRE NÓS ===== */
@@ -624,12 +653,12 @@ button {
 
   .close-btn {
     position: absolute;
-    top: 1vh;
+    top: 0vh;
     right: 0vh;
     background: none;
     border: none;
     color: var(--branco);
-    font-size: 3rem;
+    font-size: 2.3rem;
     cursor: pointer;
   }
 }
