@@ -91,23 +91,37 @@ header {
 }
 
 .div-opcoes {
-  display: none;
+  display: none; /* Inicialmente escondido */
   position: absolute;
-  background: var(--verde-4);
+  top: 102%; /* Posiciona a div logo abaixo da "div-todo-perfil" */
+  left: 50%;
+  align-items: center;
   width: 100%;
-  border-bottom-left-radius: 15px;
-  border-bottom-right-radius: 15px;
-}
-
-.div-opcoes span {
-  display: block;
-  padding: 9px;
-  color: var(--branco);
-  cursor: pointer;
+  text-align: center;
+  justify-content: center;
+  color: white;
+  border: 2px solid var(--verde-4);
+  transform: translateX(-50%); /* Alinha no centro */
+  background-color: var(--verde-4);
+  padding: 10px 20px;
+  border-radius: 5px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  z-index: 10;
+  transition: color 0.3s ease;
 }
 
 .div-todo-perfil:hover .div-opcoes {
-  display: block;
+  display: flex; /* Exibe a div de opções ao passar o mouse */
+}
+
+/* Botão "Sair" */
+.div-opcao-sair button {
+  background: none;
+  border: none;
+  color: white;
+  font-size: 14px;
+  cursor: pointer;
+  transition: color 0.3s ease;
 }
 
 /* ===========================

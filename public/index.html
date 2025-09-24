@@ -21,30 +21,36 @@
   <!-- Header -->
   <header class="header">
     <div class="container">
-      <h1 class="titulo">logo</h1>
+      <div class="logo-titulo">
+        <img src="./assets/imgs/Zephyrus_2png.png" alt="">
+        <h1 class="titulo">Zephyrus</h1>
+      </div>
 
       <!-- Menu desktop -->
       <ul class="navbar" id="navbar">
-        <li><a href="#">Home</a></li>
-        <li><a href="#">Sobre</a></li>
-        <li><a href="#">Serviços</a></li>
-        <li><a href="#" class="ir-login">Entrar</a></li>
+        <li><a href="#home">Home</a></li>
+        <li><a href="#sobreNos">Sobre</a></li>
+        <li><a href="#avaliacoes">Avaliações</a></li>
+        <li><a href="#contato">Contato</a></li>
+        <li><a href="login.html" class="ir-login">Entrar</a></li>
       </ul>
 
-      <!-- Botão hamburguer (mobile) -->
+      <!-- Botão hamburguer -->
       <div class="navbar-mob" id="hamburguer">
         <i class="fas fa-bars"></i>
       </div>
     </div>
   </header>
 
+
   <!-- Modal lateral -->
   <div id="sidebarModal" class="sidebar">
     <button id="closeModal" class="close-btn">&times;</button>
     <ul>
-      <li><a href="#">Home</a></li>
-      <li><a href="#">Sobre</a></li>
-      <li><a href="#">Contato</a></li>
+      <li><a href="#home">Home</a></li>
+      <li><a href="#sobreNos">Sobre</a></li>
+      <li><a href="#avaliacoes">Avaliações</a></li>
+      <li><a href="#contato">Contato</a></li>
     </ul>
   </div>
 
@@ -140,12 +146,7 @@
         </div>
       </div>
     </section>
-    <section id="frase">
-      <div class="frase-banner">
-        <p>Conquiste a confiança dos seus clientes e fortaleça sua marca!</p>
-        <img src="assets/imgs/banner2.jpg" alt="" />
-      </div>
-    </section>
+
     <section id="avaliacoes">
       <div class="container">
         <h3>Avaliações</h3>
@@ -153,7 +154,7 @@
           <div class="cada-avaliacao">
             <div class="info-avaliador">
               <div class="img-avaliador">
-                <img src="" alt="" />
+                <img src="./assets/imgs/dra.png" alt="" />
               </div>
               <p><strong>Dra. Mariana Lopes,</strong> Coordenadora da UTI</p>
             </div>
@@ -161,13 +162,13 @@
               A confiabilidade do serviço de monitoramento foi essencial para o
               nosso dia a dia na UTI. Desde que começamos a utilizar,
               conseguimos reduzir falhas inesperadas nos ventiladores em mais de
-              90%. A equipe técnica é ágil e muito bem preparada
+              90%. A equipe técnica é ágil e muito bem preparada.
             </div>
           </div>
           <div class="cada-avaliacao">
             <div class="info-avaliador">
               <div class="img-avaliador">
-                <img src="" alt="" />
+                <img src="./assets/imgs/clinico.jpeg" alt="" />
               </div>
               <p><strong>Carlos Henrique,</strong> Engenheiro Clínico</p>
             </div>
@@ -180,7 +181,7 @@
           <div class="cada-avaliacao">
             <div class="info-avaliador">
               <div class="img-avaliador">
-                <img src="" alt="" />
+                <img src="./assets/imgs/chefe.jpeg" alt="" />
               </div>
               <p>
                 <strong>Dr. Fábio Almeida,</strong> Chefe da Engenharia Clínica
@@ -238,11 +239,22 @@
     </div>
     <div class="footer-parte-dois">
       <div class="container">
-        <span>Não há intenção de violar os direitos autorais de uso de imagem.</span>
-        <p>Copyright © 2025 Empresa. Todos os Direitos Reservados.</p>
+        <div class="social-links">
+          <a href="https://github.com/LucasTsuzuku-SPTECH/grupo9WebApp" target="_blank" title="GitHub"><i
+              class="fab fa-github"></i></a>
+          <a href="mailto:grupo02-zephyrus@sptech.school" target="_blank" title="Email"><i
+              class="fas fa-envelope"></i></a>
+          <a href="mailto:zephrus-grupo02@gmail.com" target="_blank" title="Gmail"><i class="fab fa-google"></i></a>
+        </div>
+        <div class="contato-info">
+          <span>Rua Haddock Lobo, 595</span>
+          <span>Telefone: (11) 98765-4321</span>
+          <span>Copyright © 2025 Zephyrus. Todos os Direitos Reservados.</span>
+        </div>
       </div>
     </div>
   </footer>
+
 </body>
 
 </html>
