@@ -111,6 +111,3 @@ GRANT SELECT, INSERT, UPDATE, DELETE ON zephyrus.* TO 'zep_admin'@'%';
 
 flush privileges;
 
-select * from Usuario u
-left join Hospital h 
-on u.fk_hospital = h.id_hospital;

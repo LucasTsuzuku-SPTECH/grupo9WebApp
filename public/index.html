@@ -14,36 +14,54 @@
   <link rel="icon" href="./assets/imgs/Zephyrus_2png.png" />
   <link rel="preconnect" href="https://fonts.gstatic.com" />
   <script src="https://kit.fontawesome.com/9f7414eb10.js" crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 
 <body>
+  <!-- Header -->
   <header class="header">
-    <div class="container compnav">
-      <h1 class="titulo">Zephyrus</h1>
-      <a class="navbar-mob" onclick="mostrarNavbar()">
-        <i id="icone" class="fa-solid fa-bars"></i>
-      </a>
-      <nav class="navbar" id="navbar">
-        <a href="#home">Home</a>
-        <a href="#sobreNos">Sobre Nós</a>
-        <a href="#avaliacoes">Avaliações</a>
-        <a href="#contato">Contato</a>
-        <a href="login.html" class="ir-login">
-          <div>Entrar</div>
-        </a>
-      </nav>
+    <div class="container">
+      <h1 class="titulo">logo</h1>
+
+      <!-- Menu desktop -->
+      <ul class="navbar" id="navbar">
+        <li><a href="#">Home</a></li>
+        <li><a href="#">Sobre</a></li>
+        <li><a href="#">Serviços</a></li>
+        <li><a href="#" class="ir-login">Entrar</a></li>
+      </ul>
+
+      <!-- Botão hamburguer (mobile) -->
+      <div class="navbar-mob" id="hamburguer">
+        <i class="fas fa-bars"></i>
+      </div>
     </div>
   </header>
+
+  <!-- Modal lateral -->
+  <div id="sidebarModal" class="sidebar">
+    <button id="closeModal" class="close-btn">&times;</button>
+    <ul>
+      <li><a href="#">Home</a></li>
+      <li><a href="#">Sobre</a></li>
+      <li><a href="#">Contato</a></li>
+    </ul>
+  </div>
+
+
   <main>
     <section id="home">
       <div class="banner">
         <div class="container">
           <h2>Solução para monitoramento de equipamentos médicos</h2>
           <p>
-            A Zephyrus oferece a seus clientes, tecnologia de última geração
-            aliada a mais alta confiabilidade para gerar mais valor ao seu
-            negócio. <br />Venha conhecer nosso trabalho!
+            A Zephyrus oferece tecnologia de última geração e alta confiabilidade
+            para garantir a segurança dos pacientes e mais valor ao seu negócio.
           </p>
+          <div class="cta-buttons">
+            <a href="#sobreNos" class="btn-primary">Saiba Mais</a>
+            <a href="login.html" class="btn-secondary">Acessar Plataforma</a>
+          </div>
         </div>
       </div>
     </section>
@@ -229,21 +247,44 @@
 
 </html>
 <script>
-  function mostrarNavbar() {
-    const larguraTela = window.innerWidth;
-    var menu = document.getElementById("navbar");
-    var icone = document.getElementById("icone");
+  const hamburguer = document.getElementById("hamburguer");
+  const navbar = document.getElementById("navbar");
+  const sidebarModal = document.getElementById("sidebarModal");
+  const closeModal = document.getElementById("closeModal");
 
-    if (larguraTela < 980) {
-      if (getComputedStyle(menu).display == 'none') {
-        menu.style.display = "flex";
-        icone.classList.remove("fa-bars");
-        icone.classList.add("fa-times");
-      } else {
-        menu.style.display = "none";
-        icone.classList.remove("fa-times");
-        icone.classList.add("fa-bars");
+  // Abrir modal
+  hamburguer.addEventListener("click", () => {
+    sidebarModal.classList.add("active");
+    hamburguer.style.display = "none"; // esconde hamburguer
+  });
+
+  // Fechar modal
+  closeModal.addEventListener("click", () => {
+    sidebarModal.classList.remove("active");
+    hamburguer.style.display = "block"; // volta hamburguer
+  });
+
+  // Reset ao redimensionar
+  function handleResize() {
+    if (window.innerWidth > 980) {
+      // Desktop → fecha modal, mostra menu
+      sidebarModal.classList.remove("active");
+      navbar.style.display = "flex";
+      hamburguer.style.display = "none";
+    } else {
+      // Mobile → esconde menu, mostra hamburguer
+      navbar.style.display = "none";
+      if (!sidebarModal.classList.contains("active")) {
+        hamburguer.style.display = "block";
       }
     }
   }
+
+  // Chama uma vez ao carregar
+  handleResize();
+
+  // E toda vez que redimensionar
+  window.addEventListener("resize", handleResize);
+
+
 </script>
