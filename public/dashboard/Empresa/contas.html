@@ -155,8 +155,10 @@
                       <label for="perfilModal" class="form-label">Perfil</label>
                       <select class="form-select" id="perfilModal" required>
                         <option value="" selected disabled>Selecione</option>
-                        <option value="Empresa">Funcionário Empresa</option>
-                        <option value="Hospital">Admin Hospital</option>
+                        <option value="empresa">Funcionário Empresa</option>
+                        <option value="adminEmpresa">Admin Empresa</option>
+                        <option value="hospital">Funcionário Hospital</option>
+                        <option value="adminHospital">Admin Hospital</option>
                       </select>
                     </div>
                     <div class="mb-3" id="divHospitalModal" style="display:none;">
@@ -201,8 +203,14 @@
                       <select class="form-select" id="perfilEditar" required>
                         <option value="" selected disabled>Selecione</option>
                         <option value="empresa">Funcionário Empresa</option>
+                        <option value="adminEmpresa">Admin Empresa</option>
+                        <option value="hospital">Funcionário Hospital</option>
                         <option value="adminHospital">Admin Hospital</option>
                       </select>
+                    </div>
+                    <div class="mb-3" id="editarModalHospital" style="display:none;">
+                      <label for="hospitalEditarModal" class="form-label">Hospital</label>
+                      <select class="form-select" id="hospitalEditarModal"></select>
                     </div>
                   </form>
                 </div>
@@ -219,36 +227,150 @@
 </body>
 
 <script>
-
-  function toggleSidebar() {
-    const sidebar = document.getElementById("sidebarModal");
-    const icone = document.getElementById("icone");
-
-    sidebar.classList.toggle("active");
-  }
-
+  // -------------------- VARIÁVEIS GLOBAIS ----------------------
   let usuarios = [];
   let hospitais = [];
-  let usuarioSelecionado = null; // Id usuário
+  let usuarioSelecionado = null; // id do usuário
+  let usuarioEditarId = null;
 
-  function mostrarNavbar() {
-    const larguraTela = window.innerWidth;
-    var menu = document.getElementById("navbar");
-    var icone = document.getElementById("icone");
+  // -------------------- FUNÇÕES AUXILIARES ----------------------
+  function criarLinhaUsuario(usuario, index) {
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+    <td class="colunaUsuario">${usuario.nomeInstituicao ?? "-"}</td>
+    <td class="colunaRepresentante">${usuario.nome}</td>
+    <td class="colunaEmail">${usuario.email}</td>
+    <td class="colunaTipoAcesso">${usuario.perfil}</td>
+    <td class="colunaAcesso">
+      <button class="btn-status ${usuario.statusUser === 'ativo' ? 'btn-ativo' : 'btn-inativo'}"
+        onclick="alterarAcesso(${index})">
+        ${usuario.statusUser.charAt(0).toUpperCase() + usuario.statusUser.slice(1)}
+      </button>
+    </td>
+    <td class="colunaEditar" style="text-align:center;">
+      <button onclick="abrirModalEditar(${usuario.id_usuario})" style="background:transparent;border:none;">
+        <img src="../../assets/imgs/editar.png" alt="Editar" style="width:20px;height:20px;">
+      </button>
+    </td>
+    <td class="colunaDelete" style="text-align:center;">
+      <button onclick="deletarr(${usuario.id_usuario})" style="background:transparent;border:none;">
+        <img src="../../assets/imgs/lixeira.png" alt="Deletar" style="width:20px;height:20px;">
+      </button>
+    </td>
+  `;
+    tr.style.backgroundColor = index % 2 === 0 ? '#d3d3d3' : '#ffffff';
+    return tr;
+  }
 
-    if (larguraTela < 1342) {
-      if (getComputedStyle(menu).display == 'none') {
-        menu.style.display = "flex";
-        icone.classList.remove("fa-bars");
-        icone.classList.add("fa-times");
-      } else {
-        menu.style.display = "none";
-        icone.classList.remove("fa-times");
-        icone.classList.add("fa-bars");
-      }
+  function preencherTabela(lista) {
+    const tbody = document.getElementById('tbody_usuarios');
+    tbody.innerHTML = '';
+    lista.forEach((u, i) => tbody.appendChild(criarLinhaUsuario(u, i)));
+  }
+
+  // -------------------- CRUD ----------------------
+  async function puxarDados() {
+    try {
+      const res = await fetch("/contas/contas");
+      if (!res.ok) throw new Error("Erro na resposta da API");
+      usuarios = await res.json();
+      preencherTabela(usuarios);
+      preencherSelectHospital();
+    } catch (err) {
+      console.error(err);
     }
   }
 
+  async function deletar(id) {
+    if (!id) return;
+    try {
+      await fetch(`/contas/deleteConta/${id}`, { method: "DELETE" });
+      puxarDados();
+    } catch (err) {
+      console.error(err);
+    }
+  }
+
+  async function alterarAcesso(index) {
+    const usuario = usuarios[index];
+    const novoStatus = usuario.statusUser.toLowerCase() === "ativo" ? "inativo" : "ativo";
+    try {
+      await fetch(`/contas/alterarAcesso/${usuario.id_usuario}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ statusUser: novoStatus })
+      });
+      usuarios[index].statusUser = novoStatus;
+      preencherTabela(usuarios);
+    } catch (err) {
+      console.error(err);
+    }
+  }
+
+  // -------------------- FILTROS ----------------------
+  function buscarRepresentante(nome) {
+    if (!nome) return puxarDados();
+    const filtro = usuarios.filter(u =>
+      u.nome.replace(/\s/g, "").toLowerCase().includes(nome.replace(/\s/g, "").toLowerCase())
+    );
+    preencherTabela(filtro);
+  }
+
+  function selecionarHospital() {
+    const idHospital = document.getElementById('select_hospital').value;
+    if (idHospital === "todos") return puxarDados();
+
+    // Convertendo para number para comparar corretamente
+    const filtro = usuarios.filter(u => u.fk_hospital == Number(idHospital));
+    preencherTabela(filtro);
+  }
+
+  function selecionarAtividade() {
+    const atividade = document.getElementById('select_atividade').value;
+    if (atividade === "Ambos") return puxarDados();
+    preencherTabela(usuarios.filter(u => u.statusUser === atividade));
+  }
+
+  // -------------------- HOSPITAIS ----------------------
+  async function preencherSelectHospital() {
+    const selectHospitais = document.getElementById('select_hospital');
+    selectHospitais.innerHTML = `<option value="todos">Todos</option>`;
+    try {
+      const resp = await fetch("/contas/listarHospitais");
+      hospitais = await resp.json();
+      hospitais.forEach(h =>
+        selectHospitais.innerHTML += `<option value="${h.id_hospital}">${h.nomeHospital}</option>`
+      );
+    } catch (err) {
+      console.error("Erro ao listar hospitais", err);
+    }
+  }
+
+  async function carregarHospitaisModal() {
+    const hospitalModal = document.getElementById('hospitalModal');
+    hospitalModal.innerHTML = '<option disabled selected>Selecione um hospital</option>';
+    try {
+      const resp = await fetch('/contas/listarHospitais');
+      const lista = await resp.json();
+      lista.forEach(h => hospitalModal.innerHTML += `<option value="${h.id_hospital}">${h.nomeHospital}</option>`);
+    } catch (err) {
+      console.error('Erro ao carregar hospitais:', err);
+    }
+  }
+
+  async function carregarEditarModal() {
+    const hospitalModal = document.getElementById('hospitalEditarModal');
+    hospitalModal.innerHTML = '<option disabled selected>Selecione um hospital</option>';
+    try {
+      const resp = await fetch('/contas/listarHospitais');
+      const lista = await resp.json();
+      lista.forEach(h => hospitalModal.innerHTML += `<option value="${h.id_hospital}">${h.nomeHospital}</option>`);
+    } catch (err) {
+      console.error('Erro ao carregar hospitais:', err);
+    }
+  }
+
+  // -------------------- MODAIS ----------------------
   function deletarr(id) {
     usuarioSelecionado = id;
     Swal.fire({
@@ -260,426 +382,118 @@
       confirmButtonText: 'Sim',
       cancelButtonText: 'Não'
     }).then((result) => {
-      if (result.isConfirmed) {
-        deletar(usuarioSelecionado);
-      }
-    })
-  }
-
-  function fecharAlerta() {
-    var divAlerta = document.getElementById("divAlerta");
-    divAlerta.style.display = "none";
-  }
-
-  function deletar(id) {
-    if (!id) {
-      return;
-    }
-
-    console.log("Me chamou deletar(id)", id);
-    fetch(`/contas/deleteConta/${id}`, {
-      method: "DELETE",
-      headers: {
-        "Content-Type": "application/json"
-      }
-    })
-      .then(res => {
-        return res.json();
-      })
-      .then(() => {
-        puxarDados();
-        fecharAlerta();
-      })
-      .catch(err => console.error(err));
-  }
-
-  function puxarDados() {
-    console.log("Me chamou puxar(Dados)");
-    const perfil = Number(sessionStorage.CARGO_USUARIO);
-
-    fetch("/contas/contas", {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json"
-      },
-    })
-      .then(res => {
-        if (!res.ok) {
-          throw new Error("Erro na resposta da API");
-        }
-        return res.json();
-      })
-      .then(data => {
-        listar(data)
-      })
-  }
-
-
-  function alterarAcesso(index) {
-    const usuario = usuarios[index];
-    const novoStatus = usuario.statusUser.toLowerCase() === "ativo" ? "inativo" : "ativo";
-
-    fetch(`/contas/alterarAcesso/${usuario.id_usuario}`, {
-      method: "PUT",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ statusUser: novoStatus })
-    })
-      .then(res => res.json())
-      .then(() => {
-        usuarios[index].statusUser = novoStatus;
-        listar(usuarios);
-      })
-      .catch(err => console.error(err));
-  }
-
-  function listar(data) {
-    console.log("Me chamou listar(data)");
-    console.log(data);
-    usuarios = data;
-    const tbody = document.getElementById('tbody_usuarios');
-    tbody.innerHTML = '';
-
-    for (let i = 0; i < data.length; i++) {
-      const usuario = data[i];
-      const tr = document.createElement('tr');
-
-      tr.innerHTML = `
-                  <td class="colunaUsuario">${usuario.nomeHospital == null ? "Fly" : usuario.nomeHospital}</td>
-                  <td class="colunaRepresentante">${usuario.nome}</td>
-                  <td class="colunaEmail">${usuario.email}</td>
-                  <td class="colunaTipoAcesso">${usuario.perfil}</td>
-                  <td class="colunaAcesso">
-                    <button class="btn-status ${usuario.statusUser === 'ativo' ? 'btn-ativo' : 'btn-inativo'}"
-                    onclick="alterarAcesso(${i})">
-                    ${usuario.statusUser.charAt(0).toUpperCase() + usuario.statusUser.slice(1)}</button>
-                  </td>
-                  <td class="colunaEditar" style="text-align: center;">
-                    <button onclick="abrirModalEditar(${usuario.id_usuario})" 
-                    style="background: transparent; border: none; cursor: pointer;">
-                    <img src="../../assets/imgs/editar.png" alt="Editar" style="width: 20px; height: 20px;">
-                    </button>
-                  </td>
-                  <td class="colunaDelete" style="text-align: center; ">
-                    <button onclick="deletarr(${usuario.id_usuario})" 
-                    style="background: transparent; border: none; cursor: pointer;">
-                    <img src="../../assets/imgs/lixeira.png" alt="Deletar" style="width: 20px; height: 20px;">
-                    </button>
-                  </td>
-                `;
-      if (i % 2 === 0) {
-        tr.style.backgroundColor = '#d3d3d3'; // cinza mais escuro
-      } else {
-        tr.style.backgroundColor = '#ffffff'; // branco
-      }
-      tbody.appendChild(tr);
-    }
-    preencherSelectHospital();
-  }
-
-  function buscarRepresentante(representante) {
-    console.log("Me chamou buscarRepresentante");
-
-    if (representante == '') {
-      puxarDados();
-      return
-    }
-
-    console.log(usuarios);
-    let dadosFiltroRepresentante = [];
-    for (let i = 0; i < usuarios.length; i++) {
-      if (usuarios[i].nome.replace(" ", "").toLowerCase().includes(representante.replace(" ", "").toLowerCase())) {
-        dadosFiltroRepresentante.push(usuarios[i])
-      }
-    }
-    console.log("Dados filtrados por representante: ")
-    console.log(dadosFiltroRepresentante)
-
-    const tbody = document.getElementById('tbody_usuarios');
-    tbody.innerHTML = '';
-
-    for (let i = 0; i < dadosFiltroRepresentante.length; i++) {
-      const usuario = dadosFiltroRepresentante[i];
-      const tr = document.createElement('tr');
-
-      tr.innerHTML = `
-                  <td class="colunaUsuario">${usuario.nomeHospital == null ? "Fly" : usuario.nomeHospital}</td>
-                  <td class="colunaRepresentante">${usuario.nome}</td>
-                  <td class="colunaEmail">${usuario.email}</td>
-                  <td class="colunaTipoAcesso">${usuario.perfil}</td>
-                  <td class="colunaAcesso">
-                    <button class="btn-status ${usuario.statusUser === 'ativo' ? 'btn-ativo' : 'btn-inativo'}"
-                    onclick="alterarAcesso(${i})">
-                    ${usuario.statusUser.charAt(0).toUpperCase() + usuario.statusUser.slice(1)}</button>
-                  </td>
-                  <td class="colunaEditar" style="text-align: center;">
-                    <button onclick="abrirModalEditar(${usuario.id_usuario})" 
-                    style="background: transparent; border: none; cursor: pointer;">
-                    <img src="../../assets/imgs/editar.png" alt="Editar" style="width: 20px; height: 20px;">
-                    </button>
-                  </td>
-                  <td class="colunaDelete" style="text-align: center; ">
-                    <button onclick="deletarr(${usuario.id_usuario})" 
-                    style="background: transparent; border: none; cursor: pointer;">
-                    <img src="../../assets/imgs/lixeira.png" alt="Deletar" style="width: 20px; height: 20px;">
-                    </button>
-                  </td>
-                `;
-      if (i % 2 === 0) {
-        tr.style.backgroundColor = '#d3d3d3'; // cinza mais escuro
-      } else {
-        tr.style.backgroundColor = '#ffffff'; // branco
-      }
-      tbody.appendChild(tr);
-    }
-  }
-
-  function preencherSelectHospital() {
-    const selectHospitais = document.getElementById('select_hospital');
-    for (let i = 0; i < usuarios.length; i++) {
-      if (usuarios[i].nomeHospital == null || usuarios[i].nomeHospital == '' || hospitais.includes(usuarios[i].nomeHospital)) {
-      } else {
-        hospitais.push(usuarios[i].nomeHospital)
-        selectHospitais.innerHTML +=
-          `<option value="${usuarios[i].nomeHospital}">${usuarios[i].nomeHospital}</option>`
-      }
-    }
-    console.log(hospitais)
-  }
-
-  function selecionarHospital() {
-    console.log("Me chamou selecionarHospital")
-    let hospitalSelecionado = select_hospital.value
-    console.log(hospitalSelecionado)
-
-    if (hospitalSelecionado == "todos") {
-      puxarDados()
-      return
-    }
-
-    const tbody = document.getElementById('tbody_usuarios');
-    tbody.innerHTML = '';
-
-    for (let i = 0; i < usuarios.length; i++) {
-      const usuario = usuarios[i];
-      const tr = document.createElement('tr');
-
-      if (usuario.nomeHospital == hospitalSelecionado) {
-        tr.innerHTML = `
-                  <td class="colunaUsuario">${usuario.nomeHospital == null ? "Fly" : usuario.nomeHospital}</td>
-                  <td class="colunaRepresentante">${usuario.nome}</td>
-                  <td class="colunaEmail">${usuario.email}</td>
-                  <td class="colunaTipoAcesso">${usuario.perfil}</td>
-                  <td class="colunaAcesso">
-                    <button class="btn-status ${usuario.statusUser === 'ativo' ? 'btn-ativo' : 'btn-inativo'}"
-                    onclick="alterarAcesso(${i})">
-                    ${usuario.statusUser.charAt(0).toUpperCase() + usuario.statusUser.slice(1)}</button>
-                  </td>
-                  <td class="colunaEditar" style="text-align: center;">
-                    <button onclick="abrirModalEditar(${usuario.id_usuario})" 
-                    style="background: transparent; border: none; cursor: pointer;">
-                    <img src="../../assets/imgs/editar.png" alt="Editar" style="width: 20px; height: 20px;">
-                    </button>
-                  </td>
-                  <td class="colunaDelete" style="text-align: center; ">
-                    <button onclick="deletarr(${usuario.id_usuario})" 
-                    style="background: transparent; border: none; cursor: pointer;">
-                    <img src="../../assets/imgs/lixeira.png" alt="Deletar" style="width: 20px; height: 20px;">
-                    </button>
-                  </td>
-                `;
-        if (i % 2 === 0) {
-          tr.style.backgroundColor = '#d3d3d3'; // cinza mais escuro
-        } else {
-          tr.style.backgroundColor = '#ffffff'; // branco
-        }
-        tbody.appendChild(tr);
-      }
-    }
-  }
-
-  function selecionarAtividade() {
-    console.log("Me chamou selecionarAtividade")
-    let atividadeSelecionado = select_atividade.value
-
-    if (atividadeSelecionado == "Ambos") {
-      puxarDados()
-      return
-    }
-
-    const tbody = document.getElementById('tbody_usuarios');
-    tbody.innerHTML = '';
-
-    for (let i = 0; i < usuarios.length; i++) {
-      const usuario = usuarios[i];
-      const tr = document.createElement('tr');
-
-      if (usuario.statusUser == atividadeSelecionado) {
-        tr.innerHTML = `
-                  <td class="colunaUsuario">${usuario.nomeHospital == null ? "Fly" : usuario.nomeHospital}</td>
-                  <td class="colunaRepresentante">${usuario.nome}</td>
-                  <td class="colunaEmail">${usuario.email}</td>
-                  <td class="colunaTipoAcesso">${usuario.perfil}</td>
-                  <td class="colunaAcesso">
-                    <button class="btn-status ${usuario.statusUser === 'ativo' ? 'btn-ativo' : 'btn-inativo'}"
-                    onclick="alterarAcesso(${i})">
-                    ${usuario.statusUser.charAt(0).toUpperCase() + usuario.statusUser.slice(1)}</button>
-                  </td>
-                  <td class="colunaEditar" style="text-align: center;">
-                    <button onclick="abrirModalEditar(${usuario.id_usuario})" 
-                    style="background: transparent; border: none; cursor: pointer;">
-                    <img src="../../assets/imgs/editar.png" alt="Editar" style="width: 20px; height: 20px;">
-                    </button>
-                  </td>
-                  <td class="colunaDelete" style="text-align: center; ">
-                    <button onclick="deletarr(${usuario.id_usuario})" 
-                    style="background: transparent; border: none; cursor: pointer;">
-                    <img src="../../assets/imgs/lixeira.png" alt="Deletar" style="width: 20px; height: 20px;">
-                    </button>
-                  </td>
-                `;
-        if (i % 2 === 0) {
-          tr.style.backgroundColor = '#d3d3d3'; // cinza mais escuro
-        } else {
-          tr.style.backgroundColor = '#ffffff'; // branco
-        }
-        tbody.appendChild(tr);
-      }
-    }
-  }
-
-  const perfilModal = document.getElementById("perfilModal");
-  const divHospitalModal = document.getElementById("divHospitalModal");
-  const hospitalModal = document.getElementById("hospitalModal");
-
-  perfilModal.addEventListener("change", () => {
-    if (perfilModal.value === "Hospital") {
-      divHospitalModal.style.display = "block";
-      carregarHospitaisModal();
-    } else {
-      divHospitalModal.style.display = "none";
-    }
-  });
-
-  async function carregarHospitaisModal() {
-    const resposta = await fetch("/usuarios/listar");
-    const hospitais = await resposta.json();
-
-    hospitalModal.innerHTML = '<option disabled selected value="">Selecione o hospital</option>';
-    hospitais.forEach(hospital => {
-      const option = document.createElement("option");
-      option.value = hospital.id_hospital;
-      option.text = hospital.nomeHospital;
-      hospitalModal.appendChild(option);
+      if (result.isConfirmed) deletar(usuarioSelecionado);
     });
   }
 
-  function cadastrarModal() {
-    const nome = document.getElementById("nomeModal").value;
-    const email = document.getElementById("emailModal").value;
-    const senha = document.getElementById("senhaModal").value;
-    const confirmarSenha = document.getElementById("confirmSenhaModal").value;
-    const perfil = perfilModal.value;
-    let fkHospital = null;
-    let fkEmpresa = 1; // Default, você pode ajustar
-
-    if (perfil === "Hospital") fkHospital = hospitalModal.value;
-
-    if (senha !== confirmarSenha) {
-      Swal.fire({
-        icon: 'error',
-        title: 'Erro',
-        text: 'As senhas não coincidem!',
-      });
-      return;
-    }
-
-    fetch("/usuarios/cadastrar", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        nomeServer: nome,
-        emailServer: email,
-        senhaServer: senha,
-        perfilServer: perfil,
-        fkEmpresaServer: fkEmpresa,
-        fkHospitalServer: fkHospital
-      })
-    })
-      .then(res => {
-        if (!res.ok) throw new Error('Erro ao cadastrar usuário');
-        return res.json();
-      })
-      .then(() => {
-        Swal.fire({
-          icon: 'success',
-          title: 'Sucesso',
-          text: 'Usuário cadastrado com sucesso!',
-          timer: 2000,
-          showConfirmButton: false
-        });
-        document.getElementById("formAdicionarUsuario").reset();
-        const modal = bootstrap.Modal.getInstance(document.getElementById("modalAdicionarUsuario"));
-        modal.hide();
-        puxarDados(); 
-      })
-      .catch(err => {
-        console.error(err);
-        Swal.fire({
-          icon: 'error',
-          title: 'Erro',
-          text: 'Não foi possível cadastrar o usuário!',
-        });
-      });
-  }
-
-  let usuarioEditarId = null;
-
   function abrirModalEditar(id) {
     usuarioEditarId = id;
-    const usuario = usuarios.find(u => u.id_usuario === id);
-
-    document.getElementById("nomeEditar").value = usuario.nome;
-    document.getElementById("emailEditar").value = usuario.email;
-    document.getElementById("perfilEditar").value = usuario.perfil;
-
-    const modal = new bootstrap.Modal(document.getElementById("modalEditarUsuario"));
-    modal.show();
+    const u = usuarios.find(x => x.id_usuario === id);
+    document.getElementById("nomeEditar").value = u.nome;
+    document.getElementById("emailEditar").value = u.email;
+    document.getElementById("perfilEditar").value = u.perfil;
+    new bootstrap.Modal(document.getElementById("modalEditarUsuario")).show();
   }
 
-  function editarUsuarioModal() {
+  async function editarUsuarioModal() {
     const nome = document.getElementById("nomeEditar").value;
     const email = document.getElementById("emailEditar").value;
     const perfil = document.getElementById("perfilEditar").value;
+    const fkEmpresa = 1; // sempre 1
+    let fkHospital = null;
 
-    fetch(`/controle/editar/${usuarioEditarId}`, {
-      method: "PUT",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ nome, email, perfil })
-    })
-      .then(res => {
-        if (!res.ok) throw new Error('Erro ao editar usuário');
-        return res.json();
-      })
-      .then(() => {
-        const modal = bootstrap.Modal.getInstance(document.getElementById("modalEditarUsuario"));
-        modal.hide();
+    // Pega o select correto do modal de editar
+    const hospitalModal = document.getElementById('hospitalEditarModal');
+
+    if (perfil === "hospital" || perfil === "adminHospital") {
+        fkHospital = hospitalModal.value || null;
+    }
+
+    try {
+        await fetch(`/contas/editar/${usuarioEditarId}`, {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ nome, email, perfil, fkEmpresa, fkHospital })
+        });
+        bootstrap.Modal.getInstance(document.getElementById("modalEditarUsuario")).hide();
         puxarDados();
-        Swal.fire({
-          icon: 'success',
-          title: 'Sucesso',
-          text: 'Usuário editado com sucesso!',
-          timer: 2000,
-          showConfirmButton: false
-        });
-      })
-      .catch(err => {
+        Swal.fire({ icon: 'success', title: 'Sucesso', text: 'Usuário editado com sucesso!', timer: 2000, showConfirmButton: false });
+    } catch (err) {
         console.error(err);
-        Swal.fire({
-          icon: 'error',
-          title: 'Erro',
-          text: 'Não foi possível editar o usuário!',
-        });
+        Swal.fire({ icon: 'error', title: 'Erro', text: 'Não foi possível editar o usuário!' });
+    }
+}
+
+
+  // -------------------- CADASTRO ----------------------
+  async function cadastrarModal() {
+    const nome = document.getElementById("nomeModal").value;
+    const email = document.getElementById("emailModal").value;
+    const senha = document.getElementById("senhaModal").value;
+    const confirmar = document.getElementById("confirmSenhaModal").value;
+    const perfil = document.getElementById('perfilModal').value;
+    const hospitalModal = document.getElementById('hospitalModal');
+    if (senha !== confirmar) {
+      Swal.fire({ icon: 'error', title: 'Erro', text: 'As senhas não coincidem!' });
+      return;
+    }
+    let fkHospital = null;
+    if (perfil === "hospital" || perfil === "adminHospital") fkHospital = hospitalModal.value;
+    try {
+      await fetch("/contas/cadastrarFunc", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          nomeServer: nome,
+          emailServer: email,
+          senhaServer: senha,
+          perfilServer: perfil,
+          fkEmpresaServer: sessionStorage.EMPRESA_USUARIO,
+          fkHospitalServer: fkHospital
+        })
       });
+      Swal.fire({ icon: 'success', title: 'Sucesso', text: 'Usuário cadastrado com sucesso!', timer: 2000, showConfirmButton: false });
+      document.getElementById("formAdicionarUsuario").reset();
+      bootstrap.Modal.getInstance(document.getElementById("modalAdicionarUsuario")).hide();
+      puxarDados();
+    } catch (err) {
+      console.error(err);
+      Swal.fire({ icon: 'error', title: 'Erro', text: 'Não foi possível cadastrar o usuário!' });
+    }
   }
 
+  // -------------------- PERFIL SELECT ----------------------
+  const perfilModal = document.getElementById('perfilModal');
+  const divHospitalModal = document.getElementById('divHospitalModal');
+  perfilModal.addEventListener('change', function () {
+    if (this.value === 'hospital' || this.value === 'adminHospital') {
+      divHospitalModal.style.display = 'block';
+      carregarHospitaisModal();
+    } else {
+      divHospitalModal.style.display = 'none';
+      document.getElementById('hospitalModal').innerHTML = '';
+    }
+  });
+
+
+  const perfilEditar = document.getElementById('perfilEditar');
+  const divEditar = document.getElementById('editarModalHospital');
+
+  perfilEditar.addEventListener('change', function () {
+    if (this.value === 'hospital' || this.value === 'adminHospital') {
+      divEditar.style.display = 'block';
+      carregarEditarModal(); // preenche o select do modal de editar
+    } else {
+      divEditar.style.display = 'none';
+      document.getElementById('hospitalEditarModal').innerHTML = '';
+    }
+  });
+
+  // -------------------- SIDEBAR ----------------------
+  function toggleSidebar() {
+    document.getElementById("sidebarModal").classList.toggle("active");
+  }
+
+  // -------------------- ONLOAD ----------------------
+  window.onload = puxarDados;
 </script>

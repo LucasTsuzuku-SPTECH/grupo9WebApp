@@ -167,6 +167,7 @@ header {
 .sidebar-nav {
   display: flex;
   flex-direction: column;
+  text-align: center;
   padding: 15px;
 }
 
@@ -475,8 +476,9 @@ table td.colunaDelete {
 }
 
 .navbar-mob i {
-  color: var(--verde-4); /* força o ícone amarelo */
+  color: var(--verde-4); 
 }
+
 
 .btn-adicionar {
   background-color: var(--verde-4); /* usa a cor que você definiu */

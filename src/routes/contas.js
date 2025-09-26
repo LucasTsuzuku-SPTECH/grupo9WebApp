@@ -1,25 +1,19 @@
-var express = require("express");
-var router = express.Router();
+const express = require("express");
+const router = express.Router();
+const contasController = require("../controllers/contasController");
 
-var contasController = require("../controllers/contasController");
+router.get("/contas", contasController.listar);
+router.put("/alterarAcesso/:id", contasController.alterarAcesso);
+router.delete("/deleteConta/:id", contasController.deletar);
 
-router.get("/contas", function (req, res) {
-    contasController.mostrarContas(req, res);
-});
-
-router.get("/contasHospital/:fkHospital", function (req, res) {
-    contasController.mostrarContasHospital(req, res);
-});
-
-
-router.delete("/deleteConta/:id", function(req,res){
-    contasController.deletarConta(req,res);
+router.post("/cadastrarFunc", function (req, res) {
+    contasController.cadastrarFunc(req, res);
 })
-router.put("/alterarAcesso/:id", function(req,res){
-    contasController.alterarAcesso(req,res);
+
+router.get("/listarHospitais", (req, res) => {
+  contasController.listarHospitais(req, res);
 });
 
-
-
+router.put("/editar/:id", contasController.editarUsuario);
 
 module.exports = router;
