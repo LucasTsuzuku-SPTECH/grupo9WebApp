@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
+
 /* ===========================
    VARIÁVEIS DE CORES
 =========================== */
@@ -21,11 +23,11 @@
 }
 
 body {
-  font-family: Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue",
-    sans-serif;
+  font-family: 'Poppins';
   background-color: var(--branco);
   color: var(--preto);
 }
+
 
 a {
   text-decoration: none;
@@ -91,9 +93,11 @@ header {
 }
 
 .div-opcoes {
-  display: none; /* Inicialmente escondido */
+  display: none;
+  /* Inicialmente escondido */
   position: absolute;
-  top: 102%; /* Posiciona a div logo abaixo da "div-todo-perfil" */
+  top: 102%;
+  /* Posiciona a div logo abaixo da "div-todo-perfil" */
   left: 50%;
   align-items: center;
   width: 100%;
@@ -101,7 +105,8 @@ header {
   justify-content: center;
   color: white;
   border: 2px solid var(--verde-4);
-  transform: translateX(-50%); /* Alinha no centro */
+  transform: translateX(-50%);
+  /* Alinha no centro */
   background-color: var(--verde-4);
   padding: 10px 20px;
   border-radius: 5px;
@@ -111,7 +116,8 @@ header {
 }
 
 .div-todo-perfil:hover .div-opcoes {
-  display: flex; /* Exibe a div de opções ao passar o mouse */
+  display: flex;
+  /* Exibe a div de opções ao passar o mouse */
 }
 
 /* Botão "Sair" */
@@ -134,7 +140,7 @@ header {
   width: 250px;
   height: 100%;
   background-color: var(--verde-4);
-  box-shadow: 2px 0 8px rgba(0,0,0,0.3);
+  box-shadow: 2px 0 8px rgba(0, 0, 0, 0.3);
   transition: left 0.3s ease;
   z-index: 9999;
   display: flex;
@@ -153,7 +159,7 @@ header {
   padding: 15px;
   color: var(--branco);
   font-weight: bold;
-  border-bottom: 1px solid rgba(255,255,255,0.2);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
 }
 
 .btn-fechar {
@@ -178,195 +184,200 @@ header {
 }
 
 .sidebar-nav a:hover {
-  background: rgba(255,255,255,0.1);
+  background: rgba(255, 255, 255, 0.1);
   border-radius: 4px;
-} 
+}
 
 /* Conteúdo principal */
 .conteudo-principal {
-    padding: 30px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    width: 100%;
+  padding: 30px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
 }
 
 /* Links de ação */
 .div-links-contas {
-    display: flex;
-    justify-content: center;
-    gap: 20px;
-    flex-wrap: wrap;
-    margin-bottom: 30px;
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  flex-wrap: wrap;
+  margin-bottom: 30px;
 }
 
 .div-links-contas a {
-    background-color: var(--verde-3);
-    color: var(--branco);
-    padding: 15px 25px;
-    border-radius: 12px;
-    font-weight: bold;
-    text-decoration: none;
-    transition: all 0.3s ease;
+  background-color: var(--verde-3);
+  color: var(--branco);
+  padding: 15px 25px;
+  border-radius: 12px;
+  font-weight: bold;
+  text-decoration: none;
+  transition: all 0.3s ease;
 }
 
 .div-links-contas a:hover {
-    background-color: var(--verde-2);
-    color: var(--preto);
-    transform: translateY(-3px);
+  background-color: var(--verde-2);
+  color: var(--preto);
+  transform: translateY(-3px);
 }
 
 /* Inputs e selects */
 .div-procura {
-    display: flex;
-    gap: 20px;
-    flex-wrap: wrap;
-    justify-content: center;
-    margin-bottom: 6vh;
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-bottom: 6vh;
 }
 
 .div-ipt-procura {
-    display: flex;
-    flex-direction: column;
-    gap: 5px;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
 }
 
 .div-ipt-procura label {
-    font-weight: bold;
-    color: var(--preto);
+  font-weight: bold;
+  color: var(--preto);
 }
 
-.ipt_procura { 
-  padding: 8px 10px; 
-  border: 2px solid var(--verde-3); 
-  border-radius: 8px; 
-  outline: none; 
-  transition: 0.2s; 
-  height: 40px; /* força a altura igual para input e select */ 
-  box-sizing: border-box; /* inclui borda e padding na altura total */ 
+.ipt_procura {
+  padding: 8px 10px;
+  border: 2px solid var(--verde-3);
+  border-radius: 8px;
+  outline: none;
+  transition: 0.2s;
+  height: 40px;
+  /* força a altura igual para input e select */
+  box-sizing: border-box;
+  /* inclui borda e padding na altura total */
 }
 
 .ipt_procura:focus {
-    border-color: var(--verde-2);
+  border-color: var(--verde-2);
 }
 
 /* Tabela de usuários */
 .mostrarUsuarios {
-    width: 100%;
-    max-width: 1200px;
-    overflow-x: auto;
-    margin-top: 20px;
-    border-radius: 12px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-    background-color: var(--branco);
+  width: 100%;
+  max-width: 1200px;
+  overflow-x: auto;
+  margin-top: 20px;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  background-color: var(--branco);
 }
 
 .mostrarUsuarios table {
-    width: 100%;
-    border-collapse: collapse;
+  width: 100%;
+  border-collapse: collapse;
 }
 
 .mostrarUsuarios th,
 .mostrarUsuarios td {
-    padding: 12px 15px;
-    text-align: left;
+  padding: 12px 15px;
+  text-align: left;
 }
 
 .mostrarUsuarios thead {
-    background-color: var(--verde-3);
-    color: var(--branco);
-    font-weight: bold;
-    text-transform: uppercase;
+  background-color: var(--verde-3);
+  color: var(--branco);
+  font-weight: bold;
+  text-transform: uppercase;
 }
 
 .mostrarUsuarios tbody tr:nth-child(even) {
-    background-color: var(--verde-1);
+  background-color: var(--verde-1);
 }
 
 .mostrarUsuarios tbody tr:hover {
-    background-color: var(--verde-2);
-    cursor: pointer;
+  background-color: var(--verde-2);
+  cursor: pointer;
 }
 
 /* Botão deletar na tabela */
 .colunaDelete button img {
-    width: 20px;
-    height: 20px;
+  width: 20px;
+  height: 20px;
 }
 
 /* SweetAlert será usado para alertas - não precisa de CSS extra */
 
 /* Responsividade */
 @media (max-width: 768px) {
-    .div-procura {
-        flex-direction: column;
-        gap: 15px;
-    }
+  .div-procura {
+    flex-direction: column;
+    gap: 15px;
+  }
 
-    .div-links-contas {
-        flex-direction: column;
-        gap: 15px;
-    }
+  .div-links-contas {
+    flex-direction: column;
+    gap: 15px;
+  }
 
-    .mostrarUsuarios {
-        max-width: 100%;
-    }
+  .mostrarUsuarios {
+    max-width: 100%;
+  }
 }
 
 /* Centraliza todos os cabeçalhos da tabela */
 table thead th {
-    text-align: center;
-    white-space: nowrap;  /* impede quebra de linha */
+  text-align: center;
+  white-space: nowrap;
+  /* impede quebra de linha */
 }
 
 /* Centraliza os conteúdos das células, exceto texto longo se necessário */
 table tbody td {
-    text-align: center;
-    vertical-align: middle;
+  text-align: center;
+  vertical-align: middle;
 }
 
 /* Impede quebra de linha na coluna Usuario */
 table td.colunaUsuario {
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 /* Ajuste para o ícone de delete ficar centralizado */
 table td.colunaDelete {
-    justify-content: center;
-    align-items: center;
+  justify-content: center;
+  align-items: center;
 }
 
 /* Botões de status de usuário */
 .btn-status {
-    cursor: pointer;
-    padding: 6px 12px;
-    border: none;
-    border-radius: 12px;
-    color: #fff;
-    font-weight: bold;
-    transition: all 0.2s ease;
-    min-width: 80px;
-    text-align: center;
+  cursor: pointer;
+  padding: 6px 12px;
+  border: none;
+  border-radius: 12px;
+  color: #fff;
+  font-weight: bold;
+  transition: all 0.2s ease;
+  min-width: 80px;
+  text-align: center;
 }
 
 /* Status ativo */
 .btn-ativo {
-    background-color: #2a9d8f; /* verde */
+  background-color: #2a9d8f;
+  /* verde */
 }
 
 .btn-ativo:hover {
-    background-color: #1f7a6c;
+  background-color: #1f7a6c;
 }
 
 /* Status inativo */
 .btn-inativo {
-    background-color: #e63946; /* vermelho */
+  background-color: #e63946;
+  /* vermelho */
 }
 
 .btn-inativo:hover {
-    background-color: #b32c38;
+  background-color: #b32c38;
 }
 
 #Imagem_manutencao {
@@ -376,52 +387,84 @@ table td.colunaDelete {
   height: auto;
 }
 
+/* Container de Filtro e KPI */
+.container-filtro-kpi {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding: 20px;
+}
+
+/* Estilo do select */
+#filtroCriticidade {
+  background-color: rgb(183, 228, 199);
+  border: 2px solid var(--verde-3);
+  height: 8.5vh;
+  margin-right: 1.5vw;
+  padding: 10px 20x;
+  font-size: 16px;
+  border-radius: 5px;
+  padding: 10px;
+  font-size: 16px;
+  border-radius: 5px;
+}
+
 .kpi {
   display: flex;
-  justify-content: center;  /* centraliza os itens horizontalmente */
-  align-items: center;      /* centraliza verticalmente */
+  justify-content: center;
+  /* centraliza os itens horizontalmente */
+  align-items: center;
+  /* centraliza verticalmente */
   gap: 20px;
   padding: 20px;
-  margin-top: 5vh;
-  background-color: #f5f5f5;
+  border-radius: 10px;
+  background-color: #d5d5d5;
   border-bottom: 2px solid var(--verde-3);
-  width: fit-content;      /* largura ajusta ao conteúdo */
-  margin: 3vh auto 0 auto;
+  width: fit-content;
+  /* largura ajusta ao conteúdo */
   justify-content: center;
   box-sizing: border-box;
 }
 
 .kpi .item {
-  text-align: center;           /* centraliza o texto dentro do item */
-  padding: 10px 15px;           /* padding interno em cada KPI */
-  background: #fff;             /* fundo branco para destacar */
-  border-radius: 6px;           /* cantos arredondados */
-  box-shadow: 1px 1px 6px rgba(0,0,0,0.1); /* leve sombra */
-}
-
-.kpi .item:last-child {
-  margin-right: 10px;           /* deixa quase colado com a borda */
+  display: flex;
+  align-items: center;
+  padding: 10px 15px;
+  /* padding interno em cada KPI */
+  background: var(--verde-3);
+  /* fundo colorido para destacar */
+  border-radius: 6px;
+  /* cantos arredondados */
+  box-shadow: 1px 1px 6px rgba(0, 0, 0, 0.1);
+  /* leve sombra */
+  width: auto;
+  gap: 10px;
 }
 
 .kpi .item p {
   font-size: 14px;
-  color: #444;
-  margin-bottom: 5px;
+  color: black;
+  /* cor do texto dentro da KPI */
 }
 
 .kpi .item h3 {
   font-size: 20px;
   font-weight: bold;
-  color: var(--verde-3);
+  color: black;
+  /* cor do texto do valor */
 }
+
 
 /* Conteúdo principal (cards dos hospitais) */
 .conteudo-principal {
   display: flex;
   flex-wrap: wrap;
-  justify-content: center; /* centraliza os cards */
+  align-items: center;
+  justify-content: center;
+  flex-direction: row;
   gap: 20px;
   padding: 30px;
+  width: 100%;
 }
 
 /* Card de hospital */
@@ -429,26 +472,23 @@ table td.colunaDelete {
   background-color: rgb(183, 228, 199);
   border: 2px solid var(--verde-3);
   border-radius: 8px;
+  gap: 10px;
   padding: 20px;
-  width: 220px;
-  height: auto;
+  width: 20vw;
+  text-align: center;
+  height: 20vh;
+  justify-content: center;
   display: flex;
   flex-direction: column;
   align-items: center;
   box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.1);
 }
 
-.card-hospital h3 {
-  margin-bottom: 15px;
-  text-align: center;
-  font-size: 18px;
-}
-
 /* Bolha de status */
 .status {
   color: white;
   padding: 6px 14px;
-  border-radius: 20px;
+  border-radius: 10px;
   font-weight: bold;
   text-transform: capitalize;
   text-align: center;
@@ -466,8 +506,73 @@ table td.colunaDelete {
   background-color: red;
 }
 
+/* Modal fundo escuro */
+#modalVentiladores {
+    display: none; /* inicialmente oculto */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.6); /* escurece a tela atrás */
+    z-index: 1000; /* acima de todos os elementos */
+    justify-content: center;
+    align-items: center;
+}
+
+/* Conteúdo interno do modal */
+#conteudoVentiladores {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    max-height: 80vh; /* altura máxima da tela */
+    width: 80vw; /* largura grande, mas não full screen */
+    overflow-y: auto; /* scroll vertical */
+    box-shadow: 0 0 15px rgba(0,0,0,0.5);
+}
+
+/* Título do modal */
+#conteudoVentiladores h3 {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    font-size: 1.5rem;
+}
+
+/* Botão fechar modal */
+#conteudoVentiladores .btn-fechar-modal {
+    cursor: pointer;
+    background: red;
+    color: #fff;
+    border: none;
+    font-size: 1.2rem;
+    padding: 5px 10px;
+    border-radius: 5px;
+}
+
+/* Card de cada ventilador */
+.ventilador {
+    background-color: #e0f7fa;
+    padding: 15px 15px 15px 20px; /* espaço interno maior do lado esquerdo */
+    margin-bottom: 15px;
+    border-radius: 8px;
+    width: 10 0%; /* ocupa quase toda a largura do modal */
+    min-height: 80px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    border-left: 5px solid #00796b; /* borda esquerda para destaque */
+}
+
+/* Linha separadora entre Nº Série e Modelo */
+.ventilador .linha-separadora {
+    border-top: 1px solid #aaa;
+    margin: 8px 0; /* espaço acima e abaixo da linha */
+}
+
 .navbar-mob {
-  background-color: transparent; 
+  background-color: transparent;
   color: var(--verde-4);
   text-decoration: none;
   display: flex;
@@ -476,14 +581,16 @@ table td.colunaDelete {
 }
 
 .navbar-mob i {
-  color: var(--verde-4); 
+  color: var(--verde-4);
 }
 
-
 .btn-adicionar {
-  background-color: var(--verde-4); /* usa a cor que você definiu */
-  color: #ffffff; /* texto branco */
-  border: 1px solid #ffffff; /* borda branca opcional */
+  background-color: var(--verde-4);
+  /* usa a cor que você definiu */
+  color: #ffffff;
+  /* texto branco */
+  border: 1px solid #ffffff;
+  /* borda branca opcional */
   padding: 8px 16px;
   border-radius: 6px;
   cursor: pointer;
@@ -491,10 +598,214 @@ table td.colunaDelete {
 }
 
 .btn-adicionar:hover {
-  background-color: #1f6e75; /* escurece um pouco ao passar o mouse */
+  background-color: #1f6e75;
+  /* escurece um pouco ao passar o mouse */
 }
 
 header h2 {
-  font-size: 24px; /* ou o tamanho que você quer */
-  font-weight: 600; /* se quiser controlar a espessura */
+  font-size: 24px;
+  /* ou o tamanho que você quer */
+  font-weight: 600;
+  /* se quiser controlar a espessura */
+}
+
+/* Botão base */
+.btn-edit {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 8px;
+    width: 140px;
+    height: 40px;
+    padding: 0 16px;
+    border: none;
+    border-radius: 10px;
+    background: white;
+    color: black;
+    border: 1px solid black;
+    font-weight: 700;
+    cursor: pointer;
+    overflow: hidden;
+}
+
+/* Texto some no hover */
+.btn-edit .btn-text {
+    transition: opacity .25s ease;
+}
+
+.btn-edit:hover .btn-text {
+    opacity: 0;
+}
+
+/* Ícone começa colado à direita dentro do botão */
+.btn-edit i {
+    position: absolute;
+    left: calc(100% - 35px);
+    top: 50%;
+    transform: translateY(-50%);
+    transition: left .30s ease, transform .30s ease, opacity .20s ease;
+    font-size: 16px;
+}
+
+/* No hover, o ícone desliza pro centro */
+.btn-edit:hover i {
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.btn-edit:active {
+    transform: scale(1.05);
+    transition: transform 0.1s ease;
+}
+
+.btn-delete {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    width: 140px;
+    height: 40px;
+    border: none;
+    padding: 0 15px;
+    background-color: white;
+    color: red;
+    border: 1px solid red;
+    font-weight: 700;
+    cursor: pointer;
+    border-radius: 10px;
+    transition: 0.3s;
+    overflow: hidden;
+}
+
+/* Texto */
+.btn-delete .text {
+    transition: 0.3s;
+}
+
+/* Ícone */
+.btn-delete .icon {
+    position: absolute;
+    right: 20px;
+    width: 16px;
+    height: 16px;
+    transition: 0.3s;
+    fill: white;
+}
+
+/* Hover → texto some */
+.btn-delete:hover .text {
+    color: transparent;
+}
+
+/* Hover → ícone vai pro centro */
+.btn-delete:hover .icon {
+    right: 50%;
+    transform: translateX(50%);
+}
+
+/* Clique → cresce um pouco */
+.btn-delete:active {
+    transform: scale(1.05);
+    transition: transform 0.1s ease;
+}
+
+.button {
+    width: 150px;
+    height: 40px;
+    border: 1px solid rgb(0, 95, 0);
+    border-radius: 10px;
+    background: white;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s;
+    font-weight: bold;
+    margin-left: -0.8vw;
+}
+
+.button_text {
+    position: absolute;
+    left: 20px;
+    margin-top: 0.05vh;
+    top: 50%;
+    transform: translateY(-50%);
+    transition: all 0.3s;
+    color: rgb(0, 95, 0);
+}
+
+.button_icon {
+    position: absolute;
+    right: 0;
+    top: 0;
+    margin-top: 1.5vh;
+    height: 100%;
+    width: 40px;
+    background: white;
+    display: flex;
+    justify-content: center;
+    transition: all 0.3s;
+    font-size: 20px;
+    color: rgb(0, 95, 0);
+}
+
+.button:hover .button_text {
+    color: transparent;
+}
+
+.button:hover .button_icon {
+    width: 100%;
+    right: 0;
+}
+
+.btn-addcomp {
+    background-color: white;
+    border: 1px solid black;
+    color: black;
+    font-weight: 500;
+    margin-top: -5px;
+}
+
+.btn-addcomp:hover {
+    background-color: white;
+    color: black;
+    border-color: black;
+}
+
+.button:active {
+    transform: scale(1.05);
+    transition: transform 0.1s ease;
+}
+
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.6);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+}
+
+.modal-content {
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    width: 400px;
+    max-height: 80vh;
+    overflow-y: auto;
+    position: relative;
+}
+
+.btn-fechar-modal {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    border: none;
+    background: transparent;
+    font-size: 18px;
+    cursor: pointer;
 }
