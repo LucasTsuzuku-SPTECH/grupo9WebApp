@@ -15,6 +15,29 @@ router.delete("/ventiladores/:idVentilador", function(req, res) {
     controleController.deletarVentilador(req, res);
 });
 
+router.get("/modelos", function (req, res) {
+    controleController.listarModelos(req, res);
+});
+
 router.post("/ventiladores", controleController.criarVentilador);
+
+// buscar ventilador específico
+router.get('/ventiladores/:idVentilador', (req, res) => {
+  controleController.buscarVentilador(req, res);
+});
+
+// Atualizar ventilador
+router.put("/ventiladores/:idVentilador", function(req, res) {
+    controleController.atualizarVentilador(req, res);
+});
+
+router.get("/enderecos", controleController.listarEnderecos);
+router.post("/enderecos", controleController.criarEndereco);
+router.post("/criar", controleController.criarHospital);
+router.get("/buscar/:idHospital", controleController.buscarHospital);
+router.put("/editar/:idHospital", controleController.editarHospital);
+router.delete("/deletar/:idHospital", controleController.deletarHospital);
+
+
 
 module.exports = router;

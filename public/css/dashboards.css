@@ -399,7 +399,7 @@ table td.colunaDelete {
 #filtroCriticidade {
   background-color: rgb(183, 228, 199);
   border: 2px solid var(--verde-3);
-  height: 8.5vh;
+  height: 7.5vh;
   margin-right: 1.5vw;
   padding: 10px 20x;
   font-size: 16px;
@@ -420,7 +420,7 @@ table td.colunaDelete {
   border-radius: 10px;
   background-color: #d5d5d5;
   border-bottom: 2px solid var(--verde-3);
-  width: fit-content;
+  width: 100%;
   /* largura ajusta ao conteúdo */
   justify-content: center;
   box-sizing: border-box;
@@ -475,6 +475,7 @@ table td.colunaDelete {
   gap: 10px;
   padding: 20px;
   width: 20vw;
+  margin-top: -7vh;
   text-align: center;
   height: 20vh;
   justify-content: center;
@@ -549,6 +550,10 @@ table td.colunaDelete {
     font-size: 1.2rem;
     padding: 5px 10px;
     border-radius: 5px;
+}
+
+#conteudoVentiladores .btn-fechar-modal:hover {
+    background: darkred;
 }
 
 /* Card de cada ventilador */
@@ -685,6 +690,7 @@ header h2 {
 
 /* Ícone */
 .btn-delete .icon {
+  margin-top: 4px;
     position: absolute;
     right: 20px;
     width: 16px;
@@ -738,7 +744,7 @@ header h2 {
     position: absolute;
     right: 0;
     top: 0;
-    margin-top: 1.5vh;
+    margin-top: 1.3vh;
     height: 100%;
     width: 40px;
     background: white;
@@ -787,7 +793,7 @@ header h2 {
     display: flex;
     justify-content: center;
     align-items: center;
-    z-index: 9999;
+    z-index: 1050;
 }
 
 .modal-content {
@@ -800,12 +806,541 @@ header h2 {
     position: relative;
 }
 
-.btn-fechar-modal {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    border: none;
-    background: transparent;
-    font-size: 18px;
-    cursor: pointer;
+/* --- Overlay dos modais Adicionar / Editar --- */
+#addVentiladorModal,
+#editVentiladorModal {
+  display: none; /* inicial oculto */
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0,0,0,0.6); /* fundo escuro */
+  z-index: 1000;
+  justify-content: center;
+  align-items: center;
 }
+
+/* --- Conteúdo interno --- */
+#addVentiladorModal .modal-content,
+#editVentiladorModal .modal-content {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 10px;
+  max-height: 80vh;
+  width: 400px;
+  overflow-y: auto;
+  box-shadow: 0 0 15px rgba(0,0,0,0.5);
+}
+
+/* Título com botão fechar alinhado */
+#addVentiladorModal .modal-content h3,
+#editVentiladorModal .modal-content h3 {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  font-size: 1.5rem;
+}
+
+/* Botão de fechar no canto */
+#addVentiladorModal .btn-fechar-modal,
+#editVentiladorModal .btn-fechar-modal {
+  cursor: pointer;
+  background: red;
+  color: #fff;
+  border: none;
+  font-size: 1.2rem;
+  padding: 5px 10px;
+  border-radius: 5px;
+}
+
+#addVentiladorModal .btn-fechar-modal:hover,
+#editVentiladorModal .btn-fechar-modal:hover {
+  background: darkred;
+}
+
+/* Inputs / selects do formulário */
+#addVentiladorModal .form-group,
+#editVentiladorModal .form-group {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 15px;
+}
+
+#addVentiladorModal .form-group label,
+#editVentiladorModal .form-group label {
+  font-weight: 600;
+  margin-bottom: 5px;
+}
+
+#addVentiladorModal .form-group input,
+#addVentiladorModal .form-group select,
+#editVentiladorModal .form-group input,
+#editVentiladorModal .form-group select {
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 14px;
+}
+
+/* Botão submit */
+#addVentiladorModal .btn-submit,
+#editVentiladorModal .btn-submit {
+  width: 130px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: transparent;     /* fundo transparente no estado normal */
+  border: 2px solid #00796b;          /* borda padrão */
+  color: #00796b;                     /* texto padrão */
+  font-weight: 600;
+  border-radius: 10px;
+  gap: 8px;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  transition: color .3s, background-color .3s;
+  z-index: 1; /* texto acima do ::before */
+}
+
+/* bolha que vem de trás */
+#addVentiladorModal .btn-submit::before,
+#editVentiladorModal .btn-submit::before {
+  content: "";
+  position: absolute;
+  width: 150px;
+  height: 130px;
+  background-color: #00796b;
+  border-radius: 50%;
+  left: -120%;
+  top: 0;
+  transition: .3s;
+  z-index: -10; /* atrás do texto */
+}
+
+/* no hover o before se move e "abre" */
+#addVentiladorModal .btn-submit:hover::before,
+#editVentiladorModal .btn-submit:hover::before {
+  transform: translate(100%, -50%);
+  border-radius: 0;
+}
+
+/* muda cor do texto ao passar o mouse */
+#addVentiladorModal .btn-submit:hover,
+#editVentiladorModal .btn-submit:hover {
+  color: white;
+}
+
+/* efeito click */
+#addVentiladorModal .btn-submit:active,
+#editVentiladorModal .btn-submit:active {
+  transform: translate(1px,1px);
+  box-shadow: 0 4px 12px rgba(255, 255, 255, 0.6);
+}
+
+/* ---------- Overlay dos modais Hospital / Endereço ---------- */
+#addHospitalModal,
+#addEnderecoModal {
+  display: none; /* inicial oculto */
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0,0,0,0.6); /* fundo escuro */
+  z-index: 1100;
+  justify-content: center;
+  align-items: center;
+}
+
+/* ---------- Conteúdo interno ---------- */
+#addHospitalModal .modal-content,
+#addEnderecoModal .modal-content {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 10px;
+  width: 100%;
+  max-width: 60vw;
+  max-height: 80vh;
+  overflow-y: auto;
+  box-shadow: 0 0 15px rgba(0,0,0,0.5);
+  position: relative;
+}
+
+/* Título com botão fechar */
+#addHospitalModal h3,
+#addEnderecoModal h3 {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  font-size: 1.5rem;
+}
+
+/* Botão de fechar */
+#addHospitalModal .btn-fechar-modal,
+#addEnderecoModal .btn-fechar-modal {
+  cursor: pointer;
+  background: red;
+  color: #fff;
+  border: none;
+  font-size: 1.2rem;
+  padding: 5px 10px;
+  border-radius: 5px;
+}
+
+#addHospitalModal .btn-fechar-modal:hover,
+#addEnderecoModal .btn-fechar-modal:hover {
+  background: darkred;
+}
+
+/* Inputs / selects do formulário */
+#addHospitalModal .form-group,
+#addEnderecoModal .form-group {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 15px;
+}
+
+#addHospitalModal .form-group label,
+#addEnderecoModal .form-group label {
+  font-weight: 600;
+  margin-bottom: 5px;
+}
+
+#addHospitalModal .form-group input,
+#addHospitalModal .form-group select,
+#addEnderecoModal .form-group input,
+#addEnderecoModal .form-group select {
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 14px;
+}
+
+/* Botão submit */
+#addHospitalModal .btn-submit,
+#addEnderecoModal .btn-submit {
+  width: 170px;
+  height: 40px;
+  padding: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: transparent;
+  border: 2px solid #00796b;
+  color: #00796b;
+  font-weight: 600;
+  border-radius: 10px;
+  gap: 8px;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  transition: color .3s, background-color .3s;
+  z-index: 1;
+}
+
+/* efeito "bolha" */
+#addHospitalModal .btn-submit::before,
+#addEnderecoModal .btn-submit::before {
+  content: "";
+  position: absolute;
+  width: 190px;
+  height: 130px;
+  background-color: #00796b;
+  border-radius: 50%;
+  left: -120%;
+  top: 0;
+  transition: .3s;
+  z-index: -10;
+}
+
+#addHospitalModal .btn-submit:hover::before,
+#addEnderecoModal .btn-submit:hover::before {
+  transform: translate(100%, -50%);
+  border-radius: 0;
+}
+
+#addHospitalModal .btn-submit:hover,
+#addEnderecoModal .btn-submit:hover {
+  color: white;
+}
+
+/* efeito click */
+#addHospitalModal .btn-submit:active,
+#addEnderecoModal .btn-submit:active {
+  transform: translate(1px,1px);
+  box-shadow: 0 4px 12px rgba(255, 255, 255, 0.6);
+}
+
+/* ---------- Overlay do modal Editar Hospital ---------- */
+#editHospitalModal {
+  display: none; /* inicial oculto */
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0,0,0,0.6);
+  z-index: 1000;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Conteúdo interno */
+#editHospitalModal .modal-content {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 10px;
+  width: 100%;
+  max-width: 60vw; /* mesmo que o addHospitalModal */
+  max-height: 80vh;
+  overflow-y: auto;
+  box-shadow: 0 0 15px rgba(0,0,0,0.5);
+  position: relative;
+}
+
+/* Título e botão fechar */
+#editHospitalModal h3 {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  font-size: 1.5rem;
+}
+
+#editHospitalModal .btn-fechar-modal {
+  cursor: pointer;
+  background: red;
+  color: #fff;
+  border: none;
+  font-size: 1.2rem;
+  padding: 5px 10px;
+  border-radius: 5px;
+}
+
+#editHospitalModal .btn-fechar-modal:hover {
+  background: darkred;
+}
+
+/* Formulário - grupos verticais como no addHospitalModal */
+#editHospitalModal .form-group {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 15px;
+}
+
+#editHospitalModal .form-group label {
+  font-weight: 600;
+  margin-bottom: 5px;
+}
+
+#editHospitalModal .form-group input,
+#editHospitalModal .form-group select {
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 14px;
+}
+
+/* Botão submit estilizado igual ao addHospitalModal */
+#editHospitalModal .btn-submit {
+  width: 170px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: transparent;
+  border: 2px solid #00796b;
+  color: #00796b;
+  font-weight: 600;
+  border-radius: 10px;
+  gap: 8px;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  transition: color .3s, background-color .3s;
+  margin-top: 10px;
+  z-index: 1;
+}
+
+#editHospitalModal .btn-submit::before {
+  content: "";
+  position: absolute;
+  width: 190px;
+  height: 130px;
+  background-color: #00796b;
+  border-radius: 50%;
+  left: -120%;
+  top: 0;
+  transition: .3s;
+  z-index: -10;
+}
+
+#editHospitalModal .btn-submit:hover::before {
+  transform: translate(100%, -50%);
+  border-radius: 0;
+}
+
+#editHospitalModal .btn-submit:hover {
+  color: white;
+}
+
+#editHospitalModal .btn-submit:active {
+  transform: translate(1px,1px);
+  box-shadow: 0 4px 12px rgba(255, 255, 255, 0.6);
+}
+
+/* Botão "Criar Novo Endereço" estilizado nos modais Hospital */
+#addHospitalModal .btn-criar-endereco,
+#editHospitalModal .btn-criar-endereco {
+    width: 100%;                /* largura total */
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: transparent;
+    border: 2px solid #00796b;
+    color: #00796b;
+    font-weight: 600;
+    border-radius: 10px;
+    gap: 8px;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    transition: color .3s, background-color .3s;
+    margin-top: 20px;          /* espaçamento do select */
+    z-index: 1;
+}
+
+#addHospitalModal .btn-criar-endereco:hover,
+#editHospitalModal .btn-criar-endereco:hover {
+    background-color: #00796b;
+    color: white;
+}
+
+#addHospitalModal .btn-criar-endereco:active,
+#editHospitalModal .btn-criar-endereco:active {
+    transform: translate(1px,1px);
+    box-shadow: 0 4px 12px rgba(255, 255, 255, 0.6);
+}
+
+/* força o swal ficar acima de qualquer modal */
+.swal2-container {
+  z-index: 20000 !important;
+}
+.swal2-popup {
+  z-index: 20001 !important;
+}
+
+/* ---------- Overlay do modal Deletar Hospital ---------- */
+#deleteHospitalModal {
+  display: none; /* começa oculto */
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background-color: rgba(0,0,0,0.6); /* fundo escuro */
+  z-index: 1000;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Conteúdo interno */
+#deleteHospitalModal .modal-content {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 10px;
+  width: 100%;
+  max-width: 40vw; /* um pouco menor que add/edit hospital */
+  overflow-y: auto;
+  box-shadow: 0 0 15px rgba(0,0,0,0.5);
+  position: relative;
+}
+
+/* Título + botão fechar */
+#deleteHospitalModal h3 {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  font-size: 1.4rem;
+}
+
+#deleteHospitalModal .btn-fechar-modal {
+  cursor: pointer;
+  background: red;
+  color: #fff;
+  border: none;
+  font-size: 1.2rem;
+  padding: 5px 10px;
+  border-radius: 5px;
+}
+
+#deleteHospitalModal .btn-fechar-modal:hover {
+  background: darkred;
+}
+
+/* Select */
+#deleteHospitalModal select {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  margin-bottom: 15px;
+  margin-top: 10px;
+  font-size: 14px;
+}
+
+/* Botão submit (igual padrão dos outros) */
+#deleteHospitalModal .btn-submit {
+  width: 170px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: transparent;
+  border: 2px solid red;
+  color: red;
+  font-weight: 600;
+  border-radius: 10px;
+  gap: 8px;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  transition: color .3s, background-color .3s;
+  z-index: 1;
+}
+
+#deleteHospitalModal .btn-submit::before {
+  content: "";
+  position: absolute;
+  width: 190px;
+  height: 130px;
+  background-color: red;
+  border-radius: 50%;
+  left: -120%;
+  top: 0;
+  transition: .3s;
+  z-index: -10;
+}
+
+#deleteHospitalModal .btn-submit:hover::before {
+  transform: translate(100%, -50%);
+  border-radius: 0;
+}
+
+#deleteHospitalModal .btn-submit:hover {
+  color: white;
+}
+
+#deleteHospitalModal .btn-submit:active {
+  transform: translate(1px,1px);
+  box-shadow: 0 4px 12px rgba(255, 255, 255, 0.6);
+}
+
+#deleteHospitalModal label {
+  font-weight: 600;
+}
+
