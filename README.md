@@ -1,4 +1,4 @@
-# Projeto Grupo 9 🚩
+# Projeto Grupo 2 🚩
 
 Projeto da matéria Pesquisa e Inovação do curso Ciência da Computação da SPTECH
 
