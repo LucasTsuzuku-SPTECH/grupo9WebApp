@@ -40,7 +40,7 @@ nome varchar(100) not null,
 email varchar(100) unique not null,
 senha_hash varchar(200) not null,
 perfil enum('empresa', 'hospital', 'adminHospital', 'adminEmpresa') not null,
-    statusUser varchar(8),
+statusUser varchar(8),
 fk_empresa int,
 fk_hospital int,
     constraint ck_status check(statusUser in ('ativo','inativo')),
@@ -64,7 +64,6 @@ foreign key (fk_modelo) references Modelo(id_modelo),
 foreign key (fk_hospital) references Hospital(id_hospital),
 foreign key (fk_empresa) references EmpresaFabricante(id_empresa)
 );
-    
 
 -- Inserts
 -- Endereços

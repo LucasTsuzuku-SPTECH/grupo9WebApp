@@ -92,17 +92,6 @@
             </div>
           </div>
 
-          <div class="div-alerta" id="divAlerta" style="display: none;">
-            <div class="div-img">
-              <img src="../../assets/imgs/atencao.png" alt="sinal de atenção">
-            </div>
-            <div>Deseja mesmo excluir este usuário?</div>
-            <div class="div-escolha">
-              <div class="botao sim" onclick="deletar(usuarioSelecionado)">Sim</div>
-              <div class="botao nao" id="naoDeletar" onclick="fecharAlerta()">Não</div>
-            </div>
-          </div>
-
           <div class="mostrarUsuarios">
             <table>
               <thead>
@@ -113,7 +102,6 @@
                   <th class="colunaTipoAcesso" style="text-align: center;">Tipo acesso</th>
                   <th class="colunaStatus" style="text-align: center;">Status</th>
                   <th class="colunaEditar" style="text-align: center;">Editar</th>
-                  <th class="colunaDelete" style="text-align: center;">Deletar</th>
                 </tr>
               </thead>
               <tbody id="tbody_usuarios">
@@ -251,11 +239,6 @@
         <img src="../../assets/imgs/editar.png" alt="Editar" style="width:20px;height:20px;">
       </button>
     </td>
-    <td class="colunaDelete" style="text-align:center;">
-      <button onclick="deletarr(${usuario.id_usuario})" style="background:transparent;border:none;">
-        <img src="../../assets/imgs/lixeira.png" alt="Deletar" style="width:20px;height:20px;">
-      </button>
-    </td>
   `;
     tr.style.backgroundColor = index % 2 === 0 ? '#d3d3d3' : '#ffffff';
     return tr;
@@ -275,16 +258,6 @@
       usuarios = await res.json();
       preencherTabela(usuarios);
       preencherSelectHospital();
-    } catch (err) {
-      console.error(err);
-    }
-  }
-
-  async function deletar(id) {
-    if (!id) return;
-    try {
-      await fetch(`/contas/deleteConta/${id}`, { method: "DELETE" });
-      puxarDados();
     } catch (err) {
       console.error(err);
     }
@@ -370,20 +343,6 @@
   }
 
   // -------------------- MODAIS ----------------------
-  function deletarr(id) {
-    usuarioSelecionado = id;
-    Swal.fire({
-      title: 'Deseja realmente excluir este usuário?',
-      icon: 'warning',
-      showCancelButton: true,
-      confirmButtonColor: '#e63946',
-      cancelButtonColor: '#2a9d8f',
-      confirmButtonText: 'Sim',
-      cancelButtonText: 'Não'
-    }).then((result) => {
-      if (result.isConfirmed) deletar(usuarioSelecionado);
-    });
-  }
 
   function abrirModalEditar(id) {
     usuarioEditarId = id;
@@ -398,7 +357,7 @@
     const nome = document.getElementById("nomeEditar").value;
     const email = document.getElementById("emailEditar").value;
     const perfil = document.getElementById("perfilEditar").value;
-    const fkEmpresa = 1; // sempre 1
+    const fkEmpresa = sessionStorage.getItem("EMPRESA_USUARIO"); 
     let fkHospital = null;
 
     // Pega o select correto do modal de editar

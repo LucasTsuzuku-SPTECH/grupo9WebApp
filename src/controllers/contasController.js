@@ -10,6 +10,18 @@ async function listar(req, res) {
   }
 }
 
+async function listarHospital(req, res) {
+  const { idHospital } = req.params;
+
+  try {
+    const contas = await contasModel.listarContasHospital(idHospital);
+    res.json(contas);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json("Erro ao listar contas");
+  }
+}
+
 async function alterarAcesso(req, res) {
   const { statusUser } = req.body;
   const { id } = req.params;
@@ -91,4 +103,4 @@ function listarHospitais(req, res){
     .catch(err => res.status(500).json(err))
 }
 
-module.exports = { listar, alterarAcesso, deletar, cadastrarFunc, listarHospitais, editarUsuario };
+module.exports = { listar, alterarAcesso, deletar, cadastrarFunc, listarHospitais, editarUsuario, listarHospital };

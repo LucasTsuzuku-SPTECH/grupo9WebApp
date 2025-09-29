@@ -3,6 +3,7 @@ const router = express.Router();
 const contasController = require("../controllers/contasController");
 
 router.get("/contas", contasController.listar);
+router.get("/contasHospital/:idHospital", contasController.listarHospital);
 router.put("/alterarAcesso/:id", contasController.alterarAcesso);
 router.delete("/deleteConta/:id", contasController.deletar);
 

@@ -9,7 +9,12 @@
   <title>Dashboard - Contas</title>
   <script src="https://kit.fontawesome.com/9f7414eb10.js" crossorigin="anonymous"></script>
   <script src="../../js/sessao.js"></script>
-  
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <!-- CSS Bootstrap -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- JS Bootstrap -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 </head>
 
 <body onload="puxarDados()">
@@ -19,17 +24,12 @@
     <header>
       <div class="header-container">
         <div class="div-hamburguer">
-          <a class="navbar-mob" onclick="mostrarNavbar()">
-            <i id="icone" class="fa-solid fa-bars"></i>
+          <!-- Botão Hamburguer -->
+          <a class="navbar-mob" onclick="toggleSidebar()">
+            <i id="icone" class="fa-solid fa-bars fa-2x"></i>
           </a>
-          <nav class="navbar" id="navbar">
-            <a href="./mainPage.html">Página principal</a>
-            <a href="./mainPage.html">Hospitais</a>
-            <a href="./contas.html">Contas</a>
-            </a>
-          </nav>
         </div>
-        <h2>DASHBOARD - CONTROLE DE USUÁRIOS</h2>
+        <h2>DASHBOARD - CONTROLE DE CONTAS</h2>
         <div class="div-pai-perfil">
           <div class="div-linha"></div>
           <div class="div-todo-perfil">
@@ -39,7 +39,7 @@
             </div>
             <div class="div-opcoes">
               <div class="div-opcao-sair">
-                <button style="border: none;" onclick="limparSessao()" id="sair" ><span>Sair</span></button>
+                <button style="border: none;" onclick="limparSessao()" id="sair"><span>Sair</span></button>
               </div>
             </div>
           </div>
@@ -47,428 +47,310 @@
       </div>
     </header>
 
-    <!-- Sidebar -->
-    <div class="container">
-      <div class="div-sidebar">
-        <div class="div-img">
-          <img src="../../assets/imgs/Zephyrus_2png.png" alt="Logomarca" />
-        </div>
-        <div class="div-botoes">
-          <a href="mainPage.html">
-            <div class="div-btComImg ">
-              <img src="../../assets/imgs/main-menu.png" alt="Imagem do ícone da main page" />
-              <div class="txt-bt">Main Page</div>
-            </div>
-          </a>
-
-          <a href="mainPage.html">
-            <div class="div-btComImg">
-              <img src="../../assets/imgs/Hospitais.png" alt="Imagem do ícone de Hospitais" />
-              <div class="txt-bt">Hospitais</div>
-            </div>
-          </a>
-
-          <a href="contas.html">
-            <div class="div-btComImg div-btEscolhido">
-              <img src="../../assets/imgs/multiplasPessoas.png" alt="Imagem do ícone das contas registradas" />
-              <div class="txt-bt">Contas</div>
-            </div>
-          </a>
-        </div>
+    <!-- Sidebar Modal -->
+    <div id="sidebarModal" class="sidebar-modal">
+      <div class="sidebar-header">
+        <span>Menu</span>
+        <button onclick="toggleSidebar()" class="btn-fechar">&times;</button>
       </div>
+      <nav class="sidebar-nav">
+        <a style="text-decoration: none;" href="./mainPage.html">Página principal</a>
+        <a style="text-decoration: none;" href="./controleSalas.html">Hospitais</a>
+        <a style="text-decoration: none;" href="./contas.html">Contas</a>
+      </nav>
+    </div>
 
-      <div class="conteudo-principal">
+    <div class="conteudo-principal">
 
-        <div class="div-flex">
-          <div class="div-block">
-            <div class="div-links-contas">
-              <a href="../../cadastro.html">
-                <!-- <div class="div-botao"> -->
-                <h3>Adicionar novo usuário</h3>
-                <!-- </div> -->
-              </a>
+      <div class="div-flex">
+        <div class="div-block">
+          <div class="div-links-contas">
+            <button class="btn-adicionar" data-bs-toggle="modal" data-bs-target="#modalAdicionarUsuario">
+              Adicionar novo usuário
+            </button>
+          </div>
 
-                <!-- <a href="cadasHosp.html">
-                  <h3>Adicionar novo hospital</h3>
-              </a> -->
-
-              <!-- <a href="../../cadastroMaquina.html">
-                <div class="div-botao">
-                  <h3>Adicionar nova máquina</h3>
-                </div>
-              </a> -->
+          <div class="div-procura">
+            <div class="div-ipt-procura">
+              <label for="">Procure pelo Representante:</label>
+              <input type="text" id="ipt_representante" class="ipt_procura"
+                oninput="buscarRepresentante(ipt_representante.value)" placeholder="Nome do Representante">
             </div>
+            <div class="div-ipt-procura">
+              <label for="">Filtrar por atividade:</label>
+              <select name="" id="select_atividade" onchange="selecionarAtividade()" class="ipt_procura">
+                <option value="Ambos">Ambos</option>
+                <option value="ativo">Ativo</option>
+                <option value="inativo">Inativo</option>
+              </select>
+            </div>
+          </div>
 
-              <div class="div-procura">
-                <div class="div-ipt-procura">
-                  <label for="">Procure pelo Representante:</label>
-                  <input type="text" id="ipt_representante" class="ipt_procura"
-                    oninput="buscarRepresentante(ipt_representante.value)" placeholder="Nome do Representante">
+          <div class="mostrarUsuarios">
+            <table>
+              <thead>
+                <tr class="nomeColuna">
+                  <th class="colunaUsuario" style="text-align: center;">Hospital | Empresa</th>
+                  <th class="colunaRepresentante" style="text-align: center;">Representante</th>
+                  <th class="colunaEmail" style="text-align: center;">E-mail</th>
+                  <th class="colunaTipoAcesso" style="text-align: center;">Tipo acesso</th>
+                  <th class="colunaStatus" style="text-align: center;">Status</th>
+                  <th class="colunaEditar" style="text-align: center;">Editar</th>
+                </tr>
+              </thead>
+              <tbody id="tbody_usuarios">
+              </tbody>
+            </table>
+          </div>
+
+          <!-- Modal Adicionar Usuário -->
+          <div class="modal fade" id="modalAdicionarUsuario" tabindex="-1" aria-labelledby="modalLabelUsuario"
+            aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+              <div class="modal-content">
+
+                <div class="modal-header">
+                  <h5 class="modal-title" id="modalLabelUsuario">Adicionar Novo Usuário</h5>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
                 </div>
-                <div class="div-ipt-procura">
-                  <label for="">Filtrar por Hospital</label>
-                  <select name="" id="select_hospital" onchange="selecionarHospital()" class="ipt_procura">
-                    <option value="todos">Todos</option>
-                  </select>
+
+                <div class="modal-body">
+                  <form id="formAdicionarUsuario">
+                    <div class="mb-3">
+                      <label for="nomeModal" class="form-label">Nome</label>
+                      <input type="text" class="form-control" id="nomeModal" required>
+                    </div>
+                    <div class="mb-3">
+                      <label for="emailModal" class="form-label">E-mail</label>
+                      <input type="email" class="form-control" id="emailModal" required>
+                    </div>
+                    <div class="mb-3">
+                      <label for="senhaModal" class="form-label">Senha</label>
+                      <input type="password" class="form-control" id="senhaModal" required>
+                    </div>
+                    <div class="mb-3">
+                      <label for="confirmSenhaModal" class="form-label">Confirmar Senha</label>
+                      <input type="password" class="form-control" id="confirmSenhaModal" required>
+                    </div>
+                    <div class="mb-3">
+                      <label for="perfilModal" class="form-label">Perfil</label>
+                      <select class="form-select" id="perfilModal" required>
+                        <option value="" selected disabled>Selecione</option>
+                        <option value="hospital">Funcionário Hospital</option>
+                        <option value="adminHospital">Admin Hospital</option>
+                      </select>
+                    </div>
+                  </form>
                 </div>
-                <div class="div-ipt-procura">
-                  <label for="">Filtrar por atividade:</label>
-                  <select name="" id="select_atividade" onchange="selecionarAtividade()" class="ipt_procura">
-                    <option value="Ambos">Ambos</option>
-                    <option value="ativo">Ativo</option>
-                    <option value="inativo">Inativo</option>
-                  </select>
+
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                  <button type="button" class="btn btn-primary" onclick="cadastrarModal()">Adicionar</button>
                 </div>
+
               </div>
+            </div>
+          </div>
 
-              <div class="div-alerta" id="divAlerta" style="display: none;">
-  <div class="div-img">
-    <img src="../../assets/imgs/atencao.png" alt="sinal de atenção">
-  </div>
-  <div>Deseja mesmo excluir este usuário?</div>
-  <div class="div-escolha">
-      <div class="botao sim" onclick="deletar(usuarioSelecionado)">Sim</div>
-      <div class="botao nao" id="naoDeletar" onclick="fecharAlerta()">Não</div>
-  </div>
-</div>
+          <!-- Modal Editar Usuário -->
+          <div class="modal fade" id="modalEditarUsuario" tabindex="-1" aria-labelledby="modalLabelEditarUsuario"
+            aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+              <div class="modal-content">
 
-<div class="mostrarUsuarios">
-  <table>
-    <thead>
-      <tr class="nomeColuna">
-        <th class="colunaUsuario">Hospital | Empresa</th>
-        <th class="colunaRepresentante">Representante</th>
-        <th class="colunaEmail">E-mail</th>
-        <th class="colunaTipoAcesso">Tipo acesso</th>
-        <th class="colunaStatus">Status</th>
-        <th class="colunaDelete">Deletar</th>
-      </tr>
-    </thead>
-    <tbody id="tbody_usuarios">
-    </tbody>
-  </table>
-</div>
+                <div class="modal-header">
+                  <h5 class="modal-title" id="modalLabelEditarUsuario">Editar Usuário</h5>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+                </div>
+
+                <div class="modal-body">
+                  <form id="formEditarUsuario">
+                    <div class="mb-3">
+                      <label for="nomeEditar" class="form-label">Nome</label>
+                      <input type="text" class="form-control" id="nomeEditar" required>
+                    </div>
+                    <div class="mb-3">
+                      <label for="emailEditar" class="form-label">E-mail</label>
+                      <input type="email" class="form-control" id="emailEditar" required>
+                    </div>
+                    <div class="mb-3">
+                      <label for="perfilEditar" class="form-label">Perfil</label>
+                      <select class="form-select" id="perfilEditar" required>
+                        <option value="" selected disabled>Selecione</option>
+                        <option value="hospital">Funcionário Hospital</option>
+                        <option value="adminHospital">Admin Hospital</option>
+                      </select>
+                    </div>
+                  </form>
+                </div>
+
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                  <button type="button" class="btn btn-primary" onclick="editarUsuarioModal()">Salvar</button>
+                </div>
+
+              </div>
+            </div>
+          </div>
+
+</body>
 
 <script>
-
-  // if (perfil == "adminEmpresa" || perfil == 'empresa'){
-  //   contas_hospital.style.display = 'none';
-  // }else{
-  //   contas_empresa.style.display = 'none';
-  //   todos_hospital.style.display = 'none';
-  // }
-
-  // if (perfil == 'empresa' || perfil == 'hospital'){
-  //   contas_empresa.style.display = 'none'
-  //   contas_hospital.style.display = 'none'
-  // }
+  // -------------------- VARIÁVEIS GLOBAIS ----------------------
   let usuarios = [];
   let hospitais = [];
-  let usuarioSelecionado = null; // Id usuário
+  let usuarioSelecionado = null; // id do usuário
+  let usuarioEditarId = null;
 
-  function mostrarNavbar() {
-    const larguraTela = window.innerWidth;
-    var menu = document.getElementById("navbar");
-    var icone = document.getElementById("icone");
+  // -------------------- FUNÇÕES AUXILIARES ----------------------
+  function criarLinhaUsuario(usuario, index) {
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+    <td class="colunaUsuario">${usuario.nomeInstituicao ?? "-"}</td>
+    <td class="colunaRepresentante">${usuario.nome}</td>
+    <td class="colunaEmail">${usuario.email}</td>
+    <td class="colunaTipoAcesso">${usuario.perfil}</td>
+    <td class="colunaAcesso">
+      <button class="btn-status ${usuario.statusUser === 'ativo' ? 'btn-ativo' : 'btn-inativo'}"
+        onclick="alterarAcesso(${index})">
+        ${usuario.statusUser.charAt(0).toUpperCase() + usuario.statusUser.slice(1)}
+      </button>
+    </td>
+    <td class="colunaEditar" style="text-align:center;">
+      <button onclick="abrirModalEditar(${usuario.id_usuario})" style="background:transparent;border:none;">
+        <img src="../../assets/imgs/editar.png" alt="Editar" style="width:20px;height:20px;">
+      </button>
+    </td>
+  `;
+    tr.style.backgroundColor = index % 2 === 0 ? '#d3d3d3' : '#ffffff';
+    return tr;
+  }
 
-    if (larguraTela < 1342) {
-      if (getComputedStyle(menu).display == 'none') {
-        menu.style.display = "flex";
-        icone.classList.remove("fa-bars");
-        icone.classList.add("fa-times");
-      } else {
-        menu.style.display = "none";
-        icone.classList.remove("fa-times");
-        icone.classList.add("fa-bars");
-      }
+  function preencherTabela(lista) {
+    const tbody = document.getElementById('tbody_usuarios');
+    tbody.innerHTML = '';
+    lista.forEach((u, i) => tbody.appendChild(criarLinhaUsuario(u, i)));
+  }
+
+  // -------------------- CRUD ----------------------
+  async function puxarDados() {
+    let idHospital = sessionStorage.getItem("HOSPITAL_USUARIO")
+
+    try {
+      const res = await fetch(`/contas/contasHospital/${idHospital}`);
+      if (!res.ok) throw new Error("Erro na resposta da API");
+      usuarios = await res.json();
+      preencherTabela(usuarios);
+    } catch (err) {
+      console.error(err);
     }
   }
 
-  function deletarr(id) {
-    usuarioSelecionado = id;
-    var divAlerta = document.getElementById("divAlerta");
-    divAlerta.style.display = "flex";
-  }
-
-  function fecharAlerta() {
-    var divAlerta = document.getElementById("divAlerta");
-    divAlerta.style.display = "none";
-  }
-
-  function deletar(id) {
-    if (!id){
-      return;
-    } 
-
-    console.log("Me chamou deletar(id)", id);
-    fetch(`/contas/deleteConta/${id}`, {
-      method: "DELETE",
-      headers: {
-        "Content-Type": "application/json"
-      }
-    })
-      .then(res => {
-        return res.json();
-      })
-      .then(() => {
-        puxarDados();
-        fecharAlerta();
-      })
-      .catch(err => console.error(err));
-  }
-
-  function puxarDados() {
-    console.log("Me chamou puxar(Dados)");
-    const perfil = Number(sessionStorage.CARGO_USUARIO);
-
-    fetch("/contas/contas", {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json"
-      },
-    })
-      .then(res => {
-        if (!res.ok) {
-          throw new Error("Erro na resposta da API");
-        }
-        return res.json();
-      })
-      .then(data => {
-        listar(data)
-      })
-  }
-
-  
-  function alterarAcesso(index) {
+  async function alterarAcesso(index) {
     const usuario = usuarios[index];
     const novoStatus = usuario.statusUser.toLowerCase() === "ativo" ? "inativo" : "ativo";
-
-    fetch(`/contas/alterarAcesso/${usuario.id_usuario}`, {
-      method: "PUT",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ statusUser: novoStatus })
-    })
-      .then(res => res.json())
-      .then(() => {
-        usuarios[index].statusUser = novoStatus;
-        listar(usuarios);
-      })
-      .catch(err => console.error(err));
-  }
-
-  function listar(data) {
-    console.log("Me chamou listar(data)");
-    console.log(data);
-    usuarios = data;
-    const tbody = document.getElementById('tbody_usuarios');
-    tbody.innerHTML = '';
-
-    for (let i = 0; i < data.length; i++) {
-      const usuario = data[i];
-      const tr = document.createElement('tr');
-
-      tr.innerHTML = `
-          <td class="colunaUsuario">${usuario.nomeHospital == null ? "Fly" : usuario.nomeHospital}</td>
-          <td class="colunaRepresentante">${usuario.nome}</td>
-          <td class="colunaEmail">${usuario.email}</td>
-          <td class="colunaTipoAcesso">${usuario.perfil}</td>
-          <td class="colunaAcesso">
-              <button
-              style="cursor: pointer; padding: 3px"
-              onclick="alterarAcesso(${i})">
-              ${usuario.statusUser.charAt(0).toUpperCase() + usuario.statusUser.slice(1)}</button>
-          </td>
-         <td class="colunaDelete">
-            <button onclick="deletarr(${usuario.id_usuario})" 
-              style="background: transparent; border: none; cursor: pointer;">
-              <img src="../../assets/imgs/lixeira.png" alt="Deletar" style="width: 20px; height: 20px;">
-            </button>
-         </td>
-      `;
-
-      if (usuario.statusUser == "inativo") {
-        tr.style.backgroundColor = 'yellow';
-      } else {
-        if (i % 2 == 0) {
-          tr.style.backgroundColor = '#B7E4C7';
-        } else {
-          tr.style.backgroundColor = 'transparent';
-        }
-      }
-      tbody.appendChild(tr);
-    }
-    preencherSelectHospital();
-  }
-
-  function buscarRepresentante(representante) {
-    console.log("Me chamou buscarRepresentante");
-
-    if (representante == '') {
-      puxarDados();
-      return
-    }
-
-    console.log(usuarios);
-    let dadosFiltroRepresentante = [];
-    for (let i = 0; i < usuarios.length; i++) {
-      if (usuarios[i].nome.replace(" ", "").toLowerCase().includes(representante.replace(" ", "").toLowerCase())) {
-        dadosFiltroRepresentante.push(usuarios[i])
-      }
-    }
-    console.log("Dados filtrados por representante: ")
-    console.log(dadosFiltroRepresentante)
-
-    const tbody = document.getElementById('tbody_usuarios');
-    tbody.innerHTML = '';
-
-    for (let i = 0; i < dadosFiltroRepresentante.length; i++) {
-      const usuario = dadosFiltroRepresentante[i];
-      const tr = document.createElement('tr');
-
-      tr.innerHTML = `
-          <td class="colunaUsuario">${usuario.nomeHospital == null ? "Fly" : usuario.nomeHospital}</td>
-          <td class="colunaRepresentante">${usuario.nome}</td>
-          <td class="colunaEmail">${usuario.email}</td>
-          <td class="colunaTipoAcesso">${usuario.perfil}</td>
-          <td class="colunaAcesso">
-              <button
-              style="cursor: pointer; padding: 3px"
-              onclick="alterarAcesso(${i})">
-              ${usuario.statusUser.charAt(0).toUpperCase() + usuario.statusUser.slice(1)}</button>
-          </td>
-         <td class="colunaDelete">
-          <button onclick="deletarr(${usuario.id_usuario})" 
-                  style="background: transparent; border: none; cursor: pointer;">
-              <img src="../../assets/imgs/lixeira.png" alt="Deletar" style="width: 20px; height: 20px;">
-          </button>
-        </td>
-      `;
-
-      if (usuario.statusUser == "inativo") {
-        tr.style.backgroundColor = 'yellow';
-      } else {
-        if (i % 2 == 0) {
-          tr.style.backgroundColor = '#B7E4C7';
-        } else {
-          tr.style.backgroundColor = 'transparent';
-        }
-      }
-      tbody.appendChild(tr);
+    try {
+      await fetch(`/contas/alterarAcesso/${usuario.id_usuario}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ statusUser: novoStatus })
+      });
+      usuarios[index].statusUser = novoStatus;
+      preencherTabela(usuarios);
+    } catch (err) {
+      console.error(err);
     }
   }
 
-  function preencherSelectHospital() {
-    const selectHospitais = document.getElementById('select_hospital');
-    for (let i = 0; i < usuarios.length; i++) {
-      if (usuarios[i].nomeHospital == null || usuarios[i].nomeHospital == '' || hospitais.includes(usuarios[i].nomeHospital)) {
-      } else {
-        hospitais.push(usuarios[i].nomeHospital)
-        selectHospitais.innerHTML +=
-          `<option value="${usuarios[i].nomeHospital}">${usuarios[i].nomeHospital}</option>`
-      }
-    }
-    console.log(hospitais)
-  }
-
-  function selecionarHospital() {
-    console.log("Me chamou selecionarHospital")
-    let hospitalSelecionado = select_hospital.value
-    console.log(hospitalSelecionado)
-
-    if (hospitalSelecionado == "todos") {
-      puxarDados()
-      return
-    }
-
-    const tbody = document.getElementById('tbody_usuarios');
-    tbody.innerHTML = '';
-
-    for (let i = 0; i < usuarios.length; i++) {
-      const usuario = usuarios[i];
-      const tr = document.createElement('tr');
-
-      if (usuario.nomeHospital == hospitalSelecionado) {
-        tr.innerHTML = `
-          <td class="colunaUsuario">${usuario.nomeHospital == null ? "Fly" : usuario.nomeHospital}</td>
-          <td class="colunaRepresentante">${usuario.nome}</td>
-          <td class="colunaEmail">${usuario.email}</td>
-          <td class="colunaTipoAcesso">${usuario.perfil}</td>
-          <td class="colunaAcesso">
-              <button
-              style="cursor: pointer; padding: 3px"
-              onclick="alterarAcesso(${i})">
-              ${usuario.statusUser.charAt(0).toUpperCase() + usuario.statusUser.slice(1)}</button>
-          </td>
-         <td class="colunaDelete">
-          <button onclick="deletarr(${usuario.id_usuario})" 
-                  style="background: transparent; border: none; cursor: pointer;">
-              <img src="../../assets/imgs/lixeira.png" alt="Deletar" style="width: 20px; height: 20px;">
-          </button>
-        </td>
-      `;
-
-        if (usuario.statusUser == "inativo") {
-          tr.style.backgroundColor = 'yellow';
-        } else {
-          if (i % 2 == 0) {
-            tr.style.backgroundColor = '#B7E4C7';
-          } else {
-            tr.style.backgroundColor = 'transparent';
-          }
-        }
-        tbody.appendChild(tr);
-      }
-    }
+  // -------------------- FILTROS ----------------------
+  function buscarRepresentante(nome) {
+    if (!nome) return puxarDados();
+    const filtro = usuarios.filter(u =>
+      u.nome.replace(/\s/g, "").toLowerCase().includes(nome.replace(/\s/g, "").toLowerCase())
+    );
+    preencherTabela(filtro);
   }
 
   function selecionarAtividade() {
-    console.log("Me chamou selecionarAtividade")
-    let atividadeSelecionado = select_atividade.value
+    const atividade = document.getElementById('select_atividade').value;
+    if (atividade === "Ambos") return puxarDados();
+    preencherTabela(usuarios.filter(u => u.statusUser === atividade));
+  }
 
-    if (atividadeSelecionado == "Ambos") {
-      puxarDados()
-      return
+  // -------------------- MODAIS ----------------------
+
+  function abrirModalEditar(id) {
+    usuarioEditarId = id;
+    const u = usuarios.find(x => x.id_usuario === id);
+    document.getElementById("nomeEditar").value = u.nome;
+    document.getElementById("emailEditar").value = u.email;
+    document.getElementById("perfilEditar").value = u.perfil;
+    new bootstrap.Modal(document.getElementById("modalEditarUsuario")).show();
+  }
+
+  async function editarUsuarioModal() {
+    const nome = document.getElementById("nomeEditar").value;
+    const email = document.getElementById("emailEditar").value;
+    const perfil = document.getElementById("perfilEditar").value;
+    const fkEmpresa = null; 
+    let fkHospital = sessionStorage.getItem('HOSPITAL_USUARIO')
+
+    try {
+        await fetch(`/contas/editar/${usuarioEditarId}`, {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ nome, email, perfil, fkEmpresa, fkHospital })
+        });
+        bootstrap.Modal.getInstance(document.getElementById("modalEditarUsuario")).hide();
+        puxarDados();
+        Swal.fire({ icon: 'success', title: 'Sucesso', text: 'Usuário editado com sucesso!', timer: 2000, showConfirmButton: false });
+    } catch (err) {
+        console.error(err);
+        Swal.fire({ icon: 'error', title: 'Erro', text: 'Não foi possível editar o usuário!' });
     }
+}
 
-    const tbody = document.getElementById('tbody_usuarios');
-    tbody.innerHTML = '';
 
-    for (let i = 0; i < usuarios.length; i++) {
-      const usuario = usuarios[i];
-      const tr = document.createElement('tr');
-
-      if (usuario.statusUser == atividadeSelecionado) {
-        tr.innerHTML = `
-          <td class="colunaUsuario">${usuario.nomeHospital == null ? "Fly" : usuario.nomeHospital}</td>
-          <td class="colunaRepresentante">${usuario.nome}</td>
-          <td class="colunaEmail">${usuario.email}</td>
-          <td class="colunaTipoAcesso">${usuario.perfil}</td>
-          <td class="colunaAcesso">
-              <button
-              style="cursor: pointer; padding: 3px"
-              onclick="alterarAcesso(${i})">
-              ${usuario.statusUser.charAt(0).toUpperCase() + usuario.statusUser.slice(1)}</button>
-          </td>
-         <td class="colunaDelete">
-          <button onclick="deletarr(${usuario.id_usuario})" 
-                  style="background: transparent; border: none; cursor: pointer;">
-              <img src="../../assets/imgs/lixeira.png" alt="Deletar" style="width: 20px; height: 20px;">
-          </button>
-        </td>
-      `;
-
-        if (usuario.statusUser == "inativo") {
-          tr.style.backgroundColor = 'yellow';
-        } else {
-          if (i % 2 == 0) {
-            tr.style.backgroundColor = '#B7E4C7';
-          } else {
-            tr.style.backgroundColor = 'transparent';
-          }
-        }
-        tbody.appendChild(tr);
-      }
+  // -------------------- CADASTRO ----------------------
+  async function cadastrarModal() {
+    const nome = document.getElementById("nomeModal").value;
+    const email = document.getElementById("emailModal").value;
+    const senha = document.getElementById("senhaModal").value;
+    const confirmar = document.getElementById("confirmSenhaModal").value;
+    const perfil = document.getElementById('perfilModal').value;
+    if (senha !== confirmar) {
+      Swal.fire({ icon: 'error', title: 'Erro', text: 'As senhas não coincidem!' });
+      return;
+    }
+    let fkHospital = sessionStorage.getItem('HOSPITAL_USUARIO')
+    try {
+      await fetch("/contas/cadastrarFunc", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          nomeServer: nome,
+          emailServer: email,
+          senhaServer: senha,
+          perfilServer: perfil,
+          fkEmpresaServer: sessionStorage.EMPRESA_USUARIO,
+          fkHospitalServer: fkHospital
+        })
+      });
+      Swal.fire({ icon: 'success', title: 'Sucesso', text: 'Usuário cadastrado com sucesso!', timer: 2000, showConfirmButton: false });
+      document.getElementById("formAdicionarUsuario").reset();
+      bootstrap.Modal.getInstance(document.getElementById("modalAdicionarUsuario")).hide();
+      puxarDados();
+    } catch (err) {
+      console.error(err);
+      Swal.fire({ icon: 'error', title: 'Erro', text: 'Não foi possível cadastrar o usuário!' });
     }
   }
 
+  // -------------------- SIDEBAR ----------------------
+  function toggleSidebar() {
+    document.getElementById("sidebarModal").classList.toggle("active");
+  }
+
+  // -------------------- ONLOAD ----------------------
+  window.onload = puxarDados;
 </script>
