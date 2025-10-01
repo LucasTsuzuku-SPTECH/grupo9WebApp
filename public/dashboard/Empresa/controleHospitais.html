@@ -215,7 +215,7 @@
                         <label for="selectModelo">Modelo</label>
                         <select id="selectModelo" required></select>
                     </div>
-                    <input type="hidden" id="fkHospital">
+                    <input type="hidden" id="fkSala">
                     <input type="hidden" id="fkEmpresa">
                     <button type="submit" class="btn-submit">Adicionar</button>
                 </form>
@@ -332,8 +332,8 @@
         <h3>${hospital.nomeHospital}</h3>
         <span class="status ${statusClass}">${statusClass}</span>
       `;
-
-                divHospital.addEventListener("click", () => abrirModalVentiladores(hospital.id_hospital));
+                    
+                divHospital.addEventListener("click", () => abrirModalVentiladores(hospital.idSala));
                 container.appendChild(divHospital);
             });
 
@@ -381,11 +381,10 @@
         }
     }
 
-
     /* ------------------ Ventiladores ------------------ */
-    async function abrirModalVentiladores(idHospital) {
+    async function abrirModalVentiladores(idSala) {
         try {
-            const resp = await fetch(`/controle/hospitais/${idHospital}/ventiladores`);
+            const resp = await fetch(`/controle/hospitais/${idSala}/ventiladores`);
             if (!resp.ok) throw new Error("Erro ao buscar ventiladores");
             const ventiladores = resp.status === 204 ? [] : await resp.json();
 
@@ -394,7 +393,7 @@
       <h3>${ventiladores[0]?.nome_hospital || "Hospital"}
 
         <div style="display: flex; flex-direction: row; gap:10px;">
-        <button class="button" type="button" onclick="abrirAddModal(${idHospital})">
+        <button class="button" type="button" onclick="abrirAddModal(${idSala})">
             <span class="button_text">Adicionar</span>
             <span class="button_icon">+</span>
         </button>
@@ -409,6 +408,7 @@
             `;
             } else {
                 ventiladores.forEach(v => {
+                    console.log(idSala)
                     conteudo.innerHTML += `
             <div class="ventilador">
                 <div style="display:flex;justify-content:space-between;align-items:center;">
@@ -416,11 +416,11 @@
                         <strong>Nº Série:</strong> <span>${v.numero_serie}</span>
                     </div>
                     <div style="display:flex;gap:10px;">
-                        <button class="btn-edit" onclick='abrirModalEdicao(${v.id_ventilador})'>
+                        <button class="btn-edit" onclick='abrirModalEdicao(${v.idVentilador}, ${idSala})'>
                             <span class="btn-text">Editar</span>
                             <i class="fa-regular fa-pen-to-square"></i>
                         </button>
-                        <button class="btn-delete" onclick='confirmarDelete(${v.id_ventilador}, ${idHospital})'>
+                        <button class="btn-delete" onclick='confirmarDelete(${v.idVentilador}, ${idSala})'>
                             <span class="text">Excluir</span>
                             <i class="fa-solid fa-trash icon"></i>
                         </button>
@@ -440,7 +440,7 @@
         }
     }
 
-    function confirmarDelete(idVentilador, idHospital) {
+    function confirmarDelete(idVentilador, idSala) {
         Swal.fire({
             title: 'Tem certeza?',
             text: "Você não poderá reverter isso!",
@@ -460,7 +460,7 @@
                     const card = document.querySelector(`.ventilador
             button[onclick='confirmarDelete(${idVentilador})']`)?.closest('.ventilador');
                     if (card) card.remove();
-                    abrirModalVentiladores(idHospital);
+                    abrirModalVentiladores(idSala);
                 } catch {
                     Swal.fire('Erro!', 'Não foi possível deletar o ventilador.', 'error');
                 }
@@ -469,8 +469,8 @@
     }
 
     /* ---------- Adicionar Ventilador ---------- */
-    async function abrirAddModal(idHospital) {
-        document.getElementById("fkHospital").value = idHospital;
+    async function abrirAddModal(idSala) {
+        document.getElementById("fkSala").value = idSala;
         document.getElementById("fkEmpresa").value = sessionStorage.getItem("EMPRESA_USUARIO");
         await carregarModelos("selectModelo");
         document.getElementById("addVentiladorModal").style.display = "flex";
@@ -480,7 +480,7 @@
         const resp = await fetch('/controle/modelos');
         const modelos = await resp.json();
         const select = document.getElementById(selectId);
-        select.innerHTML = modelos.map(m => `<option value="${m.id_modelo}">${m.nome}</option>`).join('');
+        select.innerHTML = modelos.map(m => `<option value="${m.idModelo}">${m.nome}</option>`).join('');
     }
 
     document.getElementById("formAddVentilador").addEventListener("submit", async e => {
@@ -488,9 +488,10 @@
         const novoVentilador = {
             numero_serie: document.getElementById("numeroSerie").value,
             fk_modelo: document.getElementById("selectModelo").value,
-            fk_hospital: document.getElementById("fkHospital").value,
+            fk_sala: document.getElementById("fkSala").value,
             fk_empresa: document.getElementById("fkEmpresa").value
         };
+
         try {
             const resp = await fetch('/controle/ventiladores', {
                 method: 'POST',
@@ -501,17 +502,17 @@
             await resp.json();
             Swal.fire('Sucesso!', 'Ventilador adicionado.', 'success');
             fecharAddModal();
-            abrirModalVentiladores(novoVentilador.fk_hospital);
+            abrirModalVentiladores(novoVentilador.fk_sala);
         } catch {
             Swal.fire('Erro!', 'Não foi possível adicionar o ventilador.', 'error');
         }
     });
 
     /* ---------- Editar Ventilador ---------- */
-    async function abrirModalEdicao(idVentilador) {
+    async function abrirModalEdicao(idVentilador, idSala) {
         try {
-            const v = await (await fetch(`/controle/ventiladores/${idVentilador}`)).json();
-            document.getElementById("editIdVentilador").value = v.id_ventilador;
+            const v = await (await fetch(`/controle/ventiladores/buscar/${idVentilador}/${idSala}`)).json();
+            document.getElementById("editIdVentilador").value = v.idVentilador;
             document.getElementById("editNumeroSerie").value = v.numero_serie;
 
             await carregarModelos("editSelectModelo");
@@ -521,9 +522,10 @@
             const hospitais = await respHosp.json();
             const selectHospital = document.getElementById("editSelectHospital");
             selectHospital.innerHTML = hospitais.map(h =>
-                `<option value="${h.id_hospital}" ${h.id_hospital === v.fk_hospital ? "selected" : ""}>${h.nomeHospital}
+                `<option value="${h.idSala}"}> Sala ${h.idSala}
             </option>`
             ).join('');
+            // aqui não é hospital, so reaproveitei a funcao para pegar o id das salas
 
             document.getElementById("editVentiladorModal").style.display = "flex";
         } catch (err) {
@@ -537,10 +539,10 @@
             id_ventilador: document.getElementById("editIdVentilador").value,
             numero_serie: document.getElementById("editNumeroSerie").value,
             fk_modelo: document.getElementById("editSelectModelo").value,
-            fk_hospital: document.getElementById("editSelectHospital").value
+            fk_sala: document.getElementById("editSelectHospital").value
         };
         try {
-            const resp = await fetch(`/controle/ventiladores/${ventiladorAtualizado.id_ventilador}`, {
+            const resp = await fetch(`/controle/ventiladores/atualizar/${ventiladorAtualizado.id_ventilador}`, {
                 method: 'PUT',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(ventiladorAtualizado)
@@ -549,7 +551,7 @@
             await resp.json();
             Swal.fire('Sucesso!', 'Ventilador atualizado.', 'success');
             fecharEditModal();
-            abrirModalVentiladores(ventiladorAtualizado.fk_hospital);
+            abrirModalVentiladores(ventiladorAtualizado.fk_sala);
         } catch {
             Swal.fire('Erro!', 'Não foi possível atualizar o ventilador.', 'error');
         }

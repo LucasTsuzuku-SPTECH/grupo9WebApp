@@ -7,7 +7,7 @@ router.get("/hospitais", function (req, res) {
     controleController.listarHospitais(req, res);
 });
 
-router.get("/hospitais/:idHospital/ventiladores", function(req, res) {
+router.get("/hospitais/:idSala/ventiladores", function(req, res) {
     controleController.listarVentiladores(req, res);
 });
 
@@ -22,12 +22,12 @@ router.get("/modelos", function (req, res) {
 router.post("/ventiladores", controleController.criarVentilador);
 
 // buscar ventilador específico
-router.get('/ventiladores/:idVentilador', (req, res) => {
+router.get('/ventiladores/buscar/:idVentilador/:idSala', (req, res) => {
   controleController.buscarVentilador(req, res);
 });
 
 // Atualizar ventilador
-router.put("/ventiladores/:idVentilador", function(req, res) {
+router.put("/ventiladores/atualizar/:idVentilador", function(req, res) {
     controleController.atualizarVentilador(req, res);
 });
 

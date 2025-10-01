@@ -17,8 +17,8 @@ function listarHospitais(req, res) {
 }
 
 function listarVentiladores(req, res) {
-    const idHospital = req.params.idHospital;
-    controleModel.listarVentiladores(idHospital)
+    const idSala = req.params.idSala;
+    controleModel.listarVentiladores(idSala)
         .then(resultado => {
             if (resultado.length > 0) {
                 res.json(resultado);
@@ -46,7 +46,7 @@ function deletarVentilador(req, res) {
 }
 
 function criarVentilador(req, res) {
-    const ventilador = req.body; // { numero_serie, fk_modelo, fk_hospital, fk_empresa }
+    const ventilador = req.body; 
 
     controleModel.criarVentilador(ventilador)
         .then(() => res.json({ message: "Ventilador criado com sucesso" }))
@@ -74,8 +74,9 @@ function listarModelos(req, res) {
 
 function buscarVentilador(req, res) {
     const idVentilador = req.params.idVentilador;
+    const idSala = req.params.idSala;
 
-    controleModel.buscarVentilador(idVentilador)
+    controleModel.buscarVentilador(idVentilador, idSala)
         .then(resultado => {
             if (resultado.length > 0) {
                 res.json(resultado[0]); // retorna um único ventilador
@@ -91,9 +92,9 @@ function buscarVentilador(req, res) {
 
 function atualizarVentilador(req, res) {
     const idVentilador = req.params.idVentilador;
-    const { numero_serie, fk_modelo, fk_hospital } = req.body;
+    const { numero_serie, fk_modelo, fk_sala} = req.body;
 
-    controleModel.atualizarVentilador(idVentilador, numero_serie, fk_modelo, fk_hospital)
+    controleModel.atualizarVentilador(idVentilador, numero_serie, fk_modelo, fk_sala)
         .then(() => res.json({ message: "Ventilador atualizado com sucesso" }))
         .catch(erro => {
             console.error("Erro ao atualizar ventilador: ", erro.sqlMessage);

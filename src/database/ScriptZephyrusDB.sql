@@ -1,16 +1,14 @@
+DROP DATABASE IF EXISTS zephyrus;
+
 CREATE DATABASE zephyrus;
 USE zephyrus;
 
-
-
-CREATE TABLE IF NOT EXISTS Componete (
-  idComponete INT NOT NULL,
+CREATE TABLE IF NOT EXISTS Componente (
+  idComponente INT NOT NULL,
   nomeComponente VARCHAR(10) NULL,
   unidadeMedida VARCHAR(10) NULL,
-  PRIMARY KEY (idComponete)
+  PRIMARY KEY (idComponente)
   );
-
-
 
 CREATE TABLE IF NOT EXISTS Modelo (
   idModelo INT NOT NULL AUTO_INCREMENT,
@@ -18,8 +16,6 @@ CREATE TABLE IF NOT EXISTS Modelo (
   descricao VARCHAR(200) NULL DEFAULT NULL,
   PRIMARY KEY (idModelo)
   );
-
-
 
 CREATE TABLE IF NOT EXISTS Endereco (
   idEndereco INT NOT NULL AUTO_INCREMENT,
@@ -32,8 +28,6 @@ CREATE TABLE IF NOT EXISTS Endereco (
   PRIMARY KEY (idEndereco)
   );
 
-
-
 CREATE TABLE IF NOT EXISTS EmpresaFabricante (
   idEmpresa INT NOT NULL AUTO_INCREMENT,
   nome VARCHAR(100),
@@ -44,8 +38,6 @@ CREATE TABLE IF NOT EXISTS EmpresaFabricante (
   UNIQUE INDEX cnpj (cnpj),
     FOREIGN KEY (fkEndereco) REFERENCES Endereco (idEndereco)
     );
-
-
 
 CREATE TABLE IF NOT EXISTS Hospital (
   idHospital INT NOT NULL AUTO_INCREMENT,
@@ -59,8 +51,6 @@ CREATE TABLE IF NOT EXISTS Hospital (
     FOREIGN KEY (fkEmpresa) REFERENCES EmpresaFabricante (idEmpresa)
     );
 
-
-
 CREATE TABLE IF NOT EXISTS Sala (
   idSala INT NOT NULL AUTO_INCREMENT,
   andar INT,
@@ -70,8 +60,6 @@ CREATE TABLE IF NOT EXISTS Sala (
   PRIMARY KEY (idSala),
     FOREIGN KEY (fkHospital) REFERENCES Hospital (idHospital)
     );
-
-
 
 CREATE TABLE IF NOT EXISTS Ventilador (
   idVentilador INT NOT NULL AUTO_INCREMENT,
@@ -86,8 +74,6 @@ CREATE TABLE IF NOT EXISTS Ventilador (
     FOREIGN KEY (fkSala) REFERENCES Sala (idSala)
 );
 
-
-
 CREATE TABLE IF NOT EXISTS Parametro (
   idParametro INT NOT NULL AUTO_INCREMENT,
   fkComponente INT,
@@ -95,12 +81,9 @@ CREATE TABLE IF NOT EXISTS Parametro (
   parametroMax DOUBLE,
   parametroMin DOUBLE,
   PRIMARY KEY (idParametro),
-    FOREIGN KEY (fkComponente) REFERENCES Componete (idComponete),
+    FOREIGN KEY (fkComponente) REFERENCES Componente (idComponente),
     FOREIGN KEY (fkVentilador) REFERENCES Ventilador (idVentilador)
     );
-
-
-
 
 CREATE TABLE IF NOT EXISTS Usuario (
   idUsuario INT NOT NULL AUTO_INCREMENT,
@@ -117,3 +100,37 @@ CREATE TABLE IF NOT EXISTS Usuario (
     FOREIGN KEY (fkHospital) REFERENCES Hospital (idHospital)
     );
 
+INSERT INTO Modelo (nome, descricao) 
+VALUES 
+('Ventilador X1', 'Ventilador modelo X1 utilizado para ventilação mecânica em hospitais'),
+('Ventilador Y2', 'Ventilador modelo Y2, eficiente em suporte respiratório');
+
+INSERT INTO Endereco (logradouro, numero, bairro, cidade, estado, cep) 
+VALUES 
+('Rua das Flores', '123', 'Centro', 'São Paulo', 'SP', '01000-000'),
+('Avenida Paulista', '1000', 'Bela Vista', 'São Paulo', 'SP', '01310-100');
+
+INSERT INTO EmpresaFabricante (nome, cnpj, email, fkEndereco) 
+VALUES 
+('Indústria Respiratória LTDA', '12345678000199', 'contato@respiratoria.com.br', 1),
+('Ventiladores S/A', '98765432000188', 'atendimento@ventiladores.com', 2);
+
+INSERT INTO Hospital (nomeHospital, cnpj, fkEndereco, fkEmpresa) 
+VALUES 
+('Hospital São Paulo', '12345678000101', 1, 1),
+('Hospital das Clínicas', '98765432000110', 2, 2);
+
+INSERT INTO Sala (andar, numero, descricao, fkHospital) 
+VALUES 
+(1, '101', 'Sala de emergência', 1),
+(2, '205', 'Sala de UTI', 2);
+
+INSERT INTO Ventilador (numero_serie, fkModelo, fkEmpresa, fkSala) 
+VALUES 
+('SN123456789', 1, 1, 1),
+('SN987654321', 2, 2, 2);
+
+INSERT INTO Usuario (nome, email, senha_hash, perfil, statusUser, fkEmpresa, fkHospital) 
+VALUES 
+('João da Silva', 'joao@empresa.com', 'senha_hash_1', 'empresa', 'ativo', 1, NULL),
+('Maria Oliveira', 'maria@hospital.com', 'senha_hash_2', 'adminHospital', 'ativo', NULL, 1);

@@ -4,13 +4,13 @@ const db = require("../database/config");
 function listarContas() {
   const sql = `
     SELECT 
-      u.id_usuario,
+      u.idUsuario,
       u.nome,
       u.email,
       u.perfil,
       u.statusUser,
-      u.fk_hospital,
-      u.fk_empresa,
+      u.fkHospital,
+      u.fkEmpresa,
       CASE 
         WHEN u.perfil IN ('empresa','adminEmpresa') 
              THEN e.nome 
@@ -19,8 +19,8 @@ function listarContas() {
         ELSE 'Sem vínculo'
       END AS nomeInstituicao
     FROM Usuario u
-    LEFT JOIN Hospital h ON u.fk_hospital = h.id_hospital
-    LEFT JOIN EmpresaFabricante e ON u.fk_empresa = e.id_empresa;
+    LEFT JOIN Hospital h ON u.fkHospital = h.idHospital
+    LEFT JOIN EmpresaFabricante e ON u.fkEmpresa = e.idEmpresa;
   `;
   return db.executar(sql);
 }
@@ -28,34 +28,34 @@ function listarContas() {
 function listarContasHospital(idHospital) {
   const sql = `
     SELECT 
-      u.id_usuario,
+      u.idUsuario,
       u.nome,
       u.email,
       u.perfil,
       u.statusUser,
-      u.fk_hospital,
-      u.fk_empresa,
+      u.fkHospital,
+      u.fkEmpresa,
       CASE  
         WHEN u.perfil IN ('hospital','adminHospital') 
              THEN h.nomeHospital
         ELSE 'Sem vínculo'
       END AS nomeInstituicao
     FROM Usuario u
-    LEFT JOIN Hospital h ON u.fk_hospital = h.id_hospital
-    WHERE u.fk_hospital = ${idHospital};
+    LEFT JOIN Hospital h ON u.fkHospital = h.idHospital
+    WHERE u.fkHospital = ${idHospital};
   `;
   return db.executar(sql);
 }
 
 // Alterar status
 function alterarAcesso(id, status) {
-    const sql = `UPDATE Usuario SET statusUser = '${status}' WHERE id_usuario = ${id}`;
+    const sql = `UPDATE Usuario SET statusUser = '${status}' WHERE idUsuario = ${id}`;
     return db.executar(sql);
 }
 
 // Deletar usuário
 function deletar(id) {
-    const sql = `DELETE FROM Usuario WHERE id_usuario = ${id}`;
+    const sql = `DELETE FROM Usuario WHERE idUsuario = ${id}`;
     return db.executar(sql);
 }
 
@@ -63,7 +63,7 @@ function cadastrarFunc(nome, email, senha, fk_empresa, fk_hospital, perfil) {
   fk_empresa = fk_empresa === undefined ? null : fk_empresa;
   fk_hospital = fk_hospital === undefined ? null : fk_hospital;
   const sql = `
-    INSERT INTO Usuario (nome, email, senha_hash, perfil, fk_empresa, fk_hospital, statusUser) 
+    INSERT INTO Usuario (nome, email, senha_hash, perfil, fkEmpresa, fkHospital, statusUser) 
     VALUES ('${nome}', '${email}', '${senha}', '${perfil}', ${fk_empresa}, ${fk_hospital}, 'ativo');
   `;
   console.log("Executando a instrução SQL: \n" + sql);
@@ -71,7 +71,7 @@ function cadastrarFunc(nome, email, senha, fk_empresa, fk_hospital, perfil) {
 }
 
 function listarHospitais() {
-    const instrucao = "SELECT id_hospital, nomeHospital FROM Hospital;";
+    const instrucao = "SELECT idHospital, nomeHospital FROM Hospital;";
     return db.executar(instrucao);
 }
 
@@ -81,9 +81,9 @@ function editarUsuario(id, nome, email, perfil, fkEmpresa, fkHospital) {
     SET nome = '${nome}',
         email = '${email}',
         perfil = '${perfil}',
-        fk_empresa = ${fkEmpresa},
-        fk_hospital = ${fkHospital === null ? "NULL" : fkHospital}
-    WHERE id_usuario = ${id};
+        fkEmpresa = ${fkEmpresa},
+        fkHospital = ${fkHospital === null ? "NULL" : fkHospital}
+    WHERE idUsuario = ${id};
   `;
   return db.executar(sql);
 }

@@ -5,24 +5,27 @@ function listarHospitais() {
 
     // Pegando nome e status do hospital (se você quiser calcular alertas, pode alterar depois)
     var instrucaoSql = `
-        SELECT id_hospital, nomeHospital
-        FROM Hospital;
+        SELECT idHospital, nomeHospital, idSala
+        FROM Hospital
+        JOIN Sala ON fkHospital = idHospital;
     `;
 
     console.log("Executando SQL: \n" + instrucaoSql);
     return database.executar(instrucaoSql);
 }
 
-function listarVentiladores(idHospital) {
+function listarVentiladores(idSala) {
     console.log("ACESSEI controleModel listarVentiladores()");
 
     const instrucaoSql = `
-        SELECT v.id_ventilador, v.numero_serie, m.nome AS nome_modelo, m.descricao AS descricao_modelo,
-               h.nomeHospital AS nome_hospital, h.id_hospital as idHospital
+        SELECT v.idVentilador, v.numero_serie, m.nome AS nome_modelo, m.descricao AS descricao_modelo,
+               h.nomeHospital AS nome_hospital, h.idHospital as idHospital, 
+               s.numero AS numero_sala, s.andar AS andar_sala, idSala
         FROM Ventilador v
-        JOIN Modelo m ON v.fk_modelo = m.id_modelo
-        JOIN Hospital h ON v.fk_hospital = h.id_hospital
-        WHERE v.fk_hospital = ${idHospital};
+        JOIN Modelo m ON v.fkModelo = m.idModelo
+        JOIN Sala s ON v.fkSala = s.idSala
+        JOIN Hospital h ON s.fkHospital = h.idHospital
+        WHERE v.fkSala = ${idSala};
     `;
 
     console.log("Executando SQL: \n" + instrucaoSql);
@@ -31,18 +34,18 @@ function listarVentiladores(idHospital) {
 
 function deletarVentilador(idVentilador) {
     console.log("ACESSEI controleModel deletarVentilador()");
-    const instrucaoSql = `DELETE FROM Ventilador WHERE id_ventilador = ${idVentilador};`;
+    const instrucaoSql = `DELETE FROM Ventilador WHERE idVentilador = ${idVentilador};`;
     console.log("Executando SQL: \n" + instrucaoSql);
     return database.executar(instrucaoSql);
 }
 
 function criarVentilador(ventilador) {
     console.log("ACESSEI controleModel criarVentilador()");
-    const { numero_serie, fk_modelo, fk_hospital, fk_empresa } = ventilador;
+    const { numero_serie, fk_modelo, fk_sala, fk_empresa } = ventilador;
 
     const instrucaoSql = `
-        INSERT INTO Ventilador (numero_serie, fk_modelo, fk_hospital, fk_empresa)
-        VALUES ('${numero_serie}', ${fk_modelo}, ${fk_hospital}, ${fk_empresa});
+        INSERT INTO Ventilador (numero_serie, fkModelo, fkSala, fkEmpresa)
+        VALUES ('${numero_serie}', ${fk_modelo}, ${fk_sala}, ${fk_empresa});
     `;
 
     console.log("Executando SQL: \n" + instrucaoSql);
@@ -52,33 +55,35 @@ function criarVentilador(ventilador) {
 function listarModelos() {
     console.log("ACESSEI controleModel listarModelos()");
     const instrucaoSql = `
-        SELECT id_modelo, nome, descricao
+        SELECT idModelo, nome, descricao
         FROM Modelo;
     `;
     console.log("Executando SQL: \n" + instrucaoSql);
     return database.executar(instrucaoSql);
 }
 
-function buscarVentilador(idVentilador) {
+function buscarVentilador(idVentilador, idSala) {
     const sql = `
-    SELECT v.id_ventilador,
+    SELECT v.idVentilador,
            v.numero_serie,
-           v.fk_modelo,
-           v.fk_hospital
+           v.fkModelo,
+           v.fkSala
     FROM Ventilador v
-    WHERE v.id_ventilador = ${idVentilador};
+    JOIN Sala s ON v.fkSala = s.idSala
+    WHERE v.fkSala = ${idSala}
+    and v.idVentilador = ${idVentilador};
   `;
     return database.executar(sql);
 }
 
-function atualizarVentilador(idVentilador, numero_serie, fk_modelo, fk_hospital) {
+function atualizarVentilador(idVentilador, numero_serie, fk_modelo, fk_sala) {
     console.log("ACESSEI controleModel atualizarVentilador()");
     const instrucaoSql = `
         UPDATE Ventilador 
         SET numero_serie = '${numero_serie}', 
-            fk_modelo = ${fk_modelo},
-            fk_hospital = ${fk_hospital}
-        WHERE id_ventilador = ${idVentilador};
+            fkModelo = ${fk_modelo},
+            fkSala = ${fk_sala}
+        WHERE idVentilador = ${idVentilador};
     `;
     return database.executar(instrucaoSql);
 }
@@ -98,7 +103,7 @@ function criarEndereco(e) {
 
 function criarHospital(h) {
     const sql = `
-        INSERT INTO Hospital (nomeHospital, cnpj, fk_endereco, fk_empresa)
+        INSERT INTO Hospital (nomeHospital, cnpj, fkEndereco, fkEmpresa)
         VALUES ('${h.nomeHospital}', '${h.cnpj}', ${h.fk_endereco}, ${h.fk_empresa});
     `;
     return database.executar(sql);
@@ -106,7 +111,7 @@ function criarHospital(h) {
 
 function buscarHospital(id) {
     const sql = `
-    SELECT * FROM Hospital WHERE id_hospital=${id};
+    SELECT * FROM Hospital WHERE idHospital=${id};
     `;
     return database.executar(sql);
 }
@@ -115,23 +120,23 @@ function editarHospital(hospital) {
     const {id_hospital, nomeHospital, cnpj, fk_endereco} = hospital;
     const sql = `
         UPDATE Hospital
-        SET nomeHospital='${nomeHospital}', cnpj='${cnpj}', fk_endereco=${fk_endereco}
-        WHERE id_hospital=${id_hospital};
+        SET nomeHospital='${nomeHospital}', cnpj='${cnpj}', fkEndereco=${fk_endereco}
+        WHERE idHospital=${id_hospital};
     `;
     return database.executar(sql);
 }
 
 async function deletarHospital(id) {
   // primeiro apaga os ventiladores vinculados
-  const sqlVentiladores = `DELETE FROM Ventilador WHERE fk_hospital = ${id}`;
+  const sqlVentiladores = `DELETE FROM Ventilador WHERE fkHospital = ${id}`;
   await database.executar(sqlVentiladores);
 
   // depois apaga os usuários vinculados (se fizer sentido na sua regra)
-  const sqlUsuarios = `DELETE FROM Usuario WHERE fk_hospital = ${id}`;
+  const sqlUsuarios = `DELETE FROM Usuario WHERE fkHospital = ${id}`;
   await database.executar(sqlUsuarios);
 
   // por fim, apaga o hospital
-  const sqlHospital = `DELETE FROM Hospital WHERE id_hospital = ${id}`;
+  const sqlHospital = `DELETE FROM Hospital WHERE idHospital = ${id}`;
   return database.executar(sqlHospital);
 }
 

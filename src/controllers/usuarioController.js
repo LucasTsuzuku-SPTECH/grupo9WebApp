@@ -20,11 +20,11 @@ function autenticar(req, res) {
                         console.log(resultadoAutenticar);
 
                         res.json({
-                            id_usuario: resultadoAutenticar[0].id_usuario,
+                            id_usuario: resultadoAutenticar[0].idUsuario,
                             email: resultadoAutenticar[0].email,
                             nome: resultadoAutenticar[0].nome,
-                            fk_empresa: resultadoAutenticar[0].fk_empresa,
-                            fk_hospital: resultadoAutenticar[0].fk_hospital,
+                            fk_empresa: resultadoAutenticar[0].fkEmpresa,
+                            fk_hospital: resultadoAutenticar[0].fkHospital,
                             perfil: resultadoAutenticar[0].perfil,
                             statusUser:resultadoAutenticar[0].statusUser
                         });
