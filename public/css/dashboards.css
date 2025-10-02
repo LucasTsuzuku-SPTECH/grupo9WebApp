@@ -509,71 +509,81 @@ table td.colunaDelete {
 
 /* Modal fundo escuro */
 #modalVentiladores {
-    display: none; /* inicialmente oculto */
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0,0,0,0.6); /* escurece a tela atrás */
-    z-index: 1000; /* acima de todos os elementos */
-    justify-content: center;
-    align-items: center;
+  display: none;
+  /* inicialmente oculto */
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.6);
+  /* escurece a tela atrás */
+  z-index: 1000;
+  /* acima de todos os elementos */
+  justify-content: center;
+  align-items: center;
 }
 
 /* Conteúdo interno do modal */
 #conteudoVentiladores {
-    background-color: #fff;
-    padding: 20px;
-    border-radius: 10px;
-    max-height: 80vh; /* altura máxima da tela */
-    width: 80vw; /* largura grande, mas não full screen */
-    overflow-y: auto; /* scroll vertical */
-    box-shadow: 0 0 15px rgba(0,0,0,0.5);
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 10px;
+  max-height: 80vh;
+  /* altura máxima da tela */
+  width: 80vw;
+  /* largura grande, mas não full screen */
+  overflow-y: auto;
+  /* scroll vertical */
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
 }
 
 /* Título do modal */
 #conteudoVentiladores h3 {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 20px;
-    font-size: 1.5rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  font-size: 1.5rem;
 }
 
 /* Botão fechar modal */
 #conteudoVentiladores .btn-fechar-modal {
-    cursor: pointer;
-    background: red;
-    color: #fff;
-    border: none;
-    font-size: 1.2rem;
-    padding: 5px 10px;
-    border-radius: 5px;
+  cursor: pointer;
+  background: red;
+  color: #fff;
+  border: none;
+  font-size: 1.2rem;
+  padding: 5px 10px;
+  border-radius: 5px;
 }
 
 #conteudoVentiladores .btn-fechar-modal:hover {
-    background: darkred;
+  background: darkred;
 }
 
 /* Card de cada ventilador */
 .ventilador {
-    background-color: #e0f7fa;
-    padding: 15px 15px 15px 20px; /* espaço interno maior do lado esquerdo */
-    margin-bottom: 15px;
-    border-radius: 8px;
-    width: 10 0%; /* ocupa quase toda a largura do modal */
-    min-height: 80px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    border-left: 5px solid #00796b; /* borda esquerda para destaque */
+  background-color: #e0f7fa;
+  padding: 15px 15px 15px 20px;
+  /* espaço interno maior do lado esquerdo */
+  margin-bottom: 15px;
+  border-radius: 8px;
+  width: 10 0%;
+  /* ocupa quase toda a largura do modal */
+  min-height: 80px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  border-left: 5px solid #00796b;
+  /* borda esquerda para destaque */
 }
 
 /* Linha separadora entre Nº Série e Modelo */
 .ventilador .linha-separadora {
-    border-top: 1px solid #aaa;
-    margin: 8px 0; /* espaço acima e abaixo da linha */
+  border-top: 1px solid #aaa;
+  margin: 8px 0;
+  /* espaço acima e abaixo da linha */
 }
 
 .navbar-mob {
@@ -616,206 +626,209 @@ header h2 {
 
 /* Botão base */
 .btn-edit {
-    position: relative;
-    display: inline-flex;
-    align-items: center;
-    justify-content: flex-start;
-    gap: 8px;
-    width: 140px;
-    height: 40px;
-    padding: 0 16px;
-    border: none;
-    border-radius: 10px;
-    background: white;
-    color: black;
-    border: 1px solid black;
-    font-weight: 700;
-    cursor: pointer;
-    overflow: hidden;
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 8px;
+  width: 140px;
+  height: 40px;
+  padding: 0 16px;
+  border: none;
+  border-radius: 10px;
+  background: white;
+  color: black;
+  border: 1px solid black;
+  font-weight: 700;
+  cursor: pointer;
+  overflow: hidden;
 }
 
 /* Texto some no hover */
 .btn-edit .btn-text {
-    transition: opacity .25s ease;
+  transition: opacity .25s ease;
 }
 
 .btn-edit:hover .btn-text {
-    opacity: 0;
+  opacity: 0;
 }
 
 /* Ícone começa colado à direita dentro do botão */
 .btn-edit i {
-    position: absolute;
-    left: calc(100% - 35px);
-    top: 50%;
-    transform: translateY(-50%);
-    transition: left .30s ease, transform .30s ease, opacity .20s ease;
-    font-size: 16px;
+  position: absolute;
+  left: calc(100% - 35px);
+  top: 50%;
+  transform: translateY(-50%);
+  transition: left .30s ease, transform .30s ease, opacity .20s ease;
+  font-size: 16px;
 }
 
 /* No hover, o ícone desliza pro centro */
 .btn-edit:hover i {
-    left: 50%;
-    transform: translate(-50%, -50%);
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
 
 .btn-edit:active {
-    transform: scale(1.05);
-    transition: transform 0.1s ease;
+  transform: scale(1.05);
+  transition: transform 0.1s ease;
 }
 
 .btn-delete {
-    position: relative;
-    display: flex;
-    align-items: center;
-    justify-content: flex-start;
-    width: 140px;
-    height: 40px;
-    border: none;
-    padding: 0 15px;
-    background-color: white;
-    color: red;
-    border: 1px solid red;
-    font-weight: 700;
-    cursor: pointer;
-    border-radius: 10px;
-    transition: 0.3s;
-    overflow: hidden;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  width: 140px;
+  height: 40px;
+  border: none;
+  padding: 0 15px;
+  background-color: white;
+  color: red;
+  border: 1px solid red;
+  font-weight: 700;
+  cursor: pointer;
+  border-radius: 10px;
+  transition: 0.3s;
+  overflow: hidden;
 }
 
 /* Texto */
 .btn-delete .text {
-    transition: 0.3s;
+  transition: 0.3s;
 }
 
 /* Ícone */
 .btn-delete .icon {
   margin-top: 4px;
-    position: absolute;
-    right: 20px;
-    width: 16px;
-    height: 16px;
-    transition: 0.3s;
-    fill: white;
+  position: absolute;
+  right: 20px;
+  width: 16px;
+  height: 16px;
+  transition: 0.3s;
+  fill: white;
 }
 
 /* Hover → texto some */
 .btn-delete:hover .text {
-    color: transparent;
+  color: transparent;
 }
 
 /* Hover → ícone vai pro centro */
 .btn-delete:hover .icon {
-    right: 50%;
-    transform: translateX(50%);
+  right: 50%;
+  transform: translateX(50%);
 }
 
 /* Clique → cresce um pouco */
 .btn-delete:active {
-    transform: scale(1.05);
-    transition: transform 0.1s ease;
+  transform: scale(1.05);
+  transition: transform 0.1s ease;
 }
 
 .button {
-    width: 150px;
-    height: 40px;
-    border: 1px solid rgb(0, 95, 0);
-    border-radius: 10px;
-    background: white;
-    cursor: pointer;
-    position: relative;
-    overflow: hidden;
-    transition: all 0.3s;
-    font-weight: bold;
-    margin-left: -0.8vw;
+  width: 150px;
+  height: 40px;
+  border: 1px solid rgb(0, 95, 0);
+  border-radius: 10px;
+  background: white;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s;
+  font-weight: bold;
+  margin-left: -0.8vw;
 }
 
 .button_text {
-    position: absolute;
-    left: 20px;
-    margin-top: 0.05vh;
-    top: 50%;
-    transform: translateY(-50%);
-    transition: all 0.3s;
-    color: rgb(0, 95, 0);
+  position: absolute;
+  left: 20px;
+  margin-top: 0.05vh;
+  top: 50%;
+  transform: translateY(-50%);
+  transition: all 0.3s;
+  color: rgb(0, 95, 0);
 }
 
 .button_icon {
-    position: absolute;
-    right: 0;
-    top: 0;
-    margin-top: 1.3vh;
-    height: 100%;
-    width: 40px;
-    background: white;
-    display: flex;
-    justify-content: center;
-    transition: all 0.3s;
-    font-size: 20px;
-    color: rgb(0, 95, 0);
+  position: absolute;
+  right: 0;
+  top: 0;
+  margin-top: 1.3vh;
+  height: 100%;
+  width: 40px;
+  background: white;
+  display: flex;
+  justify-content: center;
+  transition: all 0.3s;
+  font-size: 20px;
+  color: rgb(0, 95, 0);
 }
 
 .button:hover .button_text {
-    color: transparent;
+  color: transparent;
 }
 
 .button:hover .button_icon {
-    width: 100%;
-    right: 0;
+  width: 100%;
+  right: 0;
 }
 
 .btn-addcomp {
-    background-color: white;
-    border: 1px solid black;
-    color: black;
-    font-weight: 500;
-    margin-top: -5px;
+  background-color: white;
+  border: 1px solid black;
+  color: black;
+  font-weight: 500;
+  margin-top: -5px;
 }
 
 .btn-addcomp:hover {
-    background-color: white;
-    color: black;
-    border-color: black;
+  background-color: white;
+  color: black;
+  border-color: black;
 }
 
 .button:active {
-    transform: scale(1.05);
-    transition: transform 0.1s ease;
+  transform: scale(1.05);
+  transition: transform 0.1s ease;
 }
 
 .modal-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0,0,0,0.6);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 1050;
-}
-
-.modal-content {
-    background: white;
-    padding: 20px;
-    border-radius: 10px;
-    width: 400px;
-    max-height: 80vh;
-    overflow-y: auto;
-    position: relative;
-}
-
-/* --- Overlay dos modais Adicionar / Editar --- */
-#addVentiladorModal,
-#editVentiladorModal {
-  display: none; /* inicial oculto */
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0,0,0,0.6); /* fundo escuro */
+  background-color: rgba(0, 0, 0, 0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1050;
+}
+
+.modal-content {
+  background: white;
+  padding: 20px;
+  border-radius: 10px;
+  width: 100%;
+  max-width: 40vw;
+  max-height: 80vh;
+  overflow-y: auto;
+  position: relative;
+}
+
+/* --- Overlay dos modais Adicionar / Editar --- */
+#addVentiladorModal,
+#editVentiladorModal {
+  display: none;
+  /* inicial oculto */
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.6);
+  /* fundo escuro */
   z-index: 1000;
   justify-content: center;
   align-items: center;
@@ -828,9 +841,10 @@ header h2 {
   padding: 20px;
   border-radius: 10px;
   max-height: 80vh;
-  width: 400px;
+  width: 100%;
+  max-width: 50vw;
   overflow-y: auto;
-  box-shadow: 0 0 15px rgba(0,0,0,0.5);
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
 }
 
 /* Título com botão fechar alinhado */
@@ -884,6 +898,66 @@ header h2 {
   font-size: 14px;
 }
 
+/* --- Seção de Componentes --- */
+#addVentiladorModal h4,
+#editVentiladorModal h4 {
+  margin-top: 20px;
+  margin-bottom: 10px;
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: #00796b;
+  border-bottom: 2px solid #00796b;
+  padding-bottom: 4px;
+}
+
+/* container de componentes */
+#componentesContainer,
+#editComponentesContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 15px;
+}
+
+/* grupos dentro dos componentes */
+#componentesContainer .form-group,
+#editComponentesContainer .form-group {
+  display: flex;
+  flex-direction: column;
+}
+
+/* inputs/selects dos componentes */
+#componentesContainer input,
+#editComponentesContainer input,
+#componentesContainer select,
+#editComponentesContainer select {
+  padding: 6px 8px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+/* botão de adicionar componente */
+#addVentiladorModal .btn-add,
+#editVentiladorModal .btn-add {
+  background-color: #00796b;
+  color: white;
+  font-weight: 600;
+  padding: 10px 25px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  border: 2px solid #00796b;
+  transition: background-color 0.3s;
+  margin-top: 5px;
+}
+
+#addVentiladorModal .btn-add:hover,
+#editVentiladorModal .btn-add:hover {
+  background-color: transparent;
+  color: #00796b;
+}
+
 /* Botão submit */
 #addVentiladorModal .btn-submit,
 #editVentiladorModal .btn-submit {
@@ -892,9 +966,9 @@ header h2 {
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: transparent;     /* fundo transparente no estado normal */
-  border: 2px solid #00796b;          /* borda padrão */
-  color: #00796b;                     /* texto padrão */
+  background-color: transparent;
+  border: 2px solid #00796b;
+  color: #00796b;
   font-weight: 600;
   border-radius: 10px;
   gap: 8px;
@@ -902,7 +976,7 @@ header h2 {
   position: relative;
   overflow: hidden;
   transition: color .3s, background-color .3s;
-  z-index: 1; /* texto acima do ::before */
+  z-index: 1;
 }
 
 /* bolha que vem de trás */
@@ -917,7 +991,7 @@ header h2 {
   left: -120%;
   top: 0;
   transition: .3s;
-  z-index: -10; /* atrás do texto */
+  z-index: -10;
 }
 
 /* no hover o before se move e "abre" */
@@ -936,20 +1010,23 @@ header h2 {
 /* efeito click */
 #addVentiladorModal .btn-submit:active,
 #editVentiladorModal .btn-submit:active {
-  transform: translate(1px,1px);
+  transform: translate(1px, 1px);
   box-shadow: 0 4px 12px rgba(255, 255, 255, 0.6);
 }
+
 
 /* ---------- Overlay dos modais Hospital / Endereço ---------- */
 #addHospitalModal,
 #addEnderecoModal {
-  display: none; /* inicial oculto */
+  display: none;
+  /* inicial oculto */
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0,0,0,0.6); /* fundo escuro */
+  background-color: rgba(0, 0, 0, 0.6);
+  /* fundo escuro */
   z-index: 1100;
   justify-content: center;
   align-items: center;
@@ -965,7 +1042,7 @@ header h2 {
   max-width: 60vw;
   max-height: 80vh;
   overflow-y: auto;
-  box-shadow: 0 0 15px rgba(0,0,0,0.5);
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
   position: relative;
 }
 
@@ -1071,19 +1148,20 @@ header h2 {
 /* efeito click */
 #addHospitalModal .btn-submit:active,
 #addEnderecoModal .btn-submit:active {
-  transform: translate(1px,1px);
+  transform: translate(1px, 1px);
   box-shadow: 0 4px 12px rgba(255, 255, 255, 0.6);
 }
 
 /* ---------- Overlay do modal Editar Hospital ---------- */
 #editHospitalModal {
-  display: none; /* inicial oculto */
+  display: none;
+  /* inicial oculto */
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0,0,0,0.6);
+  background-color: rgba(0, 0, 0, 0.6);
   z-index: 1000;
   justify-content: center;
   align-items: center;
@@ -1095,10 +1173,11 @@ header h2 {
   padding: 20px;
   border-radius: 10px;
   width: 100%;
-  max-width: 60vw; /* mesmo que o addHospitalModal */
+  max-width: 60vw;
+  /* mesmo que o addHospitalModal */
   max-height: 80vh;
   overflow-y: auto;
-  box-shadow: 0 0 15px rgba(0,0,0,0.5);
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
   position: relative;
 }
 
@@ -1189,59 +1268,66 @@ header h2 {
 }
 
 #editHospitalModal .btn-submit:active {
-  transform: translate(1px,1px);
+  transform: translate(1px, 1px);
   box-shadow: 0 4px 12px rgba(255, 255, 255, 0.6);
 }
 
 /* Botão "Criar Novo Endereço" estilizado nos modais Hospital */
 #addHospitalModal .btn-criar-endereco,
 #editHospitalModal .btn-criar-endereco {
-    width: 100%;                /* largura total */
-    height: 40px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background-color: transparent;
-    border: 2px solid #00796b;
-    color: #00796b;
-    font-weight: 600;
-    border-radius: 10px;
-    gap: 8px;
-    cursor: pointer;
-    position: relative;
-    overflow: hidden;
-    transition: color .3s, background-color .3s;
-    margin-top: 20px;          /* espaçamento do select */
-    z-index: 1;
+  width: 100%;
+  /* largura total */
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: transparent;
+  border: 2px solid #00796b;
+  color: #00796b;
+  font-weight: 600;
+  border-radius: 10px;
+  gap: 8px;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  transition: color .3s, background-color .3s;
+  margin-top: 20px;
+  /* espaçamento do select */
+  z-index: 1;
 }
 
 #addHospitalModal .btn-criar-endereco:hover,
 #editHospitalModal .btn-criar-endereco:hover {
-    background-color: #00796b;
-    color: white;
+  background-color: #00796b;
+  color: white;
 }
 
 #addHospitalModal .btn-criar-endereco:active,
 #editHospitalModal .btn-criar-endereco:active {
-    transform: translate(1px,1px);
-    box-shadow: 0 4px 12px rgba(255, 255, 255, 0.6);
+  transform: translate(1px, 1px);
+  box-shadow: 0 4px 12px rgba(255, 255, 255, 0.6);
 }
 
 /* força o swal ficar acima de qualquer modal */
 .swal2-container {
   z-index: 20000 !important;
 }
+
 .swal2-popup {
   z-index: 20001 !important;
 }
 
 /* ---------- Overlay do modal Deletar Hospital ---------- */
 #deleteHospitalModal {
-  display: none; /* começa oculto */
+  display: none;
+  /* começa oculto */
   position: fixed;
-  top: 0; left: 0;
-  width: 100%; height: 100%;
-  background-color: rgba(0,0,0,0.6); /* fundo escuro */
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.6);
+  /* fundo escuro */
   z-index: 1000;
   justify-content: center;
   align-items: center;
@@ -1253,9 +1339,10 @@ header h2 {
   padding: 20px;
   border-radius: 10px;
   width: 100%;
-  max-width: 40vw; /* um pouco menor que add/edit hospital */
+  max-width: 40vw;
+  /* um pouco menor que add/edit hospital */
   overflow-y: auto;
-  box-shadow: 0 0 15px rgba(0,0,0,0.5);
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
   position: relative;
 }
 
@@ -1336,7 +1423,7 @@ header h2 {
 }
 
 #deleteHospitalModal .btn-submit:active {
-  transform: translate(1px,1px);
+  transform: translate(1px, 1px);
   box-shadow: 0 4px 12px rgba(255, 255, 255, 0.6);
 }
 
@@ -1344,3 +1431,54 @@ header h2 {
   font-weight: 600;
 }
 
+/* Cada "componente-box" fica como um bloco */
+.componente-box {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;          /* espaçamento entre label/input */
+  padding: 12px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  margin-bottom: 15px;
+  background: #f9f9f9;
+}
+
+/* Labels em negrito */
+.componente-box label {
+  font-weight: 600;
+  font-size: 0.9rem;
+  color: #333;
+}
+
+/* Inputs/selects dentro de componentes */
+.componente-box input,
+.componente-box select {
+  padding: 8px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.componente-box input:focus,
+.componente-box select:focus {
+  border-color: #00796b;
+}
+
+/* Botão remover estilizado */
+.componente-box button {
+  align-self: flex-end;
+  background-color: #d32f2f;
+  color: white;
+  font-weight: 600;
+  border: none;
+  border-radius: 5px;
+  padding: 6px 12px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.componente-box button:hover {
+  background-color: #b71c1c;
+}

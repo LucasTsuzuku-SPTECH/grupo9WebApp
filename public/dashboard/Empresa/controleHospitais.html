@@ -206,6 +206,7 @@
         <div id="addVentiladorModal" class="modal-overlay" style="display:none;">
             <div class="modal-content">
                 <h3>Adicionar Ventilador <button class="btn-fechar-modal" onclick="fecharAddModal()">X</button></h3>
+
                 <form id="formAddVentilador">
                     <div class="form-group">
                         <label for="numeroSerie">Nº Série</label>
@@ -215,12 +216,21 @@
                         <label for="selectModelo">Modelo</label>
                         <select id="selectModelo" required></select>
                     </div>
+
                     <input type="hidden" id="fkSala">
                     <input type="hidden" id="fkEmpresa">
-                    <button type="submit" class="btn-submit">Adicionar</button>
+
+                    <h4>Componentes</h4>
+                    <div id="componentesContainer"></div>
+                    <button type="button" class="btn-add" onclick="adicionarComponente()">+ Adicionar
+                        Componente</button>
+
+                    <br><br>
+                    <button type="submit" class="btn-submit">Adicionar Ventilador</button>
                 </form>
             </div>
         </div>
+
 
         <!-- Modal Editar Ventilador -->
         <div id="editVentiladorModal" class="modal-overlay" style="display:none;">
@@ -248,10 +258,17 @@
                         <select id="editSelectHospital" required></select>
                     </div>
 
+                    <h4>Componentes</h4>
+                    <div id="editComponentesContainer"></div>
+                    <button type="button" class="btn-add" onclick="adicionarComponenteEdit()">+ Adicionar
+                        Componente</button>
+
+                    <br><br>
                     <button type="submit" class="btn-submit">Salvar</button>
                 </form>
             </div>
         </div>
+
     </div>
     </div>
 </body>
@@ -332,7 +349,7 @@
         <h3>${hospital.nomeHospital}</h3>
         <span class="status ${statusClass}">${statusClass}</span>
       `;
-                    
+
                 divHospital.addEventListener("click", () => abrirModalVentiladores(hospital.idSala));
                 container.appendChild(divHospital);
             });
@@ -390,48 +407,67 @@
 
             const conteudo = document.getElementById("conteudoVentiladores");
             conteudo.innerHTML = `
-      <h3>${ventiladores[0]?.nome_hospital || "Hospital"}
-
-        <div style="display: flex; flex-direction: row; gap:10px;">
-        <button class="button" type="button" onclick="abrirAddModal(${idSala})">
-            <span class="button_text">Adicionar</span>
-            <span class="button_icon">+</span>
-        </button>
-        <button class="btn-fechar-modal" onclick="fecharModal()">X</button>
-        </div>
-      </h3>
-    `;
+            <h3>${ventiladores[0]?.nome_hospital || "Hospital"}
+                <div style="display: flex; flex-direction: row; gap:10px;">
+                    <button class="button" type="button" onclick="abrirAddModal(${idSala})">
+                        <span class="button_text">Adicionar</span>
+                        <span class="button_icon">+</span>
+                    </button>
+                    <button class="btn-fechar-modal" onclick="fecharModal()">X</button>
+                </div>
+            </h3>
+        `;
 
             if (ventiladores.length === 0) {
                 conteudo.innerHTML += `
-        <p>Não há ventiladores cadastrados neste hospital.</p><br>
+                <p>Não há ventiladores cadastrados neste hospital.</p><br>
             `;
             } else {
-                ventiladores.forEach(v => {
-                    console.log(idSala)
+                for (const v of ventiladores) {
                     conteudo.innerHTML += `
-            <div class="ventilador">
-                <div style="display:flex;justify-content:space-between;align-items:center;">
-                    <div style="display:flex;gap:5px;align-items:center;">
-                        <strong>Nº Série:</strong> <span>${v.numero_serie}</span>
+                    <div class="ventilador">
+                        <div style="display:flex;justify-content:space-between;align-items:center;">
+                            <div style="display:flex;gap:5px;align-items:center;">
+                                <strong>Nº Série:</strong> <span>${v.numero_serie}</span>
+                            </div>
+                            <div style="display:flex;gap:10px;">
+                                <button class="btn-edit" onclick='abrirModalEdicao(${v.idVentilador}, ${idSala})'>
+                                    <span class="btn-text">Editar</span>
+                                    <i class="fa-regular fa-pen-to-square"></i>
+                                </button>
+                                <button class="btn-delete" onclick='confirmarDelete(${v.idVentilador}, ${idSala})'>
+                                    <span class="text">Excluir</span>
+                                    <i class="fa-solid fa-trash icon"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="linha-separadora"></div>
+                        <strong>Modelo:</strong> ${v.nome_modelo}<br>
+                        <em>${v.descricao_modelo}</em>
+                        <div class="linha-separadora"></div>
+                        <div id="parametros-${v.idVentilador}">Carregando parâmetros...</div>
                     </div>
-                    <div style="display:flex;gap:10px;">
-                        <button class="btn-edit" onclick='abrirModalEdicao(${v.idVentilador}, ${idSala})'>
-                            <span class="btn-text">Editar</span>
-                            <i class="fa-regular fa-pen-to-square"></i>
-                        </button>
-                        <button class="btn-delete" onclick='confirmarDelete(${v.idVentilador}, ${idSala})'>
-                            <span class="text">Excluir</span>
-                            <i class="fa-solid fa-trash icon"></i>
-                        </button>
-                    </div>
-                </div>
-                <div class="linha-separadora"></div>
-                <strong>Modelo:</strong> ${v.nome_modelo}<br>
-                <em>${v.descricao_modelo}</em>
-            </div>
-            `;
-                });
+                `;
+
+                    // 🔹 Buscar parâmetros do ventilador no backend
+                    try {
+                        const respParams = await fetch(`/controle/ventiladores/${v.idVentilador}/parametros`);
+                        const parametros = respParams.status === 204 ? [] : await respParams.json();
+                        const divParams = document.getElementById(`parametros-${v.idVentilador}`);
+
+                        if (parametros.length === 0) {
+                            divParams.innerHTML = `<p style="font-weight: bold;">Sem parâmetros cadastrados.</p>`;
+                        } else {
+                            divParams.innerHTML = parametros.map(p => `
+                            <p><strong>${p.nomeComponente} (${p.unidadeMedida}):</strong> 
+                            Min: ${p.parametroMin}, Max: ${p.parametroMax}</p>
+                        `).join("");
+                        }
+                    } catch (errParams) {
+                        console.error("Erro ao buscar parâmetros:", errParams);
+                        document.getElementById(`parametros-${v.idVentilador}`).innerHTML = "<p>Erro ao carregar parâmetros.</p>";
+                    }
+                }
             }
 
             document.getElementById("modalVentiladores").style.display = "flex";
@@ -439,6 +475,7 @@
             console.error(err);
         }
     }
+
 
     function confirmarDelete(idVentilador, idSala) {
         Swal.fire({
@@ -483,14 +520,55 @@
         select.innerHTML = modelos.map(m => `<option value="${m.idModelo}">${m.nome}</option>`).join('');
     }
 
+    let componenteIndex = 0;
+
+    function adicionarComponente() {
+        const container = document.getElementById("componentesContainer");
+        const idx = componenteIndex++;
+
+        const div = document.createElement("div");
+        div.classList.add("form-group");
+        div.innerHTML = `
+        <div class="componente-box">
+            <label>Nome Componente</label>
+            <input type="text" name="nomeComponente-${idx}" required>
+
+            <label>Unidade Medida</label>
+            <input type="text" name="unidadeMedida-${idx}" required>
+
+            <label>Parâmetro Mínimo</label>
+            <input type="number" name="paramMin-${idx}" required>
+
+            <label>Parâmetro Máximo</label>
+            <input type="number" name="paramMax-${idx}" required>
+
+            <button type="button" onclick="removerComponente(this)">Remover</button>
+        </div>
+    `;
+        container.appendChild(div);
+    }
+
     document.getElementById("formAddVentilador").addEventListener("submit", async e => {
         e.preventDefault();
+
         const novoVentilador = {
             numero_serie: document.getElementById("numeroSerie").value,
             fk_modelo: document.getElementById("selectModelo").value,
             fk_sala: document.getElementById("fkSala").value,
-            fk_empresa: document.getElementById("fkEmpresa").value
+            fk_empresa: document.getElementById("fkEmpresa").value,
+            componentes: []
         };
+
+        // Monta os componentes dinamicamente
+        const container = document.getElementById("componentesContainer");
+        container.querySelectorAll(".componente-box").forEach(div => {
+            novoVentilador.componentes.push({
+                nome: div.querySelector(`[name^="nomeComponente"]`).value,
+                unidade: div.querySelector(`[name^="unidadeMedida"]`).value,
+                parametroMin: div.querySelector(`[name^="paramMin"]`).value,
+                parametroMax: div.querySelector(`[name^="paramMax"]`).value
+            });
+        });
 
         try {
             const resp = await fetch('/controle/ventiladores', {
@@ -498,9 +576,11 @@
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(novoVentilador)
             });
+
             if (!resp.ok) throw new Error();
             await resp.json();
-            Swal.fire('Sucesso!', 'Ventilador adicionado.', 'success');
+
+            Swal.fire('Sucesso!', 'Ventilador e componentes adicionados.', 'success');
             fecharAddModal();
             abrirModalVentiladores(novoVentilador.fk_sala);
         } catch {
@@ -511,21 +591,59 @@
     /* ---------- Editar Ventilador ---------- */
     async function abrirModalEdicao(idVentilador, idSala) {
         try {
+            // Buscar dados do ventilador
             const v = await (await fetch(`/controle/ventiladores/buscar/${idVentilador}/${idSala}`)).json();
             document.getElementById("editIdVentilador").value = v.idVentilador;
             document.getElementById("editNumeroSerie").value = v.numero_serie;
 
+            // Modelos
             await carregarModelos("editSelectModelo");
-            document.getElementById("editSelectModelo").value = v.fk_modelo;
+            document.getElementById("editSelectModelo").value = v.fkModelo;
 
+            // Salas
             const respHosp = await fetch('/controle/hospitais');
             const hospitais = await respHosp.json();
             const selectHospital = document.getElementById("editSelectHospital");
             selectHospital.innerHTML = hospitais.map(h =>
-                `<option value="${h.idSala}"}> Sala ${h.idSala}
+                `<option value="${h.idSala}" ${h.idSala == idSala ? "selected" : ""}>
+                 Sala ${h.idSala}
             </option>`
             ).join('');
-            // aqui não é hospital, so reaproveitei a funcao para pegar o id das salas
+
+            // Buscar componentes do ventilador
+            const respComps = await fetch(`/controle/ventiladores/${idVentilador}/componentes`);
+            const comps = await respComps.json();
+
+            const container = document.getElementById("editComponentesContainer");
+            container.innerHTML = "";
+
+            comps.forEach((comp, idx) => {
+                const div = document.createElement("div");
+                div.classList.add("form-group");
+                div.innerHTML = `
+                <div class="componente-box">
+                    <input type="hidden" name="idComponente-${idx}" value="${comp.idComponente}">
+                    <input type="hidden" name="idParametro-${idx}" value="${comp.idParametro}">
+
+                    <label>Nome Componente</label>
+                    <input type="text" name="nomeComponente-${idx}" value="${comp.nomeComponente}" required>
+
+                    <label>Unidade Medida</label>
+                    <input type="text" name="unidadeMedida-${idx}" value="${comp.unidadeMedida}" required>
+
+                    <label>Parâmetro Mínimo</label>
+                    <input type="number" name="paramMin-${idx}" value="${comp.parametroMin}" required>
+
+                    <label>Parâmetro Máximo</label>
+                    <input type="number" name="paramMax-${idx}" value="${comp.parametroMax}" required>
+
+                    <button type="button" onclick="removerComponente(this)">Remover</button>
+
+                </div>
+
+            `;
+                container.appendChild(div);
+            });
 
             document.getElementById("editVentiladorModal").style.display = "flex";
         } catch (err) {
@@ -533,6 +651,57 @@
         }
     }
 
+    function removerComponente(btn) {
+        const box = btn.closest(".form-group");
+        if (box) {
+            box.remove(); // remove a div.form-group inteira
+        }
+
+        // Se não houver mais componentes, limpa o container
+        const container = document.getElementById("editComponentesContainer");
+        if (!container.querySelector(".componente-box")) {
+            container.innerHTML = "";
+        }
+
+         // Se não houver mais componentes, limpa o container
+        const comp = document.getElementById("componentesContainer");
+        if (!comp.querySelector(".componente-box")) {
+            comp.innerHTML = "";
+        }
+    }
+
+
+    // Adicionar novo componente na edição
+    let compEditIndex = 0;
+
+    function adicionarComponenteEdit() {
+        const container = document.getElementById("editComponentesContainer");
+        const idx = compEditIndex++;
+
+        const div = document.createElement("div");
+        div.classList.add("form-group");
+        div.innerHTML = `
+        <div class="componente-box">
+            <!-- sem idComponente/idParametro = será inserido novo -->
+            <label>Nome Componente</label>
+            <input type="text" name="nomeComponente-${idx}" required>
+
+            <label>Unidade Medida</label>
+            <input type="text" name="unidadeMedida-${idx}" required>
+
+            <label>Parâmetro Mínimo</label>
+            <input type="number" name="paramMin-${idx}" required>
+
+            <label>Parâmetro Máximo</label>
+            <input type="number" name="paramMax-${idx}" required>
+
+            <button type="button" onclick="removerComponente(this)">Remover</button>
+        </div>
+    `;
+        container.appendChild(div);
+    }
+
+    // Submit edição
     document.getElementById("formEditVentilador").addEventListener("submit", async e => {
         e.preventDefault();
         const ventiladorAtualizado = {
@@ -541,14 +710,48 @@
             fk_modelo: document.getElementById("editSelectModelo").value,
             fk_sala: document.getElementById("editSelectHospital").value
         };
+
         try {
+            // Atualizar ventilador
             const resp = await fetch(`/controle/ventiladores/atualizar/${ventiladorAtualizado.id_ventilador}`, {
                 method: 'PUT',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(ventiladorAtualizado)
             });
             if (!resp.ok) throw new Error();
-            await resp.json();
+
+            // Atualizar ou inserir componentes
+            const compDivs = document.querySelectorAll("#editComponentesContainer .componente-box");
+            for (let div of compDivs) {
+                const idComponente = div.querySelector("[name^='idComponente']")?.value;
+                const idParametro = div.querySelector("[name^='idParametro']")?.value;
+                const comp = {
+                    idComponente,
+                    idParametro,
+                    nomeComponente: div.querySelector("[name^='nomeComponente']").value,
+                    unidadeMedida: div.querySelector("[name^='unidadeMedida']").value,
+                    parametroMin: div.querySelector("[name^='paramMin']").value,
+                    parametroMax: div.querySelector("[name^='paramMax']").value,
+                    fkVentilador: ventiladorAtualizado.id_ventilador
+                };
+
+                if (idComponente && idParametro) {
+                    // update
+                    await fetch(`/controle/componentes/atualizar`, {
+                        method: "PUT",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify(comp)
+                    });
+                } else {
+                    // insert
+                    await fetch(`/controle/componentes/criar`, {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify(comp)
+                    });
+                }
+            }
+
             Swal.fire('Sucesso!', 'Ventilador atualizado.', 'success');
             fecharEditModal();
             abrirModalVentiladores(ventiladorAtualizado.fk_sala);
@@ -556,6 +759,7 @@
             Swal.fire('Erro!', 'Não foi possível atualizar o ventilador.', 'error');
         }
     });
+
 
     /* ------------------ Inicialização ------------------ */
     window.onload = () => {

@@ -45,16 +45,26 @@ function deletarVentilador(req, res) {
         });
 }
 
-function criarVentilador(req, res) {
-    const ventilador = req.body; 
+async function criarVentilador(req, res) {
+    const ventilador = req.body;
 
-    controleModel.criarVentilador(ventilador)
-        .then(() => res.json({ message: "Ventilador criado com sucesso" }))
-        .catch(erro => {
-            console.error("Erro ao criar ventilador: ", erro.sqlMessage || erro);
-            res.status(500).json({ message: "Erro ao criar ventilador", erro: erro.sqlMessage });
-        });
+    try {
+        const novoId = await controleModel.criarVentilador(ventilador);
+
+        // se tiver componentes, cadastra
+        if (ventilador.componentes && ventilador.componentes.length > 0) {
+            for (const comp of ventilador.componentes) {
+                await controleModel.criarComponenteEParametro(comp, novoId);
+            }
+        }
+
+        res.json({ message: "Ventilador e componentes criados com sucesso" });
+    } catch (erro) {
+        console.error("Erro ao criar ventilador: ", erro.sqlMessage || erro);
+        res.status(500).json({ message: "Erro ao criar ventilador", erro: erro.sqlMessage });
+    }
 }
+
 
 function listarModelos(req, res) {
     controleModel.listarModelos()
@@ -148,6 +158,45 @@ async function deletarHospital(req, res) {
   }
 }
 
+function listarParametros(req, res) {
+    const idVentilador = req.params.idVentilador;
+    controleModel.listarParametros(idVentilador)
+        .then(resultado => {
+            if (resultado.length > 0) {
+                res.json(resultado);
+            } else {
+                res.status(204).send("Nenhum parâmetro encontrado!");
+            }
+        })
+        .catch(erro => {
+            console.error("Erro ao buscar parâmetros:", erro.sqlMessage);
+            res.status(500).json(erro.sqlMessage);
+        });
+}
+
+async function buscarComponentes(req, res) {
+    const idVentilador = req.params.idVentilador;
+    try {
+        const comps = await controleModel.buscarComponentesPorVentilador(idVentilador);
+        res.json(comps);
+    } catch (erro) {
+        console.error(erro);
+        res.status(500).json({ message: "Erro ao buscar componentes", erro });
+    }
+}
+
+async function atualizarComponente(req, res) {
+    const { idComponente, nomeComponente, unidadeMedida, idParametro, parametroMin, parametroMax } = req.body;
+    try {
+        await controleModel.atualizarComponenteEParametro(idComponente, nomeComponente, unidadeMedida, idParametro, parametroMin, parametroMax);
+        res.json({ message: "Componente atualizado com sucesso" });
+    } catch (erro) {
+        console.error(erro);
+        res.status(500).json({ message: "Erro ao atualizar componente", erro });
+    }
+}
+
+
 module.exports = {
     listarHospitais,
     listarVentiladores,
@@ -161,7 +210,10 @@ module.exports = {
     criarHospital,
     buscarHospital,
     editarHospital,
-    deletarHospital
+    deletarHospital,
+    listarParametros,
+    buscarComponentes,
+    atualizarComponente
 };
 
 

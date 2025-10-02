@@ -32,25 +32,43 @@ function listarVentiladores(idSala) {
     return database.executar(instrucaoSql);
 }
 
-function deletarVentilador(idVentilador) {
+async function deletarVentilador(idVentilador) {
     console.log("ACESSEI controleModel deletarVentilador()");
-    const instrucaoSql = `DELETE FROM Ventilador WHERE idVentilador = ${idVentilador};`;
-    console.log("Executando SQL: \n" + instrucaoSql);
-    return database.executar(instrucaoSql);
+    
+    const sql1 = `DELETE FROM Parametro WHERE fkVentilador = ${idVentilador};`;
+    const sql2 = `DELETE FROM Ventilador WHERE idVentilador = ${idVentilador};`;
+
+    console.log("Executando SQL:\n" + sql1 + "\n" + sql2);
+
+    await database.executar(sql1);
+    return database.executar(sql2);
 }
 
-function criarVentilador(ventilador) {
-    console.log("ACESSEI controleModel criarVentilador()");
+async function criarVentilador(ventilador) {
     const { numero_serie, fk_modelo, fk_sala, fk_empresa } = ventilador;
-
-    const instrucaoSql = `
+    const sql = `
         INSERT INTO Ventilador (numero_serie, fkModelo, fkSala, fkEmpresa)
         VALUES ('${numero_serie}', ${fk_modelo}, ${fk_sala}, ${fk_empresa});
     `;
-
-    console.log("Executando SQL: \n" + instrucaoSql);
-    return database.executar(instrucaoSql);
+    const result = await database.executar(sql);
+    return result.insertId; // pega o idVentilador recém criado
 }
+
+async function criarComponenteEParametro(componente, fkVentilador) {
+    const sqlComp = `
+        INSERT INTO Componente (nomeComponente, unidadeMedida)
+        VALUES ('${componente.nome}', '${componente.unidade}');
+    `;
+    const result = await database.executar(sqlComp);
+    const idComponente = result.insertId;
+
+    const sqlParam = `
+        INSERT INTO Parametro (parametroMin, parametroMax, fkVentilador, fkComponente)
+        VALUES (${componente.parametroMin}, ${componente.parametroMax}, ${fkVentilador}, ${idComponente});
+    `;
+    return database.executar(sqlParam);
+}
+
 
 function listarModelos() {
     console.log("ACESSEI controleModel listarModelos()");
@@ -140,6 +158,48 @@ async function deletarHospital(id) {
   return database.executar(sqlHospital);
 }
 
+function listarParametros(idVentilador) {
+    console.log("ACESSEI controleModel listarParametros()");
+
+    const instrucaoSql = `
+        SELECT c.nomeComponente, c.unidadeMedida, p.parametroMin, p.parametroMax
+        FROM Parametro p
+        JOIN Componente c ON p.fkComponente = c.idComponente
+        WHERE p.fkVentilador = ${idVentilador};
+    `;
+
+    console.log("Executando SQL: \n" + instrucaoSql);
+    return database.executar(instrucaoSql);
+}
+
+// Buscar componentes de um ventilador
+function buscarComponentesPorVentilador(idVentilador) {
+    const sql = `
+        SELECT c.idComponente, c.nomeComponente, c.unidadeMedida,
+               p.idParametro, p.parametroMin, p.parametroMax
+        FROM Componente c
+        JOIN Parametro p ON c.idComponente = p.fkComponente
+        WHERE p.fkVentilador = ${idVentilador};
+    `;
+    return database.executar(sql);
+}
+
+// Atualizar componente existente
+function atualizarComponenteEParametro(idComponente, nome, unidade, idParametro, min, max) {
+    const sqlComp = `
+        UPDATE Componente
+        SET nomeComponente = '${nome}', unidadeMedida = '${unidade}'
+        WHERE idComponente = ${idComponente};
+    `;
+    const sqlParam = `
+        UPDATE Parametro
+        SET parametroMin = ${min}, parametroMax = ${max}
+        WHERE idParametro = ${idParametro};
+    `;
+    return database.executar(sqlComp).then(() => database.executar(sqlParam));
+}
+
+
 module.exports = {
     listarHospitais,
     listarVentiladores,
@@ -153,7 +213,11 @@ module.exports = {
     criarHospital,
     buscarHospital,
     editarHospital,
-    deletarHospital
+    deletarHospital,
+    listarParametros,
+    criarComponenteEParametro,
+    buscarComponentesPorVentilador,
+    atualizarComponenteEParametro
 };
 
 
