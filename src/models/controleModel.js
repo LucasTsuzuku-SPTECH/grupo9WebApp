@@ -199,6 +199,39 @@ function atualizarComponenteEParametro(idComponente, nome, unidade, idParametro,
     return database.executar(sqlComp).then(() => database.executar(sqlParam));
 }
 
+function criarComponente(nomeComponente, unidadeMedida) {
+    const sql = `
+        INSERT INTO Componente (nomeComponente, unidadeMedida) 
+        VALUES ('${nomeComponente}', '${unidadeMedida}');
+    `;
+    console.log("Executando SQL:\n" + sql);
+    return database.executar(sql);
+}
+
+function criarParametro(parametroMin, parametroMax, fkVentilador, fkComponente) {
+    const sql = `
+        INSERT INTO Parametro (parametroMin, parametroMax, fkVentilador, fkComponente) 
+        VALUES (${parametroMin}, ${parametroMax}, ${fkVentilador}, ${fkComponente});
+    `;
+    console.log("Executando SQL:\n" + sql);
+    return database.executar(sql);
+}
+
+function deletarParametro(idParametro) {
+    const sql = `
+        DELETE FROM Parametro WHERE idParametro = ${idParametro};
+    `;
+    console.log("Executando SQL:\n" + sql);
+    return database.executar(sql);
+}
+
+function deletarComponente(idComponente) {
+    const sql = `
+        DELETE FROM Componente WHERE idComponente = ${idComponente};
+    `;
+    console.log("Executando SQL:\n" + sql);
+    return database.executar(sql);
+}
 
 module.exports = {
     listarHospitais,
@@ -217,7 +250,11 @@ module.exports = {
     listarParametros,
     criarComponenteEParametro,
     buscarComponentesPorVentilador,
-    atualizarComponenteEParametro
+    atualizarComponenteEParametro,
+    criarComponente,
+    criarParametro,
+    deletarParametro,
+    deletarComponente
 };
 
 

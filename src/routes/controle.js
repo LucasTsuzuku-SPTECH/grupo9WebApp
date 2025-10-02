@@ -24,10 +24,11 @@ router.get("/modelos", controleController.listarModelos);
 router.get("/enderecos", controleController.listarEnderecos);
 router.post("/enderecos", controleController.criarEndereco);
 
+// COMPONENTES E PARAMETROS
 router.get("/ventiladores/:idVentilador/parametros", controleController.listarParametros);
 router.get("/ventiladores/:idVentilador/componentes", controleController.buscarComponentes);
 router.put("/componentes/atualizar", controleController.atualizarComponente);
-
-
+router.post("/componentes/criar", controleController.criarComponenteEParametro);
+router.delete("/componentes/deletar/:idComponente/:idParametro", controleController.deletarComponenteEParametro);
 
 module.exports = router;

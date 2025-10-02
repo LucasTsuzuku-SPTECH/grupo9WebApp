@@ -1,10 +1,10 @@
-DROP DATABASE IF EXISTS zephyrus;
+DROP DATABASE IF EXISTS zephrus;
 
-CREATE DATABASE zephyrus;
-USE zephyrus;
+CREATE DATABASE zephrus;
+USE zephrus;
 
 CREATE TABLE IF NOT EXISTS Componente (
-  idComponente INT NOT NULL,
+  idComponente INT NOT NULL AUTO_INCREMENT,
   nomeComponente VARCHAR(10) NULL,
   unidadeMedida VARCHAR(10) NULL,
   PRIMARY KEY (idComponente)
@@ -134,3 +134,6 @@ INSERT INTO Usuario (nome, email, senha_hash, perfil, statusUser, fkEmpresa, fkH
 VALUES 
 ('João da Silva', 'joao@empresa.com', 'senha_hash_1', 'empresa', 'ativo', 1, NULL),
 ('Maria Oliveira', 'maria@hospital.com', 'senha_hash_2', 'adminHospital', 'ativo', NULL, 1);
+
+
+select * from Ventilador;

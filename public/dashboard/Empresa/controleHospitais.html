@@ -332,27 +332,73 @@
 
             let total = hospitais.length, estavel = 0, alerta = 0, critico = 0;
 
-            hospitais.forEach(hospital => {
-                // Status random (exemplo)
-                const statusOpcoes = ["estavel", "alerta", "critico"];
-                const statusClass = statusOpcoes[Math.floor(Math.random() * statusOpcoes.length)];
+            for (const hospital of hospitais) {
+                // Buscar ventiladores do hospital
+                const respV = await fetch(`/controle/hospitais/${hospital.idSala}/ventiladores`);
+                const ventiladores = respV.status === 204 ? [] : await respV.json();
 
-                if (statusClass === "estavel") estavel++;
-                if (statusClass === "alerta") alerta++;
-                if (statusClass === "critico") critico++;
+                // --- MOCK ALERTAS ---
+                let totalAlertas = 0;
 
+                // Distribuir alertas de acordo com o status do hospital
+                // Decide primeiro o status do hospital
+                let statusHospital;
+                const sorteio = Math.random();
+
+                if (sorteio < 0.33) {
+                    statusHospital = "estavel";
+                    ventiladores.forEach(v => v.alertas = 0);
+                    totalAlertas = 0;
+                } else if (sorteio < 0.66) {
+                    statusHospital = "alerta";
+                    // Gera no máximo 2 alertas no total
+                    totalAlertas = Math.floor(Math.random() * 3); // 0,1,2
+                    let restantes = totalAlertas;
+                    ventiladores.forEach(v => {
+                        if (restantes > 0) {
+                            v.alertas = 1;
+                            restantes--;
+                        } else {
+                            v.alertas = 0;
+                        }
+                    });
+                } else {
+                    statusHospital = "critico";
+                    // Gera 3 a 6 alertas no total
+                    totalAlertas = 3 + Math.floor(Math.random() * 4); // 3 a 6
+                    let restantes = totalAlertas;
+                    ventiladores.forEach(v => {
+                        if (restantes > 0) {
+                            const qtd = Math.min(restantes, Math.floor(Math.random() * 3) + 1); // 1 a 3
+                            v.alertas = qtd;
+                            restantes -= qtd;
+                        } else {
+                            v.alertas = 0;
+                        }
+                    });
+                }
+
+                // Contabilizar
+                if (statusHospital === "estavel") estavel++;
+                if (statusHospital === "alerta") alerta++;
+                if (statusHospital === "critico") critico++;
+
+                // Renderizar hospital
                 const divHospital = document.createElement("div");
                 divHospital.className = "card-hospital";
-                divHospital.dataset.status = statusClass;
+                divHospital.dataset.status = statusHospital;
 
                 divHospital.innerHTML = `
-        <h3>${hospital.nomeHospital}</h3>
-        <span class="status ${statusClass}">${statusClass}</span>
-      `;
+                <h3>${hospital.nomeHospital}</h3>
+                <span class="status ${statusHospital}">${statusHospital}</span>
+            `;
 
-                divHospital.addEventListener("click", () => abrirModalVentiladores(hospital.idSala));
+                // Guardar ventiladores com alertas simulados no próprio objeto
+                hospital.ventiladoresMock = ventiladores;
+
+                divHospital.addEventListener("click", () => abrirModalVentiladores(hospital.idSala, ventiladores));
                 container.appendChild(divHospital);
-            });
+            }
 
             document.getElementById("qtde_total").innerText = total;
             document.getElementById("qtde_estavel").innerText = estavel;
@@ -362,6 +408,8 @@
             console.error("Erro:", erro);
         }
     }
+
+
 
     function filtrarHospitais() {
         const filtro = document.getElementById("filtroCriticidade").value;
@@ -399,11 +447,22 @@
     }
 
     /* ------------------ Ventiladores ------------------ */
-    async function abrirModalVentiladores(idSala) {
+    async function abrirModalVentiladores(idSala, ventiladoresMock = null) {
         try {
-            const resp = await fetch(`/controle/hospitais/${idSala}/ventiladores`);
-            if (!resp.ok) throw new Error("Erro ao buscar ventiladores");
-            const ventiladores = resp.status === 204 ? [] : await resp.json();
+            let ventiladores;
+
+            if (ventiladoresMock) {
+                // usa os ventiladores já mockados no carregarHospitais
+                ventiladores = ventiladoresMock;
+            } else {
+                // fallback se abrir sem passar o mock
+                const resp = await fetch(`/controle/hospitais/${idSala}/ventiladores`);
+                if (!resp.ok) throw new Error("Erro ao buscar ventiladores");
+                ventiladores = resp.status === 204 ? [] : await resp.json();
+
+                // caso não venha alertas do backend, gera aleatório só para não quebrar
+                ventiladores.forEach(v => v.alertas = v.alertas ?? Math.floor(Math.random() * 3));
+            }
 
             const conteudo = document.getElementById("conteudoVentiladores");
             conteudo.innerHTML = `
@@ -419,11 +478,15 @@
         `;
 
             if (ventiladores.length === 0) {
-                conteudo.innerHTML += `
-                <p>Não há ventiladores cadastrados neste hospital.</p><br>
-            `;
+                conteudo.innerHTML += `<p>Não há ventiladores cadastrados neste hospital.</p><br>`;
             } else {
                 for (const v of ventiladores) {
+                    // 🔹 status coerente com quantidade de alertas
+                    let statusClass = "estavel";
+                    if (v.alertas === 0) statusClass = "estavel";
+                    else if (v.alertas === 1) statusClass = "alerta";
+                    else statusClass = "critico";
+
                     conteudo.innerHTML += `
                     <div class="ventilador">
                         <div style="display:flex;justify-content:space-between;align-items:center;">
@@ -442,14 +505,24 @@
                             </div>
                         </div>
                         <div class="linha-separadora"></div>
-                        <strong>Modelo:</strong> ${v.nome_modelo}<br>
-                        <em>${v.descricao_modelo}</em>
+
+                        <div style="display:flex; justify-content:space-between; align-items:center;">
+                            <div>
+                                <strong>Modelo:</strong> ${v.nome_modelo}<br>
+                                <em>${v.descricao_modelo}</em>
+                            </div>
+                            <div style="display:flex; flex-direction:column; align-items:center; min-width:80px; margin: 5px ;border: 1px solid #ccc; background: #f9f9f9; padding: 10px 20px; border-radius: 10px;">
+                                <span><strong>Quantidade Alertas:</strong> ${v.alertas}</span>
+                                <span class="status ${statusClass}">${statusClass}</span>
+                            </div>
+                        </div>
+
                         <div class="linha-separadora"></div>
                         <div id="parametros-${v.idVentilador}">Carregando parâmetros...</div>
                     </div>
                 `;
 
-                    // 🔹 Buscar parâmetros do ventilador no backend
+                    // 🔹 Buscar parâmetros do ventilador
                     try {
                         const respParams = await fetch(`/controle/ventiladores/${v.idVentilador}/parametros`);
                         const parametros = respParams.status === 204 ? [] : await respParams.json();
@@ -651,23 +724,22 @@
         }
     }
 
+    // Array global para rastrear componentes removidos
+    let componentesRemovidos = [];
+
+    // Função de remover no front
     function removerComponente(btn) {
         const box = btn.closest(".form-group");
-        if (box) {
-            box.remove(); // remove a div.form-group inteira
+
+        // Verifica se esse form-group tem ids de componente já salvo
+        const idComponente = box.querySelector("[name^='idComponente']")?.value;
+        const idParametro = box.querySelector("[name^='idParametro']")?.value;
+
+        if (idComponente && idParametro) {
+            componentesRemovidos.push({ idComponente, idParametro });
         }
 
-        // Se não houver mais componentes, limpa o container
-        const container = document.getElementById("editComponentesContainer");
-        if (!container.querySelector(".componente-box")) {
-            container.innerHTML = "";
-        }
-
-         // Se não houver mais componentes, limpa o container
-        const comp = document.getElementById("componentesContainer");
-        if (!comp.querySelector(".componente-box")) {
-            comp.innerHTML = "";
-        }
+        box.remove(); // remove do DOM
     }
 
 
@@ -701,7 +773,7 @@
         container.appendChild(div);
     }
 
-    // Submit edição
+    // Submit edição ventilador
     document.getElementById("formEditVentilador").addEventListener("submit", async e => {
         e.preventDefault();
         const ventiladorAtualizado = {
@@ -752,10 +824,19 @@
                 }
             }
 
+            // 🔹 Excluir componentes removidos
+            for (let comp of componentesRemovidos) {
+                await fetch(`/controle/componentes/deletar/${comp.idComponente}/${comp.idParametro}`, {
+                    method: "DELETE"
+                });
+            }
+            componentesRemovidos = []; // limpa array após salvar
+
             Swal.fire('Sucesso!', 'Ventilador atualizado.', 'success');
             fecharEditModal();
             abrirModalVentiladores(ventiladorAtualizado.fk_sala);
-        } catch {
+        } catch (err) {
+            console.error(err);
             Swal.fire('Erro!', 'Não foi possível atualizar o ventilador.', 'error');
         }
     });

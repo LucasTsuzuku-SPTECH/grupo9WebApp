@@ -196,6 +196,39 @@ async function atualizarComponente(req, res) {
     }
 }
 
+async function criarComponenteEParametro(req, res) {
+    const { nomeComponente, unidadeMedida, parametroMin, parametroMax, fkVentilador } = req.body;
+
+    try {
+        // 1 - Criar componente
+        const novoComponente = await controleModel.criarComponente(nomeComponente, unidadeMedida);
+
+        // 2 - Criar parâmetro vinculado ao ventilador + componente
+        await controleModel.criarParametro(parametroMin, parametroMax, fkVentilador, novoComponente.insertId);
+
+        res.status(201).json({ message: "Componente e parâmetro criados com sucesso!" });
+    } catch (erro) {
+        console.error("Erro ao criar componente e parâmetro: ", erro.sqlMessage || erro);
+        res.status(500).json({ message: "Erro ao criar componente e parâmetro", erro: erro.sqlMessage || erro });
+    }
+}
+
+async function deletarComponenteEParametro(req, res) {
+    const { idComponente, idParametro } = req.params;
+
+    try {
+        // 1 - deletar parâmetro associado
+        await controleModel.deletarParametro(idParametro);
+
+        // 2 - deletar componente
+        await controleModel.deletarComponente(idComponente);
+
+        res.status(200).json({ message: "Componente e parâmetro removidos com sucesso!" });
+    } catch (erro) {
+        console.error("Erro ao deletar componente e parâmetro: ", erro.sqlMessage || erro);
+        res.status(500).json({ message: "Erro ao deletar componente e parâmetro", erro: erro.sqlMessage || erro });
+    }
+}
 
 module.exports = {
     listarHospitais,
@@ -213,7 +246,9 @@ module.exports = {
     deletarHospital,
     listarParametros,
     buscarComponentes,
-    atualizarComponente
+    atualizarComponente,
+    criarComponenteEParametro,
+    deletarComponenteEParametro
 };
 
 
