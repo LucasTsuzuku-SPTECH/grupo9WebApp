@@ -217,7 +217,11 @@
                         <select id="selectModelo" required></select>
                     </div>
 
-                    <input type="hidden" id="fkSala">
+                    <div class="form-group">
+                        <label for="selectSalas">Sala</label>
+                        <select id="selectSalas" required></select>
+                    </div>
+
                     <input type="hidden" id="fkEmpresa">
 
                     <h4>Componentes</h4>
@@ -254,7 +258,7 @@
                     </div>
 
                     <div class="form-group">
-                        <label for="editSelectHospital">Hospital</label>
+                        <label for="editSelectHospital">Sala</label>
                         <select id="editSelectHospital" required></select>
                     </div>
 
@@ -466,9 +470,9 @@
 
             const conteudo = document.getElementById("conteudoVentiladores");
             conteudo.innerHTML = `
-            <h3>${ventiladores[0]?.nome_hospital || "Hospital"}
+            <h3>${ventiladores[0]?.nome_hospital}
                 <div style="display: flex; flex-direction: row; gap:10px;">
-                    <button class="button" type="button" onclick="abrirAddModal(${idSala})">
+                    <button class="button" type="button" onclick="abrirAddModal()">
                         <span class="button_text">Adicionar</span>
                         <span class="button_icon">+</span>
                     </button>
@@ -579,8 +583,21 @@
     }
 
     /* ---------- Adicionar Ventilador ---------- */
-    async function abrirAddModal(idSala) {
-        document.getElementById("fkSala").value = idSala;
+    async function abrirAddModal() {
+        // Salas
+            const respHosp = await fetch('/controle/hospitais');
+            const hospitais = await respHosp.json();
+            const selectHospital = document.getElementById("selectSalas");
+            // Salas
+            selectHospital.innerHTML = hospitais
+            .filter(h => h.idSala !== null) // filtra apenas os que têm idSala
+            .map(h => `
+            <option value="${h.idSala}">
+                Sala ${h.idSala}
+            </option>
+            `)
+            .join(''); // junta todas as opções em uma string
+
         document.getElementById("fkEmpresa").value = sessionStorage.getItem("EMPRESA_USUARIO");
         await carregarModelos("selectModelo");
         document.getElementById("addVentiladorModal").style.display = "flex";
@@ -864,7 +881,7 @@
         const resp = await fetch('/controle/enderecos');
         const enderecos = await resp.json();
         const select = document.getElementById("selectEndereco");
-        select.innerHTML = enderecos.map(e => `<option value="${e.id_endereco}">
+        select.innerHTML = enderecos.map(e => `<option value="${e.idEndereco}">
                 ${e.logradouro}, ${e.numero || ''}, ${e.bairro || ''}, ${e.cidade} - ${e.estado}, ${e.cep || ''}
             </option>`).join('');
 
@@ -932,6 +949,8 @@
             fk_empresa: document.getElementById("fkEmpresaHospital").value,
             fk_endereco: document.getElementById("selectEndereco").value
         };
+        console.log(hospital)
+
         try {
             const resp = await fetch('/controle/criar', {
                 method: 'POST',

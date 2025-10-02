@@ -7,7 +7,7 @@ function listarHospitais() {
     var instrucaoSql = `
         SELECT idHospital, nomeHospital, idSala
         FROM Hospital
-        JOIN Sala ON fkHospital = idHospital;
+        LEFT JOIN Sala ON fkHospital = idHospital;
     `;
 
     console.log("Executando SQL: \n" + instrucaoSql);
