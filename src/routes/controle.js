@@ -11,7 +11,7 @@ router.put("/editar/:idHospital", controleController.editarHospital);
 router.delete("/deletar/:idHospital", controleController.deletarHospital);
 
 // VENTILADORES
-router.get("/hospitais/:idSala/ventiladores", controleController.listarVentiladores);
+router.get("/hospitais/:idHospital/ventiladores", controleController.listarVentiladores);
 router.post("/ventiladores", controleController.criarVentilador);
 router.get("/ventiladores/buscar/:idVentilador/:idSala", controleController.buscarVentilador);
 router.put("/ventiladores/atualizar/:idVentilador", controleController.atualizarVentilador);
@@ -30,5 +30,9 @@ router.get("/ventiladores/:idVentilador/componentes", controleController.buscarC
 router.put("/componentes/atualizar", controleController.atualizarComponente);
 router.post("/componentes/criar", controleController.criarComponenteEParametro);
 router.delete("/componentes/deletar/:idComponente/:idParametro", controleController.deletarComponenteEParametro);
+
+// SALAS
+router.get("/hospitais/salas", controleController.listarSalas);
+router.post("/salas", controleController.criarSala);
 
 module.exports = router;

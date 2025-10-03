@@ -16,9 +16,25 @@ function listarHospitais(req, res) {
         });
 }
 
+function listarSalas(req, res) {
+    controleModel.listarSalas()
+        .then(function (resultado) {
+            if (resultado.length > 0) {
+                res.json(resultado);
+            } else {
+                res.status(204).send("Nenhuma sala encontrada!");
+            }
+        })
+        .catch(function (erro) {
+            console.log(erro);
+            console.log("Erro ao buscar Salas: ", erro.sqlMessage);
+            res.status(500).json(erro.sqlMessage);
+        });
+}
+
 function listarVentiladores(req, res) {
-    const idSala = req.params.idSala;
-    controleModel.listarVentiladores(idSala)
+    const idHospital = req.params.idHospital;
+    controleModel.listarVentiladores(idHospital)
         .then(resultado => {
             if (resultado.length > 0) {
                 res.json(resultado);
@@ -45,25 +61,25 @@ function deletarVentilador(req, res) {
         });
 }
 
-async function criarVentilador(req, res) {
-    const ventilador = req.body;
+    async function criarVentilador(req, res) {
+        const ventilador = req.body;
 
-    try {
-        const novoId = await controleModel.criarVentilador(ventilador);
+        try {
+            const novoId = await controleModel.criarVentilador(ventilador);
 
-        // se tiver componentes, cadastra
-        if (ventilador.componentes && ventilador.componentes.length > 0) {
-            for (const comp of ventilador.componentes) {
-                await controleModel.criarComponenteEParametro(comp, novoId);
+            // se tiver componentes, cadastra
+            if (ventilador.componentes && ventilador.componentes.length > 0) {
+                for (const comp of ventilador.componentes) {
+                    await controleModel.criarComponenteEParametro(comp, novoId);
+                }
             }
-        }
 
-        res.json({ message: "Ventilador e componentes criados com sucesso" });
-    } catch (erro) {
-        console.error("Erro ao criar ventilador: ", erro.sqlMessage || erro);
-        res.status(500).json({ message: "Erro ao criar ventilador", erro: erro.sqlMessage });
+            res.json({ message: "Ventilador e componentes criados com sucesso" });
+        } catch (erro) {
+            console.error("Erro ao criar ventilador: ", erro.sqlMessage || erro);
+            res.status(500).json({ message: "Erro ao criar ventilador", erro: erro.sqlMessage });
+        }
     }
-}
 
 
 function listarModelos(req, res) {
@@ -230,6 +246,18 @@ async function deletarComponenteEParametro(req, res) {
     }
 }
 
+async function criarSala(req, res) {
+    const sala = req.body;  // espera: { andar, numero, descricao, fkHospital }
+
+    try {
+        const novoId = await controleModel.criarSala(sala);
+        res.json({ message: "Sala criada com sucesso", idSala: novoId });
+    } catch (erro) {
+        console.error("Erro ao criar sala: ", erro.sqlMessage || erro);
+        res.status(500).json({ message: "Erro ao criar sala", erro: erro.sqlMessage });
+    }
+}
+
 module.exports = {
     listarHospitais,
     listarVentiladores,
@@ -248,7 +276,9 @@ module.exports = {
     buscarComponentes,
     atualizarComponente,
     criarComponenteEParametro,
-    deletarComponenteEParametro
+    deletarComponenteEParametro,
+    listarSalas,
+    criarSala
 };
 
 

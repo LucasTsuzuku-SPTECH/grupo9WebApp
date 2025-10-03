@@ -475,7 +475,6 @@ table td.colunaDelete {
   gap: 10px;
   padding: 20px;
   width: 20vw;
-  margin-top: -7vh;
   text-align: center;
   height: 20vh;
   justify-content: center;
@@ -727,7 +726,7 @@ header h2 {
 }
 
 .button {
-  width: 150px;
+  width: 200px;
   height: 40px;
   border: 1px solid rgb(0, 95, 0);
   border-radius: 10px;
@@ -819,7 +818,8 @@ header h2 {
 
 /* --- Overlay dos modais Adicionar / Editar --- */
 #addVentiladorModal,
-#editVentiladorModal {
+#editVentiladorModal,
+#addSalaModal {  
   display: none;
   /* inicial oculto */
   position: fixed;
@@ -836,7 +836,8 @@ header h2 {
 
 /* --- Conteúdo interno --- */
 #addVentiladorModal .modal-content,
-#editVentiladorModal .modal-content {
+#editVentiladorModal .modal-content,
+#addSalaModal .modal-content {  
   background-color: #fff;
   padding: 20px;
   border-radius: 10px;
@@ -849,7 +850,8 @@ header h2 {
 
 /* Título com botão fechar alinhado */
 #addVentiladorModal .modal-content h3,
-#editVentiladorModal .modal-content h3 {
+#editVentiladorModal .modal-content h3,
+#addSalaModal .modal-content h3 { 
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -859,7 +861,8 @@ header h2 {
 
 /* Botão de fechar no canto */
 #addVentiladorModal .btn-fechar-modal,
-#editVentiladorModal .btn-fechar-modal {
+#editVentiladorModal .btn-fechar-modal,
+#addSalaModal .btn-fechar-modal {  
   cursor: pointer;
   background: red;
   color: #fff;
@@ -870,20 +873,23 @@ header h2 {
 }
 
 #addVentiladorModal .btn-fechar-modal:hover,
-#editVentiladorModal .btn-fechar-modal:hover {
+#editVentiladorModal .btn-fechar-modal:hover,
+#addSalaModal .btn-fechar-modal:hover {  
   background: darkred;
 }
 
 /* Inputs / selects do formulário */
 #addVentiladorModal .form-group,
-#editVentiladorModal .form-group {
+#editVentiladorModal .form-group,
+#addSalaModal .form-group { 
   display: flex;
   flex-direction: column;
   margin-bottom: 15px;
 }
 
 #addVentiladorModal .form-group label,
-#editVentiladorModal .form-group label {
+#editVentiladorModal .form-group label,
+#addSalaModal .form-group label { 
   font-weight: 600;
   margin-bottom: 5px;
 }
@@ -891,7 +897,9 @@ header h2 {
 #addVentiladorModal .form-group input,
 #addVentiladorModal .form-group select,
 #editVentiladorModal .form-group input,
-#editVentiladorModal .form-group select {
+#editVentiladorModal .form-group select,
+#addSalaModal .form-group input,
+#addSalaModal .form-group select { 
   padding: 8px;
   border: 1px solid #ccc;
   border-radius: 5px;
@@ -909,6 +917,7 @@ header h2 {
   border-bottom: 2px solid #00796b;
   padding-bottom: 4px;
 }
+
 
 /* container de componentes */
 #componentesContainer,
@@ -960,7 +969,8 @@ header h2 {
 
 /* Botão submit */
 #addVentiladorModal .btn-submit,
-#editVentiladorModal .btn-submit {
+#editVentiladorModal .btn-submit,
+#addSalaModal .btn-submit {
   width: 130px;
   height: 40px;
   display: flex;
@@ -981,7 +991,8 @@ header h2 {
 
 /* bolha que vem de trás */
 #addVentiladorModal .btn-submit::before,
-#editVentiladorModal .btn-submit::before {
+#editVentiladorModal .btn-submit::before,
+#addSalaModal .btn-submit::before {
   content: "";
   position: absolute;
   width: 150px;
@@ -996,20 +1007,23 @@ header h2 {
 
 /* no hover o before se move e "abre" */
 #addVentiladorModal .btn-submit:hover::before,
-#editVentiladorModal .btn-submit:hover::before {
+#editVentiladorModal .btn-submit:hover::before,
+#addSalaModal .btn-submit:hover::before {
   transform: translate(100%, -50%);
   border-radius: 0;
 }
 
 /* muda cor do texto ao passar o mouse */
 #addVentiladorModal .btn-submit:hover,
-#editVentiladorModal .btn-submit:hover {
+#editVentiladorModal .btn-submit:hover,
+#addSalaModal .btn-submit:hover {
   color: white;
 }
 
 /* efeito click */
 #addVentiladorModal .btn-submit:active,
-#editVentiladorModal .btn-submit:active {
+#editVentiladorModal .btn-submit:active,
+#addSalaModal .btn-submit:active {
   transform: translate(1px, 1px);
   box-shadow: 0 4px 12px rgba(255, 255, 255, 0.6);
 }

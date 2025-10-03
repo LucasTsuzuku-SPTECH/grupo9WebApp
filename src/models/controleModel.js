@@ -5,27 +5,41 @@ function listarHospitais() {
 
     // Pegando nome e status do hospital (se você quiser calcular alertas, pode alterar depois)
     var instrucaoSql = `
-        SELECT idHospital, nomeHospital, idSala
-        FROM Hospital
-        LEFT JOIN Sala ON fkHospital = idHospital;
+        SELECT idHospital, nomeHospital
+        FROM Hospital;
     `;
 
     console.log("Executando SQL: \n" + instrucaoSql);
     return database.executar(instrucaoSql);
 }
 
-function listarVentiladores(idSala) {
+function listarSalas() {
+    console.log("ACESSEI controleModel listarSalas()");
+
+    // Pegando nome e status do hospital (se você quiser calcular alertas, pode alterar depois)
+    var instrucaoSql = `
+        SELECT idHospital, nomeHospital, idSala
+        FROM Hospital
+        INNER JOIN Sala ON fkHospital = idHospital;
+    `;
+
+    console.log("Executando SQL: \n" + instrucaoSql);
+    return database.executar(instrucaoSql);
+}
+
+function listarVentiladores(idHospital) {
     console.log("ACESSEI controleModel listarVentiladores()");
 
     const instrucaoSql = `
         SELECT v.idVentilador, v.numero_serie, m.nome AS nome_modelo, m.descricao AS descricao_modelo,
                h.nomeHospital AS nome_hospital, h.idHospital as idHospital, 
-               s.numero AS numero_sala, s.andar AS andar_sala, idSala
+               s.numero AS numero_sala, s.andar AS andar_sala, s.idSala as idSala
         FROM Ventilador v
         JOIN Modelo m ON v.fkModelo = m.idModelo
         JOIN Sala s ON v.fkSala = s.idSala
         JOIN Hospital h ON s.fkHospital = h.idHospital
-        WHERE v.fkSala = ${idSala};
+        WHERE h.idHospital = ${idHospital}
+        ORDER BY idSala;  
     `;
 
     console.log("Executando SQL: \n" + instrucaoSql);
@@ -233,8 +247,21 @@ function deletarComponente(idComponente) {
     return database.executar(sql);
 }
 
+async function criarSala(sala) {
+    const { andar, numero, descricao, fkHospital } = sala;
+
+    const sql = `
+        INSERT INTO Sala (andar, numero, descricao, fkHospital)
+        VALUES (${andar}, '${numero}', '${descricao}', ${fkHospital});
+    `;
+
+    const result = await database.executar(sql);
+    return result.insertId;
+}
+
 module.exports = {
     listarHospitais,
+    listarSalas,
     listarVentiladores,
     deletarVentilador,
     criarVentilador,
@@ -254,8 +281,9 @@ module.exports = {
     criarComponente,
     criarParametro,
     deletarParametro,
-    deletarComponente
-};
+    deletarComponente,
+    criarSala
+}
 
 
 
