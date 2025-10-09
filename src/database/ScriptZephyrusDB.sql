@@ -145,22 +145,21 @@ VALUES
 -- Inserção de Salas
 INSERT INTO Sala (andar, numero, descricao, fkHospital) 
 VALUES 
-(1, '101', 'Sala de emergência', 1),
-(2, '205', 'Sala de UTI', 2),
-(3, '301', 'Sala de recuperação', 3),
-(1, '102', 'Sala de observação', 4),
-(2, '201', 'Sala de cirurgia', 5),
-(1, '110', 'Sala de atendimento', 6),
-(2, '205', 'Sala de emergência', 7),
-(3, '303', 'Sala de UTI Neonatal', 8),
-(1, '105', 'Sala de consulta', 9),
-(2, '210', 'Sala de internação', 10),
-(3, '305', 'Sala de emergência', 11),
-(1, '120', 'Sala de atendimento', 12),
-(2, '205', 'Sala de recuperação', 13),
-(3, '310', 'Sala de UTI', 14),
-(1, '101', 'Sala de emergência', 15);
-
+(1, '101', 'Emergência', 1),
+(2, '205', 'UTI', 2),
+(3, '301', 'Recuperação', 3),
+(1, '102', 'Observação', 4),
+(2, '201', 'Cirurgia', 5),
+(1, '110', 'Atendimento', 6),
+(2, '205', 'Emergência', 7),
+(3, '303', 'UTI Neonatal', 8),
+(1, '105', 'Consulta', 9),
+(2, '210', 'Internação', 10),
+(3, '305', 'Emergência', 11),
+(1, '120', 'Atendimento', 12),
+(2, '205', 'Recuperação', 13),
+(3, '310', 'UTI', 14),
+(1, '101', 'Emergência', 15);
 
 -- Inserção de Usuários
 INSERT INTO Usuario (nome, email, senha_hash, perfil, statusUser, fkEmpresa, fkHospital) 
@@ -311,3 +310,4 @@ VALUES
 (1, 15, 100, 40),  -- CPU (máximo 100%, mínimo 40%)
 (2, 15, 95, 60),   -- RAM (máximo 95%, mínimo 60%)
 (3, 15, 100, 70);  -- Disco (máximo 100%, mínimo 70%)
+

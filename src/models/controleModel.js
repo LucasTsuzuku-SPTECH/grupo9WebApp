@@ -27,6 +27,19 @@ function listarSalas() {
     return database.executar(instrucaoSql);
 }
 
+function listarSala(idHospital) {
+    console.log("ACESSEI controleModel listarSalas()");
+
+    // Pegando nome e status do hospital (se você quiser calcular alertas, pode alterar depois)
+    var instrucaoSql = `
+        SELECT * FROM Sala
+        WHERE fkHospital = ${idHospital};
+    `;
+
+    console.log("Executando SQL: \n" + instrucaoSql);
+    return database.executar(instrucaoSql);
+}
+
 function listarVentiladores(idHospital) {
     console.log("ACESSEI controleModel listarVentiladores()");
 
@@ -40,6 +53,24 @@ function listarVentiladores(idHospital) {
         JOIN Hospital h ON s.fkHospital = h.idHospital
         WHERE h.idHospital = ${idHospital}
         ORDER BY idSala;  
+    `;
+
+    console.log("Executando SQL: \n" + instrucaoSql);
+    return database.executar(instrucaoSql);
+}
+
+
+function listarVentiladoresSala(idSala) {
+    console.log("ACESSEI controleModel listarVentiladores()");
+
+    const instrucaoSql = `
+        SELECT v.idVentilador, v.numero_serie, m.nome AS nome_modelo, m.descricao AS descricao_modelo,
+               s.numero AS numero_sala, s.andar AS andar_sala, s.idSala as idSala
+        FROM Ventilador v
+        JOIN Modelo m ON v.fkModelo = m.idModelo
+        JOIN Sala s ON v.fkSala = s.idSala
+        WHERE s.idSala = ${idSala}
+        ORDER BY idSala; 
     `;
 
     console.log("Executando SQL: \n" + instrucaoSql);
@@ -282,7 +313,9 @@ module.exports = {
     criarParametro,
     deletarParametro,
     deletarComponente,
-    criarSala
+    criarSala,
+    listarVentiladoresSala,
+    listarSala
 }
 
 

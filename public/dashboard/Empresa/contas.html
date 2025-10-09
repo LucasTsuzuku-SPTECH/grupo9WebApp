@@ -267,7 +267,7 @@
     const usuario = usuarios[index];
     const novoStatus = usuario.statusUser.toLowerCase() === "ativo" ? "inativo" : "ativo";
     try {
-      await fetch(`/contas/alterarAcesso/${usuario.id_usuario}`, {
+      await fetch(`/contas/alterarAcesso/${usuario.idUsuario}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ statusUser: novoStatus })
@@ -293,7 +293,7 @@
     if (idHospital === "todos") return puxarDados();
 
     // Convertendo para number para comparar corretamente
-    const filtro = usuarios.filter(u => u.fk_hospital == Number(idHospital));
+    const filtro = usuarios.filter(u => u.fkHospital == Number(idHospital));
     preencherTabela(filtro);
   }
 
@@ -311,7 +311,7 @@
       const resp = await fetch("/contas/listarHospitais");
       hospitais = await resp.json();
       hospitais.forEach(h =>
-        selectHospitais.innerHTML += `<option value="${h.id_hospital}">${h.nomeHospital}</option>`
+        selectHospitais.innerHTML += `<option value="${h.idHospital}">${h.nomeHospital}</option>`
       );
     } catch (err) {
       console.error("Erro ao listar hospitais", err);
@@ -324,7 +324,7 @@
     try {
       const resp = await fetch('/contas/listarHospitais');
       const lista = await resp.json();
-      lista.forEach(h => hospitalAddModal.innerHTML += `<option value="${h.id_hospital}">${h.nomeHospital}</option>`);
+      lista.forEach(h => hospitalAddModal.innerHTML += `<option value="${h.idHospital}">${h.nomeHospital}</option>`);
     } catch (err) {
       console.error('Erro ao carregar hospitais:', err);
     }

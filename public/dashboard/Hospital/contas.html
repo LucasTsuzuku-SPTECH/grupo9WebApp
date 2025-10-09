@@ -250,7 +250,7 @@
     const usuario = usuarios[index];
     const novoStatus = usuario.statusUser.toLowerCase() === "ativo" ? "inativo" : "ativo";
     try {
-      await fetch(`/contas/alterarAcesso/${usuario.id_usuario}`, {
+      await fetch(`/contas/alterarAcesso/${usuario.idUsuario}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ statusUser: novoStatus })

@@ -16,8 +16,26 @@ function listarHospitais(req, res) {
         });
 }
 
+
 function listarSalas(req, res) {
     controleModel.listarSalas()
+        .then(function (resultado) {
+            if (resultado.length > 0) {
+                res.json(resultado);
+            } else {
+                res.status(204).send("Nenhuma sala encontrada!");
+            }
+        })
+        .catch(function (erro) {
+            console.log(erro);
+            console.log("Erro ao buscar Salas: ", erro.sqlMessage);
+            res.status(500).json(erro.sqlMessage);
+        });
+}
+
+function listarSala(req, res) {
+    const idHospital = req.params.idHospital;
+    controleModel.listarSala(idHospital)
         .then(function (resultado) {
             if (resultado.length > 0) {
                 res.json(resultado);
@@ -35,6 +53,22 @@ function listarSalas(req, res) {
 function listarVentiladores(req, res) {
     const idHospital = req.params.idHospital;
     controleModel.listarVentiladores(idHospital)
+        .then(resultado => {
+            if (resultado.length > 0) {
+                res.json(resultado);
+            } else {
+                res.status(204).send("Nenhum ventilador encontrado!");
+            }
+        })
+        .catch(erro => {
+            console.error("Erro ao buscar ventiladores: ", erro.sqlMessage);
+            res.status(500).json(erro.sqlMessage);
+        });
+}
+
+function listarVentiladoresSala(req, res) {
+    const idSala = req.params.idSala;
+    controleModel.listarVentiladoresSala(idSala)
         .then(resultado => {
             if (resultado.length > 0) {
                 res.json(resultado);
@@ -278,7 +312,9 @@ module.exports = {
     criarComponenteEParametro,
     deletarComponenteEParametro,
     listarSalas,
-    criarSala
+    criarSala,
+    listarVentiladoresSala,
+    listarSala
 };
 
 

@@ -68,130 +68,24 @@
                     <option value="estavel">Estável</option>
                 </select>
                 <div class="item" style=" background-color: rgb(183, 228, 199); border: 2px solid var(--verde-3);">
-                    <p>Quantidade Hospitais:</p>
+                    <p>Quantidade Salas:</p>
                     <h3 id="qtde_total">0</h3>
                 </div>
                 <div class="item" style="background-color: rgba(255, 0, 0, 0.2); border: 2px solid red;">
-                    <p>Quantidade Hospitais Críticos:</p>
+                    <p>Quantidade Salas Críticos:</p>
                     <h3 id="qtde_critico">0</h3>
                 </div>
                 <div class="item" style="background-color: rgba(255, 255, 0, 0.2); border: 2px solid rgb(255, 255, 0);">
-                    <p>Quantidade Hospitais Alertas:</p>
+                    <p>Quantidade Salas Alertas:</p>
                     <h3 id="qtde_alerta">0</h3>
                 </div>
                 <div class="item" style="background-color: rgba(0, 185, 0, 0.2); border: 2px solid rgb(0, 207, 0);">
-                    <p>Quantidade Hospitais Estáveis:</p>
+                    <p>Quantidade Salas Estáveis:</p>
                     <h3 id="qtde_estavel">0</h3>
                 </div>
             </div>
         </div>
 
-        <div style="padding: 20px; display: flex; gap: 10px; flex-wrap: wrap;">
-
-            <button class="button" style="width: 100%; max-width: 12vw ; margin-left: 0px;" type="button"
-                onclick="abrirModalHospital()">
-                <span class="button_text">Adicionar Hospital</span>
-                <span class="button_icon">+</span>
-            </button>
-
-            <button class="btn-edit" style="width: 100%; max-width: 12vw ; margin-left: 0px;" type="button"
-                id="btnEditarHospital">
-                <span class="btn-text">Editar Hospital</span>
-                <i class="fa-regular fa-pen-to-square"></i>
-            </button>
-
-        </div>
-
-
-        <!-- Modal Criar Hospital -->
-        <div id="addHospitalModal" class="modal-overlay" style="display:none;">
-            <div class="modal-content">
-                <h3>
-                    Adicionar Hospital
-                    <button class="btn-fechar-modal" onclick="fecharAddHospitalModal()">X</button>
-                </h3>
-                <form id="formAddHospital">
-                    <div class="form-group">
-                        <label for="nomeHospital">Nome</label>
-                        <input type="text" id="nomeHospital" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="cnpjHospital">CNPJ</label>
-                        <input type="text" id="cnpjHospital" required>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="selectEndereco">Endereço</label>
-                        <select id="selectEndereco"></select>
-                        <button type="button" class="btn-criar-endereco" onclick="abrirModalEndereco()">Criar Novo
-                            Endereço</button>
-                    </div>
-
-                    <input type="hidden" id="fkEmpresaHospital">
-                    <button type="submit" class="btn-submit">Adicionar Hospital</button>
-                </form>
-            </div>
-        </div>
-
-        <!-- Modal Criar Endereço -->
-        <div id="addEnderecoModal" class="modal-overlay" style="display:none;">
-            <div class="modal-content">
-                <h3>
-                    Adicionar Endereço
-                    <button class="btn-fechar-modal" onclick="fecharAddEnderecoModal()">X</button>
-                </h3>
-                <form id="formAddEndereco">
-                    <div class="form-group"><input type="text" id="logradouro" placeholder="Logradouro" required></div>
-                    <div class="form-group"><input type="text" id="numero" placeholder="Número"></div>
-                    <div class="form-group"><input type="text" id="bairro" placeholder="Bairro"></div>
-                    <div class="form-group"><input type="text" id="cidade" placeholder="Cidade" required></div>
-                    <div class="form-group"><input type="text" id="estado" placeholder="Estado (UF)" maxlength="2"
-                            required></div>
-                    <div class="form-group"><input type="text" id="cep" placeholder="CEP"></div>
-                    <button type="submit" class="btn-submit">Adicionar Endereço</button>
-                </form>
-            </div>
-        </div>
-
-        <!-- Modal Editar Hospital -->
-        <div id="editHospitalModal" class="modal-overlay" style="display:none;">
-            <div class="modal-content">
-                <h3>
-                    Editar Hospital
-                    <button class="btn-fechar-modal" onclick="fecharEditHospitalModal()">X</button>
-                </h3>
-                <form id="formEditHospital">
-                    <div class="form-group">
-                        <label for="hospitalModal">Hospital</label>
-                        <select class="form-select" id="hospitalModal" required>
-                            <option value="">Selecione um hospital</option>
-                        </select>
-                    </div>
-
-                    <input type="hidden" id="editIdHospital">
-
-                    <div class="form-group">
-                        <label for="editNomeHospital">Nome</label>
-                        <input type="text" id="editNomeHospital" required>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="editCnpjHospital">CNPJ</label>
-                        <input type="text" id="editCnpjHospital" required>
-                    </div>
-
-
-                    <div class="form-group">
-                        <label for="editSelectEndereco">Endereço</label>
-                        <select id="editSelectEndereco" required></select>
-                        <button type="button" class="btn-criar-endereco" onclick="abrirModalEndereco()">Criar Novo
-                            Endereço</button>
-                    </div>
-
-                    <button type="submit" class="btn-submit">Salvar</button>
-                </form>
-            </div>
-        </div>
 
         <!-- Conteúdo principal -->
 
@@ -354,10 +248,12 @@
         });
     });
 
-    /* ------------------ Hospitais ------------------ */
+    /* ------------------ Salas ------------------ */
     async function carregarHospitais() {
+        const idHospital = sessionStorage.getItem("HOSPITAL_USUARIO")
+
         try {
-            const resposta = await fetch("/controle/hospitais");
+            const resposta = await fetch(`/controle/listar/salas/${idHospital}`);
             const hospitais = await resposta.json();
             const container = document.querySelector(".conteudo-principal");
             container.innerHTML = "";
@@ -366,10 +262,10 @@
 
             for (const hospital of hospitais) {
                 // Buscar ventiladores do hospital
-                const respV = await fetch(`/controle/hospitais/${hospital.idHospital}/ventiladores`);
+                const respV = await fetch(`/controle/hospitais/${hospital.idSala}/ventiladores`);
                 const ventiladores = respV.status === 204 ? [] : await respV.json();
 
-                // --- MOCK ALERTAS ---
+                // --- MOCK ALERTAS --- 
                 let totalAlertas = 0;
 
                 // Distribuir alertas de acordo com o status do hospital
@@ -421,14 +317,14 @@
                 divHospital.dataset.status = statusHospital;
 
                 divHospital.innerHTML = `
-                <h3>${hospital.nomeHospital}</h3>
+                <h3>Sala ${hospital.idSala} de ${hospital.descricao}</h3>
                 <span class="status ${statusHospital}">${statusHospital}</span>
             `;
 
                 // Guardar ventiladores com alertas simulados no próprio objeto
                 hospital.ventiladoresMock = ventiladores;
 
-                divHospital.addEventListener("click", () => abrirModalVentiladores(hospital.idHospital, hospital.nomeHospital, ventiladores));
+                divHospital.addEventListener("click", () => abrirModalVentiladores(hospital.fkHospital, hospital.idSala, hospital.descricao, ventiladores));
                 container.appendChild(divHospital);
             }
 
@@ -440,7 +336,6 @@
             console.error("Erro:", erro);
         }
     }
-
 
 
     function filtrarHospitais() {
@@ -479,7 +374,7 @@
     }
 
     /* ------------------ Ventiladores ------------------ */
-    async function abrirModalVentiladores(idHospital, nomeHospital, ventiladoresMock = null) {
+    async function abrirModalVentiladores(idHospital, idsala, descricao, ventiladoresMock = null) {
         try {
             let ventiladores;
 
@@ -498,7 +393,7 @@
 
             const conteudo = document.getElementById("conteudoVentiladores");
             conteudo.innerHTML = `
-            <h3>${nomeHospital}
+            <h3>Sala ${idsala} de ${descricao}
                 <div style="display: flex; flex-direction: row; gap:15px;">
                     <button class="button" type="button" onclick="abrirAddModal(${idHospital})">
                         <span class="button_text">Adicionar Ventilador</span>
@@ -527,7 +422,7 @@
                     <div class="ventilador">
                         <div style="display:flex;justify-content:space-between;align-items:center;">
                             <div style="display:flex;gap:5px;align-items:center;">
-                                <strong>Sala ${v.idSala} - Nº Série:</strong> <span>${v.numero_serie}</span>
+                                <strong>Nº Série:</strong> <span>${v.numero_serie}</span>
                             </div>
                             <div style="display:flex;gap:10px;">
                                 <button class="btn-edit" onclick='abrirModalEdicao(${v.idVentilador}, ${v.idSala}, ${v.idHospital})'>
@@ -944,225 +839,5 @@
         carregarHospitais().then(filtrarHospitais);
         document.getElementById("filtroCriticidade").addEventListener("change", filtrarHospitais);
     };
-
-    // Abrir/Fechar modais
-    function abrirModalHospital() {
-        document.getElementById("fkEmpresaHospital").value = sessionStorage.getItem("EMPRESA_USUARIO");
-        carregarEnderecos(); // Carregar endereços no select
-        document.getElementById("addHospitalModal").style.display = "flex";
-    }
-    function fecharAddHospitalModal() { document.getElementById("addHospitalModal").style.display = "none"; }
-
-    function abrirModalEndereco() { document.getElementById("addEnderecoModal").style.display = "flex"; }
-    function fecharAddEnderecoModal() { document.getElementById("addEnderecoModal").style.display = "none"; }
-
-    // Carregar endereços existentes
-    async function carregarEnderecos() {
-        const resp = await fetch('/controle/enderecos');
-        const enderecos = await resp.json();
-        const select = document.getElementById("selectEndereco");
-        select.innerHTML = enderecos.map(e => `<option value="${e.idEndereco}">
-                ${e.logradouro}, ${e.numero || ''}, ${e.bairro || ''}, ${e.cidade} - ${e.estado}, ${e.cep || ''}
-            </option>`).join('');
-
-        const editSelect = document.getElementById("editSelectEndereco");
-        editSelect.innerHTML = select.innerHTML;
-    }
-
-    // Criar novo endereço
-    document.getElementById("formAddEndereco").addEventListener("submit", async e => {
-        e.preventDefault();
-        const novoEndereco = {
-            logradouro: document.getElementById("logradouro").value,
-            numero: document.getElementById("numero").value,
-            bairro: document.getElementById("bairro").value,
-            cidade: document.getElementById("cidade").value,
-            estado: document.getElementById("estado").value,
-            cep: document.getElementById("cep").value
-        };
-        try {
-            const resp = await fetch('/controle/enderecos', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(novoEndereco)
-            });
-            if (!resp.ok) throw new Error();
-            await resp.json();
-            Swal.fire({
-                title: 'Sucesso!',
-                text: 'Endereço criado.',
-                icon: 'success',
-                customClass: {
-                    popup: 'swal2-popup-modificado'
-                }
-            });
-
-            fecharAddEnderecoModal();
-
-            // Atualiza ambos os selects (caso estejam abertos)
-            if (document.getElementById("addHospitalModal").style.display === "flex") {
-                carregarEnderecos();
-            }
-            if (document.getElementById("editHospitalModal").style.display === "flex") {
-                carregarEnderecos();
-            }
-
-        } catch {
-            Swal.fire({
-                title: 'Erro',
-                text: 'Endereço não foi criado.',
-                icon: 'error',
-                customClass: {
-                    popup: 'swal2-popup-modificado'
-                }
-            });
-        }
-    });
-
-
-    // Criar hospital
-    document.getElementById("formAddHospital").addEventListener("submit", async e => {
-        e.preventDefault();
-        const hospital = {
-            nomeHospital: document.getElementById("nomeHospital").value,
-            cnpj: document.getElementById("cnpjHospital").value,
-            fk_empresa: document.getElementById("fkEmpresaHospital").value,
-            fk_endereco: document.getElementById("selectEndereco").value
-        };
-        console.log(hospital)
-
-        try {
-            const resp = await fetch('/controle/criar', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(hospital)
-            });
-            if (!resp.ok) throw new Error();
-            await resp.json();
-            Swal.fire('Sucesso!', 'Hospital criado.', 'success');
-            fecharAddHospitalModal();
-            carregarHospitais().then(filtrarHospitais);
-        } catch {
-            Swal.fire('Erro!', 'Não foi possível criar o hospital.', 'error');
-        }
-    });
-
-    // Abrir modal edição e carregar hospitais no select
-    async function abrirModalEdicaoHospital() {
-        const selectHospital = document.getElementById('hospitalModal');
-        const selectEndereco = document.getElementById('editSelectEndereco');
-
-        try {
-            // Buscar todos os hospitais
-            const respHosp = await fetch('/controle/hospitais');
-            const hospitais = await respHosp.json();
-            selectHospital.innerHTML = '<option value="">Selecione um hospital</option>';
-            hospitais.forEach(h => {
-                selectHospital.innerHTML += `<option value="${h.idHospital}">${h.nomeHospital}</option>`;
-            });
-
-            // Buscar todos os endereços
-            const respEnd = await fetch('/controle/enderecos');
-            const enderecos = await respEnd.json();
-            selectEndereco.innerHTML = enderecos.map(e =>
-                `<option value="${e.idEndereco}">
-                ${e.logradouro}, ${e.numero || ''} - ${e.bairro || ''}, ${e.cidade} - ${e.estado}, ${e.cep || ''}
-            </option>`).join('');
-
-            // Abrir modal
-            document.getElementById('editHospitalModal').style.display = 'flex';
-
-            // Limpar campos
-            document.getElementById('editIdHospital').value = '';
-            document.getElementById('editNomeHospital').value = '';
-            document.getElementById('editCnpjHospital').value = '';
-            selectHospital.value = '';
-
-        } catch (error) {
-            console.error(error);
-            Swal.fire('Erro!', 'Não foi possível carregar hospitais ou endereços.', 'error');
-        }
-    }
-
-
-    // Quando o usuário escolhe um hospital no select
-    document.getElementById('hospitalModal').addEventListener('change', async function () {
-        const idHospital = this.value;
-        if (!idHospital) return;
-
-        try {
-            const resp = await fetch(`/controle/buscar/${idHospital}`);
-            const h = await resp.json();
-
-            document.getElementById('editIdHospital').value = h.idHospital;
-            document.getElementById('editNomeHospital').value = h.nomeHospital;
-            document.getElementById('editCnpjHospital').value = h.cnpj;
-            document.getElementById('editSelectEndereco').value = h.fkEndereco;
-
-        } catch (error) {
-            console.error(error);
-            Swal.fire('Erro!', 'Não foi possível carregar os dados do hospital.', 'error');
-        }
-    });
-
-
-    // Fechar modal
-    function fecharEditHospitalModal() {
-        document.getElementById('editHospitalModal').style.display = 'none';
-    }
-
-    // Salvar edição
-    document.getElementById('formEditHospital').addEventListener('submit', async e => {
-        e.preventDefault();
-        const hospitalAtualizado = {
-            id_hospital: document.getElementById('editIdHospital').value,
-            nomeHospital: document.getElementById('editNomeHospital').value,
-            cnpj: document.getElementById('editCnpjHospital').value,
-            fk_endereco: document.getElementById('editSelectEndereco').value,
-            fk_empresa: sessionStorage.getItem("EMPRESA_USUARIO")
-        };
-
-        console.log(hospitalAtualizado)
-
-        try {
-            const resp = await fetch(`/controle/editar/${hospitalAtualizado.id_hospital}`, {
-                method: 'PUT',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(hospitalAtualizado)
-            });
-            if (!resp.ok) throw new Error();
-            await resp.json();
-            Swal.fire('Sucesso!', 'Hospital atualizado.', 'success');
-            fecharEditHospitalModal();
-            carregarHospitais().then(filtrarHospitais);
-        } catch {
-            Swal.fire('Erro!', 'Não foi possível atualizar o hospital.', 'error');
-        }
-    });
-
-
-    // Função para carregar hospitais no select
-    async function carregarHospitaisSelect() {
-        try {
-            const resp = await fetch('/controle/hospitais');
-            if (!resp.ok) throw new Error('Erro ao buscar hospitais');
-            const hospitais = await resp.json();
-
-            const select = document.getElementById('hospitalModal');
-            select.innerHTML = '<option value="">Selecione um hospital</option>';
-            hospitais.forEach(h => {
-                select.innerHTML += `<option value="${h.id_hospital}">${h.nomeHospital}</option>`;
-            });
-        } catch (error) {
-            console.error(error);
-            Swal.fire('Erro!', 'Não foi possível carregar os hospitais.', 'error');
-        }
-    }
-
-    // Corrigido: botão editar abre modal e carrega select
-    document.getElementById('btnEditarHospital').addEventListener('click', async () => {
-        await carregarHospitaisSelect();
-        abrirModalEdicaoHospital();
-    });
 
 </script>

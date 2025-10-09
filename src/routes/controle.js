@@ -5,6 +5,7 @@ var controleController = require("../controllers/controleController");
 
 // HOSPITAIS
 router.get("/hospitais", controleController.listarHospitais);
+router.get("/listar/salas/:idHospital", controleController.listarSala);
 router.post("/criar", controleController.criarHospital);
 router.get("/buscar/:idHospital", controleController.buscarHospital);
 router.put("/editar/:idHospital", controleController.editarHospital);
@@ -12,6 +13,7 @@ router.delete("/deletar/:idHospital", controleController.deletarHospital);
 
 // VENTILADORES
 router.get("/hospitais/:idHospital/ventiladores", controleController.listarVentiladores);
+router.get("/hospitais/:idSala/ventiladores", controleController.listarVentiladoresSala);
 router.post("/ventiladores", controleController.criarVentilador);
 router.get("/ventiladores/buscar/:idVentilador/:idSala", controleController.buscarVentilador);
 router.put("/ventiladores/atualizar/:idVentilador", controleController.atualizarVentilador);
