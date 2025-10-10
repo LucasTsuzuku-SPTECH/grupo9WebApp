@@ -194,6 +194,17 @@
             </div>
         </div>
 
+        <!-- Modal de Alertas do Ventilador -->
+        <div id="alertaVentiladorModal" class="modal-overlay" style="display:none;">
+            <div class="modal-content">
+                <h3>
+                    Alertas do Ventilador
+                    <button class="btn-fechar-modal" onclick="fecharAlertaModal()">X</button>
+                </h3>
+                <div id="alertasContainer" style="display:flex; flex-direction:column; gap:10px;"></div>
+            </div>
+        </div>
+
     </div>
     </div>
 </body>
@@ -235,7 +246,8 @@
         "addHospitalModal",
         "editHospitalModal",
         "addEnderecoModal",
-        "addSalaModal"
+        "addSalaModal",
+        "alertaVentiladorModal"
     ];
 
     window.addEventListener("click", e => {
@@ -249,20 +261,20 @@
     });
 
     /* ------------------ Salas ------------------ */
-    async function carregarHospitais() {
+    async function carregarSalas() {
         const idHospital = sessionStorage.getItem("HOSPITAL_USUARIO")
 
         try {
             const resposta = await fetch(`/controle/listar/salas/${idHospital}`);
-            const hospitais = await resposta.json();
+            const salas = await resposta.json();
             const container = document.querySelector(".conteudo-principal");
             container.innerHTML = "";
 
-            let total = hospitais.length, estavel = 0, alerta = 0, critico = 0;
+            let total = salas.length, estavel = 0, alerta = 0, critico = 0;
 
-            for (const hospital of hospitais) {
+            for (const sala of salas) {
                 // Buscar ventiladores do hospital
-                const respV = await fetch(`/controle/hospitais/${hospital.idSala}/ventiladores`);
+                const respV = await fetch(`/controle/hospitais/${sala.idSala}/ventiladores`);
                 const ventiladores = respV.status === 204 ? [] : await respV.json();
 
                 // --- MOCK ALERTAS --- 
@@ -270,15 +282,15 @@
 
                 // Distribuir alertas de acordo com o status do hospital
                 // Decide primeiro o status do hospital
-                let statusHospital;
+                let statusSala;
                 const sorteio = Math.random();
 
                 if (sorteio < 0.33) {
-                    statusHospital = "estavel";
+                    statusSala = "estavel";
                     ventiladores.forEach(v => v.alertas = 0);
                     totalAlertas = 0;
                 } else if (sorteio < 0.66) {
-                    statusHospital = "alerta";
+                    statusSala = "alerta";
                     // Gera no máximo 2 alertas no total
                     totalAlertas = Math.floor(Math.random() * 3); // 0,1,2
                     let restantes = totalAlertas;
@@ -291,7 +303,7 @@
                         }
                     });
                 } else {
-                    statusHospital = "critico";
+                    statusSala = "critico";
                     // Gera 3 a 6 alertas no total
                     totalAlertas = 3 + Math.floor(Math.random() * 4); // 3 a 6
                     let restantes = totalAlertas;
@@ -307,24 +319,24 @@
                 }
 
                 // Contabilizar
-                if (statusHospital === "estavel") estavel++;
-                if (statusHospital === "alerta") alerta++;
-                if (statusHospital === "critico") critico++;
+                if (statusSala === "estavel") estavel++;
+                if (statusSala === "alerta") alerta++;
+                if (statusSala === "critico") critico++;
 
-                // Renderizar hospital
+                // Renderizar Sala
                 const divHospital = document.createElement("div");
                 divHospital.className = "card-hospital";
-                divHospital.dataset.status = statusHospital;
+                divHospital.dataset.status = statusSala;
 
                 divHospital.innerHTML = `
-                <h3>Sala ${hospital.idSala} de ${hospital.descricao}</h3>
-                <span class="status ${statusHospital}">${statusHospital}</span>
+                <h3>Sala ${sala.idSala} de ${sala.descricao}</h3>
+                <span class="status ${statusSala}">${statusSala}</span>
             `;
 
                 // Guardar ventiladores com alertas simulados no próprio objeto
-                hospital.ventiladoresMock = ventiladores;
+                sala.ventiladoresMock = ventiladores;
 
-                divHospital.addEventListener("click", () => abrirModalVentiladores(hospital.fkHospital, hospital.idSala, hospital.descricao, ventiladores));
+                divHospital.addEventListener("click", () => abrirModalVentiladores(sala.fkHospital, sala.idSala, sala.descricao, ventiladores));
                 container.appendChild(divHospital);
             }
 
@@ -373,100 +385,109 @@
         }
     }
 
+    function fecharAlertaModal() {
+        document.getElementById("alertaVentiladorModal").style.display = "none";
+        document.getElementById("alertasContainer").innerHTML = "";
+    }
+
     /* ------------------ Ventiladores ------------------ */
     async function abrirModalVentiladores(idHospital, idsala, descricao, ventiladoresMock = null) {
         try {
             let ventiladores;
 
             if (ventiladoresMock) {
-                // usa os ventiladores já mockados no carregarHospitais
                 ventiladores = ventiladoresMock;
             } else {
-                // fallback se abrir sem passar o mock
                 const resp = await fetch(`/controle/hospitais/${idHospital}/ventiladores`);
                 if (!resp.ok) throw new Error("Erro ao buscar ventiladores");
                 ventiladores = resp.status === 204 ? [] : await resp.json();
-
-                // caso não venha alertas do backend, gera aleatório só para não quebrar
                 ventiladores.forEach(v => v.alertas = v.alertas ?? Math.floor(Math.random() * 3));
             }
 
             const conteudo = document.getElementById("conteudoVentiladores");
             conteudo.innerHTML = `
-            <h3>Sala ${idsala} de ${descricao}
-                <div style="display: flex; flex-direction: row; gap:15px;">
-                    <button class="button" type="button" onclick="abrirAddModal(${idHospital})">
-                        <span class="button_text">Adicionar Ventilador</span>
-                        <span class="button_icon">+</span>
-                    </button>
-                    <button class="button" type="button" onclick="abrirAddSalaModal(${idHospital})">
-                        <span class="button_text">Adicionar Sala</span>
-                        <span class="button_icon">+</span>
-                    </button>
-                    <button class="btn-fechar-modal" onclick="fecharModal()">X</button>
-                </div>
-            </h3>
+        <h3>Sala ${idsala} de ${descricao}
+            <div style="display: flex; flex-direction: row; gap:15px;">
+                <button class="button" type="button" onclick="abrirAddModal(${idHospital})">
+                    <span class="button_text">Adicionar Ventilador</span>
+                    <span class="button_icon">+</span>
+                </button>
+                <button class="button" type="button" onclick="abrirAddSalaModal(${idHospital})">
+                    <span class="button_text">Adicionar Sala</span>
+                    <span class="button_icon">+</span>
+                </button>
+                <button class="btn-fechar-modal" onclick="fecharModal()">X</button>
+            </div>
+        </h3>
         `;
 
             if (ventiladores.length === 0) {
                 conteudo.innerHTML += `<p>Não há ventiladores cadastrados neste hospital.</p><br>`;
             } else {
                 for (const v of ventiladores) {
-                    // 🔹 status coerente com quantidade de alertas
                     let statusClass = "estavel";
-                    if (v.alertas === 0) statusClass = "estavel";
-                    else if (v.alertas === 1) statusClass = "alerta";
-                    else statusClass = "critico";
+                    if (v.alertas === 1) statusClass = "alerta";
+                    else if (v.alertas >= 2) statusClass = "critico";
 
-                    conteudo.innerHTML += `
-                    <div class="ventilador">
-                        <div style="display:flex;justify-content:space-between;align-items:center;">
-                            <div style="display:flex;gap:5px;align-items:center;">
-                                <strong>Nº Série:</strong> <span>${v.numero_serie}</span>
-                            </div>
-                            <div style="display:flex;gap:10px;">
-                                <button class="btn-edit" onclick='abrirModalEdicao(${v.idVentilador}, ${v.idSala}, ${v.idHospital})'>
-                                    <span class="btn-text">Editar</span>
-                                    <i class="fa-regular fa-pen-to-square"></i>
-                                </button>
-                                <button class="btn-delete" onclick='confirmarDelete(${v.idVentilador}, ${v.idHospital})'>
-                                    <span class="text">Excluir</span>
-                                    <i class="fa-solid fa-trash icon"></i>
-                                </button>
-                            </div>
+                    // Cria a div do ventilador
+                    const ventiladorDiv = document.createElement("div");
+                    ventiladorDiv.classList.add("ventilador");
+                    ventiladorDiv.innerHTML = `
+                    <div style="display:flex;justify-content:space-between;align-items:center;">
+                        <div style="display:flex;gap:5px;align-items:center;">
+                            <strong>Nº Série:</strong> <span>${v.numero_serie}</span>
                         </div>
-                        <div class="linha-separadora"></div>
-
-                        <div style="display:flex; justify-content:space-between; align-items:center;">
-                            <div>
-                                <strong>Modelo:</strong> ${v.nome_modelo}<br>
-                                <em>${v.descricao_modelo}</em>
-                            </div>
-                            <div style="display:flex; flex-direction:column; align-items:center; min-width:80px; margin: 5px ;border: 1px solid #ccc; background: #f9f9f9; padding: 10px 20px; border-radius: 10px;">
-                                <span><strong>Quantidade Alertas:</strong> ${v.alertas}</span>
-                                <span class="status ${statusClass}">${statusClass}</span>
-                            </div>
+                        <div style="display:flex;gap:10px;">
+                            <button class="btn-edit" onclick='abrirModalEdicao(${v.idVentilador}, ${v.idSala}, ${v.idHospital})'>
+                                <span class="btn-text">Editar</span>
+                                <i class="fa-regular fa-pen-to-square"></i>
+                            </button>
+                            <button class="btn-delete" onclick='confirmarDelete(${v.idVentilador}, ${v.idHospital})'>
+                                <span class="text">Excluir</span>
+                                <i class="fa-solid fa-trash icon"></i>
+                            </button>
                         </div>
-
-                        <div class="linha-separadora"></div>
-                        <div id="parametros-${v.idVentilador}">Carregando parâmetros...</div>
                     </div>
+                    <div class="linha-separadora"></div>
+
+                    <div style="display:flex; justify-content:space-between; align-items:center;">
+                        <div>
+                            <strong>Modelo:</strong> ${v.nome_modelo}<br>
+                            <em>${v.descricao_modelo}</em>
+                        </div>
+                        <div id="status-${v.idVentilador}" style="display:flex; flex-direction:column; align-items:center; min-width:80px; margin: 5px ;border: 1px solid #ccc; background: #f9f9f9; padding: 10px 20px; border-radius: 10px; cursor:pointer;">
+                            <span><strong>Quantidade Alertas:</strong> ${v.alertas}</span>
+                            <span class="status ${statusClass}">${statusClass}</span>
+                        </div>
+                    </div>
+
+                    <div class="linha-separadora"></div>
+                    <div id="parametros-${v.idVentilador}">Carregando parâmetros...</div>
                 `;
+
+                    conteudo.appendChild(ventiladorDiv);
 
                     // 🔹 Buscar parâmetros do ventilador
                     try {
                         const respParams = await fetch(`/controle/ventiladores/${v.idVentilador}/parametros`);
                         const parametros = respParams.status === 204 ? [] : await respParams.json();
+                        v.parametros = parametros; // armazenar parâmetros no objeto do ventilador
+
                         const divParams = document.getElementById(`parametros-${v.idVentilador}`);
 
                         if (parametros.length === 0) {
                             divParams.innerHTML = `<p style="font-weight: bold;">Sem parâmetros cadastrados.</p>`;
                         } else {
                             divParams.innerHTML = parametros.map(p => `
-                            <p><strong>${p.nomeComponente} (${p.unidadeMedida}):</strong> 
-                            Min: ${p.parametroMin}, Max: ${p.parametroMax}</p>
-                        `).join("");
+                        <p><strong>${p.nomeComponente} (${p.unidadeMedida}):</strong> 
+                        Min: ${p.parametroMin}, Max: ${p.parametroMax}</p>
+                    `).join("");
                         }
+
+                        // Tornar status clicável para abrir modal de alertas
+                        document.getElementById(`status-${v.idVentilador}`).onclick = () => 
+                        abrirAlertaVentilador(v.idVentilador, v.parametros, v.alertas);
+
                     } catch (errParams) {
                         console.error("Erro ao buscar parâmetros:", errParams);
                         document.getElementById(`parametros-${v.idVentilador}`).innerHTML = "<p>Erro ao carregar parâmetros.</p>";
@@ -478,6 +499,52 @@
         } catch (err) {
             console.error(err);
         }
+    }
+
+    // Função de alerta ventilador
+    function abrirAlertaVentilador(idVentilador, parametros = [], quantidadeAlertas = 0) {
+        const container = document.getElementById("alertasContainer");
+        container.innerHTML = "";
+
+        if (parametros.length === 0 || quantidadeAlertas === 0) {
+            container.innerHTML = `<p>Sem alertas cadastrados.</p>`;
+        } else {
+            for (let i = 0; i < quantidadeAlertas; i++) {
+                // Seleciona aleatoriamente um parâmetro
+                const p = parametros[Math.floor(Math.random() * parametros.length)];
+
+                // Simular valor fora do intervalo min/max
+                let valorAlerta;
+                const tipo = Math.random() < 0.5 ? "baixo" : "alto";
+                if (tipo === "baixo") {
+                    valorAlerta = p.parametroMin - Math.floor(Math.random() * 10 + 1);
+                } else {
+                    valorAlerta = p.parametroMax + Math.floor(Math.random() * 10 + 1);
+                }
+
+                // Gerar data aleatória não maior que o momento atual
+                const agora = new Date();
+                const horaAleatoria = new Date(agora.getTime() - Math.floor(Math.random() * 24 * 60 * 60 * 1000)); // até 24h atrás
+
+                const dataHora = horaAleatoria.toLocaleString("pt-BR", { hour12: false });
+
+                container.innerHTML += `
+                <p>
+                    Alerta: ${dataHora} - ${p.nomeComponente} (${p.unidadeMedida}) 
+                    (Min: ${p.parametroMin}, Max: ${p.parametroMax}): ${valorAlerta}${p.unidadeMedida}
+                </p>
+            `;
+            }
+        }
+
+        document.getElementById("alertaVentiladorModal").style.display = "flex";
+    }
+
+
+    // Função de fechar modal de alertas
+    function fecharAlertaModal() {
+        document.getElementById("alertaVentiladorModal").style.display = "none";
+        document.getElementById("alertasContainer").innerHTML = "";
     }
 
 
@@ -502,7 +569,7 @@
             button[onclick='confirmarDelete(${idVentilador})']`)?.closest('.ventilador');
                     if (card) card.remove();
                     fecharModal();
-                    carregarHospitais().then(filtrarHospitais);;
+                    carregarSalas().then(filtrarHospitais);;
                 } catch {
                     Swal.fire('Erro!', 'Não foi possível deletar o ventilador.', 'error');
                 }
@@ -602,7 +669,7 @@
             Swal.fire('Sucesso!', 'Ventilador e componentes adicionados.', 'success');
             fecharModal();
             fecharAddModal();
-            carregarHospitais().then(filtrarHospitais);;
+            carregarSalas().then(filtrarHospitais);;
         } catch {
             Swal.fire('Erro!', 'Não foi possível adicionar o ventilador.', 'error');
         }
@@ -642,7 +709,7 @@
 
             // Fecha modal e atualiza listagem, caso tenha função para isso
             fecharAddSalaModal();
-            carregarHospitais().then(filtrarHospitais);;
+            carregarSalas().then(filtrarHospitais);;
         } catch {
             Swal.fire('Erro!', 'Não foi possível adicionar a sala.', 'error');
         }
@@ -826,7 +893,7 @@
             Swal.fire('Sucesso!', 'Ventilador atualizado.', 'success');
             fecharModal();
             fecharEditModal();
-            carregarHospitais().then(filtrarHospitais);;
+            carregarSalas().then(filtrarHospitais);;
         } catch (err) {
             console.error(err);
             Swal.fire('Erro!', 'Não foi possível atualizar o ventilador.', 'error');
@@ -836,7 +903,7 @@
 
     /* ------------------ Inicialização ------------------ */
     window.onload = () => {
-        carregarHospitais().then(filtrarHospitais);
+        carregarSalas().then(filtrarHospitais);
         document.getElementById("filtroCriticidade").addEventListener("change", filtrarHospitais);
     };
 
