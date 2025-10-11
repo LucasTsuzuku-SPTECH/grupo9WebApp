@@ -454,7 +454,7 @@
             if (mostrar) count++;
         });
 
-        // 🔹 Mensagem caso não haja hospital no filtro selecionado
+        // Mensagem caso não haja hospital no filtro selecionado
         let divAvisos = document.getElementById("avisosHospitais");
         if (!divAvisos) {
             divAvisos = document.createElement("div");
@@ -517,7 +517,7 @@
                 conteudo.innerHTML += `<p>Não há ventiladores cadastrados neste hospital.</p><br>`;
             } else {
                 for (const v of ventiladores) {
-                    // 🔹 status coerente com quantidade de alertas
+                    //status coerente com quantidade de alertas
                     let statusClass = "estavel";
                     if (v.alertas === 0) statusClass = "estavel";
                     else if (v.alertas === 1) statusClass = "alerta";
@@ -558,7 +558,7 @@
                     </div>
                 `;
 
-                    // 🔹 Buscar parâmetros do ventilador
+                    //Buscar parâmetros do ventilador
                     try {
                         const respParams = await fetch(`/controle/ventiladores/${v.idVentilador}/parametros`);
                         const parametros = respParams.status === 204 ? [] : await respParams.json();
@@ -920,7 +920,7 @@
                 }
             }
 
-            // 🔹 Excluir componentes removidos
+            // Excluir componentes removidos
             for (let comp of componentesRemovidos) {
                 await fetch(`/controle/componentes/deletar/${comp.idComponente}/${comp.idParametro}`, {
                     method: "DELETE"
