@@ -118,7 +118,7 @@ async function criarComponenteEParametro(componente, fkVentilador) {
 function listarModelos() {
     console.log("ACESSEI controleModel listarModelos()");
     const instrucaoSql = `
-        SELECT idModelo, nome, descricao
+        SELECT idModelo, nome, fkEmpresa
         FROM Modelo;
     `;
     console.log("Executando SQL: \n" + instrucaoSql);
@@ -165,9 +165,10 @@ function criarEndereco(e) {
 }
 
 function criarHospital(h) {
+    console.log("entrei no model")
     const sql = `
-        INSERT INTO Hospital (nomeHospital, cnpj, fkEndereco, fkEmpresa)
-        VALUES ('${h.nomeHospital}', '${h.cnpj}', ${h.fk_endereco}, ${h.fk_empresa});
+        INSERT INTO Hospital (nomeHospital, cnpj, fkEndereco)
+        VALUES ('${h.nomeHospital}', '${h.cnpj}', ${h.fk_endereco});
     `;
     return database.executar(sql);
 }

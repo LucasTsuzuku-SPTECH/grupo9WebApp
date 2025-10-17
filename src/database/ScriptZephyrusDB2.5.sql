@@ -5,11 +5,11 @@ USE zephyrus;
 
 
 
-CREATE TABLE IF NOT EXISTS Componete (
-  idComponete INT NOT NULL AUTO_INCREMENT,
+CREATE TABLE IF NOT EXISTS Componente (
+  idComponente INT NOT NULL AUTO_INCREMENT,
   nomeComponente VARCHAR(10) NULL DEFAULT NULL,
   unidadeMedida VARCHAR(10) NULL DEFAULT NULL,
-  PRIMARY KEY (idComponete)
+  PRIMARY KEY (idComponente)
 );
 
 CREATE TABLE IF NOT EXISTS Endereco (
@@ -79,7 +79,7 @@ CREATE TABLE IF NOT EXISTS Parametro (
   parametroMax DOUBLE NULL DEFAULT NULL,
   parametroMin DOUBLE NULL DEFAULT NULL,
   PRIMARY KEY (idParametro),
-  FOREIGN KEY (fkComponente) REFERENCES Componete (idComponete),
+  FOREIGN KEY (fkComponente) REFERENCES Componente (idComponente),
   FOREIGN KEY (fkVentilador) REFERENCES Ventilador (idVentilador)
 );
 
