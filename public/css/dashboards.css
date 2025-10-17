@@ -38,7 +38,7 @@ a {
    HEADER
 =========================== */
 header {
-  background-color: var(--verde-1);
+  background-color: rgba(38, 70, 83, 1);
   height: 102px;
   width: 100%;
   display: flex;
@@ -182,6 +182,17 @@ header {
   padding: 10px 0;
   transition: background 0.2s;
 }
+
+
+.pgAtual{
+  color: var(--branco);
+  background-color: #30a799;
+  padding: 10px 0;
+  transition: background 0.2s;
+  border-radius: 4px;
+}
+
+
 
 .sidebar-nav a:hover {
   background: rgba(255, 255, 255, 0.1);
@@ -397,8 +408,9 @@ table td.colunaDelete {
 
 /* Estilo do select */
 #filtroCriticidade {
-  background-color: rgb(183, 228, 199);
-  border: 2px solid var(--verde-3);
+  color: var(--preto);
+  background-color: #35BBAB;
+  border: 2px solid rgba(38, 70, 83, 1);
   height: 7.5vh;
   margin-right: 1.5vw;
   padding: 10px 20x;
@@ -469,8 +481,8 @@ table td.colunaDelete {
 
 /* Card de hospital */
 .card-hospital {
-  background-color: rgb(183, 228, 199);
-  border: 2px solid var(--verde-3);
+  background-color: #35BBAB;
+  border: 2px solid var(--preto);
   border-radius: 8px;
   gap: 10px;
   padding: 20px;
@@ -481,8 +493,19 @@ table td.colunaDelete {
   display: flex;
   flex-direction: column;
   align-items: center;
-  box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.1);
+  transition: 
+    transform 0.3s ease,
+    box-shadow 0.3s ease,
+    border-color 0.3s ease;
+  cursor: pointer;
 }
+
+.card-hospital:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 25px 15px #35BBAB;
+  border-color: var(--preto);
+}
+
 
 /* Bolha de status */
 .status {
@@ -595,7 +618,7 @@ table td.colunaDelete {
 }
 
 .navbar-mob i {
-  color: var(--verde-4);
+  color: white;
 }
 
 .btn-adicionar {
@@ -618,6 +641,7 @@ table td.colunaDelete {
 
 header h2 {
   font-size: 24px;
+  color: white;
   /* ou o tamanho que você quer */
   font-weight: 600;
   /* se quiser controlar a espessura */
