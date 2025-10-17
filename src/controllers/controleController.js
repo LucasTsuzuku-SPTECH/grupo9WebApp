@@ -177,6 +177,7 @@ function criarEndereco(req, res) {
 }
 
 function criarHospital(req, res) {
+    console.log("entrei no controller")
     const hospital = req.body;
     controleModel.criarHospital(hospital)
         .then(result => res.json({ message: "Hospital criado", id: result.insertId }))
