@@ -65,7 +65,7 @@
       <div class="div-flex">
         <div class="div-block">
           <div class="div-links-contas">
-            <button class="btn-adicionar" data-bs-toggle="modal" data-bs-target="#modalAdicionarUsuario">
+            <button class="btn-adicionar" data-bs-toggle="modal" id="modal_some" style="display:flex;" data-bs-target="#modalAdicionarUsuario">
               Adicionar novo usuário
             </button>
           </div>
@@ -95,7 +95,7 @@
                   <th class="colunaEmail" style="text-align: center;">E-mail</th>
                   <th class="colunaTipoAcesso" style="text-align: center;">Tipo acesso</th>
                   <th class="colunaStatus" style="text-align: center;">Status</th>
-                  <th class="colunaEditar" style="text-align: center;">Editar</th>
+                  <th class="colunaEditar" id="coluna_permissao" style="text-align: center;">Editar</th>
                 </tr>
               </thead>
               <tbody id="tbody_usuarios">
@@ -202,6 +202,12 @@
   let usuarioSelecionado = null; // id do usuário
   let usuarioEditarId = null;
 
+    if(sessionStorage.CARGO_USUARIO != "adminHospital"){
+      document.getElementById("modal_some").style.display = "none";
+      document.getElementById("coluna_permissao").style.display = "none";
+
+    }
+
   // -------------------- FUNÇÕES AUXILIARES ----------------------
   function criarLinhaUsuario(usuario, index) {
     const tr = document.createElement('tr');
@@ -211,16 +217,17 @@
     <td class="colunaEmail">${usuario.email}</td>
     <td class="colunaTipoAcesso">${usuario.perfil}</td>
     <td class="colunaAcesso">
-      <button class="btn-status ${usuario.statusUser === 'ativo' ? 'btn-ativo' : 'btn-inativo'}"
-        onclick="alterarAcesso(${index})">
+      <button class="btn-status  ${usuario.statusUser === 'ativo' ? 'btn-ativo' : 'btn-inativo'}" id="permissao_alterar"
+        onclick="${sessionStorage.CARGO_USUARIO != 'adminHospital' ? '' : `alterarAcesso(${usuario.idUsuario})`} ">
         ${usuario.statusUser.charAt(0).toUpperCase() + usuario.statusUser.slice(1)}
       </button>
     </td>
-    <td class="colunaEditar" style="text-align:center;">
-      <button onclick="abrirModalEditar(${usuario.id_usuario})" style="background:transparent;border:none;">
+    ${sessionStorage.CARGO_USUARIO != 'adminHospital' ? '' : `<td class="colunaEditar" style="text-align:center;">
+      <button onclick="abrirModalEditar(${usuario.idUsuario})" style="background:transparent;border:none;">
         <img src="../../assets/imgs/editar.png" alt="Editar" style="width:20px;height:20px;">
       </button>
-    </td>
+    </td>`}
+    
   `;
     tr.style.backgroundColor = index % 2 === 0 ? '#d3d3d3' : '#ffffff';
     return tr;
@@ -235,7 +242,6 @@
   // -------------------- CRUD ----------------------
   async function puxarDados() {
     let idHospital = sessionStorage.getItem("HOSPITAL_USUARIO")
-
     try {
       const res = await fetch(`/contas/contasHospital/${idHospital}`);
       if (!res.ok) throw new Error("Erro na resposta da API");
@@ -246,8 +252,8 @@
     }
   }
 
-  async function alterarAcesso(index) {
-    const usuario = usuarios[index];
+  async function alterarAcesso(idUsuario) {
+    const usuario = usuarios.find(u => u.idUsuario === idUsuario);
     const novoStatus = usuario.statusUser.toLowerCase() === "ativo" ? "inativo" : "ativo";
     try {
       await fetch(`/contas/alterarAcesso/${usuario.idUsuario}`, {
@@ -255,8 +261,8 @@
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ statusUser: novoStatus })
       });
-      usuarios[index].statusUser = novoStatus;
-      preencherTabela(usuarios);
+      usuario.statusUser = novoStatus;
+      selecionarAtividade()
     } catch (err) {
       console.error(err);
     }
@@ -271,7 +277,7 @@
     preencherTabela(filtro);
   }
 
-  function selecionarAtividade() {
+    function selecionarAtividade() {
     const atividade = document.getElementById('select_atividade').value;
     if (atividade === "Ambos") return puxarDados();
     preencherTabela(usuarios.filter(u => u.statusUser === atividade));
@@ -281,7 +287,7 @@
 
   function abrirModalEditar(id) {
     usuarioEditarId = id;
-    const u = usuarios.find(x => x.id_usuario === id);
+    const u = usuarios.find(x => x.idUsuario === id);
     document.getElementById("nomeEditar").value = u.nome;
     document.getElementById("emailEditar").value = u.email;
     document.getElementById("perfilEditar").value = u.perfil;
@@ -292,14 +298,12 @@
     const nome = document.getElementById("nomeEditar").value;
     const email = document.getElementById("emailEditar").value;
     const perfil = document.getElementById("perfilEditar").value;
-    const fkEmpresa = null; 
-    let fkHospital = sessionStorage.getItem('HOSPITAL_USUARIO')
 
     try {
         await fetch(`/contas/editar/${usuarioEditarId}`, {
             method: "PUT",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ nome, email, perfil, fkEmpresa, fkHospital })
+            body: JSON.stringify({ nome, email, perfil })
         });
         bootstrap.Modal.getInstance(document.getElementById("modalEditarUsuario")).hide();
         puxarDados();

@@ -4,6 +4,7 @@ const contasController = require("../controllers/contasController");
 
 router.get("/contas", contasController.listar);
 router.get("/contasHospital/:idHospital", contasController.listarHospital);
+router.get("/contasEmpresa/:idEmpresa", contasController.listarEmpresa);
 router.put("/alterarAcesso/:id", contasController.alterarAcesso);
 router.delete("/deleteConta/:id", contasController.deletar);
 
