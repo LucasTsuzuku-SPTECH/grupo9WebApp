@@ -65,7 +65,7 @@
       <div class="div-flex">
         <div class="div-block">
           <div class="div-links-contas">
-            <button class="btn-adicionar" data-bs-toggle="modal" data-bs-target="#modalAdicionarUsuario">
+            <button class="btn-adicionar" data-bs-toggle="modal" id="modal_some" data-bs-target="#modalAdicionarUsuario">
               Adicionar novo usuário
             </button>
           </div>
@@ -75,12 +75,6 @@
               <label for="">Procure pelo Usuário:</label>
               <input type="text" id="ipt_representante" class="ipt_procura"
                 oninput="buscarRepresentante(ipt_representante.value)" placeholder="Nome do Representante">
-            </div>
-            <div class="div-ipt-procura">
-              <label for="">Filtrar por Hospital</label>
-              <select name="" id="select_hospital" onchange="selecionarHospital()" class="ipt_procura">
-                <option value="todos">Todos</option>
-              </select>
             </div>
             <div class="div-ipt-procura">
               <label for="">Filtrar por atividade:</label>
@@ -101,7 +95,7 @@
                   <th class="colunaEmail" style="text-align: center;">E-mail</th>
                   <th class="colunaTipoAcesso" style="text-align: center;">Tipo acesso</th>
                   <th class="colunaStatus" style="text-align: center;">Status</th>
-                  <th class="colunaEditar" style="text-align: center;">Editar</th>
+                  <th class="colunaEditar" id="coluna_permissao" style="text-align: center;">Editar</th>
                 </tr>
               </thead>
               <tbody id="tbody_usuarios">
@@ -191,8 +185,6 @@
                         <option value="" selected disabled>Selecione</option>
                         <option value="empresa">Funcionário Empresa</option>
                         <option value="adminEmpresa">Admin Empresa</option>
-                        <option value="hospital">Funcionário Hospital</option>
-                        <option value="adminHospital">Admin Hospital</option>
                       </select>
                     </div>
                     <div class="mb-3" id="editarModalHospital" style="display:none;">
@@ -220,6 +212,11 @@
   let usuarioSelecionado = null; // id do usuário
   let usuarioEditarId = null;
 
+  if(sessionStorage.CARGO_USUARIO != "adminEmpresa"){
+    document.getElementById("modal_some").style.display = "none";
+    document.getElementById("coluna_permissao").style.display = "none";
+
+  }
   // -------------------- FUNÇÕES AUXILIARES ----------------------
   function criarLinhaUsuario(usuario, index) {
     const tr = document.createElement('tr');
@@ -230,15 +227,15 @@
     <td class="colunaTipoAcesso">${usuario.perfil}</td>
     <td class="colunaAcesso">
       <button class="btn-status ${usuario.statusUser === 'ativo' ? 'btn-ativo' : 'btn-inativo'}"
-        onclick="alterarAcesso(${index})">
+        onclick="${sessionStorage.CARGO_USUARIO != 'adminEmpresa' ? '' : `alterarAcesso(${usuario.idUsuario})`} ">
         ${usuario.statusUser.charAt(0).toUpperCase() + usuario.statusUser.slice(1)}
       </button>
     </td>
-    <td class="colunaEditar" style="text-align:center;">
-      <button onclick="abrirModalEditar(${usuario.id_usuario})" style="background:transparent;border:none;">
+    ${sessionStorage.CARGO_USUARIO != 'adminEmpresa' ? '' : `<td class="colunaEditar" style="text-align:center;">
+      <button onclick="abrirModalEditar(${usuario.idUsuario})" style="background:transparent;border:none;">
         <img src="../../assets/imgs/editar.png" alt="Editar" style="width:20px;height:20px;">
       </button>
-    </td>
+    </td>`}
   `;
     tr.style.backgroundColor = index % 2 === 0 ? '#d3d3d3' : '#ffffff';
     return tr;
@@ -252,19 +249,19 @@
 
   // -------------------- CRUD ----------------------
   async function puxarDados() {
+    let idEmpresa = sessionStorage.getItem("EMPRESA_USUARIO")
     try {
-      const res = await fetch("/contas/contas");
+      const res = await fetch(`/contas/contasEmpresa/${idEmpresa}`);
       if (!res.ok) throw new Error("Erro na resposta da API");
       usuarios = await res.json();
       preencherTabela(usuarios);
-      preencherSelectHospital();
     } catch (err) {
       console.error(err);
     }
   }
 
-  async function alterarAcesso(index) {
-    const usuario = usuarios[index];
+  async function alterarAcesso(idUsuario) {
+    const usuario = usuarios.find(u => u.idUsuario === idUsuario);
     const novoStatus = usuario.statusUser.toLowerCase() === "ativo" ? "inativo" : "ativo";
     try {
       await fetch(`/contas/alterarAcesso/${usuario.idUsuario}`, {
@@ -272,8 +269,8 @@
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ statusUser: novoStatus })
       });
-      usuarios[index].statusUser = novoStatus;
-      preencherTabela(usuarios);
+      usuario.statusUser = novoStatus;
+      selecionarAtividade()
     } catch (err) {
       console.error(err);
     }
@@ -287,66 +284,16 @@
     );
     preencherTabela(filtro);
   }
-
-  function selecionarHospital() {
-    const idHospital = document.getElementById('select_hospital').value;
-    if (idHospital === "todos") return puxarDados();
-
-    // Convertendo para number para comparar corretamente
-    const filtro = usuarios.filter(u => u.fkHospital == Number(idHospital));
-    preencherTabela(filtro);
-  }
-
-  function selecionarAtividade() {
+    function selecionarAtividade() {
     const atividade = document.getElementById('select_atividade').value;
     if (atividade === "Ambos") return puxarDados();
     preencherTabela(usuarios.filter(u => u.statusUser === atividade));
   }
-
-  // -------------------- HOSPITAIS ----------------------
-  async function preencherSelectHospital() {
-    const selectHospitais = document.getElementById('select_hospital');
-    selectHospitais.innerHTML = `<option value="todos">Todos</option>`;
-    try {
-      const resp = await fetch("/contas/listarHospitais");
-      hospitais = await resp.json();
-      hospitais.forEach(h =>
-        selectHospitais.innerHTML += `<option value="${h.idHospital}">${h.nomeHospital}</option>`
-      );
-    } catch (err) {
-      console.error("Erro ao listar hospitais", err);
-    }
-  }
-
-  async function carregarHospitaisModal() {
-    const hospitalAddModal = document.getElementById('hospitalModal');
-    hospitalAddModal.innerHTML = '<option disabled selected>Selecione um hospital</option>';
-    try {
-      const resp = await fetch('/contas/listarHospitais');
-      const lista = await resp.json();
-      lista.forEach(h => hospitalAddModal.innerHTML += `<option value="${h.idHospital}">${h.nomeHospital}</option>`);
-    } catch (err) {
-      console.error('Erro ao carregar hospitais:', err);
-    }
-  }
-
-  async function carregarEditarModal() {
-    const hospitalEditarModal = document.getElementById('hospitalEditarModal');
-    hospitalEditarModal.innerHTML = '<option disabled selected>Selecione um hospital</option>';
-    try {
-      const resp = await fetch('/contas/listarHospitais');
-      const lista = await resp.json();
-      lista.forEach(h => hospitalEditarModal.innerHTML += `<option value="${h.id_hospital}">${h.nomeHospital}</option>`);
-    } catch (err) {
-      console.error('Erro ao carregar hospitais:', err);
-    }
-  }
-
   // -------------------- MODAIS ----------------------
 
   function abrirModalEditar(id) {
     usuarioEditarId = id;
-    const u = usuarios.find(x => x.id_usuario === id);
+    const u = usuarios.find(x => x.idUsuario === id);
     document.getElementById("nomeEditar").value = u.nome;
     document.getElementById("emailEditar").value = u.email;
     document.getElementById("perfilEditar").value = u.perfil;
@@ -360,18 +307,11 @@
     const fkEmpresa = sessionStorage.getItem("EMPRESA_USUARIO"); 
     let fkHospital = null;
 
-    // Pega o select correto do modal de editar
-    const hospitalModal = document.getElementById('hospitalEditarModal');
-
-    if (perfil === "hospital" || perfil === "adminHospital") {
-        fkHospital = hospitalModal.value || null;
-    }
-
     try {
         await fetch(`/contas/editar/${usuarioEditarId}`, {
             method: "PUT",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ nome, email, perfil, fkEmpresa, fkHospital })
+            body: JSON.stringify({ nome, email, perfil})
         });
         bootstrap.Modal.getInstance(document.getElementById("modalEditarUsuario")).hide();
         puxarDados();
@@ -390,13 +330,11 @@
     const senha = document.getElementById("senhaModal").value;
     const confirmar = document.getElementById("confirmSenhaModal").value;
     const perfil = document.getElementById('perfilModal').value;
-    const hospitalModal = document.getElementById('hospitalModal');
     if (senha !== confirmar) {
       Swal.fire({ icon: 'error', title: 'Erro', text: 'As senhas não coincidem!' });
       return;
     }
-    let fkHospital = null;
-    if (perfil === "hospital" || perfil === "adminHospital") fkHospital = hospitalModal.value;
+    let fkEmpresa = sessionStorage.getItem('EMPRESA_USUARIO')
     try {
       await fetch("/contas/cadastrarFunc", {
         method: "POST",
@@ -406,8 +344,8 @@
           emailServer: email,
           senhaServer: senha,
           perfilServer: perfil,
-          fkEmpresaServer: sessionStorage.EMPRESA_USUARIO,
-          fkHospitalServer: fkHospital
+          fkEmpresaServer: fkEmpresa,
+          fkHospitalServer: sessionStorage.HOSPITAL_USUARIO
         })
       });
       Swal.fire({ icon: 'success', title: 'Sucesso', text: 'Usuário cadastrado com sucesso!', timer: 2000, showConfirmButton: false });
@@ -421,18 +359,6 @@
   }
 
   // -------------------- PERFIL SELECT ----------------------
-  const perfilModal = document.getElementById('perfilModal');
-  const divHospitalModal = document.getElementById('divHospitalModal');
-  perfilModal.addEventListener('change', function () {
-    if (this.value === 'hospital' || this.value === 'adminHospital') {
-      divHospitalModal.style.display = 'block';
-      carregarHospitaisModal();
-    } else {
-      divHospitalModal.style.display = 'none';
-      document.getElementById('hospitalModal').innerHTML = '';
-    }
-  });
-
 
   const perfilEditar = document.getElementById('perfilEditar');
   const divEditar = document.getElementById('editarModalHospital');

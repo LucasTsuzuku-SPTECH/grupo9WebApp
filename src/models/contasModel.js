@@ -47,6 +47,28 @@ function listarContasHospital(idHospital) {
   return db.executar(sql);
 }
 
+function listarContasEmpresa(idEmpresa) {
+  const sql = `
+    SELECT 
+      u.idUsuario,
+      u.nome,
+      u.email,
+      u.perfil,
+      u.statusUser,
+      u.fkHospital,
+      u.fkEmpresa,
+      CASE  
+        WHEN u.perfil IN ('empresa','adminEmpresa') 
+             THEN e.nome
+        ELSE 'Sem vínculo'
+      END AS nomeInstituicao
+    FROM Usuario u
+    LEFT JOIN EmpresaFabricante e ON u.fkEmpresa = e.idEmpresa
+    WHERE u.fkEmpresa = ${idEmpresa};
+  `;
+  return db.executar(sql);
+}
+
 // Alterar status
 function alterarAcesso(id, status) {
     const sql = `UPDATE Usuario SET statusUser = '${status}' WHERE idUsuario = ${id}`;
@@ -75,17 +97,15 @@ function listarHospitais() {
     return db.executar(instrucao);
 }
 
-function editarUsuario(id, nome, email, perfil, fkEmpresa, fkHospital) {
+function editarUsuario(id, nome, email, perfil) {
   const sql = `
     UPDATE Usuario
     SET nome = '${nome}',
         email = '${email}',
-        perfil = '${perfil}',
-        fkEmpresa = ${fkEmpresa},
-        fkHospital = ${fkHospital === null ? "NULL" : fkHospital}
+        perfil = '${perfil}'
     WHERE idUsuario = ${id};
   `;
   return db.executar(sql);
 }
 
-module.exports = { listarContas, alterarAcesso, deletar, cadastrarFunc, listarHospitais, editarUsuario, listarContasHospital};
+module.exports = { listarContas, alterarAcesso, deletar, cadastrarFunc, listarHospitais, editarUsuario, listarContasHospital,listarContasEmpresa};
