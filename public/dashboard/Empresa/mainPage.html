@@ -5,7 +5,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="./../../css/dashboards.css">
-  <link rel="icon" href="../assets/imgs/Zephyrus_2png.png" />
+  <link rel="icon" href="/assets/imgs/Zephyrus.ico" />
   <title>Dashboard - Página Principal</title>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script src="https://kit.fontawesome.com/9f7414eb10.js" crossorigin="anonymous"></script>
@@ -15,46 +15,47 @@
 
 <body>
   <div class="div-pai">
-
-    <!-- Cabeçalho -->
-    <header>
-      <div class="header-container">
-        <div class="div-hamburguer">
-          <!-- Botão Hamburguer -->
-          <a class="navbar-mob" onclick="toggleSidebar()">
-            <i id="icone" class="fa-solid fa-bars fa-2x"></i>
-          </a>
-        </div>
-        <h2>DASHBOARD - PÁGINA PRINCIPAL</h2>
-        <div class="div-pai-perfil">
-          <div class="div-linha"></div>
-          <div class="div-todo-perfil">
-            <div class="div-filho-perfil">
-              <img src="../../assets/imgs/profile.png" alt="imagem de perfil" class="img-perfil" />
-              <img src="../../assets/imgs/seta-para-baixo-braca.png" alt="ver opções" class="img-seta" />
+  <!-- Cabeçalho -->
+        <header>
+            <div class="header-container">
+                <div class="div-hamburguer" onclick="toggleSidebar()">
+                    <!-- Botão Hamburguer -->
+                    <a class="navbar-mob">
+                        <i id="icone" class="fa-solid fa-bars"></i>
+                    </a>
+                </div>
+                <h2>DASHBOARD - PÁGINA PRINCIPAL</h2>
+                <div class="div-pai-perfil">
+                    <div class="div-linha"></div>
+                    <div class="div-todo-perfil">
+                        <div class="div-filho-perfil">
+                            <img src="../../assets/imgs/profile.png" alt="imagem de perfil" class="img-perfil" />
+                            <img src="../../assets/imgs/seta-para-baixo-braca.png" alt="ver opções" class="img-seta" />
+                        </div>
+                        <div class="div-opcoes">
+                            <div class="div-opcao-sair">
+                                <button style="border: none;" onclick="limparSessao()"
+                                    id="sair"><span>Sair</span></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div class="div-opcoes">
-              <div class="div-opcao-sair">
-                <button style="border: none;" onclick="limparSessao()" id="sair"><span>Sair</span></button>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </header>
+        </header>
 
-    <!-- Sidebar Modal -->
-    <div id="sidebarModal" class="sidebar-modal">
-      <div class="sidebar-header">
-        <span>Menu</span>
-        <button onclick="toggleSidebar()" class="btn-fechar">&times;</button>
-      </div>
-      <nav class="sidebar-nav">
-        <a href="./mainPage.html">Página principal</a>
-        <a href="./controleHospitais.html">Hospitais</a>
-        <a href="./contas.html">Contas</a>
-      </nav>
-    </div>
+        <!-- Sidebar Modal -->
+        <div id="sidebarModal" class="sidebar-modal">
+            <img src="/assets/imgs/Zephyrus_2png.png" alt="">
+            <div class="sidebar-header">
+                <span>Menu</span>
+                <button onclick="toggleSidebar()" class="btn-fechar">&times;</button>
+            </div>
+            <nav class="sidebar-nav">
+                <a class="pgAtual" href="./mainPage.html">Página principal</a>
+                <a href="./controleHospitais.html">Hospitais</a>
+                <a href="./contas.html">Contas</a>
+            </nav>
+        </div>
 
     <div class="conteudo-principal">
     </div>

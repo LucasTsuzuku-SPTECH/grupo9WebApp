@@ -8,7 +8,7 @@
   --preto: #000;
   --verde-1: #b7e4c7;
   --verde-2: #92e4ab;
-  --verde-3: #2a9d8f;
+  --verde-3: #30a799;
   --verde-4: #264653;
   --vermelho: #e60e3a;
 }
@@ -38,7 +38,7 @@ a {
    HEADER
 =========================== */
 header {
-  background-color: rgba(38, 70, 83, 1);
+  background-color: var(--verde-4);
   height: 102px;
   width: 100%;
   display: flex;
@@ -55,13 +55,22 @@ header {
 }
 
 /* Ícone do menu hambúrguer */
-.menu-btn {
-  font-size: 32px;
+.div-hamburguer {
+  font-size: 50px;
   color: var(--verde-4);
   cursor: pointer;
   background: none;
   border: none;
+  transition: background-color 0.3s ease;
+  padding: 5px 10px 5px 10px;
+  border-radius: 4px;
 }
+
+.div-hamburguer:hover {
+  background-color: var(--verde-3);
+}
+
+
 
 /* ===========================
    PERFIL / BOTÃO SAIR
@@ -79,7 +88,12 @@ header {
   justify-content: space-between;
   padding: 9px;
   cursor: pointer;
+  transition: background-color 0.3s ease;
   color: var(--branco);
+}
+
+.div-filho-perfil:hover {
+  background-color: var(--verde-3);
 }
 
 .div-filho-perfil img {
@@ -104,7 +118,7 @@ header {
   text-align: center;
   justify-content: center;
   color: white;
-  border: 2px solid var(--verde-4);
+  border: 1px solid var(--preto);
   transform: translateX(-50%);
   /* Alinha no centro */
   background-color: var(--verde-4);
@@ -130,6 +144,18 @@ header {
   transition: color 0.3s ease;
 }
 
+.div-opcao-sair {
+  width: 100%;
+}
+
+.div-opcao-sair:hover{
+  cursor: pointer;
+}
+
+.div-opcoes:hover {
+  background-color: var(--verde-3);
+}
+
 /* ===========================
    SIDEBAR (MODAL FIXO)
 =========================== */
@@ -146,6 +172,11 @@ header {
   display: flex;
   flex-direction: column;
   padding-top: 20px;
+}
+
+.sidebar-modal img{
+  width: 15vh;
+  align-self: center;
 }
 
 .sidebar-modal.active {
@@ -165,9 +196,17 @@ header {
 .btn-fechar {
   background: none;
   border: none;
-  font-size: 28px;
+  font-size: 45px;
   color: var(--branco);
   cursor: pointer;
+  transition: background 0.2s ease;
+  line-height: 0.7;
+  padding: 6px;
+  border-radius: 4px;
+}
+
+.btn-fechar:hover {
+  background-color: var(--verde-3);
 }
 
 .sidebar-nav {

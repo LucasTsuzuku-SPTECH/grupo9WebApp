@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard - Página Principal</title>
+    <link rel="icon" href="/assets/imgs/Zephyrus.ico" />
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://kit.fontawesome.com/9f7414eb10.js" crossorigin="anonymous"></script>
     <script src="../../js/sessao.js"></script>
@@ -17,10 +18,10 @@
         <!-- Cabeçalho -->
         <header>
             <div class="header-container">
-                <div class="div-hamburguer">
+                <div class="div-hamburguer" onclick="toggleSidebar()">
                     <!-- Botão Hamburguer -->
-                    <a class="navbar-mob" onclick="toggleSidebar()">
-                        <i id="icone" class="fa-solid fa-bars fa-2x"></i>
+                    <a class="navbar-mob">
+                        <i id="icone" class="fa-solid fa-bars"></i>
                     </a>
                 </div>
                 <h2>DASHBOARD - CONTROLE DE HOSPITAIS</h2>
@@ -44,6 +45,7 @@
 
         <!-- Sidebar Modal -->
         <div id="sidebarModal" class="sidebar-modal">
+            <img src="/assets/imgs/Zephyrus_2png.png" alt="">
             <div class="sidebar-header">
                 <span>Menu</span>
                 <button onclick="toggleSidebar()" class="btn-fechar">&times;</button>
@@ -101,6 +103,8 @@
             </button>
         </div>
 
+
+
         <!-- Modal Criar Hospital -->
         <div id="addHospitalModal" class="modal-overlay" style="display:none;">
             <div class="modal-content">
@@ -130,6 +134,8 @@
             </div>
         </div>
 
+
+
         <!-- Modal Criar Endereço -->
         <div id="addEnderecoModal" class="modal-overlay" style="display:none;">
             <div class="modal-content">
@@ -149,6 +155,8 @@
                 </form>
             </div>
         </div>
+
+
 
         <!-- Modal Editar Hospital -->
         <div id="editHospitalModal" class="modal-overlay" style="display:none;">
@@ -189,116 +197,9 @@
             </div>
         </div>
 
+
         <!-- Conteúdo principal -->
         <div id="conteudoPrincipal" class="conteudo-principal"></div>
-
-        <!-- Modal básico -->
-        <div id="modalVentiladores" style="display:none;">
-            <div id="conteudoVentiladores"></div>
-        </div>
-
-        <!-- Modal Adicionar Ventilador -->
-        <div id="addVentiladorModal" class="modal-overlay" style="display:none;">
-            <div class="modal-content">
-
-                <h3>Adicionar Ventilador <button class="btn-fechar-modal" onclick="fecharAddModal()">X</button></h3>
-
-                <form id="formAddVentilador">
-                    <div class="form-group">
-                        <label for="numeroSerie">Nº Série</label>
-                        <input type="text" id="numeroSerie" required>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="selectModelo">Modelo</label>
-                        <select id="selectModelo" required></select>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="selectSalas">Sala</label>
-                        <select id="selectSalas" required></select>
-                    </div>
-
-                    <input type="hidden" id="fkEmpresa">
-                    <input type="hidden" id="idHospital">
-
-                    <h4>Componentes</h4>
-                    <div id="componentesContainer"></div>
-                    <button type="button" class="btn-add" onclick="adicionarComponente()">+ Adicionar
-                        Componente</button>
-
-
-                    <button type="submit" class="btn-submit">Adicionar Ventilador</button>
-                </form>
-            </div>
-        </div>
-
-        <div id="addSalaModal" class="modal-overlay" style="display:none;">
-            <div class="modal-content">
-                <h3>Adicionar Sala <button class="btn-fechar-modal" onclick="fecharAddSalaModal()">X</button></h3>
-
-                <form id="formAddSala">
-                    <div class="form-group">
-                        <label for="andarSala">Andar</label>
-                        <input type="number" id="andarSala" required>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="numeroSala">Número</label>
-                        <input type="text" id="numeroSala" required>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="descricaoSala">Descrição</label>
-                        <input type="text" id="descricaoSala">
-                    </div>
-
-                    <!-- fkHospital é hidden, preenchido no abrirAddSalaModal -->
-                    <input type="hidden" id="fkHospital">
-
-                    <button type="submit" class="btn-submit">Adicionar Sala</button>
-                </form>
-            </div>
-        </div>
-
-        <!-- Modal Editar Ventilador -->
-        <div id="editVentiladorModal" class="modal-overlay" style="display:none;">
-            <div class="modal-content">
-                <h3>
-                    Editar Ventilador
-                    <button class="btn-fechar-modal" onclick="fecharEditModal()">X</button>
-                </h3>
-
-                <form id="formEditVentilador">
-                    <input type="hidden" id="editIdHospital">
-                    <input type="hidden" id="editIdVentilador"> <!-- id do ventilador -->
-
-                    <div class="form-group">
-                        <label for="editNumeroSerie">Nº Série</label>
-                        <input type="text" id="editNumeroSerie" required>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="editSelectModelo">Modelo</label>
-                        <select id="editSelectModelo" required></select>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="editSelectHospital">Sala</label>
-                        <select id="editSelectHospital" required></select>
-                    </div>
-
-                    <h4>Componentes</h4>
-                    <div id="editComponentesContainer"></div>
-                    <button type="button" class="btn-add" onclick="adicionarComponenteEdit()">+ Adicionar
-                        Componente</button>
-
-                    <br><br>
-                    <button type="submit" class="btn-submit">Salvar</button>
-                </form>
-            </div>
-        </div>
-    </div>
 </body>
 
 </html>
@@ -320,19 +221,12 @@
         window.location.href = "../../index.html";
     }
 
-    function fecharModal() { document.getElementById("modalVentiladores").style.display = "none"; }
-    function fecharAddModal() { document.getElementById("addVentiladorModal").style.display = "none"; }
-    function fecharEditModal() { document.getElementById("editVentiladorModal").style.display = "none"; }
 
     // IDs dos modais que devem fechar ao clicar fora
     const modaisIds = [
-        "modalVentiladores",
-        "addVentiladorModal",
-        "editVentiladorModal",
         "addHospitalModal",
         "editHospitalModal",
-        "addEnderecoModal",
-        "addSalaModal"
+        "addEnderecoModal"
     ];
 
     window.addEventListener("click", e => {
@@ -347,6 +241,10 @@
 
     /* ------------------ Hospitais ------------------ */
     async function carregarHospitais() {
+        var hospCri = [];
+        var hospAlert = [];
+        var hospEst = [];
+
         try {
             const resposta = await fetch("/controle/hospitais");
             const hospitais = await resposta.json();
@@ -372,6 +270,7 @@
                     statusHospital = "estavel";
                     ventiladores.forEach(v => v.alertas = 0);
                     totalAlertas = 0;
+
                 } else if (sorteio < 0.66) {
                     statusHospital = "alerta";
                     // Gera no máximo 2 alertas no total
@@ -401,30 +300,80 @@
                     });
                 }
 
-                // Contabilizar
-                if (statusHospital === "estavel") estavel++;
-                if (statusHospital === "alerta") alerta++;
-                if (statusHospital === "critico") critico++;
+                // Guardar ventiladores com alertas simulados no próprio objeto
+                hospital.ventiladoresMock = ventiladores;
+                hospital.statusHospital = statusHospital;
 
+                // Contabilizar
+                if (statusHospital === "estavel") {
+                    estavel++;
+                    hospEst.push(hospital)
+                };
+
+                if (statusHospital === "alerta") {
+                    alerta++;
+                    hospAlert.push(hospital)
+                }
+                if (statusHospital === "critico") {
+                    critico++;
+                    hospCri.push(hospital);
+                }
+
+                console.log(hospital)
+
+            }
+
+
+            for (let i = 0; i < hospCri.length; i++) {
                 // Renderizar hospital
                 const divHospital = document.createElement("div");
                 divHospital.className = "card-hospital";
-                divHospital.dataset.status = statusHospital;
 
+                divHospital.dataset.status = hospCri[i].statusHospital;
                 divHospital.innerHTML = `
-                <h3>${hospital.nomeHospital}</h3>
-                <span class="status ${statusHospital}">${statusHospital}</span>
+                <h3>${hospCri[i].nomeHospital}</h3>
+                <span class="status ${hospCri[i].statusHospital}">${hospCri[i].statusHospital}</span>
                 `;
-
-                // Guardar ventiladores com alertas simulados no próprio objeto
-                hospital.ventiladoresMock = ventiladores;
-
-                divHospital.addEventListener("click", () => {window.location = "controleSalasHosp.html"; sessionStorage.HOSPITAL_ATUAL = hospital.idHospital;});
-                
-                
-
+                divHospital.addEventListener("click", () => { window.location = "controleSalasHosp.html"; sessionStorage.HOSPITAL_ATUAL = hospCri[i].idHospital; });
                 container.appendChild(divHospital);
             }
+
+
+
+            for (let i = 0; i < hospAlert.length; i++) {
+                // Renderizar hospital
+                const divHospital = document.createElement("div");
+                divHospital.className = "card-hospital";
+
+                divHospital.dataset.status = hospAlert[i].statusHospital;
+                divHospital.innerHTML = `
+                <h3>${hospAlert[i].nomeHospital}</h3>
+                <span class="status ${hospAlert[i].statusHospital}">${hospAlert[i].statusHospital}</span>
+                `;
+                divHospital.addEventListener("click", () => { window.location = "controleSalasHosp.html"; sessionStorage.HOSPITAL_ATUAL = hospAlert[i].idHospital; });
+                container.appendChild(divHospital);
+            }
+
+
+            for (let i = 0; i < hospEst.length; i++) {
+                // Renderizar hospital
+                const divHospital = document.createElement("div");
+                divHospital.className = "card-hospital";
+
+                divHospital.dataset.status = hospEst[i].statusHospital;
+                divHospital.innerHTML = `
+                <h3>${hospEst[i].nomeHospital}</h3>
+                <span class="status ${hospEst[i].statusHospital}">${hospEst[i].statusHospital}</span>
+                `;
+                divHospital.addEventListener("click", () => { window.location = "controleSalasHosp.html"; sessionStorage.HOSPITAL_ATUAL = hospEst[i].idHospital; });
+                container.appendChild(divHospital);
+            }
+
+
+
+
+
+
 
             document.getElementById("qtde_total").innerText = total;
             document.getElementById("qtde_estavel").innerText = estavel;
