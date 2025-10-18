@@ -61,11 +61,11 @@ function listarVentiladores(idHospital) {
 
 
 function listarVentiladoresSala(idSala) {
-    console.log("ACESSEI controleModel listarVentiladores()");
+    console.log("ACESSEI controleModel listarVentiladoresSala()");
 
     const instrucaoSql = `
-        SELECT v.idVentilador, v.numero_serie, m.nome AS nome_modelo, m.descricao AS descricao_modelo,
-               s.numero AS numero_sala, s.andar AS andar_sala, s.idSala as idSala
+        SELECT v.idVentilador, v.numero_serie, m.nome AS nome_modelo,
+               s.numero AS numero_sala, s.area, s.idSala as idSala
         FROM Ventilador v
         JOIN Modelo m ON v.fkModelo = m.idModelo
         JOIN Sala s ON v.fkSala = s.idSala
