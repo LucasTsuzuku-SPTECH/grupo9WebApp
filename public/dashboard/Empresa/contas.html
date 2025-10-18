@@ -5,7 +5,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="./../../css/dashboards.css">
-  <link rel="icon" href="../assets/imgs/Zephyrus_2png.png" />
+  <link rel="icon" href="/assets/imgs/Zephyrus.ico" />
   <title>Dashboard - Contas</title>
   <script src="https://kit.fontawesome.com/9f7414eb10.js" crossorigin="anonymous"></script>
   <script src="../../js/sessao.js"></script>
@@ -23,13 +23,13 @@
     <!-- Cabeçalho -->
     <header>
       <div class="header-container">
-        <div class="div-hamburguer">
+        <div class="div-hamburguer" onclick="toggleSidebar()">
           <!-- Botão Hamburguer -->
-          <a class="navbar-mob" onclick="toggleSidebar()">
-            <i id="icone" class="fa-solid fa-bars fa-2x"></i>
+          <a class="navbar-mob">
+            <i id="icone" class="fa-solid fa-bars"></i>
           </a>
         </div>
-        <h2>DASHBOARD - CONTROLE DE CONTAS</h2>
+        <h2>DASHBOARD - CONTROLE DE USUÁRIOS</h2>
         <div class="div-pai-perfil">
           <div class="div-linha"></div>
           <div class="div-todo-perfil">
@@ -39,7 +39,7 @@
             </div>
             <div class="div-opcoes">
               <div class="div-opcao-sair">
-                <button style="border: none;" onclick="limparSessao()" id="sair"><span>Sair</span></button>
+                <button style="border: none; width: 100%; height: 100%;" onclick="limparSessao()" id="sair"><span>Sair</span></button>
               </div>
             </div>
           </div>
@@ -49,6 +49,7 @@
 
     <!-- Sidebar Modal -->
     <div id="sidebarModal" class="sidebar-modal">
+      <img src="/assets/imgs/Zephyrus_2png.png" alt="">
       <div class="sidebar-header">
         <span>Menu</span>
         <button onclick="toggleSidebar()" class="btn-fechar">&times;</button>
@@ -56,7 +57,7 @@
       <nav class="sidebar-nav">
         <a style="text-decoration: none;" href="./mainPage.html">Página principal</a>
         <a style="text-decoration: none;" href="./controleHospitais.html">Hospitais</a>
-        <a style="text-decoration: none;" href="./contas.html">Contas</a>
+        <a class="pgAtual" style="text-decoration: none;" href="./contas.html">Contas</a>
       </nav>
     </div>
 
@@ -65,7 +66,8 @@
       <div class="div-flex">
         <div class="div-block">
           <div class="div-links-contas">
-            <button class="btn-adicionar" data-bs-toggle="modal" id="modal_some" data-bs-target="#modalAdicionarUsuario">
+            <button class="btn-adicionar" data-bs-toggle="modal" id="modal_some"
+              data-bs-target="#modalAdicionarUsuario">
               Adicionar novo usuário
             </button>
           </div>
@@ -212,7 +214,7 @@
   let usuarioSelecionado = null; // id do usuário
   let usuarioEditarId = null;
 
-  if(sessionStorage.CARGO_USUARIO != "adminEmpresa"){
+  if (sessionStorage.CARGO_USUARIO != "adminEmpresa") {
     document.getElementById("modal_some").style.display = "none";
     document.getElementById("coluna_permissao").style.display = "none";
 
@@ -284,7 +286,7 @@
     );
     preencherTabela(filtro);
   }
-    function selecionarAtividade() {
+  function selecionarAtividade() {
     const atividade = document.getElementById('select_atividade').value;
     if (atividade === "Ambos") return puxarDados();
     preencherTabela(usuarios.filter(u => u.statusUser === atividade));
@@ -304,23 +306,23 @@
     const nome = document.getElementById("nomeEditar").value;
     const email = document.getElementById("emailEditar").value;
     const perfil = document.getElementById("perfilEditar").value;
-    const fkEmpresa = sessionStorage.getItem("EMPRESA_USUARIO"); 
+    const fkEmpresa = sessionStorage.getItem("EMPRESA_USUARIO");
     let fkHospital = null;
 
     try {
-        await fetch(`/contas/editar/${usuarioEditarId}`, {
-            method: "PUT",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ nome, email, perfil})
-        });
-        bootstrap.Modal.getInstance(document.getElementById("modalEditarUsuario")).hide();
-        puxarDados();
-        Swal.fire({ icon: 'success', title: 'Sucesso', text: 'Usuário editado com sucesso!', timer: 2000, showConfirmButton: false });
+      await fetch(`/contas/editar/${usuarioEditarId}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ nome, email, perfil })
+      });
+      bootstrap.Modal.getInstance(document.getElementById("modalEditarUsuario")).hide();
+      puxarDados();
+      Swal.fire({ icon: 'success', title: 'Sucesso', text: 'Usuário editado com sucesso!', timer: 2000, showConfirmButton: false });
     } catch (err) {
-        console.error(err);
-        Swal.fire({ icon: 'error', title: 'Erro', text: 'Não foi possível editar o usuário!' });
+      console.error(err);
+      Swal.fire({ icon: 'error', title: 'Erro', text: 'Não foi possível editar o usuário!' });
     }
-}
+  }
 
 
   // -------------------- CADASTRO ----------------------
