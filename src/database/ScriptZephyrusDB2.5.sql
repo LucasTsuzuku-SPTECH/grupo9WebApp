@@ -12,6 +12,8 @@ CREATE TABLE IF NOT EXISTS Componente (
   PRIMARY KEY (idComponente)
 );
 
+
+
 CREATE TABLE IF NOT EXISTS Endereco (
   idEndereco INT NOT NULL AUTO_INCREMENT,
   logradouro VARCHAR(150) NULL DEFAULT NULL,
@@ -187,7 +189,7 @@ VALUES
 ('SN130055667', 5, 15);
 
 -- Inserção de Componentes
-INSERT INTO Componete (nomeComponente, unidadeMedida) 
+INSERT INTO Componente (nomeComponente, unidadeMedida) 
 VALUES 
 ('CPU', '%'),
 ('RAM', '%'),
