@@ -18,10 +18,10 @@
         <!-- Cabeçalho -->
         <header>
             <div class="header-container">
-                <div class="div-hamburguer">
+                <div class="div-hamburguer" onclick="toggleSidebar()">
                     <!-- Botão Hamburguer -->
-                    <a class="navbar-mob" onclick="toggleSidebar()">
-                        <i id="icone" class="fa-solid fa-bars fa-2x"></i>
+                    <a class="navbar-mob" >
+                        <i id="icone" class="fa-solid fa-bars"></i>
                     </a>
                 </div>
                 <h2>DASHBOARD - CONTROLE DE HOSPITAIS</h2>
@@ -51,7 +51,7 @@
             </div>
             <nav class="sidebar-nav">
                 <a href="./mainPage.html">Página principal</a>
-                <a href="./controleHospitais.html">Hospitais</a>
+                <a class="pgAtual" href="./controleHospitais.html">Hospitais</a>
                 <a href="./contas.html">Contas</a>
             </nav>
         </div>
@@ -67,7 +67,7 @@
                     <option value="alerta">Alerta</option>
                     <option value="estavel">Estável</option>
                 </select>
-                <div class="item" style=" background-color: rgb(183, 228, 199); border: 2px solid var(--verde-3);">
+                <div class="item" style=" background-color: #35BBAB; border: 2px solid black;">
                     <p>Quantidade Hospitais:</p>
                     <h3 id="qtde_total">0</h3>
                 </div>
@@ -354,35 +354,39 @@
         });
     });
 
-    /* ------------------ Hospitais ------------------ */
+    /* ------------------ Salas ------------------ */
     async function carregarHospitais() {
         try {
-            const resposta = await fetch("/controle/hospitais");
-            const hospitais = await resposta.json();
+            const resposta = await fetch(`/controle/listar/salas/${sessionStorage.getItem("HOSPITAL_ATUAL")}`);
+            const salas = await resposta.json();
             const container = document.querySelector(".conteudo-principal");
             container.innerHTML = "";
 
-            let total = hospitais.length, estavel = 0, alerta = 0, critico = 0;
+            console.log(salas)
 
-            for (const hospital of hospitais) {
-                // Buscar ventiladores do hospital
-                const respV = await fetch(`/controle/hospitais/${hospital.idHospital}/ventiladores`);
+            let total = salas.length, estavel = 0, alerta = 0, critico = 0;
+
+            for (const sala of salas) {
+                // Buscar ventiladores da sala
+                const respV = await fetch(`/controle/hospitais/${sala.idSala}/ventiladores`);
                 const ventiladores = respV.status === 204 ? [] : await respV.json();
+
+                console.log(ventiladores)
 
                 // --- MOCK ALERTAS ---
                 let totalAlertas = 0;
 
                 // Distribuir alertas de acordo com o status do hospital
                 // Decide primeiro o status do hospital
-                let statusHospital;
+                let statusSala;
                 const sorteio = Math.random();
 
                 if (sorteio < 0.33) {
-                    statusHospital = "estavel";
+                    statusSala = "estavel";
                     ventiladores.forEach(v => v.alertas = 0);
                     totalAlertas = 0;
                 } else if (sorteio < 0.66) {
-                    statusHospital = "alerta";
+                    statusSala = "alerta";
                     // Gera no máximo 2 alertas no total
                     totalAlertas = Math.floor(Math.random() * 3); // 0,1,2
                     let restantes = totalAlertas;
@@ -395,7 +399,7 @@
                         }
                     });
                 } else {
-                    statusHospital = "critico";
+                    statusSala = "critico";
                     // Gera 3 a 6 alertas no total
                     totalAlertas = 3 + Math.floor(Math.random() * 4); // 3 a 6
                     let restantes = totalAlertas;
@@ -411,25 +415,25 @@
                 }
 
                 // Contabilizar
-                if (statusHospital === "estavel") estavel++;
-                if (statusHospital === "alerta") alerta++;
-                if (statusHospital === "critico") critico++;
+                if (statusSala === "estavel") estavel++;
+                if (statusSala === "alerta") alerta++;
+                if (statusSala === "critico") critico++;
 
                 // Renderizar hospital
-                const divHospital = document.createElement("div");
-                divHospital.className = "card-hospital";
-                divHospital.dataset.status = statusHospital;
+                const divSala = document.createElement("div");
+                divSala.className = "card-hospital";
+                divSala.dataset.status = statusSala;
 
-                divHospital.innerHTML = `
-                <h3>${hospital.nomeHospital}</h3>
-                <span class="status ${statusHospital}">${statusHospital}</span>
+                divSala.innerHTML = `
+                <h3>${sala.numero}</h3>
+                <span class="status ${statusSala}">${statusSala}</span>
             `;
 
                 // Guardar ventiladores com alertas simulados no próprio objeto
-                hospital.ventiladoresMock = ventiladores;
+                sala.ventiladoresMock = ventiladores;
 
-                divHospital.addEventListener("click", () => abrirModalVentiladores(hospital.idHospital, hospital.nomeHospital, ventiladores));
-                container.appendChild(divHospital);
+                // divSala.addEventListener("click", () => abrirModalVentiladores(sessionStorage.getItem("HOSPITAL_ATUAL"), hospital.numero, ventiladores));
+                container.appendChild(divSala);
             }
 
             document.getElementById("qtde_total").innerText = total;

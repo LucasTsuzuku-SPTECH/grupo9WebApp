@@ -255,7 +255,7 @@
 
             for (const hospital of hospitais) {
                 // Buscar ventiladores do hospital
-                const respV = await fetch(`/controle/hospitais/${hospital.idHospital}/ventiladores`);
+                const respV = await fetch(`/controle/${hospital.idHospital}/ventiladores`);
                 const ventiladores = respV.status === 204 ? [] : await respV.json();
 
                 // --- MOCK ALERTAS ---
@@ -318,9 +318,6 @@
                     critico++;
                     hospCri.push(hospital);
                 }
-
-                console.log(hospital)
-
             }
 
 
@@ -444,8 +441,8 @@
         carregarEnderecos(); // Carregar endereços no select
         document.getElementById("addHospitalModal").style.display = "flex";
     }
-    function fecharAddHospitalModal() { document.getElementById("addHospitalModal").style.display = "none"; }
 
+    function fecharAddHospitalModal() { document.getElementById("addHospitalModal").style.display = "none"; }
     function abrirModalEndereco() { document.getElementById("addEnderecoModal").style.display = "flex"; }
     function fecharAddEnderecoModal() { document.getElementById("addEnderecoModal").style.display = "none"; }
 
@@ -586,8 +583,6 @@
     }
 
 
-
-
     // Quando o usuário escolhe um hospital no select
     document.getElementById('hospitalModal').addEventListener('change', async function () {
         const idHospital = this.value;
@@ -607,7 +602,6 @@
             Swal.fire('Erro!', 'Não foi possível carregar os dados do hospital.', 'error');
         }
     });
-
 
 
     // Fechar modal

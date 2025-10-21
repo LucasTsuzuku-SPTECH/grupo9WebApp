@@ -12,8 +12,10 @@ router.put("/editar/:idHospital", controleController.editarHospital);
 router.delete("/deletar/:idHospital", controleController.deletarHospital);
 
 // VENTILADORES
-router.get("/hospitais/:idHospital/ventiladores", controleController.listarVentiladores);
+router.get("/:idHospital/ventiladores", controleController.listarVentiladores);
+
 router.get("/hospitais/:idSala/ventiladores", controleController.listarVentiladoresSala);
+
 router.post("/ventiladores", controleController.criarVentilador);
 router.get("/ventiladores/buscar/:idVentilador/:idSala", controleController.buscarVentilador);
 router.put("/ventiladores/atualizar/:idVentilador", controleController.atualizarVentilador);
