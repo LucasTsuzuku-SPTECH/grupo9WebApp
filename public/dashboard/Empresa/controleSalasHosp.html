@@ -15,15 +15,19 @@
 <body>
     <div class="div-pai">
 
+
         <!-- Cabeçalho -->
         <header>
             <div class="header-container">
                 <div class="div-hamburguer" onclick="toggleSidebar()">
+
+                    
                     <!-- Botão Hamburguer -->
                     <a class="navbar-mob" >
                         <i id="icone" class="fa-solid fa-bars"></i>
                     </a>
                 </div>
+
                 <h2>DASHBOARD - CONTROLE DE HOSPITAIS</h2>
                 <div class="div-pai-perfil">
                     <div class="div-linha"></div>
@@ -355,7 +359,7 @@
     });
 
     /* ------------------ Salas ------------------ */
-    async function carregarHospitais() {
+    async function carregarSalas() {
         try {
             const resposta = await fetch(`/controle/listar/salas/${sessionStorage.getItem("HOSPITAL_ATUAL")}`);
             const salas = await resposta.json();
@@ -488,7 +492,7 @@
             let ventiladores;
 
             if (ventiladoresMock) {
-                // usa os ventiladores já mockados no carregarHospitais
+                // usa os ventiladores já mockados no carregarSalas
                 ventiladores = ventiladoresMock;
             } else {
                 // fallback se abrir sem passar o mock
@@ -610,7 +614,7 @@
             button[onclick='confirmarDelete(${idVentilador})']`)?.closest('.ventilador');
                     if (card) card.remove();
                     fecharModal();
-                    carregarHospitais().then(filtrarHospitais);;
+                    carregarSalas().then(filtrarHospitais);;
                 } catch {
                     Swal.fire('Erro!', 'Não foi possível deletar o ventilador.', 'error');
                 }
@@ -710,7 +714,7 @@
             Swal.fire('Sucesso!', 'Ventilador e componentes adicionados.', 'success');
             fecharModal();
             fecharAddModal();
-            carregarHospitais().then(filtrarHospitais);;
+            carregarSalas().then(filtrarHospitais);;
         } catch {
             Swal.fire('Erro!', 'Não foi possível adicionar o ventilador.', 'error');
         }
@@ -750,7 +754,7 @@
 
             // Fecha modal e atualiza listagem, caso tenha função para isso
             fecharAddSalaModal();
-            carregarHospitais().then(filtrarHospitais);;
+            carregarSalas().then(filtrarHospitais);;
         } catch {
             Swal.fire('Erro!', 'Não foi possível adicionar a sala.', 'error');
         }
@@ -934,7 +938,7 @@
             Swal.fire('Sucesso!', 'Ventilador atualizado.', 'success');
             fecharModal();
             fecharEditModal();
-            carregarHospitais().then(filtrarHospitais);;
+            carregarSalas().then(filtrarHospitais);;
         } catch (err) {
             console.error(err);
             Swal.fire('Erro!', 'Não foi possível atualizar o ventilador.', 'error');
@@ -944,7 +948,7 @@
 
     /* ------------------ Inicialização ------------------ */
     window.onload = () => {
-        carregarHospitais().then(filtrarHospitais);
+        carregarSalas().then(filtrarHospitais);
         document.getElementById("filtroCriticidade").addEventListener("change", filtrarHospitais);
     };
 
@@ -1044,7 +1048,7 @@
             await resp.json();
             Swal.fire('Sucesso!', 'Hospital criado.', 'success');
             fecharAddHospitalModal();
-            carregarHospitais().then(filtrarHospitais);
+            carregarSalas().then(filtrarHospitais);
         } catch {
             Swal.fire('Erro!', 'Não foi possível criar o hospital.', 'error');
         }
@@ -1109,10 +1113,12 @@
     });
 
 
+
     // Fechar modal
     function fecharEditHospitalModal() {
         document.getElementById('editHospitalModal').style.display = 'none';
     }
+
 
     // Salvar edição
     document.getElementById('formEditHospital').addEventListener('submit', async e => {
@@ -1137,15 +1143,17 @@
             await resp.json();
             Swal.fire('Sucesso!', 'Hospital atualizado.', 'success');
             fecharEditHospitalModal();
-            carregarHospitais().then(filtrarHospitais);
+            carregarSalas().then(filtrarHospitais);
         } catch {
             Swal.fire('Erro!', 'Não foi possível atualizar o hospital.', 'error');
         }
     });
 
 
+
+
     // Função para carregar hospitais no select
-    async function carregarHospitaisSelect() {
+    async function carregarSalasSelect() {
         try {
             const resp = await fetch('/controle/hospitais');
             if (!resp.ok) throw new Error('Erro ao buscar hospitais');
@@ -1162,10 +1170,11 @@
         }
     }
 
+
+
     // Corrigido: botão editar abre modal e carrega select
     document.getElementById('btnEditarHospital').addEventListener('click', async () => {
-        await carregarHospitaisSelect();
+        await carregarSalasSelect();
         abrirModalEdicaoHospital();
     });
-
 </script>
