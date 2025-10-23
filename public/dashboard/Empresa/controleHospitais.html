@@ -331,13 +331,13 @@
                 <h3>${hospCri[i].nomeHospital}</h3>
                 <span class="status ${hospCri[i].statusHospital}">${hospCri[i].statusHospital}</span>
                 `;
-                divHospital.addEventListener("click", () => { window.location = "controleSalasHosp.html"; sessionStorage.HOSPITAL_ATUAL = hospCri[i].idHospital; });
+                divHospital.addEventListener("click", () => {sessionStorage.ID_HOSPITAL_ATUAL = hospCri[i].idHospital; sessionStorage.NOME_HOSPITAL_ATUAL = hospCri[i].nomeHospital; window.location = "controleSalasHosp.html";});
                 container.appendChild(divHospital);
             }
 
 
 
-            for (let i = 0; i < hospAlert.length; i++) {
+            for (let i = 0; i < hospCri.length; i++) {
                 // Renderizar hospital
                 const divHospital = document.createElement("div");
                 divHospital.className = "card-hospital";
@@ -347,12 +347,12 @@
                 <h3>${hospAlert[i].nomeHospital}</h3>
                 <span class="status ${hospAlert[i].statusHospital}">${hospAlert[i].statusHospital}</span>
                 `;
-                divHospital.addEventListener("click", () => { window.location = "controleSalasHosp.html"; sessionStorage.HOSPITAL_ATUAL = hospAlert[i].idHospital; });
+                divHospital.addEventListener("click", () => {sessionStorage.ID_HOSPITAL_ATUAL = hospAlert[i].idHospital; sessionStorage.NOME_HOSPITAL_ATUAL = hospAlert[i].nomeHospital; window.location = "controleSalasHosp.html";});
                 container.appendChild(divHospital);
             }
 
 
-            for (let i = 0; i < hospEst.length; i++) {
+            for (let i = 0; i < hospAlert.length; i++) {
                 // Renderizar hospital
                 const divHospital = document.createElement("div");
                 divHospital.className = "card-hospital";
@@ -362,7 +362,7 @@
                 <h3>${hospEst[i].nomeHospital}</h3>
                 <span class="status ${hospEst[i].statusHospital}">${hospEst[i].statusHospital}</span>
                 `;
-                divHospital.addEventListener("click", () => { window.location = "controleSalasHosp.html"; sessionStorage.HOSPITAL_ATUAL = hospEst[i].idHospital; });
+                divHospital.addEventListener("click", () => {sessionStorage.ID_HOSPITAL_ATUAL = hospEst[i].idHospital; sessionStorage.NOME_HOSPITAL_ATUAL = hospEst[i].nomeHospital; window.location = "controleSalasHosp.html";});
                 container.appendChild(divHospital);
             }
 

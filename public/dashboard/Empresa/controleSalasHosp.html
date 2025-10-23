@@ -60,8 +60,10 @@
             </nav>
         </div>
 
+        <div id="nomeHospAtual"></div>
         <!-- Seção de filtro e KPI -->
         <div style="display: flex; justify-content: space-between; align-items: center; padding: 20px;">
+
 
             <!-- KPIs de hospitais -->
             <div class="kpi">
@@ -312,8 +314,10 @@
 
 <!-- SweetAlert2 -->
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
 <script>
+    nomeHospAtual.innerHTML = `<h1 style="margin: 4vh 0vh 2vh 4vh; font-size:40px">${sessionStorage.getItem('NOME_HOSPITAL_ATUAL')}</h1>`
+
+
     /* ------------------ UI ------------------ */
     function toggleSidebar() {
         const sidebar = document.getElementById("sidebarModal");
@@ -358,10 +362,13 @@
         });
     });
 
+
+
+
     /* ------------------ Salas ------------------ */
-    async function carregarSalas() {
+    async function carregarHospSalas() {
         try {
-            const resposta = await fetch(`/controle/listar/salas/${sessionStorage.getItem("HOSPITAL_ATUAL")}`);
+            const resposta = await fetch(`/controle/listar/salas/${sessionStorage.ID_HOSPITAL_ATUAL}`);
             const salas = await resposta.json();
             const container = document.querySelector(".conteudo-principal");
             container.innerHTML = "";
@@ -380,7 +387,7 @@
                 // --- MOCK ALERTAS ---
                 let totalAlertas = 0;
 
-                // Distribuir alertas de acordo com o status do hospital
+                // Distribuir alertas de acordo com o status da sala
                 // Decide primeiro o status do hospital
                 let statusSala;
                 const sorteio = Math.random();
@@ -436,7 +443,7 @@
                 // Guardar ventiladores com alertas simulados no próprio objeto
                 sala.ventiladoresMock = ventiladores;
 
-                // divSala.addEventListener("click", () => abrirModalVentiladores(sessionStorage.getItem("HOSPITAL_ATUAL"), hospital.numero, ventiladores));
+                divSala.addEventListener("click", () => abrirModalVentiladores(sessionStorage.getItem("HOSPITAL_ATUAL"), sala.numero, ventiladores));
                 container.appendChild(divSala);
             }
 
@@ -492,7 +499,7 @@
             let ventiladores;
 
             if (ventiladoresMock) {
-                // usa os ventiladores já mockados no carregarSalas
+                // usa os ventiladores já mockados no carregarHospSalas
                 ventiladores = ventiladoresMock;
             } else {
                 // fallback se abrir sem passar o mock
@@ -614,7 +621,7 @@
             button[onclick='confirmarDelete(${idVentilador})']`)?.closest('.ventilador');
                     if (card) card.remove();
                     fecharModal();
-                    carregarSalas().then(filtrarHospitais);;
+                    carregarHospSalas().then(filtrarHospitais);;
                 } catch {
                     Swal.fire('Erro!', 'Não foi possível deletar o ventilador.', 'error');
                 }
@@ -714,7 +721,7 @@
             Swal.fire('Sucesso!', 'Ventilador e componentes adicionados.', 'success');
             fecharModal();
             fecharAddModal();
-            carregarSalas().then(filtrarHospitais);;
+            carregarHospSalas().then(filtrarHospitais);;
         } catch {
             Swal.fire('Erro!', 'Não foi possível adicionar o ventilador.', 'error');
         }
@@ -754,7 +761,7 @@
 
             // Fecha modal e atualiza listagem, caso tenha função para isso
             fecharAddSalaModal();
-            carregarSalas().then(filtrarHospitais);;
+            carregarHospSalas().then(filtrarHospitais);;
         } catch {
             Swal.fire('Erro!', 'Não foi possível adicionar a sala.', 'error');
         }
@@ -938,7 +945,7 @@
             Swal.fire('Sucesso!', 'Ventilador atualizado.', 'success');
             fecharModal();
             fecharEditModal();
-            carregarSalas().then(filtrarHospitais);;
+            carregarHospSalas().then(filtrarHospitais);;
         } catch (err) {
             console.error(err);
             Swal.fire('Erro!', 'Não foi possível atualizar o ventilador.', 'error');
@@ -948,7 +955,7 @@
 
     /* ------------------ Inicialização ------------------ */
     window.onload = () => {
-        carregarSalas().then(filtrarHospitais);
+        carregarHospSalas().then(filtrarHospitais);
         document.getElementById("filtroCriticidade").addEventListener("change", filtrarHospitais);
     };
 
@@ -1048,7 +1055,7 @@
             await resp.json();
             Swal.fire('Sucesso!', 'Hospital criado.', 'success');
             fecharAddHospitalModal();
-            carregarSalas().then(filtrarHospitais);
+            carregarHospSalas().then(filtrarHospitais);
         } catch {
             Swal.fire('Erro!', 'Não foi possível criar o hospital.', 'error');
         }
@@ -1143,7 +1150,7 @@
             await resp.json();
             Swal.fire('Sucesso!', 'Hospital atualizado.', 'success');
             fecharEditHospitalModal();
-            carregarSalas().then(filtrarHospitais);
+            carregarHospSalas().then(filtrarHospitais);
         } catch {
             Swal.fire('Erro!', 'Não foi possível atualizar o hospital.', 'error');
         }
@@ -1153,7 +1160,7 @@
 
 
     // Função para carregar hospitais no select
-    async function carregarSalasSelect() {
+    async function carregarHospSalasSelect() {
         try {
             const resp = await fetch('/controle/hospitais');
             if (!resp.ok) throw new Error('Erro ao buscar hospitais');
@@ -1174,7 +1181,7 @@
 
     // Corrigido: botão editar abre modal e carrega select
     document.getElementById('btnEditarHospital').addEventListener('click', async () => {
-        await carregarSalasSelect();
+        await carregarHospSalasSelect();
         abrirModalEdicaoHospital();
     });
 </script>
