@@ -485,8 +485,8 @@
                         }
 
                         // Tornar status clicável para abrir modal de alertas
-                        document.getElementById(`status-${v.idVentilador}`).onclick = () => 
-                        abrirAlertaVentilador(v.idVentilador, v.parametros, v.alertas);
+                        document.getElementById(`status-${v.idVentilador}`).onclick = () =>
+                            abrirAlertaVentilador(v.idVentilador, v.parametros, v.alertas);
 
                     } catch (errParams) {
                         console.error("Erro ao buscar parâmetros:", errParams);
