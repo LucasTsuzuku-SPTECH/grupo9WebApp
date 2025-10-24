@@ -15,7 +15,6 @@
 <body>
     <div class="div-pai">
 
-
         <!-- Cabeçalho -->
         <header>
             <div class="header-container">
@@ -167,7 +166,7 @@
 
         <!-- Conteúdo principal -->
 
-        <div class="conteudo-principal"></div>
+        <div class="conteudo-principal2"></div>
 
         <!-- Modal básico -->
         <div id="modalVentiladores" style="display:none;">
@@ -310,7 +309,7 @@
         try {
             const resposta = await fetch(`/controle/listar/salas/${sessionStorage.ID_HOSPITAL_ATUAL}`);
             const salas = await resposta.json();
-            const container = document.querySelector(".conteudo-principal");
+            const container = document.querySelector(".conteudo-principal2");
             container.innerHTML = "";
 
             let total = salas.length, estavel = 0, alerta = 0, critico = 0;
@@ -393,62 +392,70 @@
 
 
             for (area of areas) {
+                const divArea = document.createElement("div");
+                divArea.className = "marcador-area";
+                divArea.innerHTML = `<h2>${area}</h2>`
+
                 for (let i = 0; i < salaCri.length; i++) {
-                    // Renderizar sala
+                    if (salaCri[i].area == area) {
 
-                    const divArea = document.createElement("div")
-                    const divSala = document.createElement("div");
-                    divSala.className = "card-hospital";
+                        // Renderizar sala
+                        const divSala = document.createElement("div");
+                        divSala.className = "card-hospital";
 
-                    divSala.dataset.status = salaCri[i].statusSala;
-                    divSala.innerHTML = `
+                        divSala.dataset.status = salaCri[i].statusSala;
+                        divSala.innerHTML = `
                 <h3>Sala ${salaCri[i].numero}</h3>
                 <span class="status ${salaCri[i].statusSala}">${salaCri[i].statusSala}</span>
                 `;
 
 
-                    divSala.addEventListener("click", () => abrirModalVentiladores(sessionStorage.getItem("ID_HOSPITAL_ATUAL"), salaCri[i].numero, ventiladores));
-                    container.appendChild(divSala);
+                        divSala.addEventListener("click", () => abrirModalVentiladores(sessionStorage.getItem("ID_HOSPITAL_ATUAL"), salaCri[i].numero, ventiladores));
+                        container.appendChild(divArea);
+                        container.appendChild(divSala);
+                    }
                 }
 
 
 
                 for (let i = 0; i < salaAlert.length; i++) {
-                    // Renderizar sala
-                    const divArea = document.createElement("div");
-                    const divSala = document.createElement("div");
-                    divArea.style.height = '50px';
-                    divArea.style.borderBottom = 'solid 5px black';
-                    divSala.className = "card-hospital";
+                    if (salaAlert[i].area == area) {
+                        // Renderizar sala
+                        const divSala = document.createElement("div");
+                        divSala.className = "card-hospital";
 
-                    divSala.dataset.status = salaAlert[i].statusSala;
-                    for (let j = 0; j < area.length; j++) {
-                        if (salaAlert[i].area == area[j]) {
-                            divArea.innerHTML = `<h1>${area[j]}</h1>`
+                        divSala.dataset.status = salaAlert[i].statusSala;
+                        for (let j = 0; j < area.length; j++) {
+                            if (salaAlert[i].area == area[j]) {
+                                divArea.innerHTML = `<h1>${area[j]}</h1>`
+                            }
                         }
-                    }
-                    divSala.innerHTML = `
+                        divSala.innerHTML = `
                 <h3>Sala ${salaAlert[i].numero}</h3>
                 <span class="status ${salaAlert[i].statusSala}">${salaAlert[i].statusSala}</span>
                 `;
-                    divSala.addEventListener("click", () => abrirModalVentiladores(sessionStorage.getItem("ID_HOSPITAL_ATUAL"), salaAlert[i].numero, ventiladores));
-                    container.appendChild(divSala);
+                        divSala.addEventListener("click", () => abrirModalVentiladores(sessionStorage.getItem("ID_HOSPITAL_ATUAL"), salaAlert[i].numero, ventiladores));
+                        container.appendChild(divArea);
+                        container.appendChild(divSala);
+                    }
                 }
 
 
                 for (let i = 0; i < salaEst.length; i++) {
-                    // Renderizar sala
-                    const divArea = document.createElement("div")
-                    const divSala = document.createElement("div");
-                    divSala.className = "card-hospital";
+                    if (salaEst[i].area == area) {
+                        // Renderizar sala
+                        const divSala = document.createElement("div");
+                        divSala.className = "card-hospital";
 
-                    divSala.dataset.status = salaEst[i].statusSala;
-                    divSala.innerHTML = `
+                        divSala.dataset.status = salaEst[i].statusSala;
+                        divSala.innerHTML = `
                 <h3>Sala ${salaEst[i].numero}</h3>
                 <span class="status ${salaEst[i].statusSala}">${salaEst[i].statusSala}</span>
                 `;
-                    divSala.addEventListener("click", () => abrirModalVentiladores(sessionStorage.getItem("ID_HOSPITAL_ATUAL"), salaEst[i].numero, ventiladores));
-                    container.appendChild(divSala);
+                        divSala.addEventListener("click", () => abrirModalVentiladores(sessionStorage.getItem("ID_HOSPITAL_ATUAL"), salaEst[i].numero, ventiladores));
+                        container.appendChild(divArea);
+                        container.appendChild(divSala);
+                    }
                 }
             }
 
@@ -490,7 +497,7 @@
             divAvisos.style.color = "black";
             divAvisos.style.fontSize = "25px";
             divAvisos.style.textAlign = "center";
-            const container = document.querySelector(".conteudo-principal");
+            const container = document.querySelector(".conteudo-principal2");
             container.parentNode.insertBefore(divAvisos, container);
         }
 
