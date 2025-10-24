@@ -90,10 +90,10 @@ async function deletarVentilador(idVentilador) {
 }
 
 async function criarVentilador(ventilador) {
-    const { numero_serie, fk_modelo, fk_sala, fk_empresa } = ventilador;
+    const { numero_serie, fk_modelo, fk_sala} = ventilador;
     const sql = `
-        INSERT INTO Ventilador (numero_serie, fkModelo, fkSala, fkEmpresa)
-        VALUES ('${numero_serie}', ${fk_modelo}, ${fk_sala}, ${fk_empresa});
+        INSERT INTO Ventilador (numero_serie, fkModelo, fkSala)
+        VALUES ('${numero_serie}', ${fk_modelo}, ${fk_sala});
     `;
     const result = await database.executar(sql);
     return result.insertId; // pega o idVentilador recém criado

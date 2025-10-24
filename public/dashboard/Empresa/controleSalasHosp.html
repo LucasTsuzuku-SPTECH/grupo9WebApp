@@ -539,10 +539,6 @@
                         <span class="button_text">Adicionar Ventilador</span>
                         <span class="button_icon">+</span>
                     </button>
-                    <button class="button" type="button" onclick="abrirAddSalaModal(${idHospital})">
-                        <span class="button_text">Adicionar Sala</span>
-                        <span class="button_icon">+</span>
-                    </button>
                     <button class="btn-fechar-modal" onclick="fecharModal()">X</button>
                 </div>
             </h3>
@@ -562,7 +558,7 @@
                     <div class="ventilador">
                         <div style="display:flex;justify-content:space-between;align-items:center;">
                             <div style="display:flex;gap:5px;align-items:center;">
-                                <strong>Sala ${v.idSala} - Nº Série:</strong> <span>${v.numero_serie}</span>
+                                <strong>Nº Série:</strong> <span>${v.numero_serie}</span>
                             </div>
                             <div style="display:flex;gap:10px;">
                                 <button class="btn-edit" onclick='abrirModalEdicao(${v.idVentilador}, ${v.idSala}, ${v.idHospital})'>
@@ -652,18 +648,17 @@
     /* ---------- Adicionar Ventilador ---------- */
     async function abrirAddModal(idHospital) {
         // Salas
-        const respHosp = await fetch('/controle/hospitais/salas');
-        const hospitais = await respHosp.json();
-        const selectHospital = document.getElementById("selectSalas");
+        const respHosp = await fetch(`/controle/listar/salas/${sessionStorage.getItem("ID_HOSPITAL_ATUAL")}`);
+        const salas = await respHosp.json();
+        const selectSalas = document.getElementById("selectSalas");
+        console.log(salas)
         // Salas
-        selectHospital.innerHTML = hospitais
-            .filter(h => h.idSala !== null) // filtra apenas os que têm idSala
-            .map(h => `
-            <option value="${h.idSala}">
-                Sala ${h.idSala}
-            </option>
-            `)
-            .join(''); // junta todas as opções em uma string
+
+        for (sala of salas) {
+            selectSalas.innerHTML = `
+            <option value = "${sala.numero}"> Sala ${sala.numero}</option >
+        `}
+
 
         document.getElementById("fkEmpresa").value = sessionStorage.getItem("EMPRESA_USUARIO");
         document.getElementById("idHospital").value = idHospital;
@@ -675,7 +670,9 @@
         const resp = await fetch('/controle/modelos');
         const modelos = await resp.json();
         const select = document.getElementById(selectId);
-        select.innerHTML = modelos.map(m => `<option value="${m.idModelo}">${m.nome}</option>`).join('');
+        for (modelo of modelos) {
+            select.innerHTML += `<option value = "${modelo.idModelo}"> ${modelo.nome}</option > `;
+        }
     }
 
     let componenteIndex = 0;
@@ -687,7 +684,7 @@
         const div = document.createElement("div");
         div.classList.add("form-group");
         div.innerHTML = `
-        <div class="componente-box">
+        < div class="componente-box" >
             <label>Nome Componente</label>
             <input type="text" name="nomeComponente-${idx}" required>
 
