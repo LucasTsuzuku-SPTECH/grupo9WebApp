@@ -395,6 +395,7 @@
                 const divArea = document.createElement("div");
                 divArea.className = "marcador-area";
                 divArea.innerHTML = `<h2>${area}</h2>`
+                container.appendChild(divArea);
 
                 for (let i = 0; i < salaCri.length; i++) {
                     if (salaCri[i].area == area) {
@@ -410,8 +411,7 @@
                 `;
 
 
-                        divSala.addEventListener("click", () => abrirModalVentiladores(sessionStorage.getItem("ID_HOSPITAL_ATUAL"), salaCri[i].numero, ventiladores));
-                        container.appendChild(divArea);
+                        divSala.addEventListener("click", () => abrirModalVentiladores(salaCri[i].idSala, salaCri[i].numero, salaCri[i].ventiladoresMock));
                         container.appendChild(divSala);
                     }
                 }
@@ -434,8 +434,7 @@
                 <h3>Sala ${salaAlert[i].numero}</h3>
                 <span class="status ${salaAlert[i].statusSala}">${salaAlert[i].statusSala}</span>
                 `;
-                        divSala.addEventListener("click", () => abrirModalVentiladores(sessionStorage.getItem("ID_HOSPITAL_ATUAL"), salaAlert[i].numero, ventiladores));
-                        container.appendChild(divArea);
+                        divSala.addEventListener("click", () => abrirModalVentiladores(salaAlert[i].idSala, salaAlert[i].numero, salaAlert[i].ventiladoresMock));
                         container.appendChild(divSala);
                     }
                 }
@@ -452,8 +451,7 @@
                 <h3>Sala ${salaEst[i].numero}</h3>
                 <span class="status ${salaEst[i].statusSala}">${salaEst[i].statusSala}</span>
                 `;
-                        divSala.addEventListener("click", () => abrirModalVentiladores(sessionStorage.getItem("ID_HOSPITAL_ATUAL"), salaEst[i].numero, ventiladores));
-                        container.appendChild(divArea);
+                        divSala.addEventListener("click", () => abrirModalVentiladores(salaEst[i].idSala, salaEst[i].numero, salaEst[i].ventiladoresMock));
                         container.appendChild(divSala);
                     }
                 }
@@ -514,7 +512,7 @@
 
 
     /* ------------------ Ventiladores ------------------ */
-    async function abrirModalVentiladores(idHospital, numeroSala, ventiladoresMock = null) {
+    async function abrirModalVentiladores(idSala, numeroSala, ventiladoresMock = null) {
         try {
             let ventiladores;
 
@@ -523,7 +521,7 @@
                 ventiladores = ventiladoresMock;
             } else {
                 // fallback se abrir sem passar o mock
-                const resp = await fetch(`/controle/hospitais/${idHospital}/ventiladores`);
+                const resp = await fetch(`/controle/hospitais/${idSala}/ventiladores`);
                 if (!resp.ok) throw new Error("Erro ao buscar ventiladores");
                 ventiladores = resp.status === 204 ? [] : await resp.json();
 
@@ -535,7 +533,7 @@
             conteudo.innerHTML = `
             <h3>Sala ${numeroSala}
                 <div style="display: flex; flex-direction: row; gap:15px;">
-                    <button class="button" type="button" onclick="abrirAddModal(${idHospital})">
+                    <button class="button" type="button" onclick="abrirAddModal(${idSala})">
                         <span class="button_text">Adicionar Ventilador</span>
                         <span class="button_icon">+</span>
                     </button>
@@ -548,6 +546,7 @@
                 conteudo.innerHTML += `<p>Não há ventiladores cadastrados neste hospital.</p><br>`;
             } else {
                 for (const v of ventiladores) {
+
                     //status coerente com quantidade de alertas
                     let statusClass = "estavel";
                     if (v.alertas === 0) statusClass = "estavel";
@@ -651,12 +650,9 @@
         const respHosp = await fetch(`/controle/listar/salas/${sessionStorage.getItem("ID_HOSPITAL_ATUAL")}`);
         const salas = await respHosp.json();
         const selectSalas = document.getElementById("selectSalas");
-        console.log(salas)
-        // Salas
-
         for (sala of salas) {
-            selectSalas.innerHTML = `
-            <option value = "${sala.numero}"> Sala ${sala.numero}</option >
+            selectSalas.innerHTML += `
+            <option value = "${sala.idSala}"> Sala ${sala.numero}</option >
         `}
 
 
@@ -684,7 +680,7 @@
         const div = document.createElement("div");
         div.classList.add("form-group");
         div.innerHTML = `
-        < div class="componente-box" >
+        <div class="componente-box">
             <label>Nome Componente</label>
             <input type="text" name="nomeComponente-${idx}" required>
 
@@ -710,7 +706,6 @@
             numero_serie: document.getElementById("numeroSerie").value,
             fk_modelo: document.getElementById("selectModelo").value,
             fk_sala: document.getElementById("selectSalas").value,
-            fk_empresa: document.getElementById("fkEmpresa").value,
             componentes: []
         };
 
@@ -744,14 +739,7 @@
         }
     });
 
-    async function abrirAddSalaModal(idHospital) {
-        document.getElementById("fkHospital").value = idHospital;
-        document.getElementById("addSalaModal").style.display = "flex";
-    }
 
-    async function fecharAddSalaModal(idHospital) {
-        document.getElementById("addSalaModal").style.display = "none";
-    }
 
 
 
