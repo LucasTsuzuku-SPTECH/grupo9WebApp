@@ -229,10 +229,7 @@
                         <input type="text" id="editNumeroSerie" required>
                     </div>
 
-                    <div class="form-group">
-                        <label for="editSelectModelo">Modelo</label>
-                        <select id="editSelectModelo" required></select>
-                    </div>
+                    
 
                     <div class="form-group">
                         <label for="editSelectHospital">Sala</label>
@@ -662,6 +659,7 @@
                 conteudo.innerHTML += `<p>Não há ventiladores cadastrados neste hospital.</p><br>`;
             } else {
                 for (const v of ventiladores) {
+                    console.log(v)
 
                     //status coerente com quantidade de alertas
                     let statusClass = "estavel";
@@ -867,19 +865,15 @@
             document.getElementById("editIdVentilador").value = v.idVentilador;
             document.getElementById("editNumeroSerie").value = v.numero_serie;
 
-            // Modelos
-            await carregarModelos("editSelectModelo");
-            document.getElementById("editSelectModelo").value = v.fkModelo;
-
             document.getElementById("editIdHospital").value = idHospital;
 
             // Salas
-            const respHosp = await fetch('/controle/hospitais/salas');
+            const respHosp = await fetch(`/controle/listar/salas/${sessionStorage.getItem("ID_HOSPITAL_ATUAL")}`);
             const hospitais = await respHosp.json();
             const selectHospital = document.getElementById("editSelectHospital");
             selectHospital.innerHTML = hospitais.map(h =>
-                `<option value="${h.idSala}" ${h.idSala == idSala ? "selected" : ""}>
-                 Sala ${h.idSala}
+                `<option value="${h.numero}" ${h.numero == numero ? "selected" : ""}>
+                 Sala ${h.numero}
             </option>`
             ).join('');
 
@@ -979,7 +973,6 @@
         const ventiladorAtualizado = {
             id_ventilador: document.getElementById("editIdVentilador").value,
             numero_serie: document.getElementById("editNumeroSerie").value,
-            fk_modelo: document.getElementById("editSelectModelo").value,
             fk_sala: document.getElementById("editSelectHospital").value
         };
 
