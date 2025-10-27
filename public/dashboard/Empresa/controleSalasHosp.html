@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-br">
 
 <head>
     <meta charset="UTF-8">
@@ -19,8 +19,6 @@
         <header>
             <div class="header-container">
                 <div class="div-hamburguer" onclick="toggleSidebar()">
-
-
                     <!-- Botão Hamburguer -->
                     <a class="navbar-mob">
                         <i id="icone" class="fa-solid fa-bars"></i>
@@ -74,29 +72,34 @@
                     <option value="estavel">Estável</option>
                 </select>
                 <div class="item" style=" background-color: #35BBAB; border: 2px solid black;">
-                    <p>Quantidade Salas:</p>
+                    <p id="qtd_ttl">Quantidade Salas:</p>
                     <h3 id="qtde_total">0</h3>
                 </div>
                 <div class="item" style="background-color: rgba(255, 0, 0, 0.2); border: 2px solid red;">
-                    <p>Quantidade Salas Críticos:</p>
+                    <p id="qtd_deCriticos">Quantidade Salas Críticos:</p>
                     <h3 id="qtde_critico">0</h3>
                 </div>
                 <div class="item" style="background-color: rgba(255, 255, 0, 0.2); border: 2px solid rgb(255, 255, 0);">
-                    <p>Quantidade Salas Alertas:</p>
+                    <p id="Qtd_deAlertas">Quantidade Salas Alertas:</p>
                     <h3 id="qtde_alerta">0</h3>
                 </div>
                 <div class="item" style="background-color: rgba(0, 185, 0, 0.2); border: 2px solid rgb(0, 207, 0);">
-                    <p>Quantidade Salas Estáveis:</p>
+                    <p id="qtd_deEstaveis">Quantidade Salas Estáveis:</p>
                     <h3 id="qtde_estavel">0</h3>
                 </div>
             </div>
         </div>
 
-        <div style="padding: 20px; display: flex; gap: 10px; flex-wrap: wrap;">
+        <div id="div_botoes" style="padding: 20px; display: flex; gap: 10px; flex-wrap: wrap;">
             <button class="btn-edit" style="width: 100%; max-width: 12vw ; margin-left: 0px;" type="button"
                 id="btnEditarHospital">
                 <span class="btn-text">Editar Hospital</span>
                 <i class="fa-regular fa-pen-to-square"></i>
+            </button>
+            <button class="btn-edit" style="width: 100%; max-width: 12vw ; margin-left: 0px;" type="button"
+                id="awdsad" onclick="Visualizarventiladores()">
+                <span class="btn-text">Visualizar Ventiladores</span>
+                <i class="fa-solid fa-eye"></i>
             </button>
 
         </div>
@@ -226,10 +229,7 @@
                         <input type="text" id="editNumeroSerie" required>
                     </div>
 
-                    <div class="form-group">
-                        <label for="editSelectModelo">Modelo</label>
-                        <select id="editSelectModelo" required></select>
-                    </div>
+                    
 
                     <div class="form-group">
                         <label for="editSelectHospital">Sala</label>
@@ -466,7 +466,120 @@
             console.error("Erro:", erro);
         }
     }
+    
+    async function Visualizarventiladores(){
+        const container = document.querySelector(".conteudo-principal2");
+        document.getElementById("filtroCriticidade").style.display = "none";
+        container.style.justifyContent = "center";
+        container.innerHTML = `<div id="validaVentiladores"></div>`;
+        div_botoes.innerHTML = `
+                <button class="btn-edit" style="width: 100%; max-width: 12vw ; margin-left: 0px;" type="button"
+                id="awdsad" onclick="VisualizarSalas()">
+                <span class="btn-text"> <  Visualizar Salas</span>
+                <i class="fa-solid fa-eye"></i>
+                </button>
+                <button class="btn-edit" style="width: 100%; max-width: 12vw ; margin-left: 0px;" type="button" onclick="abrirAddModal()">
+                     <span class="button_text">Adicionar Ventilador</span>
+                    <span class="button_icon">+</span>
+                </button>`
+        qtd_ttl.innerHTML = "Quantidade Ventiladores:"
+        qtd_deCriticos.innerHTML = "Quantidade Ventiladores Críticos:"
+        Qtd_deAlertas.innerHTML = "Quantidade Ventiladores em Alertas:"
+        qtd_deEstaveis.innerHTML = "Quantidade Ventiladores Estáveis:"
+        
+        const respV = await fetch(`/controle//${sessionStorage.ID_HOSPITAL_ATUAL}/ventiladores`);
+        let ventiladores = respV.status === 204 ? [] : await respV.json();
+        
+        let total = ventiladores.length, estavel = 0, alerta = 0, critico = 0
+        for (const ventilador of ventiladores) {
+            const sorteio = Math.random();
+            if (sorteio < 0.50) {
+                estavel++
+                ventilador.alertas = 0;
+            } else if (sorteio < 0.75) {
+                alerta++
+                ventilador.alertas = Math.floor(Math.random() * 1) + 1;
+            } else {
+                critico++
+                ventilador.alertas = 2 + Math.floor(Math.random() * 4);
+            }
+        }
+        
+            if (ventiladores.length === 0) {
+                container.innerHTML += `<p>Não há ventiladores cadastrados neste hospital.</p><br>`;
+            } else {
 
+                ventiladores.sort((a, b) =>  b.alertas - a.alertas);
+                for (const v of ventiladores) {
+
+                    let statusClass = "estavel";
+                    if (v.alertas === 0) statusClass = "estavel";
+                    else if (v.alertas === 1) statusClass = "alerta";
+                    else statusClass = "critico";
+
+                    container.innerHTML += `
+                    <div class="ventilador">
+                        <div style="display:flex;justify-content:space-between;align-items:center;">
+                            <div style="display:flex;gap:5px;align-items:center;">
+                                <strong>Nº Série:</strong> <span>${v.numero_serie}</span>
+                            </div>
+                            <div style="display:flex;gap:10px;">
+                                <button class="btn-edit" onclick='abrirModalEdicao(${v.idVentilador}, ${v.idSala}, ${v.idHospital})'>
+                                    <span class="btn-text">Editar</span>
+                                    <i class="fa-regular fa-pen-to-square"></i>
+                                </button>
+                                <button class="btn-delete" onclick='confirmarDelete(${v.idVentilador}, ${v.idHospital})'>
+                                    <span class="text">Excluir</span>
+                                    <i class="fa-solid fa-trash icon"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="linha-separadora"></div>
+
+                        <div style="display:flex; justify-content:space-between; align-items:center;">
+                            <div>
+                                <strong>Modelo:</strong> ${v.nome_modelo}<br>
+                            </div>
+                            <div style="display:flex; flex-direction:column; align-items:center; min-width:80px; margin: 5px ;border: 1px solid #ccc; background: #f9f9f9; padding: 10px 20px; border-radius: 10px;">
+                                <span><strong>Quantidade Alertas:</strong> ${v.alertas}</span>
+                                <span class="status ${statusClass}">${statusClass}</span>
+                            </div>
+                        </div>
+
+                        <div class="linha-separadora"></div>
+                        <div id="parametros-${v.idVentilador}">Carregando parâmetros...</div>
+                    </div>
+                `;
+
+                    //Buscar parâmetros do ventilador
+                    try {
+                        const respParams = await fetch(`/controle/ventiladores/${v.idVentilador}/parametros`);
+                        const parametros = respParams.status === 204 ? [] : await respParams.json();
+                        const divParams = document.getElementById(`parametros-${v.idVentilador}`);
+
+                        if (parametros.length === 0) {
+                            divParams.innerHTML = `<p style="font-weight: bold;">Sem parâmetros cadastrados.</p>`;
+                        } else {
+                            divParams.innerHTML = parametros.map(p => `
+                            <p><strong>${p.nomeComponente} (${p.unidadeMedida}):</strong> 
+                            Min: ${p.parametroMin}, Max: ${p.parametroMax}</p>
+                        `).join("");
+                        }
+                    } catch (errParams) {
+                        console.error("Erro ao buscar parâmetros:", errParams);
+                        document.getElementById(`parametros-${v.idVentilador}`).innerHTML = "<p>Erro ao carregar parâmetros.</p>";
+                    }
+                }
+            }
+            document.getElementById("qtde_total").innerText = total;
+            document.getElementById("qtde_estavel").innerText = estavel;
+            document.getElementById("qtde_alerta").innerText = alerta;
+            document.getElementById("qtde_critico").innerText = critico;
+    }
+
+    function VisualizarSalas(){
+        window.location.reload();
+    }
 
 
     function filtrarSalasHospitais() {
@@ -546,6 +659,7 @@
                 conteudo.innerHTML += `<p>Não há ventiladores cadastrados neste hospital.</p><br>`;
             } else {
                 for (const v of ventiladores) {
+                    console.log(v)
 
                     //status coerente com quantidade de alertas
                     let statusClass = "estavel";
@@ -632,11 +746,10 @@
                     if (!resp.ok) throw new Error("Erro ao deletar ventilador");
                     const data = await resp.json();
                     Swal.fire('Deletado!', data.message, 'success');
-                    const card = document.querySelector(`.ventilador
-            button[onclick='confirmarDelete(${idVentilador})']`)?.closest('.ventilador');
+                    const card = document.querySelector(`.ventilador button[onclick='confirmarDelete(${idVentilador})']`)?.closest('.ventilador');
                     if (card) card.remove();
                     fecharModal();
-                    carregarSalasHosp().then(filtrarSalasHospitais);;
+                    document.getElementById("validaVentiladores") ? Visualizarventiladores() : carregarSalasHosp().then(filtrarSalasHospitais);
                 } catch {
                     Swal.fire('Erro!', 'Não foi possível deletar o ventilador.', 'error');
                 }
@@ -733,7 +846,7 @@
             Swal.fire('Sucesso!', 'Ventilador e componentes adicionados.', 'success');
             fecharModal();
             fecharAddModal();
-            carregarSalasHosp().then(filtrarSalasHospitais);;
+            document.getElementById("validaVentiladores") ? Visualizarventiladores() : carregarSalasHosp().then(filtrarSalasHospitais);;
         } catch {
             Swal.fire('Erro!', 'Não foi possível adicionar o ventilador.', 'error');
         }
@@ -752,19 +865,15 @@
             document.getElementById("editIdVentilador").value = v.idVentilador;
             document.getElementById("editNumeroSerie").value = v.numero_serie;
 
-            // Modelos
-            await carregarModelos("editSelectModelo");
-            document.getElementById("editSelectModelo").value = v.fkModelo;
-
             document.getElementById("editIdHospital").value = idHospital;
 
             // Salas
-            const respHosp = await fetch('/controle/hospitais/salas');
+            const respHosp = await fetch(`/controle/listar/salas/${sessionStorage.getItem("ID_HOSPITAL_ATUAL")}`);
             const hospitais = await respHosp.json();
             const selectHospital = document.getElementById("editSelectHospital");
             selectHospital.innerHTML = hospitais.map(h =>
-                `<option value="${h.idSala}" ${h.idSala == idSala ? "selected" : ""}>
-                 Sala ${h.idSala}
+                `<option value="${h.numero}" ${h.numero == numero ? "selected" : ""}>
+                 Sala ${h.numero}
             </option>`
             ).join('');
 
@@ -864,7 +973,6 @@
         const ventiladorAtualizado = {
             id_ventilador: document.getElementById("editIdVentilador").value,
             numero_serie: document.getElementById("editNumeroSerie").value,
-            fk_modelo: document.getElementById("editSelectModelo").value,
             fk_sala: document.getElementById("editSelectHospital").value
         };
 
@@ -921,7 +1029,7 @@
             Swal.fire('Sucesso!', 'Ventilador atualizado.', 'success');
             fecharModal();
             fecharEditModal();
-            carregarSalasHosp().then(filtrarSalasHospitais);;
+            document.getElementById("validaVentiladores") ? Visualizarventiladores() : carregarSalasHosp().then(filtrarSalasHospitais);;
         } catch (err) {
             console.error(err);
             Swal.fire('Erro!', 'Não foi possível atualizar o ventilador.', 'error');

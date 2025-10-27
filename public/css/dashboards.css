@@ -115,6 +115,7 @@ header {
   left: 50%;
   align-items: center;
   width: 100%;
+  height: 100%;
   text-align: center;
   justify-content: center;
   color: white;
@@ -122,7 +123,6 @@ header {
   transform: translateX(-50%);
   /* Alinha no centro */
   background-color: var(--verde-4);
-  padding: 10px 20px;
   border-radius: 5px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   z-index: 10;
@@ -136,6 +136,8 @@ header {
 
 /* Botão "Sair" */
 .div-opcao-sair button {
+  width: 100%;
+  height: 100%;
   background: none;
   border: none;
   color: white;
@@ -146,6 +148,7 @@ header {
 
 .div-opcao-sair {
   width: 100%;
+  height: 75%;
 }
 
 .div-opcao-sair:hover{

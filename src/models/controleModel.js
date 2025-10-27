@@ -139,14 +139,13 @@ function buscarVentilador(idVentilador, idSala) {
     return database.executar(sql);
 }
 
-function atualizarVentilador(idVentilador, numero_serie, fk_modelo, fk_sala) {
+function atualizarVentilador(id_ventilador, numero_serie, fk_sala) {
     console.log("ACESSEI controleModel atualizarVentilador()");
     const instrucaoSql = `
         UPDATE Ventilador 
         SET numero_serie = '${numero_serie}', 
-            fkModelo = ${fk_modelo},
             fkSala = ${fk_sala}
-        WHERE idVentilador = ${idVentilador};
+        WHERE idVentilador = ${id_ventilador};
     `;
     return database.executar(instrucaoSql);
 }

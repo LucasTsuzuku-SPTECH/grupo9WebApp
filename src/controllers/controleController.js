@@ -152,9 +152,9 @@ function buscarVentilador(req, res) {
 
 function atualizarVentilador(req, res) {
     const idVentilador = req.params.idVentilador;
-    const { numero_serie, fk_modelo, fk_sala} = req.body;
+    const { numero_serie, fk_sala} = req.body;
 
-    controleModel.atualizarVentilador(idVentilador, numero_serie, fk_modelo, fk_sala)
+    controleModel.atualizarVentilador(idVentilador, numero_serie, fk_sala)
         .then(() => res.json({ message: "Ventilador atualizado com sucesso" }))
         .catch(erro => {
             console.error("Erro ao atualizar ventilador: ", erro.sqlMessage);
