@@ -5,6 +5,7 @@ var controleController = require("../controllers/controleController");
 
 // HOSPITAIS
 router.get("/hospitais", controleController.listarHospitais);
+router.get("/hospitais/:fkHospital", controleController.HospitalUsuario)
 router.get("/listar/salas/:idHospital", controleController.listarSala);
 router.post("/criar", controleController.criarHospital);
 router.get("/buscar/:idHospital", controleController.buscarHospital);

@@ -13,6 +13,19 @@ function listarHospitais() {
     return database.executar(instrucaoSql);
 }
 
+function HospitalUsuario(fkHospital){
+
+    console.log("ACESSEI controleModel HospitalUsuario()");
+    var instrucaoSql = `
+        SELECT nomeHospital
+        FROM Hospital where idHospital = ${fkHospital};
+    `;
+
+    console.log("Executando SQL: \n" + instrucaoSql);
+    return database.executar(instrucaoSql);
+
+}
+
 function listarSalas() {
     console.log("ACESSEI controleModel listarSalas()");
 
@@ -254,6 +267,7 @@ function deletarComponente(idComponente) {
 
 module.exports = {
     listarHospitais,
+    HospitalUsuario,
     listarSalas,
     listarVentiladores,
     deletarVentilador,

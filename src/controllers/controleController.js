@@ -16,6 +16,24 @@ function listarHospitais(req, res) {
         });
 }
 
+function HospitalUsuario(req, res){
+    const fkHospital = req.params.fkHospital
+        controleModel.HospitalUsuario(fkHospital)
+        
+        .then(function (resultado) {
+            if (resultado.length > 0) {
+                res.json(resultado);
+            } else {
+                res.status(204).send("Nenhum hospital encontrado!");
+            }
+        })
+        .catch(function (erro) {
+            console.log(erro);
+            console.log("Erro ao buscar hospitais: ", erro.sqlMessage);
+            res.status(500).json(erro.sqlMessage);
+        });
+}
+
 
 function listarSalas(req, res) {
     controleModel.listarSalas()
@@ -294,6 +312,7 @@ async function deletarParametro(req, res) {
 
 module.exports = {
     listarHospitais,
+    HospitalUsuario,
     listarVentiladores,
     deletarVentilador,
     criarVentilador,
