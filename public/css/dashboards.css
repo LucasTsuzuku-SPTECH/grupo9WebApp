@@ -151,7 +151,7 @@ header {
   height: 75%;
 }
 
-.div-opcao-sair:hover{
+.div-opcao-sair:hover {
   cursor: pointer;
 }
 
@@ -177,7 +177,7 @@ header {
   padding-top: 20px;
 }
 
-.sidebar-modal img{
+.sidebar-modal img {
   width: 15vh;
   align-self: center;
 }
@@ -226,7 +226,7 @@ header {
 }
 
 
-.pgAtual{
+.pgAtual {
   color: var(--branco);
   background-color: #30a799;
   padding: 10px 0;
@@ -561,7 +561,7 @@ table td.colunaDelete {
   display: flex;
   flex-direction: column;
   align-items: center;
-  transition: 
+  transition:
     transform 0.3s ease,
     box-shadow 0.3s ease,
     border-color 0.3s ease;
@@ -656,17 +656,30 @@ table td.colunaDelete {
 .ventilador {
   background-color: #e0f7fa;
   padding: 15px 15px 15px 20px;
-  /* espaço interno maior do lado esquerdo */
   margin-bottom: 15px;
   border-radius: 8px;
   width: 10 0%;
-  /* ocupa quase toda a largura do modal */
   min-height: 80px;
   display: flex;
   flex-direction: column;
   justify-content: center;
   border-left: 5px solid #00796b;
-  /* borda esquerda para destaque */
+}
+
+
+.ventilador2 {
+  zoom: 90%;
+  background-color: #e0f7fa;
+  padding: 15px 15px 15px 20px;
+  margin-bottom: 15px;
+  border-radius: 8px;
+  width: 70vh;
+  height: 300px;
+  min-height: 80px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  border-left: 5px solid #00796b;
 }
 
 /* Linha separadora entre Nº Série e Modelo */
@@ -911,7 +924,7 @@ header h2 {
 /* --- Overlay dos modais Adicionar / Editar --- */
 #addVentiladorModal,
 #editVentiladorModal,
-#addSalaModal {  
+#addSalaModal {
   display: none;
   /* inicial oculto */
   position: fixed;
@@ -929,7 +942,7 @@ header h2 {
 /* --- Conteúdo interno --- */
 #addVentiladorModal .modal-content,
 #editVentiladorModal .modal-content,
-#addSalaModal .modal-content {  
+#addSalaModal .modal-content {
   background-color: #fff;
   padding: 20px;
   border-radius: 10px;
@@ -943,7 +956,7 @@ header h2 {
 /* Título com botão fechar alinhado */
 #addVentiladorModal .modal-content h3,
 #editVentiladorModal .modal-content h3,
-#addSalaModal .modal-content h3 { 
+#addSalaModal .modal-content h3 {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -954,7 +967,7 @@ header h2 {
 /* Botão de fechar no canto */
 #addVentiladorModal .btn-fechar-modal,
 #editVentiladorModal .btn-fechar-modal,
-#addSalaModal .btn-fechar-modal {  
+#addSalaModal .btn-fechar-modal {
   cursor: pointer;
   background: red;
   color: #fff;
@@ -966,14 +979,14 @@ header h2 {
 
 #addVentiladorModal .btn-fechar-modal:hover,
 #editVentiladorModal .btn-fechar-modal:hover,
-#addSalaModal .btn-fechar-modal:hover {  
+#addSalaModal .btn-fechar-modal:hover {
   background: darkred;
 }
 
 /* Inputs / selects do formulário */
 #addVentiladorModal .form-group,
 #editVentiladorModal .form-group,
-#addSalaModal .form-group { 
+#addSalaModal .form-group {
   display: flex;
   flex-direction: column;
   margin-bottom: 15px;
@@ -981,7 +994,7 @@ header h2 {
 
 #addVentiladorModal .form-group label,
 #editVentiladorModal .form-group label,
-#addSalaModal .form-group label { 
+#addSalaModal .form-group label {
   font-weight: 600;
   margin-bottom: 5px;
 }
@@ -991,7 +1004,7 @@ header h2 {
 #editVentiladorModal .form-group input,
 #editVentiladorModal .form-group select,
 #addSalaModal .form-group input,
-#addSalaModal .form-group select { 
+#addSalaModal .form-group select {
   padding: 8px;
   border: 1px solid #ccc;
   border-radius: 5px;
@@ -1541,7 +1554,8 @@ header h2 {
 .componente-box {
   display: flex;
   flex-direction: column;
-  gap: 10px;          /* espaçamento entre label/input */
+  gap: 10px;
+  /* espaçamento entre label/input */
   padding: 12px;
   border: 1px solid #ccc;
   border-radius: 8px;
@@ -1591,51 +1605,53 @@ header h2 {
 
 /* Modal de Alertas - usa mesma estrutura geral */
 #alertaVentiladorModal {
-    display: none;
-    position: fixed;
-    top:0;
-    left:0;
-    width:100%;
-    height:100%;
-    background-color: rgba(0,0,0,0.6);
-    z-index: 1100; /* acima dos outros modais */
-    justify-content: center;
-    align-items: center;
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.6);
+  z-index: 1100;
+  /* acima dos outros modais */
+  justify-content: center;
+  align-items: center;
 }
 
 #alertaVentiladorModal .modal-content {
-    background-color: #fff;
-    padding: 20px;
-    border-radius: 10px;
-    width: 100%;
-    max-width: 40vw;
-    max-height: 80vh;
-    overflow-y: auto;
-    box-shadow: 0 0 15px rgba(0,0,0,0.5);
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 10px;
+  width: 100%;
+  max-width: 40vw;
+  max-height: 80vh;
+  overflow-y: auto;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
 }
 
 #alertaVentiladorModal h3 {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 #alertaVentiladorModal .btn-fechar-modal {
-    cursor: pointer;
-    background: red;
-    color: #fff;
-    border: none;
-    font-size: 1.2rem;
-    padding: 5px 10px;
-    border-radius: 5px;
+  cursor: pointer;
+  background: red;
+  color: #fff;
+  border: none;
+  font-size: 1.2rem;
+  padding: 5px 10px;
+  border-radius: 5px;
 }
+
 #alertaVentiladorModal .btn-fechar-modal:hover {
-    background: darkred;
+  background: darkred;
 }
 
 #alertasContainer p {
-    background: #f5f5f5;
-    padding: 10px;
-    border-radius: 6px;
-    border-left: 4px solid #00796b;
+  background: #f5f5f5;
+  padding: 10px;
+  border-radius: 6px;
+  border-left: 4px solid #00796b;
 }

@@ -18,7 +18,7 @@ router.get("/hospitais/:idSala/ventiladores", controleController.listarVentilado
 
 router.post("/ventiladores", controleController.criarVentilador);
 router.get("/ventiladores/buscar/:idVentilador/:idSala", controleController.buscarVentilador);
-router.put("/ventiladores/atualizar/:idVentilador", controleController.atualizarVentilador);
+router.put("/ventiladores/atualizar", controleController.atualizarVentilador);
 router.delete("/ventiladores/:idVentilador", controleController.deletarVentilador);
 
 // MODELOS
@@ -31,12 +31,13 @@ router.post("/enderecos", controleController.criarEndereco);
 // COMPONENTES E PARAMETROS
 router.get("/ventiladores/:idVentilador/parametros", controleController.listarParametros);
 router.get("/ventiladores/:idVentilador/componentes", controleController.buscarComponentes);
-router.put("/componentes/atualizar", controleController.atualizarComponente);
-router.post("/componentes/criar", controleController.criarComponenteEParametro);
-router.delete("/componentes/deletar/:idComponente/:idParametro", controleController.deletarComponenteEParametro);
+
+router.put("/parametro/atualizar", controleController.atualizarParametro);
+router.post("/parametro/criar", controleController.criarParametro);
+router.delete("/parametro/deletar/:idParametro", controleController.deletarParametro);
 
 // SALAS
 router.get("/hospitais/salas", controleController.listarSalas);
-router.post("/salas", controleController.criarSala);
+
 
 module.exports = router;
