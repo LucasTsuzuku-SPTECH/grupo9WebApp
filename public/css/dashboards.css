@@ -465,7 +465,7 @@ table td.colunaDelete {
 
 .kpi {
   display: flex;
-  justify-content: center;
+  justify-content: start;
   /* centraliza os itens horizontalmente */
   align-items: center;
   /* centraliza verticalmente */
@@ -476,7 +476,6 @@ table td.colunaDelete {
   border-bottom: 2px solid var(--verde-3);
   width: 100%;
   /* largura ajusta ao conteúdo */
-  justify-content: center;
   box-sizing: border-box;
 }
 
