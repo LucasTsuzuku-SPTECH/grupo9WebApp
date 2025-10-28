@@ -13,6 +13,19 @@ function listarHospitais() {
     return database.executar(instrucaoSql);
 }
 
+function HospitalUsuario(fkHospital){
+
+    console.log("ACESSEI controleModel HospitalUsuario()");
+    var instrucaoSql = `
+        SELECT nomeHospital
+        FROM Hospital where idHospital = ${fkHospital};
+    `;
+
+    console.log("Executando SQL: \n" + instrucaoSql);
+    return database.executar(instrucaoSql);
+
+}
+
 function listarSalas() {
     console.log("ACESSEI controleModel listarSalas()");
 
@@ -61,11 +74,11 @@ function listarVentiladores(idHospital) {
 
 
 function listarVentiladoresSala(idSala) {
-    console.log("ACESSEI controleModel listarVentiladores()");
+    console.log("ACESSEI controleModel listarVentiladoresSala()");
 
     const instrucaoSql = `
-        SELECT v.idVentilador, v.numero_serie, m.nome AS nome_modelo, m.descricao AS descricao_modelo,
-               s.numero AS numero_sala, s.andar AS andar_sala, s.idSala as idSala
+        SELECT v.idVentilador, v.numero_serie, m.nome AS nome_modelo,
+               s.numero AS numero_sala, s.area, s.idSala as idSala
         FROM Ventilador v
         JOIN Modelo m ON v.fkModelo = m.idModelo
         JOIN Sala s ON v.fkSala = s.idSala
@@ -79,7 +92,7 @@ function listarVentiladoresSala(idSala) {
 
 async function deletarVentilador(idVentilador) {
     console.log("ACESSEI controleModel deletarVentilador()");
-    
+
     const sql1 = `DELETE FROM Parametro WHERE fkVentilador = ${idVentilador};`;
     const sql2 = `DELETE FROM Ventilador WHERE idVentilador = ${idVentilador};`;
 
@@ -90,35 +103,27 @@ async function deletarVentilador(idVentilador) {
 }
 
 async function criarVentilador(ventilador) {
-    const { numero_serie, fk_modelo, fk_sala, fk_empresa } = ventilador;
+    const { numero_serie, fk_modelo, fk_sala } = ventilador;
     const sql = `
-        INSERT INTO Ventilador (numero_serie, fkModelo, fkSala, fkEmpresa)
-        VALUES ('${numero_serie}', ${fk_modelo}, ${fk_sala}, ${fk_empresa});
+        INSERT INTO Ventilador (numero_serie, fkModelo, fkSala)
+        VALUES ('${numero_serie}', ${fk_modelo}, ${fk_sala});
     `;
-    const result = await database.executar(sql);
-    return result.insertId; // pega o idVentilador recém criado
+    return database.executar(sql);
 }
 
-async function criarComponenteEParametro(componente, fkVentilador) {
-    const sqlComp = `
-        INSERT INTO Componente (nomeComponente, unidadeMedida)
-        VALUES ('${componente.nome}', '${componente.unidade}');
+async function criarParametro(componente) {
+    const sql = `
+        INSERT INTO Parametro (fkComponente, fkVentilador, parametroMax, parametroMin)
+        VALUES (${componente.idComponente},  (SELECT idVentilador FROM Ventilador WHERE numero_serie LIKE "${componente.numero_serie}"), ${componente.parametroMax}, ${componente.parametroMin});
     `;
-    const result = await database.executar(sqlComp);
-    const idComponente = result.insertId;
-
-    const sqlParam = `
-        INSERT INTO Parametro (parametroMin, parametroMax, fkVentilador, fkComponente)
-        VALUES (${componente.parametroMin}, ${componente.parametroMax}, ${fkVentilador}, ${idComponente});
-    `;
-    return database.executar(sqlParam);
+    return database.executar(sql);
 }
 
 
 function listarModelos() {
     console.log("ACESSEI controleModel listarModelos()");
     const instrucaoSql = `
-        SELECT idModelo, nome, descricao
+        SELECT idModelo, nome, fkEmpresa
         FROM Modelo;
     `;
     console.log("Executando SQL: \n" + instrucaoSql);
@@ -139,14 +144,12 @@ function buscarVentilador(idVentilador, idSala) {
     return database.executar(sql);
 }
 
-function atualizarVentilador(idVentilador, numero_serie, fk_modelo, fk_sala) {
+function atualizarVentilador(id_ventilador, fk_sala) {
     console.log("ACESSEI controleModel atualizarVentilador()");
     const instrucaoSql = `
         UPDATE Ventilador 
-        SET numero_serie = '${numero_serie}', 
-            fkModelo = ${fk_modelo},
-            fkSala = ${fk_sala}
-        WHERE idVentilador = ${idVentilador};
+        SET fkSala = ${fk_sala}
+        WHERE idVentilador = ${id_ventilador};
     `;
     return database.executar(instrucaoSql);
 }
@@ -165,9 +168,10 @@ function criarEndereco(e) {
 }
 
 function criarHospital(h) {
+    console.log("entrei no model")
     const sql = `
-        INSERT INTO Hospital (nomeHospital, cnpj, fkEndereco, fkEmpresa)
-        VALUES ('${h.nomeHospital}', '${h.cnpj}', ${h.fk_endereco}, ${h.fk_empresa});
+        INSERT INTO Hospital (nomeHospital, cnpj, fkEndereco)
+        VALUES ('${h.nomeHospital}', '${h.cnpj}', ${h.fk_endereco});
     `;
     return database.executar(sql);
 }
@@ -180,7 +184,7 @@ function buscarHospital(id) {
 }
 
 function editarHospital(hospital) {
-    const {id_hospital, nomeHospital, cnpj, fk_endereco} = hospital;
+    const { id_hospital, nomeHospital, cnpj, fk_endereco } = hospital;
     const sql = `
         UPDATE Hospital
         SET nomeHospital='${nomeHospital}', cnpj='${cnpj}', fkEndereco=${fk_endereco}
@@ -190,17 +194,17 @@ function editarHospital(hospital) {
 }
 
 async function deletarHospital(id) {
-  // primeiro apaga os ventiladores vinculados
-  const sqlVentiladores = `DELETE FROM Ventilador WHERE fkHospital = ${id}`;
-  await database.executar(sqlVentiladores);
+    // primeiro apaga os ventiladores vinculados
+    const sqlVentiladores = `DELETE FROM Ventilador WHERE fkHospital = ${id}`;
+    await database.executar(sqlVentiladores);
 
-  // depois apaga os usuários vinculados (se fizer sentido na sua regra)
-  const sqlUsuarios = `DELETE FROM Usuario WHERE fkHospital = ${id}`;
-  await database.executar(sqlUsuarios);
+    // depois apaga os usuários vinculados (se fizer sentido na sua regra)
+    const sqlUsuarios = `DELETE FROM Usuario WHERE fkHospital = ${id}`;
+    await database.executar(sqlUsuarios);
 
-  // por fim, apaga o hospital
-  const sqlHospital = `DELETE FROM Hospital WHERE idHospital = ${id}`;
-  return database.executar(sqlHospital);
+    // por fim, apaga o hospital
+    const sqlHospital = `DELETE FROM Hospital WHERE idHospital = ${id}`;
+    return database.executar(sqlHospital);
 }
 
 function listarParametros(idVentilador) {
@@ -229,38 +233,19 @@ function buscarComponentesPorVentilador(idVentilador) {
     return database.executar(sql);
 }
 
-// Atualizar componente existente
-function atualizarComponenteEParametro(idComponente, nome, unidade, idParametro, min, max) {
-    const sqlComp = `
-        UPDATE Componente
-        SET nomeComponente = '${nome}', unidadeMedida = '${unidade}'
-        WHERE idComponente = ${idComponente};
-    `;
+// Atualizar parametro existente
+function atualizarParametro(idParametro, min, max) {
     const sqlParam = `
         UPDATE Parametro
         SET parametroMin = ${min}, parametroMax = ${max}
         WHERE idParametro = ${idParametro};
     `;
-    return database.executar(sqlComp).then(() => database.executar(sqlParam));
+    return database.executar(sqlParam);
 }
 
-function criarComponente(nomeComponente, unidadeMedida) {
-    const sql = `
-        INSERT INTO Componente (nomeComponente, unidadeMedida) 
-        VALUES ('${nomeComponente}', '${unidadeMedida}');
-    `;
-    console.log("Executando SQL:\n" + sql);
-    return database.executar(sql);
-}
 
-function criarParametro(parametroMin, parametroMax, fkVentilador, fkComponente) {
-    const sql = `
-        INSERT INTO Parametro (parametroMin, parametroMax, fkVentilador, fkComponente) 
-        VALUES (${parametroMin}, ${parametroMax}, ${fkVentilador}, ${fkComponente});
-    `;
-    console.log("Executando SQL:\n" + sql);
-    return database.executar(sql);
-}
+
+
 
 function deletarParametro(idParametro) {
     const sql = `
@@ -278,20 +263,11 @@ function deletarComponente(idComponente) {
     return database.executar(sql);
 }
 
-async function criarSala(sala) {
-    const { andar, numero, descricao, fkHospital } = sala;
 
-    const sql = `
-        INSERT INTO Sala (andar, numero, descricao, fkHospital)
-        VALUES (${andar}, '${numero}', '${descricao}', ${fkHospital});
-    `;
-
-    const result = await database.executar(sql);
-    return result.insertId;
-}
 
 module.exports = {
     listarHospitais,
+    HospitalUsuario,
     listarSalas,
     listarVentiladores,
     deletarVentilador,
@@ -306,14 +282,11 @@ module.exports = {
     editarHospital,
     deletarHospital,
     listarParametros,
-    criarComponenteEParametro,
     buscarComponentesPorVentilador,
-    atualizarComponenteEParametro,
-    criarComponente,
+    atualizarParametro,
     criarParametro,
     deletarParametro,
     deletarComponente,
-    criarSala,
     listarVentiladoresSala,
     listarSala
 }

@@ -53,7 +53,7 @@
             </div>
             <nav class="sidebar-nav">
                 <a href="./mainPage.html">Página principal</a>
-                <a class="pgAtual" href="./controleHospitais.html">Salas</a>
+                <a class="pgAtual" href="./controleHospitais.html">Hospitais</a>
                 <a href="./contas.html">Contas</a>
             </nav>
         </div>
@@ -106,6 +106,8 @@
         </div>
 
 
+
+
         <!-- Modal Criar Endereço -->
         <div id="addEnderecoModal" class="modal-overlay" style="display:none;">
             <div class="modal-content">
@@ -136,7 +138,8 @@
                 <form id="formEditHospital">
                     <div class="form-group">
                         <label for="hospitalModal">Hospital</label>
-                        <select class="form-select" id="hospitalModal">
+                        <select class="form-select" id="hospitalModal" required>
+                            <option value="">Selecione um hospital</option>
                         </select>
                     </div>
 
@@ -256,8 +259,8 @@
 <!-- SweetAlert2 -->
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
-
     nomeHospAtual.innerHTML = `<h1 style="margin: 4vh 0vh 2vh 4vh; font-size:40px">${sessionStorage.getItem('NOME_HOSPITAL_ATUAL')}</h1>`
+
 
     /* ------------------ UI ------------------ */
     function toggleSidebar() {
@@ -307,7 +310,7 @@
     /* ------------------ Salas ------------------ */
     async function carregarSalasHosp() {
         try {
-            const resposta = await fetch(`/controle/listar/salas/${sessionStorage.HOSPITAL_USUARIO}`);
+            const resposta = await fetch(`/controle/listar/salas/${sessionStorage.ID_HOSPITAL_ATUAL}`);
             const salas = await resposta.json();
             const container = document.querySelector(".conteudo-principal2");
             container.innerHTML = "";
@@ -467,7 +470,11 @@
         }
     }
 
+    var ventiladoresEncontrados = [];
+    var parametrosEncontrados = [];
     async function vizualizarVentiladores() {
+        ventiladoresEncontrados = [];
+        parametrosEncontrados = [];
         const container = document.querySelector(".conteudo-principal2");
         document.getElementById("filtroCriticidade").style.display = "none";
         container.style.justifyContent = "center";
@@ -482,13 +489,13 @@
                      <span class="button_text">Adicionar Ventilador</span>
                     <span class="button_icon">+</span>
                 </button> 
-                <input onchange="filtrarNSerie()" style="width: 20%;
+                <input id="ipt_pesquisa" oninput="filtrarNSerie()" style="width: 20%;
                 border-radius: 8px;
                 border: 1px solid black;
                 padding: 5px;
                 background-color: rgba(255, 255, 255);
                 color: black;
-                font-size: 14px;" type="text" placeholder="🔍︎Digite um número de série...">
+                font-size: 14px;" type="text" placeholder="Digite um número de série...🔍︎">
                 `
 
         qtd_ttl.innerHTML = "Quantidade Ventiladores:"
@@ -496,8 +503,11 @@
         Qtd_deAlertas.innerHTML = "Quantidade Ventiladores em Alertas:"
         qtd_deEstaveis.innerHTML = "Quantidade Ventiladores Estáveis:"
 
-        const respV = await fetch(`/controle/${sessionStorage.HOSPITAL_USUARIO}/ventiladores`);
+
+
+        const respV = await fetch(`/controle/${sessionStorage.ID_HOSPITAL_ATUAL}/ventiladores`);
         let ventiladores = respV.status === 204 ? [] : await respV.json();
+
 
         let total = ventiladores.length, estavel = 0, alerta = 0, critico = 0
         for (const ventilador of ventiladores) {
@@ -520,13 +530,18 @@
 
             ventiladores.sort((a, b) => b.alertas - a.alertas);
             for (const v of ventiladores) {
+                ventiladoresEncontrados.push(v);
 
                 let statusClass = "estavel";
                 if (v.alertas === 0) statusClass = "estavel";
                 else if (v.alertas === 1) statusClass = "alerta";
                 else statusClass = "critico";
 
-                container.innerHTML += `
+                if (document.getElementById("ipt_pesquisa").value.length > 0) {
+
+                    filtrarNSerie();
+                } else {
+                    container.innerHTML += `
                     <div class="ventilador2">
                         <div style="display:flex;justify-content:space-between;align-items:center;">
                             <div style="display:flex;gap:5px;align-items:center;">
@@ -559,6 +574,7 @@
                         <div id="parametros-${v.idVentilador}">Carregando parâmetros...</div>
                     </div>
                 `;
+                }
 
                 //Buscar parâmetros do ventilador
                 try {
@@ -570,9 +586,10 @@
                         divParams.innerHTML = `<p style="font-weight: bold;">Sem parâmetros cadastrados.</p>`;
                     } else {
                         divParams.innerHTML = parametros.map(p => `
-                            <p><strong>${p.nomeComponente} (${p.unidadeMedida}):</strong> 
-                            Min: ${p.parametroMin}, Max: ${p.parametroMax}</p>
-                        `).join("");
+                                <p><strong>${p.nomeComponente} (${p.unidadeMedida}):</strong> 
+                                Min: ${p.parametroMin}, Max: ${p.parametroMax}</p>
+                            `).join("");
+                        parametrosEncontrados.push(parametros)
                     }
                 } catch (errParams) {
                     console.error("Erro ao buscar parâmetros:", errParams);
@@ -580,11 +597,95 @@
                 }
             }
         }
+
+
+
         document.getElementById("qtde_total").innerText = total;
         document.getElementById("qtde_estavel").innerText = estavel;
         document.getElementById("qtde_alerta").innerText = alerta;
         document.getElementById("qtde_critico").innerText = critico;
     }
+
+
+
+
+
+    function filtrarNSerie() {
+        const container = document.querySelector(".conteudo-principal2");
+        const pesquisa = document.getElementById("ipt_pesquisa").value.toLowerCase();
+        container.innerHTML = '';
+
+        if (pesquisa == '') {
+            for (let i = 0; i < ventiladoresEncontrados.length; i++) {
+                renderizarVentilador(ventiladoresEncontrados[i], container);
+            }
+            return;
+        }
+
+        for (let i = 0; i < ventiladoresEncontrados.length; i++) {
+            if (ventiladoresEncontrados[i].numero_serie.toLowerCase().includes(pesquisa)) {
+                renderizarVentilador(ventiladoresEncontrados[i], container);
+            }
+        }
+    }
+
+    function renderizarVentilador(ventiladorEncontrado, container) {
+        let statusClass = "estavel";
+        if (ventiladorEncontrado.alertas === 0) statusClass = "estavel";
+        else if (ventiladorEncontrado.alertas === 1) statusClass = "alerta";
+        else statusClass = "critico";
+
+        container.innerHTML += `
+        <div class="ventilador2">
+            <div style="display:flex;justify-content:space-between;align-items:center;">
+                <div style="display:flex;gap:5px;align-items:center;">
+                    <strong>Nº Série:</strong> <span>${ventiladorEncontrado.numero_serie}</span>
+                </div>
+                <div style="display:flex;gap:10px;">
+                    <button class="btn-edit" onclick='abrirModalEdicao(${ventiladorEncontrado.idVentilador}, ${ventiladorEncontrado.idSala}, ${ventiladorEncontrado.idHospital})'>
+                        <span class="btn-text">Editar</span>
+                        <i class="fa-regular fa-pen-to-square"></i>
+                    </button>
+                    <button class="btn-delete" onclick='confirmarDelete(${ventiladorEncontrado.idVentilador}, ${ventiladorEncontrado.idHospital})'>
+                        <span class="text">Excluir</span>
+                        <i class="fa-solid fa-trash icon"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="linha-separadora"></div>
+
+            <div style="display:flex; justify-content:space-between; align-items:center;">
+                <div>
+                    <strong>Modelo:</strong> ${ventiladorEncontrado.nome_modelo}<br>
+                </div>
+                <div style="display:flex; flex-direction:column; align-items:center; min-width:80px; margin: 5px ;border: 1px solid #ccc; background: #f9f9f9; padding: 10px 20px; border-radius: 10px;">
+                    <span><strong>Quantidade Alertas:</strong> ${ventiladorEncontrado.alertas}</span>
+                    <span class="status ${statusClass}">${statusClass}</span>
+                </div>
+            </div>
+
+            <div class="linha-separadora"></div>
+            <div id="parametros-${ventiladorEncontrado.idVentilador}">Carregando parâmetros...</div>
+        </div>
+    `;
+
+
+        const divParams = document.getElementById(`parametros-${ventiladorEncontrado.idVentilador}`);
+        if (parametrosEncontrados.length === 0) {
+            divParams.innerHTML = `<p style="font-weight: bold;">Sem parâmetros cadastrados.</p>`;
+        } else {
+            for (let i = 0; i < parametrosEncontrados.length; i++) {
+                divParams.innerHTML = '';
+                for (let j = 0; j < parametrosEncontrados[i].length; j++) {
+                    divParams.innerHTML += `<p><strong>${parametrosEncontrados[i][j].nomeComponente} (${parametrosEncontrados[i][j].unidadeMedida}):</strong> 
+                                Min: ${parametrosEncontrados[i][j].parametroMin}, Max: ${parametrosEncontrados[i][j].parametroMax}</p>`;
+                }
+            }
+        }
+    }
+
+
+
 
     function VisualizarSalas() {
         window.location.reload();
@@ -769,7 +870,7 @@
     /* ---------- Adicionar Ventilador ---------- */
     async function abrirAddModal(idHospital) {
         // Salas
-        const respHosp = await fetch(`/controle/listar/salas/${sessionStorage.getItem("HOSPITAL_USUARIO")}`);
+        const respHosp = await fetch(`/controle/listar/salas/${sessionStorage.getItem("ID_HOSPITAL_ATUAL")}`);
         const salas = await respHosp.json();
         const selectSalas = document.getElementById("selectSalas");
         for (sala of salas) {
@@ -887,7 +988,7 @@
 
 
             // Salas
-            const respHosp = await fetch(`/controle/listar/salas/${sessionStorage.getItem("HOSPITAL_USUARIO")}`);
+            const respHosp = await fetch(`/controle/listar/salas/${sessionStorage.getItem("ID_HOSPITAL_ATUAL")}`);
             const hospitais = await respHosp.json();
             const selectHospital = document.getElementById("editSelectHospital");
 
@@ -1156,11 +1257,9 @@
 
         try {
             // Buscar todos os hospitais
-            selectHospital.innerHTML = `
-            <option value="${sessionStorage.getItem("HOSPITAL_USUARIO")}" selected>
-                ${sessionStorage.getItem("NOME_HOSPITAL_ATUAL")}
-            </option>
-            `;
+
+            selectHospital.innerHTML = `<option value="${sessionStorage.getItem("ID_HOSPITAL_ATUAL")}">${sessionStorage.getItem("NOME_HOSPITAL_ATUAL")}</option>`;
+
 
             // Buscar todos os endereços
             const respEnd = await fetch('/controle/enderecos');

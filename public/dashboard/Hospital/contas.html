@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-br">
 
 <head>
   <meta charset="UTF-8">
@@ -23,12 +23,12 @@
     <!-- Cabeçalho -->
     <header>
       <div class="header-container">
-        <div class="div-hamburguer">
-          <!-- Botão Hamburguer -->
-          <a class="navbar-mob" onclick="toggleSidebar()">
-            <i id="icone" class="fa-solid fa-bars fa-2x"></i>
-          </a>
-        </div>
+        <div class="div-hamburguer" onclick="toggleSidebar()">
+                    <!-- Botão Hamburguer -->
+                    <a class="navbar-mob">
+                        <i id="icone" class="fa-solid fa-bars"></i>
+                    </a>
+                </div>
         <h2>DASHBOARD - CONTROLE DE CONTAS</h2>
         <div class="div-pai-perfil">
           <div class="div-linha"></div>
@@ -49,6 +49,7 @@
 
     <!-- Sidebar Modal -->
     <div id="sidebarModal" class="sidebar-modal">
+      <img src="/assets/imgs/Zephyrus_2png.png" alt="">
       <div class="sidebar-header">
         <span>Menu</span>
         <button onclick="toggleSidebar()" class="btn-fechar">&times;</button>
@@ -56,7 +57,7 @@
       <nav class="sidebar-nav">
         <a style="text-decoration: none;" href="./mainPage.html">Página principal</a>
         <a style="text-decoration: none;" href="./controleSalas.html">Salas</a>
-        <a style="text-decoration: none;" href="./contas.html">Contas</a>
+        <a style="text-decoration: none;" class="pgAtual" href="./contas.html">Contas</a>
       </nav>
     </div>
 
