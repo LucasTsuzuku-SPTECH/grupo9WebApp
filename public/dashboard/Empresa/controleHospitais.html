@@ -626,6 +626,7 @@
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(hospitalAtualizado)
             });
+            sessionStorage.NOME_HOSPITAL_ATUAL = nomeHospital;
             if (!resp.ok) throw new Error();
             await resp.json();
             Swal.fire('Sucesso!', 'Hospital atualizado.', 'success');

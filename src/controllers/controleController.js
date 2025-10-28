@@ -95,25 +95,25 @@ function deletarVentilador(req, res) {
         });
 }
 
-    async function criarVentilador(req, res) {
-        const ventilador = req.body;
+async function criarVentilador(req, res) {
+    const ventilador = req.body;
 
-        try {
-            const novoId = await controleModel.criarVentilador(ventilador);
+    try {
+        await controleModel.criarVentilador(ventilador);
 
-            // se tiver componentes, cadastra
-            if (ventilador.componentes && ventilador.componentes.length > 0) {
-                for (const comp of ventilador.componentes) {
-                    await controleModel.criarComponenteEParametro(comp, novoId);
-                }
+        if (ventilador.componentes != 0 || ventilador.componentes != null) {
+            for (const comp of ventilador.componentes) {
+                await controleModel.criarParametro(comp);
             }
-
-            res.json({ message: "Ventilador e componentes criados com sucesso" });
-        } catch (erro) {
-            console.error("Erro ao criar ventilador: ", erro.sqlMessage || erro);
-            res.status(500).json({ message: "Erro ao criar ventilador", erro: erro.sqlMessage });
         }
+
+
+        res.json({ message: "Ventilador criado com sucesso" });
+    } catch (erro) {
+        console.error("Erro ao criar ventilador: ", erro.sqlMessage || erro);
+        res.status(500).json({ message: "Erro ao criar ventilador", erro: erro.sqlMessage });
     }
+}
 
 
 function listarModelos(req, res) {
@@ -151,14 +151,19 @@ function buscarVentilador(req, res) {
 }
 
 function atualizarVentilador(req, res) {
-    const idVentilador = req.params.idVentilador;
-    const { numero_serie, fk_sala} = req.body;
+    // validação mínima - garante que o cliente enviou os campos esperados
+    const idVentilador = Number(req.body.id_ventilador);
+    const fk_sala = Number(req.body.fk_sala);
 
-    controleModel.atualizarVentilador(idVentilador, numero_serie, fk_sala)
+    if (!idVentilador || !fk_sala) {
+        return res.status(400).json({ message: 'id_ventilador e fk_sala são obrigatórios e devem ser numéricos' });
+    }
+
+    controleModel.atualizarVentilador(idVentilador, fk_sala)
         .then(() => res.json({ message: "Ventilador atualizado com sucesso" }))
         .catch(erro => {
-            console.error("Erro ao atualizar ventilador: ", erro.sqlMessage);
-            res.status(500).json({ message: "Erro ao atualizar ventilador", erro: erro.sqlMessage });
+            console.error("Erro ao atualizar ventilador: ", erro.sqlMessage || erro);
+            res.status(500).json({ message: "Erro ao atualizar ventilador", erro: erro.sqlMessage || erro });
         });
 }
 
@@ -199,14 +204,14 @@ async function editarHospital(req, res) {
 }
 
 async function deletarHospital(req, res) {
-  try {
-    const id = req.params.idHospital;
-    await controleModel.deletarHospital(id);
-    res.json({ message: "Hospital e ventiladores vinculados foram deletados" });
-  } catch (err) {
-    console.error("Erro ao deletar hospital:", err);
-    res.status(500).json({ error: "Erro interno ao deletar hospital" });
-  }
+    try {
+        const id = req.params.idHospital;
+        await controleModel.deletarHospital(id);
+        res.json({ message: "Hospital e ventiladores vinculados foram deletados" });
+    } catch (err) {
+        console.error("Erro ao deletar hospital:", err);
+        res.status(500).json({ error: "Erro interno ao deletar hospital" });
+    }
 }
 
 function listarParametros(req, res) {
@@ -236,10 +241,12 @@ async function buscarComponentes(req, res) {
     }
 }
 
-async function atualizarComponente(req, res) {
-    const { idComponente, nomeComponente, unidadeMedida, idParametro, parametroMin, parametroMax } = req.body;
+async function atualizarParametro(req, res) {
+    const idParametro = req.body.idParametro;
+    const parametroMin = req.body.parametroMin;
+    const parametroMax = req.body.parametroMax;
     try {
-        await controleModel.atualizarComponenteEParametro(idComponente, nomeComponente, unidadeMedida, idParametro, parametroMin, parametroMax);
+        await controleModel.atualizarParametro(idParametro, parametroMin, parametroMax);
         res.json({ message: "Componente atualizado com sucesso" });
     } catch (erro) {
         console.error(erro);
@@ -247,51 +254,43 @@ async function atualizarComponente(req, res) {
     }
 }
 
-async function criarComponenteEParametro(req, res) {
-    const { nomeComponente, unidadeMedida, parametroMin, parametroMax, fkVentilador } = req.body;
+async function criarParametro(req, res) {
+    const parametroMin = req.body.parametroMin;
+    const parametroMax = req.body.parametroMax;
+    const numero_serie = req.body.numero_serie;
+    const idComponente = req.body.idComponente;
+
+    const objComp = {
+        idComponente: Number(idComponente),
+        numero_serie: numero_serie,
+        parametroMax: Number(parametroMax),
+        parametroMin: Number(parametroMin)
+    };
 
     try {
-        // 1 - Criar componente
-        const novoComponente = await controleModel.criarComponente(nomeComponente, unidadeMedida);
+        await controleModel.criarParametro(objComp);
 
-        // 2 - Criar parâmetro vinculado ao ventilador + componente
-        await controleModel.criarParametro(parametroMin, parametroMax, fkVentilador, novoComponente.insertId);
-
-        res.status(201).json({ message: "Componente e parâmetro criados com sucesso!" });
+        res.status(201).json({ message: "Parâmetro criado com sucesso!" });
     } catch (erro) {
         console.error("Erro ao criar componente e parâmetro: ", erro.sqlMessage || erro);
-        res.status(500).json({ message: "Erro ao criar componente e parâmetro", erro: erro.sqlMessage || erro });
+        res.status(500).json({ message: "Erro ao criar parâmetro", erro: erro.sqlMessage || erro });
     }
 }
 
-async function deletarComponenteEParametro(req, res) {
-    const { idComponente, idParametro } = req.params;
+async function deletarParametro(req, res) {
+    const idParametro = Number(req.params.idParametro);
 
     try {
-        // 1 - deletar parâmetro associado
         await controleModel.deletarParametro(idParametro);
 
-        // 2 - deletar componente
-        await controleModel.deletarComponente(idComponente);
-
-        res.status(200).json({ message: "Componente e parâmetro removidos com sucesso!" });
+        res.status(200).json({ message: "Parâmetro removido com sucesso!" });
     } catch (erro) {
         console.error("Erro ao deletar componente e parâmetro: ", erro.sqlMessage || erro);
         res.status(500).json({ message: "Erro ao deletar componente e parâmetro", erro: erro.sqlMessage || erro });
     }
 }
 
-async function criarSala(req, res) {
-    const sala = req.body;  // espera: { andar, numero, descricao, fkHospital }
 
-    try {
-        const novoId = await controleModel.criarSala(sala);
-        res.json({ message: "Sala criada com sucesso", idSala: novoId });
-    } catch (erro) {
-        console.error("Erro ao criar sala: ", erro.sqlMessage || erro);
-        res.status(500).json({ message: "Erro ao criar sala", erro: erro.sqlMessage });
-    }
-}
 
 module.exports = {
     listarHospitais,
@@ -309,11 +308,10 @@ module.exports = {
     deletarHospital,
     listarParametros,
     buscarComponentes,
-    atualizarComponente,
-    criarComponenteEParametro,
-    deletarComponenteEParametro,
+    criarParametro,
+    atualizarParametro,
+    deletarParametro,
     listarSalas,
-    criarSala,
     listarVentiladoresSala,
     listarSala
 };
