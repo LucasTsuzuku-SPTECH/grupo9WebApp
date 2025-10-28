@@ -465,7 +465,7 @@ table td.colunaDelete {
 
 .kpi {
   display: flex;
-  justify-content: start;
+  justify-content: center;
   /* centraliza os itens horizontalmente */
   align-items: center;
   /* centraliza verticalmente */

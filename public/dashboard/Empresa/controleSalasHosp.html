@@ -65,6 +65,10 @@
 
             <!-- KPIs de hospitais -->
             <div class="kpi">
+                <div style= "display: flex; flex-direction: column; align-items: center; margin-left: 1%; margin-right: 1%;">
+                    <h3> Última Atualização:</h3>
+                    <p id="data-atual"></p>
+                </div>
                 <!-- Select de Filtro -->
                 <select id="filtroCriticidade">
                     <option value="todos">Todos</option>
@@ -87,6 +91,11 @@
                 <div class="item" style="background-color: rgba(0, 185, 0, 0.2); border: 2px solid rgb(0, 207, 0);">
                     <p id="qtd_deEstaveis">Quantidade Salas Estáveis:</p>
                     <h3 id="qtde_estavel">0</h3>
+                </div>
+                <div style= "display: flex; flex-direction: column; align-items: center; margin-left: 1%; margin-right: 1%;  ">
+                    <span style="width: 100%; margin: 2px;" class="status critico">Critico ≥ 2 Alertas</span>
+                    <span style="width: 100%; margin: 2px;" class="status alerta">Alerta = 1 Alerta</span>
+                    <span style="width: 100%; margin: 2px;" class="status estavel">Estável = 0 Alerta</span>
                 </div>
             </div>
         </div>
@@ -259,6 +268,15 @@
 <!-- SweetAlert2 -->
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
+    /* Definindo o horário na dash*/
+    let agora = new Date();
+
+    let dataFormatada = agora.toLocaleDateString();
+    let horaFormatada = agora.toLocaleTimeString();
+
+    let elementoData = document.getElementById("data-atual");
+
+    elementoData.textContent = `${dataFormatada} ${horaFormatada}`;
     nomeHospAtual.innerHTML = `<h1 style="margin: 4vh 0vh 2vh 4vh; font-size:40px">${sessionStorage.getItem('NOME_HOSPITAL_ATUAL')}</h1>`
 
 
