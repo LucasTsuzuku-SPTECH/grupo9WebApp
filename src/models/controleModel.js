@@ -13,7 +13,7 @@ function listarHospitais() {
     return database.executar(instrucaoSql);
 }
 
-function HospitalUsuario(fkHospital){
+function HospitalUsuario(fkHospital) {
 
     console.log("ACESSEI controleModel HospitalUsuario()");
     var instrucaoSql = `
@@ -103,18 +103,27 @@ async function deletarVentilador(idVentilador) {
 }
 
 async function criarVentilador(ventilador) {
-    const { numero_serie, fk_modelo, fk_sala } = ventilador;
+    const { numero_serie, nomeModelo, fk_sala } = ventilador;
     const sql = `
         INSERT INTO Ventilador (numero_serie, fkModelo, fkSala)
-        VALUES ('${numero_serie}', ${fk_modelo}, ${fk_sala});
+        VALUES ('${numero_serie}', (SELECT idModelo FROM Modelo WHERE nome LIKE "${nomeModelo}"), ${fk_sala});
+    `;
+    return database.executar(sql);
+}
+
+function criarModelo(ventilador) {
+    const [nomeModelo, fk_empresa] = ventilador;
+    const sql = `
+        INSERT INTO Modelo (nome, fkEmpresa)
+        VALUES ('${nomeModelo}', ${fk_empresa});
     `;
     return database.executar(sql);
 }
 
 async function criarParametro(componente) {
     const sql = `
-        INSERT INTO Parametro (fkComponente, fkVentilador, parametroMax, parametroMin)
-        VALUES (${componente.idComponente},  (SELECT idVentilador FROM Ventilador WHERE numero_serie LIKE "${componente.numero_serie}"), ${componente.parametroMax}, ${componente.parametroMin});
+    INSERT INTO Parametro (fkComponente, fkVentilador, parametroMax, parametroMin)
+    VALUES (${componente.idComponente},  (SELECT idVentilador FROM Ventilador WHERE numero_serie LIKE "${componente.numero_serie}"), ${componente.parametroMax}, ${componente.parametroMin});
     `;
     return database.executar(sql);
 }
@@ -272,6 +281,7 @@ module.exports = {
     listarVentiladores,
     deletarVentilador,
     criarVentilador,
+    criarModelo,
     listarModelos,
     buscarVentilador,
     atualizarVentilador,

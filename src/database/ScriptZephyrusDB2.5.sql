@@ -135,7 +135,7 @@ VALUES
 ('RAM', '%'),
 ('Disco', 'GB'),
 ('Bateria', '%'),
-('Qtd Processos', 'Numérico');
+('Qtd Processos', 'Inteiro');
 
 
 

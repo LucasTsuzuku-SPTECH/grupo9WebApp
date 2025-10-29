@@ -65,7 +65,8 @@
 
             <!-- KPIs de hospitais -->
             <div class="kpi">
-                <div style= "display: flex; flex-direction: column; align-items: center; margin-left: 1%; margin-right: 1%;">
+                <div
+                    style="display: flex; flex-direction: column; align-items: center; margin-left: 1%; margin-right: 1%;">
                     <h3> Última Atualização:</h3>
                     <p id="data-atual"></p>
                 </div>
@@ -92,7 +93,8 @@
                     <p id="qtd_deEstaveis">Quantidade Salas Estáveis:</p>
                     <h3 id="qtde_estavel">0</h3>
                 </div>
-                <div style= "display: flex; flex-direction: column; align-items: center; margin-left: 1%; margin-right: 1%;  ">
+                <div
+                    style="display: flex; flex-direction: column; align-items: center; margin-left: 1%; margin-right: 1%;  ">
                     <span style="width: 100%; margin: 2px;" class="status critico">Critico ≥ 2 Alertas</span>
                     <span style="width: 100%; margin: 2px;" class="status alerta">Alerta = 1 Alerta</span>
                     <span style="width: 100%; margin: 2px;" class="status estavel">Estável = 0 Alerta</span>
@@ -198,7 +200,12 @@
                     </div>
                     <div class="form-group">
                         <label for="selectModelo">Modelo</label>
-                        <select id="selectModelo" required></select>
+                        <select id="selectModelo"></select>
+                        <input id="inputModelo" type="text" placeholder="Digite o nome do novo modelo..."
+                            style="display: none;">
+                        <button id="botaoModelo" type="button" class="btn-add" style="width: 25%;"
+                            onclick="adicionarModelo()">+
+                            Adicionar novo modelo</button>
                     </div>
 
                     <div class="form-group">
@@ -269,8 +276,8 @@
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
 
-    if(sessionStorage.CARGO_USUARIO != "adminEmpresa"){
-    document.getElementById("btnEditarHospital").style.display = "none";
+    if (sessionStorage.CARGO_USUARIO != "adminEmpresa") {
+        document.getElementById("btnEditarHospital").style.display = "none";
     }
 
     /* Definindo o horário na dash*/
@@ -588,7 +595,7 @@
                                 <strong>Modelo:</strong> ${v.nome_modelo}<br>
                             </div>
                             <div style="display:flex; flex-direction:column; align-items:center; min-width:80px; margin: 5px ;border: 1px solid #ccc; background: #f9f9f9; padding: 10px 20px; border-radius: 10px;">
-                                <span><strong>Quantidade Alertas:</strong> ${v.alertas}</span>
+                                <span><strong>Quantidade Alertas de Hoje:</strong> ${v.alertas}</span>
                                 <span class="status ${statusClass}">${statusClass}</span>
                             </div>
                         </div>
@@ -682,7 +689,7 @@
                     <strong>Modelo:</strong> ${ventiladorEncontrado.nome_modelo}<br>
                 </div>
                 <div style="display:flex; flex-direction:column; align-items:center; min-width:80px; margin: 5px ;border: 1px solid #ccc; background: #f9f9f9; padding: 10px 20px; border-radius: 10px;">
-                    <span><strong>Quantidade Alertas:</strong> ${ventiladorEncontrado.alertas}</span>
+                    <span><strong>Quantidade Alertas de Hoje:</strong> ${ventiladorEncontrado.alertas}</span>
                     <span class="status ${statusClass}">${statusClass}</span>
                 </div>
             </div>
@@ -824,7 +831,7 @@
                                 <strong>Modelo:</strong> ${v.nome_modelo}<br>
                             </div>
                             <div style="display:flex; flex-direction:column; align-items:center; min-width:80px; margin: 5px ;border: 1px solid #ccc; background: #f9f9f9; padding: 10px 20px; border-radius: 10px;">
-                                <span><strong>Quantidade Alertas:</strong> ${v.alertas}</span>
+                                <span><strong>Quantidade Alertas de Hoje:</strong> ${v.alertas}</span>
                                 <span class="status ${statusClass}">${statusClass}</span>
                             </div>
                         </div>
@@ -904,18 +911,33 @@
 
         document.getElementById("fkEmpresa").value = sessionStorage.getItem("EMPRESA_USUARIO");
         document.getElementById("idHospital").value = idHospital;
-        await carregarModelos("selectModelo");
         document.getElementById("addVentiladorModal").style.display = "flex";
+        await carregarModelos("selectModelo");
+    }
+
+    function adicionarModelo() {
+        if (document.getElementById("inputModelo").style.display == "none") {
+            document.getElementById("inputModelo").style.display = "block";
+            document.getElementById("selectModelo").style.display = "none";
+            document.getElementById("botaoModelo").innerHTML = "Selecionar modelo existente";
+
+        } else if (document.getElementById("inputModelo").style.display == "block") {
+            document.getElementById("inputModelo").style.display = "none";
+            document.getElementById("selectModelo").style.display = "block";
+            document.getElementById("botaoModelo").innerHTML = "Adicionar novo modelo";
+        }
+
+
+
     }
 
     async function carregarModelos(selectId) {
         const resp = await fetch('/controle/modelos');
         const modelos = await resp.json();
-        console.log(modelos)
         const select = document.getElementById(selectId);
         select.innerHTML = '';
         for (modelo of modelos) {
-            select.innerHTML += `<option value = "${modelo.idModelo}"> ${modelo.nome}</option > `;
+            select.innerHTML += `<option value = "${modelo.nome}"> ${modelo.nome}</option > `;
         }
     }
 
@@ -933,11 +955,11 @@
             <label>Nome Componente</label>
             <select name="idComponente-${idx}" id=selectComponente>
                 <option value = "">Selecione um componente</option>
-                <option value = "1">CPU</option>
-                <option value = "2">RAM</option>
-                <option value = "3">Disco</option>    
-                <option value = "4">Bateria</option>
-                <option value = "5">Qtd Processos</option>
+                <option value = "1">CPU(%)</option>
+                <option value = "2">RAM(%)</option>
+                <option value = "3">Disco(GB)</option>    
+                <option value = "4">Bateria(%)</option>
+                <option value = "5">Qtd Processos(Inteiro)</option>
             </select>
 
             <label>Parâmetro Mínimo</label>
@@ -955,12 +977,31 @@
     document.getElementById("formAddVentilador").addEventListener("submit", async e => {
         e.preventDefault();
 
-        const novoVentilador = {
-            numero_serie: document.getElementById("numeroSerie").value,
-            fk_modelo: document.getElementById("selectModelo").value,
-            fk_sala: document.getElementById("selectSalas").value,
-            componentes: []
-        };
+        var nomeModelo = document.getElementById("inputModelo").value;
+        var fk_empresa = sessionStorage.getItem("EMPRESA_USUARIO");
+
+
+        if (document.getElementById("selectModelo").style.display == "none") {
+            var novoVentilador = {
+                numero_serie: document.getElementById("numeroSerie").value,
+                novoModelo: [nomeModelo, fk_empresa],
+                nomeModelo: nomeModelo,
+                fk_sala: document.getElementById("selectSalas").value,
+                componentes: []
+            };
+
+        } else {
+            var novoVentilador = {
+                numero_serie: document.getElementById("numeroSerie").value,
+                novoModelo: [],
+                nomeModelo: document.getElementById("selectModelo").value,
+                fk_sala: document.getElementById("selectSalas").value,
+                componentes: []
+            };
+        }
+
+        console.log(novoVentilador)
+
 
         // Monta os componentes dinamicamente
         const container = document.getElementById("componentesContainer");
@@ -1041,7 +1082,7 @@
                     <input type="hidden" name="idParametro-${idx}" value="${comp.idParametro}">
 
                     <label>Nome Componente</label>
-                    <input type="text" name="nomeComponente-${idx}" value="${comp.nomeComponente}" required disabled>
+                    <input type="text" name="nomeComponente-${idx}" value="${comp.nomeComponente}(${comp.unidadeMedida})" required disabled>
 
                     <label>Parâmetro Mínimo</label>
                     <input type="number" name="paramMin-${idx}" value="${comp.parametroMin}" required>

@@ -65,7 +65,8 @@
 
             <!-- KPIs de hospitais -->
             <div class="kpi">
-                <div style= "display: flex; flex-direction: column; align-items: center; margin-left: 1%; margin-right: 1%;">
+                <div
+                    style="display: flex; flex-direction: column; align-items: center; margin-left: 1%; margin-right: 1%;">
                     <h3> Última Atualização:</h3>
                     <p id="data-atual"></p>
 
@@ -94,7 +95,8 @@
                     <h3 id="qtde_estavel">0</h3>
                 </div>
 
-                <div style= "display: flex; flex-direction: column; align-items: center; margin-left: 1%; margin-right: 1%;  ">
+                <div
+                    style="display: flex; flex-direction: column; align-items: center; margin-left: 1%; margin-right: 1%;  ">
                     <span style="width: 100%; margin: 2px;" class="status critico">Critico ≥ 2 Alertas</span>
                     <span style="width: 100%; margin: 2px;" class="status alerta">Alerta = 1 Alerta</span>
                     <span style="width: 100%; margin: 2px;" class="status estavel">Estável = 0 Alerta</span>
@@ -268,8 +270,9 @@
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
 
-    if(sessionStorage.CARGO_USUARIO != "adminHospital"){
-    document.getElementById("btnEditarHospital").style.display = "none";    
+    if (sessionStorage.CARGO_USUARIO != "adminHospital") {
+        document.getElementById("btnEditarHospital").style.display = "none";
+        document.getElementById("")
     }
     /* Definindo o horário na dash*/
     let agora = new Date();
@@ -567,7 +570,7 @@
                                 <strong>Nº Série:</strong> <span>${v.numero_serie}</span>
                             </div>
                             <div style="display:flex;gap:10px;">
-                                ${sessionStorage.CARGO_USUARIO != "adminHospital" ? "":`<button class="btn-edit" onclick='abrirModalEdicao(${v.idVentilador}, ${v.idSala}, ${v.idHospital})'>
+                                ${sessionStorage.CARGO_USUARIO != "adminHospital" ? "" : `<button class="btn-edit" onclick='abrirModalEdicao(${v.idVentilador}, ${v.idSala}, ${v.idHospital})'>
                                     <span class="btn-text">Editar</span>
                                     <i class="fa-regular fa-pen-to-square"></i>
                                 </button>
@@ -609,7 +612,7 @@
                                 Min: ${p.parametroMin}, Max: ${p.parametroMax}</p>
                             `).join("");
                         parametrosEncontrados.push(parametros)
-                       
+
                     }
                 } catch (errParams) {
                     console.error("Erro ao buscar parâmetros:", errParams);
@@ -662,7 +665,7 @@
                     <strong>Nº Série:</strong> <span>${ventiladorEncontrado.numero_serie}</span>
                 </div>
                 <div style="display:flex;gap:10px;">
-                    ${sessionStorage.CARGO_USUARIO != "adminHospital" ? " ":`<button class="btn-edit" onclick='abrirModalEdicao(${ventiladorEncontrado.idVentilador}, ${ventiladorEncontrado.idSala}, ${ventiladorEncontrado.idHospital})'>
+                    ${sessionStorage.CARGO_USUARIO != "adminHospital" ? " " : `<button class="btn-edit" onclick='abrirModalEdicao(${ventiladorEncontrado.idVentilador}, ${ventiladorEncontrado.idSala}, ${ventiladorEncontrado.idHospital})'>
                         <span class="btn-text">Editar</span>
                         <i class="fa-regular fa-pen-to-square"></i>
                     </button>
@@ -775,10 +778,10 @@
             conteudo.innerHTML = `
             <h3>Sala ${numeroSala}
                 <div style="display: flex; flex-direction: row; gap:15px;">
-                    <button class="button" type="button" onclick="abrirAddModal(${idSala})">
+                    ${sessionStorage.CARGO_USUARIO != "adminHospital" ? "" : `<button class="button" type="button" onclick="abrirAddModal(${idSala})">
                         <span class="button_text">Adicionar Ventilador</span>
                         <span class="button_icon">+</span>
-                    </button>
+                    </button>`}
                     <button class="btn-fechar-modal" onclick="fecharModal()">X</button>
                 </div>
             </h3>
@@ -803,7 +806,7 @@
                                 <strong>Nº Série:</strong> <span>${v.numero_serie}</span>
                             </div>
                             <div style="display:flex;gap:10px;">
-                                ${sessionStorage.CARGO_USUARIO != "adminHospital" ? " ":`<button class="btn-edit" onclick='abrirModalEdicao(${v.idVentilador}, ${v.idSala}, ${v.idHospital})'>
+                                ${sessionStorage.CARGO_USUARIO != "adminHospital" ? " " : `<button class="btn-edit" onclick='abrirModalEdicao(${v.idVentilador}, ${v.idSala}, ${v.idHospital})'>
                                     <span class="btn-text">Editar</span>
                                     <i class="fa-regular fa-pen-to-square"></i>
                                 </button>
