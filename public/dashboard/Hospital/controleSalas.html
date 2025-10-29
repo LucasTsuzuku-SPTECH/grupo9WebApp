@@ -53,7 +53,7 @@
             </div>
             <nav class="sidebar-nav">
                 <a href="./mainPage.html">Página principal</a>
-                <a class="pgAtual" href="./controleHospitais.html">Salas</a>
+                <a class="pgAtual" href="./controleSalas.html">Salas</a>
                 <a href="./contas.html">Contas</a>
             </nav>
         </div>
@@ -109,7 +109,7 @@
                 <i class="fa-regular fa-pen-to-square"></i>
             </button>
             <button class="btn-edit" style="width: 100%; max-width: 14vw ; margin-left: 0px;" type="button" id="awdsad"
-                onclick="vizualizarVentiladores()">
+                onclick="visualizarVentiladores()">
                 <span class="btn-text">Visualizar Ventiladores</span>
                 <i class="fa-solid fa-eye"></i>
             </button>
@@ -267,6 +267,10 @@
 <!-- SweetAlert2 -->
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
+
+    if(sessionStorage.CARGO_USUARIO != "adminHospital"){
+    document.getElementById("btnEditarHospital").style.display = "none";    
+    }
     /* Definindo o horário na dash*/
     let agora = new Date();
 
@@ -490,7 +494,7 @@
 
     var ventiladoresEncontrados = [];
     var parametrosEncontrados = [];
-    async function vizualizarVentiladores() {
+    async function visualizarVentiladores() {
         ventiladoresEncontrados = [];
         parametrosEncontrados = [];
         const container = document.querySelector(".conteudo-principal2");
@@ -503,10 +507,10 @@
                 <span class="btn-text">Visualizar Salas</span>
                 <i class="fa-solid fa-eye"></i>
                 </button>
-                <button class="btn-edit" style="width: 100%; max-width: 12vw ; margin-left: 0px;" type="button" onclick="abrirAddModal()">
+                ${sessionStorage.CARGO_USUARIO != "adminHospital" ? "" : `<button class="btn-edit" style="width: 100%; max-width: 12vw ; margin-left: 0px;" type="button" onclick="abrirAddModal()">
                      <span class="button_text">Adicionar Ventilador</span>
                     <span class="button_icon">+</span>
-                </button> 
+                </button> `}
                 <input id="ipt_pesquisa" oninput="filtrarNSerie()" style="width: 20%;
                 border-radius: 8px;
                 border: 1px solid black;
@@ -563,14 +567,14 @@
                                 <strong>Nº Série:</strong> <span>${v.numero_serie}</span>
                             </div>
                             <div style="display:flex;gap:10px;">
-                                <button class="btn-edit" onclick='abrirModalEdicao(${v.idVentilador}, ${v.idSala}, ${v.idHospital})'>
+                                ${sessionStorage.CARGO_USUARIO != "adminHospital" ? "":`<button class="btn-edit" onclick='abrirModalEdicao(${v.idVentilador}, ${v.idSala}, ${v.idHospital})'>
                                     <span class="btn-text">Editar</span>
                                     <i class="fa-regular fa-pen-to-square"></i>
                                 </button>
                                 <button class="btn-delete" onclick='confirmarDelete(${v.idVentilador}, ${v.idHospital})'>
                                     <span class="text">Excluir</span>
                                     <i class="fa-solid fa-trash icon"></i>
-                                </button>
+                                </button>`}
                             </div>
                         </div>
                         <div class="linha-separadora"></div>
@@ -658,14 +662,14 @@
                     <strong>Nº Série:</strong> <span>${ventiladorEncontrado.numero_serie}</span>
                 </div>
                 <div style="display:flex;gap:10px;">
-                    <button class="btn-edit" onclick='abrirModalEdicao(${ventiladorEncontrado.idVentilador}, ${ventiladorEncontrado.idSala}, ${ventiladorEncontrado.idHospital})'>
+                    ${sessionStorage.CARGO_USUARIO != "adminHospital" ? " ":`<button class="btn-edit" onclick='abrirModalEdicao(${ventiladorEncontrado.idVentilador}, ${ventiladorEncontrado.idSala}, ${ventiladorEncontrado.idHospital})'>
                         <span class="btn-text">Editar</span>
                         <i class="fa-regular fa-pen-to-square"></i>
                     </button>
                     <button class="btn-delete" onclick='confirmarDelete(${ventiladorEncontrado.idVentilador}, ${ventiladorEncontrado.idHospital})'>
                         <span class="text">Excluir</span>
                         <i class="fa-solid fa-trash icon"></i>
-                    </button>
+                    </button>`}
                 </div>
             </div>
             <div class="linha-separadora"></div>
@@ -799,14 +803,14 @@
                                 <strong>Nº Série:</strong> <span>${v.numero_serie}</span>
                             </div>
                             <div style="display:flex;gap:10px;">
-                                <button class="btn-edit" onclick='abrirModalEdicao(${v.idVentilador}, ${v.idSala}, ${v.idHospital})'>
+                                ${sessionStorage.CARGO_USUARIO != "adminHospital" ? " ":`<button class="btn-edit" onclick='abrirModalEdicao(${v.idVentilador}, ${v.idSala}, ${v.idHospital})'>
                                     <span class="btn-text">Editar</span>
                                     <i class="fa-regular fa-pen-to-square"></i>
                                 </button>
                                 <button class="btn-delete" onclick='confirmarDelete(${v.idVentilador}, ${v.idHospital})'>
                                     <span class="text">Excluir</span>
                                     <i class="fa-solid fa-trash icon"></i>
-                                </button>
+                                </button>`}
                             </div>
                         </div>
                         <div class="linha-separadora"></div>
@@ -874,7 +878,7 @@
                     const card = document.querySelector(`.ventilador button[onclick='confirmarDelete(${idVentilador})']`)?.closest('.ventilador');
                     if (card) card.remove();
                     fecharModal();
-                    document.getElementById("validaVentiladores") ? vizualizarVentiladores() : carregarSalasHosp().then(filtrarSalasHospitais);
+                    document.getElementById("validaVentiladores") ? visualizarVentiladores() : carregarSalasHosp().then(filtrarSalasHospitais);
                 } catch {
                     Swal.fire('Erro!', 'Não foi possível deletar o ventilador.', 'error');
                 }
@@ -981,7 +985,7 @@
             Swal.fire('Sucesso!', 'Ventilador e componentes adicionados.', 'success');
             fecharModal();
             fecharAddModal();
-            document.getElementById("validaVentiladores") ? vizualizarVentiladores() : carregarSalasHosp().then(filtrarSalasHospitais);;
+            document.getElementById("validaVentiladores") ? visualizarVentiladores() : carregarSalasHosp().then(filtrarSalasHospitais);;
         } catch {
             Swal.fire('Erro!', 'Não foi possível adicionar o ventilador.', 'error');
         }
@@ -1176,7 +1180,7 @@
             Swal.fire('Sucesso!', 'Ventilador atualizado.', 'success');
             fecharModal();
             fecharEditModal();
-            document.getElementById("validaVentiladores") ? vizualizarVentiladores() : carregarSalasHosp().then(filtrarSalasHospitais);;
+            document.getElementById("validaVentiladores") ? visualizarVentiladores() : carregarSalasHosp().then(filtrarSalasHospitais);;
         } catch (err) {
             console.error(err);
             Swal.fire('Erro!', 'Não foi possível atualizar o ventilador.', 'error');
