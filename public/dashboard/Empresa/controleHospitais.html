@@ -74,7 +74,7 @@
                     <option value="alerta">Alerta</option>
                     <option value="estavel">Estável</option>
                 </select>
-                <div class="item" style=" background-color: #35BBAB; border: 2px solid black;">
+                <div class="item" style=" border: 2px solid black;">
                     <p>Quantidade Hospitais:</p>
                     <h3 id="qtde_total">0</h3>
                 </div>
@@ -100,7 +100,7 @@
 
 
         <div style="padding: 20px; display: flex; gap: 10px; flex-wrap: wrap;">
-            <button class="button" style="width: 100%; max-width: 12vw ; margin-left: 0px;" type="button"
+            <button id="add_hospital" class="button" style="width: 100%; max-width: 12vw ; margin-left: 0px;" type="button"
                 onclick="abrirModalHospital()">
                 <span class="button_text">Adicionar Hospital</span>
                 <span class="button_icon">+</span>
@@ -227,6 +227,11 @@
     let elementoData = document.getElementById("data-atual");
 
     elementoData.textContent = `${dataFormatada} ${horaFormatada}`;
+    
+    if(sessionStorage.CARGO_USUARIO != "adminEmpresa"){
+    document.getElementById("add_hospital").style.display = "none";
+    document.getElementById("btnEditarHospital").style.display = "none";    
+    }
 
     /* ------------------ UI ------------------ */
     function toggleSidebar() {
