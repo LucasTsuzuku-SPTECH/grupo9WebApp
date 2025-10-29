@@ -16,10 +16,10 @@ function listarHospitais(req, res) {
         });
 }
 
-function HospitalUsuario(req, res){
+function HospitalUsuario(req, res) {
     const fkHospital = req.params.fkHospital
-        controleModel.HospitalUsuario(fkHospital)
-        
+    controleModel.HospitalUsuario(fkHospital)
+
         .then(function (resultado) {
             if (resultado.length > 0) {
                 res.json(resultado);
@@ -117,6 +117,10 @@ async function criarVentilador(req, res) {
     const ventilador = req.body;
 
     try {
+        if (ventilador.novoModelo.length > 0) {
+            await controleModel.criarModelo(ventilador.novoModelo);
+        }
+
         await controleModel.criarVentilador(ventilador);
 
         if (ventilador.componentes != 0 || ventilador.componentes != null) {
@@ -129,9 +133,11 @@ async function criarVentilador(req, res) {
         res.json({ message: "Ventilador criado com sucesso" });
     } catch (erro) {
         console.error("Erro ao criar ventilador: ", erro.sqlMessage || erro);
-        res.status(500).json({ message: "Erro ao criar ventilador", erro: erro.sqlMessage });
+        res.status(500).json({ message: "Erro ao criar ventilador", erro: erro.sqlMessage, ventilador });
     }
 }
+
+
 
 
 function listarModelos(req, res) {
