@@ -31,9 +31,9 @@ function listarSalas() {
 
     // Pegando nome e status do hospital (se você quiser calcular alertas, pode alterar depois)
     var instrucaoSql = `
-        SELECT idHospital, nomeHospital, idSala
-        FROM Hospital
-        INNER JOIN Sala ON fkHospital = idHospital;
+        SELECT h.idHospital, h.nomeHospital, s.idSala
+        FROM Hospital h
+        INNER JOIN Sala s ON s.fkHospital = h.idHospital;
     `;
 
     console.log("Executando SQL: \n" + instrucaoSql);
@@ -41,7 +41,7 @@ function listarSalas() {
 }
 
 function listarSala(idHospital) {
-    console.log("ACESSEI controleModel listarSalas()");
+    console.log("ACESSEI controleModel listarSala()");
 
     // Pegando nome e status do hospital (se você quiser calcular alertas, pode alterar depois)
     var instrucaoSql = `

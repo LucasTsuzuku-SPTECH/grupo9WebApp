@@ -38,7 +38,7 @@ router.post("/parametro/criar", controleController.criarParametro);
 router.delete("/parametro/deletar/:idParametro", controleController.deletarParametro);
 
 // SALAS
-router.get("/hospitais/salas", controleController.listarSalas);
+router.get("/listar/hospitais/salas", controleController.listarSalas);
 
 
 module.exports = router;
