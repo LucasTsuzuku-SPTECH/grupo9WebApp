@@ -13,61 +13,90 @@
 
 </head>
 
-<body>
+<body onload="carregarSalasHosp()">
   <div class="div-pai">
-  <!-- Cabeçalho -->
-        <header>
-            <div class="header-container">
-                <div class="div-hamburguer" onclick="toggleSidebar()">
-                    <!-- Botão Hamburguer -->
-                    <a class="navbar-mob">
-                        <i id="icone" class="fa-solid fa-bars"></i>
-                    </a>
-                </div>
-                <h2>DASHBOARD - PÁGINA PRINCIPAL</h2>
-                <div class="div-pai-perfil">
-                    <div class="div-linha"></div>
-                    <div class="div-todo-perfil">
-                        <div class="div-filho-perfil">
-                            <img src="../../assets/imgs/profile.png" alt="imagem de perfil" class="img-perfil" />
-                            <img src="../../assets/imgs/seta-para-baixo-braca.png" alt="ver opções" class="img-seta" />
-                        </div>
-                        <div class="div-opcoes">
-                            <div class="div-opcao-sair">
-                                <button style="border: none;" onclick="limparSessao()"
-                                    id="sair"><span>Sair</span></button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </header>
-
-        <!-- Sidebar Modal -->
-        <div id="sidebarModal" class="sidebar-modal">
-            <img src="/assets/imgs/Zephyrus_2png.png" alt="">
-            <div class="sidebar-header">
-                <span>Menu</span>
-                <button onclick="toggleSidebar()" class="btn-fechar">&times;</button>
-            </div>
-            <nav class="sidebar-nav">
-                <a class="pgAtual" href="./mainPage.html">Página principal</a>
-                <a href="./controleHospitais.html">Hospitais</a>
-                <a href="./contas.html">Contas</a>
-            </nav>
+    <!-- Cabeçalho -->
+    <header>
+      <div class="header-container">
+        <div class="div-hamburguer" onclick="toggleSidebar()">
+          <!-- Botão Hamburguer -->
+          <a class="navbar-mob">
+            <i id="icone" class="fa-solid fa-bars"></i>
+          </a>
         </div>
+        <h2>DASHBOARD - PÁGINA PRINCIPAL</h2>
+        <div class="div-pai-perfil">
+          <div class="div-linha"></div>
+          <div class="div-todo-perfil">
+            <div class="div-filho-perfil">
+              <img src="../../assets/imgs/profile.png" alt="imagem de perfil" class="img-perfil" />
+              <img src="../../assets/imgs/seta-para-baixo-braca.png" alt="ver opções" class="img-seta" />
+            </div>
+            <div class="div-opcoes">
+              <div class="div-opcao-sair">
+                <button style="border: none;" onclick="limparSessao()" id="sair"><span>Sair</span></button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </header>
 
-    <div class="conteudo-principal">
+    <!-- Sidebar Modal -->
+    <div id="sidebarModal" class="sidebar-modal">
+      <img src="/assets/imgs/Zephyrus_2png.png" alt="">
+      <div class="sidebar-header">
+        <span>Menu</span>
+        <button onclick="toggleSidebar()" class="btn-fechar">&times;</button>
+      </div>
+      <nav class="sidebar-nav">
+        <a class="pgAtual" href="./mainPage.html">Página principal</a>
+        <a href="./controleHospitais.html">Hospitais</a>
+        <a href="./contas.html">Contas</a>
+      </nav>
     </div>
 
-  </div>
+    <div class="conteudo-main">
+      <div style="width: 100%; display: flex; flex-direction: row; justify-content: center;">
+        <div class="kpiDash2">
+          <h2 id="maisIntercorrencia"></h2>Hospital com mais intercorrências
+        </div>
+        <div class="kpiDash2">
+          <h2 id="intercorrenciasAgora"></h2>Hospitais com intercorrências no momento
+        </div>
+      </div>
+
+      <div style="width: 100%; display: flex; flex-direction: row; justify-content: center;">
+        <div class="graficoContainer2">
+          <div class="graficoHeader">Ranking de intercorrência por hospitais (semanal):</div>
+          <div class="tabelaWrapper">
+            <table id="rankingHosp" class="graficoTabela2">
+              <thead>
+                <tr>
+                  <th>Posição</th>
+                  <th>Hospital</th>
+                  <th>Total de Intercorrências</th>
+                </tr>
+              </thead>
+            </table>
+          </div>
+        </div>
+
+        <div class="graficoContainer2">
+          <div class="graficoHeader">Intercorrência por hospital (semanal):</div>
+        </div>
+      </div>
 
 
-  </div>
+    </div>
 </body>
 
 </html>
-<script src="../js/chart.js"></script>
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="/js/chart.js"></script>
 
 <script>
   function toggleSidebar() {
@@ -105,6 +134,173 @@
       console.log(sessionStorage)
 
       window.location.href = "../../index.html"
+    }
+  }
+
+
+
+
+
+
+
+
+  async function carregarSalasHosp() {
+    try {
+      const resposta = await fetch(`/controle/listar/hospitais/salas`);
+      const salas = await resposta.json();
+      const container = document.querySelector(".conteudo-principal");
+
+      let total = salas.length, estavel = 0, alerta = 0, critico = 0;
+      var areas = [];
+      var salaEst = [];
+      var salaAlert = [];
+      var salaCri = [];
+
+      for (const sala of salas) {
+        if (!areas.includes(sala.area)) {
+          areas.push(sala.area)
+        }
+
+        // Buscar ventiladores da sala
+        const respV = await fetch(`/controle/hospitais/${sala.idSala}/ventiladores`);
+        var ventiladores = respV.status === 204 ? [] : await respV.json();
+
+        // --- MOCK ALERTAS ---
+        let totalAlertas = 0;
+
+        // Distribuir alertas de acordo com o status da sala
+        // Decide primeiro o status do hospital
+        let statusSala;
+        let alertasHosp = 0;
+        const sorteio = Math.random();
+
+        if (sorteio < 0.33) {
+          statusSala = "estavel";
+          ventiladores.forEach(v => v.alertas = 0);
+          totalAlertas = 0;
+
+        } else if (sorteio < 0.66) {
+          statusSala = "alerta";
+          // Gera no máximo 2 alertas no total
+          totalAlertas = Math.floor(Math.random() * 3); // 0,1,2
+          let restantes = totalAlertas;
+          ventiladores.forEach(v => {
+            if (restantes > 0) {
+              v.alertas = 1;
+              alertasHosp += v.alertas
+              restantes--;
+            } else {
+              v.alertas = 0;
+            }
+          });
+        } else {
+          statusSala = "critico";
+          // Gera 3 a 6 alertas no total
+          totalAlertas = 3 + Math.floor(Math.random() * 4); // 3 a 6
+          let restantes = totalAlertas;
+          ventiladores.forEach(v => {
+            if (restantes > 0) {
+              const qtd = Math.min(restantes, Math.floor(Math.random() * 3) + 1); // 1 a 3
+              v.alertas = qtd;
+              alertasHosp += v.alertas
+              restantes -= qtd;
+            } else {
+              v.alertas = 0;
+            }
+          });
+        }
+
+
+
+
+        // Guardar ventiladores com alertas simulados no próprio objeto
+        sala.ventiladoresMock = ventiladores;
+        sala.statusSala = statusSala;
+        sala.alertasTotais = alertasHosp;
+
+        // Contabilizar
+        if (statusSala === "estavel") {
+          estavel++;
+          salaEst.push(sala)
+        };
+
+        if (statusSala === "alerta") {
+          alerta++;
+          salaAlert.push(sala)
+        }
+        if (statusSala === "critico") {
+          critico++;
+          salaCri.push(sala);
+        }
+      }
+
+
+      //KPIs
+      var qtdHospIntercorrencias = 0;
+      var maiorErros = 0;
+      var hospMaisIntercorrencia;
+
+      const hospAgrupado = Object.values(Object.groupBy(salas, s => s.idHospital));
+
+      for (let i = 0; i < hospAgrupado.length; i++) {
+        let totalAlertasHosp = 0;
+        for (let j = 0; j < hospAgrupado[i].length; j++) {
+          totalAlertasHosp += hospAgrupado[i][j].alertasTotais;
+        }
+
+        if (totalAlertasHosp > maiorErros) {
+          maiorErros = totalAlertasHosp;
+          hospMaisIntercorrencia = hospAgrupado[i][0];
+        }
+      }
+
+
+
+      for (let i = 0; i < hospAgrupado.length; i++) {
+        for (let j = 0; j < hospAgrupado[i].length; j++) {
+          if (hospAgrupado[i][j].alertasTotais != 0) {
+            qtdHospIntercorrencias++;
+            break;
+          }
+        }
+      }
+
+      document.getElementById('maisIntercorrencia').innerHTML = hospMaisIntercorrencia.nomeHospital;
+      document.getElementById('intercorrenciasAgora').innerHTML = qtdHospIntercorrencias;
+
+
+
+
+      //Ranking
+      const listRanking = [];
+
+      for (let i = 0; i < hospAgrupado.length; i++) {
+        let totalAlertasHosp = 0;
+
+        for (let j = 0; j < hospAgrupado[i].length; j++) {
+          totalAlertasHosp += hospAgrupado[i][j].alertasTotais;
+        }
+
+        listRanking.push({
+          nomeHospital: hospAgrupado[i][0].nomeHospital,
+          totalAlertas: totalAlertasHosp
+        });
+      }
+
+      listRanking.sort((a, b) => b.totalAlertas - a.totalAlertas);
+
+      for (let i = 0; i < listRanking.length; i++) {
+        document.getElementById("rankingHosp").innerHTML += `
+              <th>${[i + 1]}°</th>
+              <th>${listRanking[i].nomeHospital}</th>
+              <th>${listRanking[i].totalAlertas}</th>
+            `
+      }
+
+
+
+    } catch (erro) {
+      console.error("Erro:", erro);
     }
   }
 </script>

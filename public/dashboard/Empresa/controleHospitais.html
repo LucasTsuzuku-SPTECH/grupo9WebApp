@@ -283,6 +283,8 @@
                 const respV = await fetch(`/controle/${hospital.idHospital}/ventiladores`);
                 const ventiladores = respV.status === 204 ? [] : await respV.json();
 
+                console.log(ventiladores)
+
                 // --- MOCK ALERTAS ---
                 let totalAlertas = 0;
 

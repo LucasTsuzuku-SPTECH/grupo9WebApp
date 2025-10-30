@@ -1030,7 +1030,7 @@
             Swal.fire('Sucesso!', 'Ventilador e componentes adicionados.', 'success');
             fecharModal();
             fecharAddModal();
-            document.getElementById("validaVentiladores") ? visualizarVentiladores() : carregarSalasHosp().then(filtrarSalasHospitais);;
+            document.getElementById("validaVentiladores") ? visualizarVentiladores() : carregarSalasHosp().then(filtrarSalasHospitais);
         } catch {
             Swal.fire('Erro!', 'Não foi possível adicionar o ventilador.', 'error');
         }
