@@ -513,9 +513,6 @@ INSERT INTO Ventilador (numero_serie, fkModelo, fkSala) VALUES
 ('VNT-DRG-0448', 1, 150), ('VNT-HML-0449', 2, 150), ('VNT-MND-0450', 3, 150);
 
 
-select * from ventilador where fkSala = 1;
-select * from parametro;
-
 
 -- Parâmetros para Ventiladores
 INSERT INTO Parametro (fkComponente, fkVentilador, parametroMax, parametroMin) VALUES

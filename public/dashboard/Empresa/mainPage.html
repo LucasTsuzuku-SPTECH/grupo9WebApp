@@ -91,12 +91,12 @@
 
 
       <div class="graficoContainer2">
-        <div class="graficoHeader">Intercorrências por área do hospital <select class="selectHospitais" name=""
-            id="selectHospitais">
+        <div class="graficoHeader">Intercorrências por área do hospital <select onchange="filtrarAreaHosp()"
+            class="selectHospitais" name="" id="selectHospitais">
             <option value="">Selecione um hospital...</option>
           </select>
         </div>
-        <canvas id="intercorrenciaAreaHosp" style="width: 1500px; height: 500px;"></canvas>
+        <canvas id="intercorrenciaAreaHosp" style="width: 650px; height: 500px;"></canvas>
       </div>
 
     </div>
@@ -153,8 +153,7 @@
 
 
 
-
-
+  var hospAgrupado;
 
   async function carregarSalasHosp() {
     try {
@@ -252,7 +251,7 @@
       var maiorErros = 0;
       var hospMaisIntercorrencia;
 
-      const hospAgrupado = Object.values(Object.groupBy(salas, s => s.idHospital));
+      hospAgrupado = Object.values(Object.groupBy(salas, s => s.idHospital));
 
       for (let i = 0; i < hospAgrupado.length; i++) {
         let totalAlertasHosp = 0;
@@ -282,10 +281,11 @@
 
 
 
-      //Ranking e Gráfico intercorrenciasHosp
+      //Ranking e Gráficos
       const listRanking = [];
       var nomesHospitais = [];
       var dadosHospitais = [];
+
 
       for (let i = 0; i < hospAgrupado.length; i++) {
         let totalAlertasHosp = 0;
@@ -295,6 +295,7 @@
         }
 
         listRanking.push({
+          idHospital: hospAgrupado[i][0].idHospital,
           nomeHospital: hospAgrupado[i][0].nomeHospital,
           totalAlertas: totalAlertasHosp
         });
@@ -309,7 +310,7 @@
               <th>${listRanking[i].totalAlertas}</th>
             `
 
-        document.getElementById("selectHospitais").innerHTML += `<option value="${listRanking[i].nomeHospital}">${listRanking[i].nomeHospital}</option>`
+        document.getElementById("selectHospitais").innerHTML += `<option value="${listRanking[i].idHospital}">${listRanking[i].nomeHospital}</option>`
 
         nomesHospitais.push(listRanking[i].nomeHospital);
         dadosHospitais.push(listRanking[i].totalAlertas);
@@ -353,49 +354,96 @@
         }
       });
 
+      console.log(hospAgrupado)
 
-
-
-
-
-
-
-      const grafIntercorrenciaAreaHosp = document.getElementById('intercorrenciaAreaHosp');
-      new Chart(grafIntercorrenciaAreaHosp, {
-        type: 'bar',
-        data: {
-          labels: nomesHospitais,
-          datasets: [{
-            backgroundColor: '#264653',
-            label: 'Total de intercorrências',
-            data: dadosHospitais,
-            borderWidth: 2,
-          }]
-        },
-        options: {
-          scales: {
-            y: {
-              beginAtZero: true,
-              ticks: {
-                font: {
-                  size: 15
-                }
-              }
-            },
-            x: {
-              ticks: {
-                maxRotation: 20,
-                minRotation: 20,
-                font: {
-                  size: 15
-                }
-              }
-            }
-          }
-        }
-      });
     } catch (erro) {
       console.error("Erro:", erro);
     }
   }
+
+
+
+  var areas = [];
+  var alertasArea = [];
+  let grafico;
+
+  function filtrarAreaHosp() {
+    areas = [];
+    alertasArea = [];
+
+    var hospSelecionado = document.getElementById("selectHospitais").value;
+
+    for (let i = 0; i < hospAgrupado.length; i++) {
+      for (let j = 0; j < hospAgrupado[i].length; j++) {
+        for (let k = 0; k < hospAgrupado[i][j]['ventiladoresMock'].length; k++)
+          if (!areas.includes(hospAgrupado[i][j]['ventiladoresMock'][k].area)) {
+            areas.push(hospAgrupado[i][j]['ventiladoresMock'][k].area)
+          };
+      }
+    }
+
+    for (let a = 0; a < areas.length; a++) {
+      const areaAtual = areas[a];
+      let alerta = 0;
+
+      for (let j = 0; j < hospAgrupado.length; j++) {
+        for (let k = 0; k < hospAgrupado[j].length; k++) {
+          const hosp = hospAgrupado[j][k];
+
+          if (hosp.idHospital == hospSelecionado) {
+            const ventiladores = hosp['ventiladoresMock'];
+
+            for (let l = 0; l < ventiladores.length; l++) {
+              if (ventiladores[l].area == areaAtual) {
+                alerta += ventiladores[l].alertas;
+              }
+            }
+          }
+        }
+      }
+
+      alertasArea.push(alerta);
+    }
+
+    if (grafico) grafico.destroy();
+
+    const grafIntercorrenciaAreaHosp = document.getElementById('intercorrenciaAreaHosp');
+    grafIntercorrenciaAreaHosp.width = 1600;
+
+    grafico = new Chart(grafIntercorrenciaAreaHosp, {
+      type: 'bar',
+      data: {
+        labels: areas,
+        datasets: [{
+          backgroundColor: '#264653',
+          label: 'Total de intercorrências',
+          data: alertasArea,
+          borderWidth: 2,
+        }]
+      },
+      options: {
+        scales: {
+          y: {
+            beginAtZero: true,
+            ticks: {
+              font: {
+                size: 20
+              }
+            }
+          },
+          x: {
+            ticks: {
+              maxRotation: 0,
+              minRotation: 0,
+              font: {
+                size: 20
+              }
+            }
+          }
+        }
+      }
+    });
+  }
+
+
 </script>
