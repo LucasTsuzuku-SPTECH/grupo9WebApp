@@ -82,12 +82,22 @@
           </div>
         </div>
 
+
         <div class="graficoContainer2">
           <div class="graficoHeader">Intercorrência por hospital (semanal):</div>
           <canvas id="intercorrenciaHosp"></canvas>
         </div>
       </div>
 
+
+      <div class="graficoContainer2">
+        <div class="graficoHeader">Intercorrências por área do hospital <select class="selectHospitais" name=""
+            id="selectHospitais">
+            <option value="">Selecione um hospital...</option>
+          </select>
+        </div>
+        <canvas id="intercorrenciaAreaHosp" style="width: 1500px; height: 1000px;"></canvas>
+      </div>
 
     </div>
 </body>
@@ -256,9 +266,6 @@
         }
       }
 
-      console.log(hospAgrupado)
-
-
 
       for (let i = 0; i < hospAgrupado.length; i++) {
         for (let j = 0; j < hospAgrupado[i].length; j++) {
@@ -301,6 +308,9 @@
               <th>${listRanking[i].nomeHospital}</th>
               <th>${listRanking[i].totalAlertas}</th>
             `
+
+        document.getElementById("selectHospitais").innerHTML += `<option value="${listRanking[i].nomeHospital}">${listRanking[i].nomeHospital}</option>`
+
         nomesHospitais.push(listRanking[i].nomeHospital);
         dadosHospitais.push(listRanking[i].totalAlertas);
       }
@@ -313,11 +323,11 @@
       new Chart(grafIntercorrenciaHosp, {
         type: 'bar',
         data: {
-          labels: nomesHospitais,
+          labels: areasHosp,
           datasets: [{
             backgroundColor: '#264653',
             label: 'Total de intercorrências',
-            data: dadosHospitais,
+            data: alertasArea,
             borderWidth: 2,
           }]
         },
@@ -334,6 +344,48 @@
             },
             x: {
               ticks: {
+                font: {
+                  size: 15
+                }
+              }
+            }
+          }
+        }
+      });
+
+
+
+
+
+
+
+
+      const grafIntercorrenciaAreaHosp = document.getElementById('intercorrenciaAreaHosp');
+      new Chart(grafIntercorrenciaAreaHosp, {
+        type: 'bar',
+        data: {
+          labels: nomesHospitais,
+          datasets: [{
+            backgroundColor: '#264653',
+            label: 'Total de intercorrências',
+            data: dadosHospitais,
+            borderWidth: 2,
+          }]
+        },
+        options: {
+          scales: {
+            y: {
+              beginAtZero: true,
+              ticks: {
+                font: {
+                  size: 15
+                }
+              }
+            },
+            x: {
+              ticks: {
+                maxRotation: 20,
+                minRotation: 20,
                 font: {
                   size: 15
                 }

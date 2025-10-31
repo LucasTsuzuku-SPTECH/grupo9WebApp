@@ -507,7 +507,7 @@ table td.colunaDelete {
   /* cor do texto do valor */
 }
 
-.KPIs{
+.KPIs {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
@@ -548,11 +548,11 @@ table td.colunaDelete {
   width: 60px;
   height: 60px;
   border-radius: 50%;
-  background-color: #ccc; 
+  background-color: #ccc;
   display: flex;
   justify-content: center;
   align-items: center;
-  overflow: hidden; 
+  overflow: hidden;
 }
 
 .circulo img {
@@ -581,12 +581,12 @@ table td.colunaDelete {
   padding: 10px 20px;
   font-size: 18px;
   border-top-left-radius: 8px;
-  border-top-right-radius: 8px;
+  border-top-right-radius: 8px;
 }
 
 .tabelaWrapper {
-  flex: 1; 
-  overflow-y: scroll; 
+  flex: 1;
+  overflow-y: scroll;
 }
 
 .tabelaWrapper::-webkit-scrollbar {
@@ -636,7 +636,7 @@ table td.colunaDelete {
   color: #333;
 }
 
-.graficos{
+.graficos {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
@@ -646,7 +646,7 @@ table td.colunaDelete {
   width: 100%;
 }
 
-.graficoContainer{
+.graficoContainer {
   background-color: #e0f7fa;
   padding: 0;
   border-radius: 8px;
@@ -1814,7 +1814,6 @@ header h2 {
   display: flex;
   flex-direction: column;
   padding: 30px;
-  flex-direction: column;
   align-items: flex-start;
   width: 100%;
 }
@@ -1846,7 +1845,7 @@ header h2 {
   padding: 0;
   margin: 40px;
   border-radius: 8px;
-  width: 45%;
+  width: 95%;
   max-height: 500px;
   height: 400px;
   min-height: 80px;
@@ -1894,3 +1893,17 @@ header h2 {
   color: black;
 }
 
+.selectHospitais {
+  background-color: rgba(0, 0, 0, 0);
+  color: white;
+  border: 2px white solid;
+  border-radius: 4px;
+  height: 30px;
+  width: 400px;
+  font-size: 16px;
+  font-weight: 920;
+}
+
+.selectHospitais option {
+  color: black;
+}
