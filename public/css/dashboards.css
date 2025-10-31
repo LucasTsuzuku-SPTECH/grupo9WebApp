@@ -633,7 +633,7 @@ table td.colunaDelete {
   text-align: center;
   padding: 10px;
   border-bottom: 1px solid #ccc;
-  color: #333;
+  color: #333;
 }
 
 .graficos{
@@ -1848,11 +1848,17 @@ header h2 {
   border-radius: 8px;
   width: 45%;
   max-height: 500px;
-  height: 350px;
+  height: 400px;
   min-height: 80px;
   box-shadow: 5px 5px 10px 2px rgba(0, 0, 0, 0.5);
   display: flex;
   flex-direction: column;
+}
+
+
+.graficoContainer2 canvas {
+  width: 90%;
+  margin: 10px;
 }
 
 

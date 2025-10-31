@@ -84,6 +84,7 @@
 
         <div class="graficoContainer2">
           <div class="graficoHeader">Intercorrência por hospital (semanal):</div>
+          <canvas id="intercorrenciaHosp"></canvas>
         </div>
       </div>
 
@@ -95,8 +96,9 @@
 
 
 
+
+
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-<script src="/js/chart.js"></script>
 
 <script>
   function toggleSidebar() {
@@ -254,6 +256,8 @@
         }
       }
 
+      console.log(hospAgrupado)
+
 
 
       for (let i = 0; i < hospAgrupado.length; i++) {
@@ -271,8 +275,10 @@
 
 
 
-      //Ranking
+      //Ranking e Gráfico intercorrenciasHosp
       const listRanking = [];
+      var nomesHospitais = [];
+      var dadosHospitais = [];
 
       for (let i = 0; i < hospAgrupado.length; i++) {
         let totalAlertasHosp = 0;
@@ -295,10 +301,47 @@
               <th>${listRanking[i].nomeHospital}</th>
               <th>${listRanking[i].totalAlertas}</th>
             `
+        nomesHospitais.push(listRanking[i].nomeHospital);
+        dadosHospitais.push(listRanking[i].totalAlertas);
       }
 
 
 
+
+
+      const grafIntercorrenciaHosp = document.getElementById('intercorrenciaHosp');
+      new Chart(grafIntercorrenciaHosp, {
+        type: 'bar',
+        data: {
+          labels: nomesHospitais,
+          datasets: [{
+            backgroundColor: '#264653',
+            label: 'Total de intercorrências',
+            data: dadosHospitais,
+            borderWidth: 2,
+          }]
+        },
+        options: {
+          indexAxis: 'y',
+          scales: {
+            y: {
+              beginAtZero: true,
+              ticks: {
+                font: {
+                  size: 15
+                }
+              }
+            },
+            x: {
+              ticks: {
+                font: {
+                  size: 15
+                }
+              }
+            }
+          }
+        }
+      });
     } catch (erro) {
       console.error("Erro:", erro);
     }
