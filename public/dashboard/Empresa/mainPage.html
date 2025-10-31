@@ -96,7 +96,7 @@
             <option value="">Selecione um hospital...</option>
           </select>
         </div>
-        <canvas id="intercorrenciaAreaHosp" style="width: 1500px; height: 1000px;"></canvas>
+        <canvas id="intercorrenciaAreaHosp" style="width: 1500px; height: 500px;"></canvas>
       </div>
 
     </div>
@@ -323,11 +323,11 @@
       new Chart(grafIntercorrenciaHosp, {
         type: 'bar',
         data: {
-          labels: areasHosp,
+          labels: nomesHospitais,
           datasets: [{
             backgroundColor: '#264653',
             label: 'Total de intercorrências',
-            data: alertasArea,
+            data: dadosHospitais,
             borderWidth: 2,
           }]
         },
