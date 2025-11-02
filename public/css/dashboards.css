@@ -650,9 +650,8 @@ table td.colunaDelete {
   background-color: #e0f7fa;
   padding: 0;
   border-radius: 8px;
-  width: 40%;
-  max-height: 400px;
-  height: 200px;
+  width: 40%; 
+  height: 400px;
   min-height: 50px;
   box-shadow: 5px 5px 10px 2px rgba(0, 0, 0, 0.5);
   display: flex;
@@ -1902,9 +1901,6 @@ header h2 {
   font-size: 16px;
   font-weight: 920;
 }
-
-
-
 
 
 .divAnalise {
