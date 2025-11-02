@@ -15,7 +15,7 @@
 
 </head>
 
-<body onload="teste()">
+<body onload="hospital()">
   <div class="div-pai">
 
     <!-- Cabeçalho -->
@@ -58,8 +58,9 @@
         <a href="./contas.html">Contas</a>
       </nav>
     </div>
-    <div style="display: flex; justify-content: center; align-items: center; margin-top: 10px;">
+    <div style="display: flex; flex-direction: column; justify-content: center; align-items: center; margin-top: 10px;">
       <h3 id="data-atual"> Última Atualização: </h3>
+      <h3>Dados do dia:</h3>
     </div>
     <div class="conteudo-principal">
       <div class="KPIs">
@@ -177,12 +178,18 @@
       <div class="graficos">
         <div class="graficoContainer">
           <div class="graficoHeader">Intercorrência de componente:</div>
-
+          <div style="width: 100%; height: 100%;">
+          <canvas id="Intercorrenciaporcomponente"></canvas>
+          </div>
         </div>
         <div class="graficoContainer">
           <div class="graficoHeader">Intercorrência gerais por área:</div>
+          <div style="width: 100%; height: 100%;">
+          <canvas id="Intercorrenciaporarea"></canvas>
+          </div>
         </div>
       </div>
+     
     </div>
 
   </div>
@@ -197,33 +204,34 @@
 <script>
 
   let agora = new Date();
-
+  
   let dataFormatada = agora.toLocaleDateString();
   let horaFormatada = agora.toLocaleTimeString();
 
   let elementoData = document.getElementById("data-atual");
-
+  
   elementoData.textContent += ` ${dataFormatada} ${horaFormatada}`;
+  
 
-  async function teste() {
+  async function hospital() {
     const resposta = await fetch(`/controle/hospitais/${sessionStorage.getItem("HOSPITAL_USUARIO")}`);
     const hospital = await resposta.json();
     console.log(hospital)
     sessionStorage.NOME_HOSPITAL_ATUAL = hospital[0].nomeHospital;
   }
-
+  
   function toggleSidebar() {
     const sidebar = document.getElementById("sidebarModal");
     const icone = document.getElementById("icone");
-
+    
     sidebar.classList.toggle("active");
   }
-
+  
   function mostrarNavbar() {
     const larguraTela = window.innerWidth;
     var menu = document.getElementById("navbar");
     var icone = document.getElementById("icone");
-
+    
     if (larguraTela < 1342) {
       if (getComputedStyle(menu).display == 'none') {
         menu.style.display = "flex";
@@ -238,15 +246,106 @@
   }
   function Sair() {
     const sair = document.getElementById("sair")
-
+    
     if (sair) {
       localStorage.removeItem("email")
       localStorage.removeItem("senha")
-
+      
       sessionStorage.clear()
       console.log(sessionStorage)
-
+      
       window.location.href = "../../index.html"
     }
   }
+
+  var componentes = ["RAM","CPU","DISCO","PROCESSOS","BATERIA"];
+  var intercorrenciacomponente = [10,10,10,24,1];
+
+  let grafico;
+
+  if (grafico) grafico.destroy();
+  
+    const grafIntercorrenciaporcomponente = document.getElementById('Intercorrenciaporcomponente');
+    grafIntercorrenciaporcomponente.width = "100%";
+    grafIntercorrenciaporcomponente.height = "20vh";
+  
+    grafico = new Chart(grafIntercorrenciaporcomponente, {
+      type: 'bar',
+      data: {
+        labels: componentes,
+        datasets: [{
+          backgroundColor: '#264653',
+          label: 'Total de intercorrências',
+          data: intercorrenciacomponente,
+          borderWidth: 2,
+        }]
+      },
+      options: {
+        scales: {
+          y: {
+            beginAtZero: true,
+            ticks: {
+              font: {
+                size: 20
+              }
+            }
+          },
+          x: {
+            ticks: {
+              maxRotation: 0,
+              minRotation: 0,
+              font: {
+                size: 20
+              }
+            }
+          }
+        }
+      }
+    });
+  var componentes = ["UTI","Neonatal","Pronto-Socorro","Internação","Centro Cirúrgico"];
+  var alertasArea = [35,20,10,5,3];
+
+  let grafico2;
+
+  if (grafico2) grafico2.destroy();
+  
+    const grafIntercorrenciaporarea = document.getElementById('Intercorrenciaporarea');
+    grafIntercorrenciaporarea.width = "100%";
+    grafIntercorrenciaporarea.height = "20vh";
+  
+    grafico2 = new Chart(grafIntercorrenciaporarea, {
+      type: 'bar',
+      data: {
+        labels: componentes,
+        datasets: [{
+          backgroundColor: '#264653',
+          label: 'Total de intercorrências',
+          data: alertasArea,
+          borderWidth: 2,
+        }]
+      },
+      options: {
+        scales: {
+          y: {
+            beginAtZero: true,
+            ticks: {
+              font: {
+                size: 20
+              }
+            }
+          },
+          x: {
+            ticks: {
+              maxRotation: 0,
+              minRotation: 0,
+              font: {
+                size: 20
+              }
+            }
+          }
+        }
+      }
+    });
+
+    
 </script>
