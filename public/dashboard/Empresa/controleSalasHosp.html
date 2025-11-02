@@ -51,7 +51,7 @@
                 <span>Menu</span>
                 <button onclick="toggleSidebar()" class="btn-fechar">&times;</button>
             </div>
-            <nav class="sidebar-nav">
+            <nav id="navBar" class="sidebar-nav">
                 <a href="./mainPage.html">Página principal</a>
                 <a class="pgAtual" href="./controleHospitais.html">Hospitais</a>
                 <a href="./contas.html">Contas</a>
@@ -275,9 +275,11 @@
 <!-- SweetAlert2 -->
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
-
     if (sessionStorage.CARGO_USUARIO != "adminEmpresa") {
         document.getElementById("btnEditarHospital").style.display = "none";
+        document.getElementById("navBar").innerHTML = ` <a href="./mainEmpresaFunc.html">Página principal</a>
+                <a class="pgAtual" href="./controleHospitais.html">Hospitais</a>
+                <a href="./contas.html">Contas</a>`
     }
 
     /* Definindo o horário na dash*/

@@ -55,7 +55,7 @@
         <span>Menu</span>
         <button onclick="toggleSidebar()" class="btn-fechar">&times;</button>
       </div>
-      <nav class="sidebar-nav">
+      <nav id="navBar" class="sidebar-nav">
         <a style="text-decoration: none;" href="./mainPage.html">Página principal</a>
         <a style="text-decoration: none;" href="./controleHospitais.html">Hospitais</a>
         <a class="pgAtual" style="text-decoration: none;" href="./contas.html">Contas</a>
@@ -209,6 +209,14 @@
 </body>
 
 <script>
+  if (sessionStorage.CARGO_USUARIO != "adminEmpresa") {
+    document.getElementById("navBar").innerHTML = ` <a href="./mainEmpresaFunc.html">Página principal</a>
+                <a class="pgAtual" href="./controleHospitais.html">Hospitais</a>
+                <a href="./contas.html">Contas</a>`
+  }
+
+
+
   // -------------------- VARIÁVEIS GLOBAIS ----------------------
   let usuarios = [];
   let hospitais = [];
