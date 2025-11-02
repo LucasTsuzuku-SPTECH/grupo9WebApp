@@ -5,7 +5,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="./../../css/dashboards.css">
-  <link rel="icon" href="../assets/imgs/Zephyrus_2png.png" />
+  <link rel="icon" href="/assets/imgs/Zephyrus_2png.png" />
   <title>Dashboard - Contas</title>
   <script src="https://kit.fontawesome.com/9f7414eb10.js" crossorigin="anonymous"></script>
   <script src="../../js/sessao.js"></script>
@@ -21,14 +21,14 @@
   <div class="div-pai">
 
     <!-- Cabeçalho -->
-    <header>
+    <header style="position: fixed; z-index: 1000;">
       <div class="header-container">
         <div class="div-hamburguer" onclick="toggleSidebar()">
-                    <!-- Botão Hamburguer -->
-                    <a class="navbar-mob">
-                        <i id="icone" class="fa-solid fa-bars"></i>
-                    </a>
-                </div>
+          <!-- Botão Hamburguer -->
+          <a class="navbar-mob">
+            <i id="icone" class="fa-solid fa-bars"></i>
+          </a>
+        </div>
         <h2>DASHBOARD - CONTROLE DE CONTAS</h2>
         <div class="div-pai-perfil">
           <div class="div-linha"></div>
@@ -46,7 +46,7 @@
         </div>
       </div>
     </header>
-
+    <br><br><br><br>
     <!-- Sidebar Modal -->
     <div id="sidebarModal" class="sidebar-modal">
       <img src="/assets/imgs/Zephyrus_2png.png" alt="">
@@ -66,7 +66,8 @@
       <div class="div-flex">
         <div class="div-block">
           <div class="div-links-contas">
-            <button class="btn-adicionar" data-bs-toggle="modal" id="modal_some" style="display:flex;" data-bs-target="#modalAdicionarUsuario">
+            <button class="btn-adicionar" data-bs-toggle="modal" id="modal_some" style="display:flex;"
+              data-bs-target="#modalAdicionarUsuario">
               Adicionar novo usuário
             </button>
           </div>
@@ -203,11 +204,11 @@
   let usuarioSelecionado = null; // id do usuário
   let usuarioEditarId = null;
 
-    if(sessionStorage.CARGO_USUARIO != "adminHospital"){
-      document.getElementById("modal_some").style.display = "none";
-      document.getElementById("coluna_permissao").style.display = "none";
+  if (sessionStorage.CARGO_USUARIO != "adminHospital") {
+    document.getElementById("modal_some").style.display = "none";
+    document.getElementById("coluna_permissao").style.display = "none";
 
-    }
+  }
 
   // -------------------- FUNÇÕES AUXILIARES ----------------------
   function criarLinhaUsuario(usuario, index) {
@@ -278,7 +279,7 @@
     preencherTabela(filtro);
   }
 
-    function selecionarAtividade() {
+  function selecionarAtividade() {
     const atividade = document.getElementById('select_atividade').value;
     if (atividade === "Ambos") return puxarDados();
     preencherTabela(usuarios.filter(u => u.statusUser === atividade));
@@ -301,19 +302,19 @@
     const perfil = document.getElementById("perfilEditar").value;
 
     try {
-        await fetch(`/contas/editar/${usuarioEditarId}`, {
-            method: "PUT",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ nome, email, perfil })
-        });
-        bootstrap.Modal.getInstance(document.getElementById("modalEditarUsuario")).hide();
-        puxarDados();
-        Swal.fire({ icon: 'success', title: 'Sucesso', text: 'Usuário editado com sucesso!', timer: 2000, showConfirmButton: false });
+      await fetch(`/contas/editar/${usuarioEditarId}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ nome, email, perfil })
+      });
+      bootstrap.Modal.getInstance(document.getElementById("modalEditarUsuario")).hide();
+      puxarDados();
+      Swal.fire({ icon: 'success', title: 'Sucesso', text: 'Usuário editado com sucesso!', timer: 2000, showConfirmButton: false });
     } catch (err) {
-        console.error(err);
-        Swal.fire({ icon: 'error', title: 'Erro', text: 'Não foi possível editar o usuário!' });
+      console.error(err);
+      Swal.fire({ icon: 'error', title: 'Erro', text: 'Não foi possível editar o usuário!' });
     }
-}
+  }
 
 
   // -------------------- CADASTRO ----------------------

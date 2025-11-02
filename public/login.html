@@ -62,7 +62,8 @@
 
         <button onclick="entrar()" class="btn-login">Entrar</button>
 
-        <div id="div_loader" style="width: 100%; display: none; justify-content: center; align-items: center; margin-top: 20px;">
+        <div id="div_loader"
+          style="width: 100%; display: none; justify-content: center; align-items: center; margin-top: 20px;">
           <div class="loader">
             <div class="bar1"></div>
             <div class="bar2"></div>
@@ -142,7 +143,7 @@
       localStorage.removeItem("senha")
     }
 
-    loader.style.display = 'flex' 
+    loader.style.display = 'flex'
 
     fetch("/usuarios/autenticar", {
       method: "POST",
@@ -173,11 +174,15 @@
             // Loader e redirecionamento suave
             loader.style.display = 'flex'
             setTimeout(() => {
-              if (json.perfil == "empresa" || json.perfil == "adminEmpresa") {
-                window.location = "./dashboard/Empresa/mainPage.html"
+              if (json.perfil == "empresa") {
+                window.location = "./dashboard/Empresa/mainEmpresaFunc.html"
               } else if (json.perfil == "hospital" || json.perfil == "adminHospital") {
                 window.location = "./dashboard/Hospital/mainPage.html"
+              } else if (json.perfil == "adminEmpresa") {
+                window.location = "./dashboard/Empresa/mainPage.html"
               } else {
+
+
                 Swal.fire({
                   icon: 'error',
                   title: 'Perfil não reconhecido!',

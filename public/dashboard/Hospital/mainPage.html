@@ -5,12 +5,13 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="./../../css/dashboards.css">
-  <link rel="icon" href="../assets/imgs/Zephyrus_2png.png" />
+  <link rel="icon" href="/assets/imgs/Zephyrus_2png.png" />
   <title>Dashboard - Página Principal</title>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script src="https://kit.fontawesome.com/9f7414eb10.js" crossorigin="anonymous"></script>
   <script src="../../js/sessao.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
 
 </head>
 
@@ -18,14 +19,14 @@
   <div class="div-pai">
 
     <!-- Cabeçalho -->
-    <header>
+    <header style="position: fixed; z-index: 1000;">
       <div class="header-container">
-       <div class="div-hamburguer" onclick="toggleSidebar()">
-                    <!-- Botão Hamburguer -->
-                    <a class="navbar-mob">
-                        <i id="icone" class="fa-solid fa-bars"></i>
-                    </a>
-                </div>
+        <div class="div-hamburguer" onclick="toggleSidebar()">
+          <!-- Botão Hamburguer -->
+          <a class="navbar-mob">
+            <i id="icone" class="fa-solid fa-bars"></i>
+          </a>
+        </div>
         <h2>DASHBOARD - PÁGINA PRINCIPAL</h2>
         <div class="div-pai-perfil">
           <div class="div-linha"></div>
@@ -43,7 +44,7 @@
         </div>
       </div>
     </header>
-
+    <br><br><br><br>
     <!-- Sidebar Modal -->
     <div id="sidebarModal" class="sidebar-modal">
       <img src="/assets/imgs/Zephyrus_2png.png" alt="">
@@ -58,17 +59,17 @@
       </nav>
     </div>
     <div style="display: flex; justify-content: center; align-items: center; margin-top: 10px;">
-    <h3 id="data-atual"> Última Atualização: </h3>
+      <h3 id="data-atual"> Última Atualização: </h3>
     </div>
     <div class="conteudo-principal">
-      <div class="KPIs" >
+      <div class="KPIs">
         <div class="kpiDash">
           <div class="DadosKPI">
             <h3 style="font-size: 4vh;">03</h3>
             <p> Máquinas com mais de 80% ou 0% de <b>RAM</b></p>
           </div>
           <div style="display: flex; align-items: center; height: 100%;" class="imagemKPI">
-            <div  style="background-color: red;" class="circulo"> <img src="../../assets/imgs/ram.png"></div>
+            <div style="background-color: red;" class="circulo"> <img src="../../assets/imgs/ram.png"></div>
           </div>
         </div>
         <div class="kpiDash">
@@ -77,7 +78,7 @@
             <p> Máquinas com mais de 80% ou 0% de <b>CPU</b></p>
           </div>
           <div style="display: flex; align-items: center; height: 100%;" class="imagemKPI">
-            <div  style="background-color: red;" class="circulo"> <img src="../../assets/imgs/cpu.png"></div>
+            <div style="background-color: red;" class="circulo"> <img src="../../assets/imgs/cpu.png"></div>
           </div>
         </div>
         <div class="kpiDash">
@@ -86,7 +87,7 @@
             <p> Máquinas com mais de 80% ou 0% de <b>Disco</b></p>
           </div>
           <div style="display: flex; align-items: center; height: 100%;" class="imagemKPI">
-            <div  style="background-color: green;" class="circulo"> <img src="../../assets/imgs/disco.png"></div>
+            <div style="background-color: green;" class="circulo"> <img src="../../assets/imgs/disco.png"></div>
           </div>
         </div>
         <div class="kpiDash">
@@ -109,77 +110,77 @@
         </div>
       </div>
       <div class="Containertabela">
-          <div class="graficoHeader">Últimos alertas:</div>
-          <div class="tabelaWrapper">
+        <div class="graficoHeader">Últimos alertas:</div>
+        <div class="tabelaWrapper">
           <table class="graficoTabela">
             <thead>
-            <tr>
-              <th>Data</th>
-              <th>Nº Série</th>
-              <th >Modelo</th>
-              <th >Área</th>
-              <th style="width: 25%;">Parâmetro Atingido</th>
-              <th>Consumo</th>
-              <th>Unidade</th>
-            </tr>
+              <tr>
+                <th>Data</th>
+                <th>Nº Série</th>
+                <th>Modelo</th>
+                <th>Área</th>
+                <th style="width: 25%;">Parâmetro Atingido</th>
+                <th>Consumo</th>
+                <th>Unidade</th>
+              </tr>
             </thead>
             <tbody>
-            <tr>
-              <td>30/10/2025 12:00</td>
-              <td>VNT-DRG-0001</td>
-              <td>Dräger Evita Infinity V500</td>
-              <td>UTI</td>
-              <td>RAM</td>
-              <td>91</td>
-              <td>%</td>
-            </tr>
-            <tr>
-              <td>30/10/2025 11:47</td>
-              <td>VNT-DRG-0106</td>
-              <td>Hamilton-C6</td>
-              <td>UTI</td>
-              <td>CPU</td>
-              <td>90</td>
-              <td>%</td>
-            </tr>
-            <tr>
-              <td>30/10/2025 11:40</td>
-              <td>VNT-DRG-212</td>
-              <td>Hamilton-C6</td>
-              <td>UTI</td>
-              <td>RAM</td>
-              <td>87</td>
-              <td>%</td>
-            </tr>
-            <tr>
-              <td>30/10/2025 11:20</td>
-              <td>VNT-DRG-506</td>
-              <td>Hamilton-C6</td>
-              <td>UTI</td>
-              <td>RAM</td>
-              <td>81</td>
-              <td>%</td>
-            </tr>
-            <tr>
-              <td>30/10/2025 11:10</td>
-              <td>VGG-HGL-0137</td>
-              <td>Magnamed OxyMag</td>
-              <td>Pronto-Socorro</td>
-              <td>Bateria</td>
-              <td>14</td>
-              <td>%</td>
-            </tr>
-          </tbody>
+              <tr>
+                <td>30/10/2025 12:00</td>
+                <td>VNT-DRG-0001</td>
+                <td>Dräger Evita Infinity V500</td>
+                <td>UTI</td>
+                <td>RAM</td>
+                <td>91</td>
+                <td>%</td>
+              </tr>
+              <tr>
+                <td>30/10/2025 11:47</td>
+                <td>VNT-DRG-0106</td>
+                <td>Hamilton-C6</td>
+                <td>UTI</td>
+                <td>CPU</td>
+                <td>90</td>
+                <td>%</td>
+              </tr>
+              <tr>
+                <td>30/10/2025 11:40</td>
+                <td>VNT-DRG-212</td>
+                <td>Hamilton-C6</td>
+                <td>UTI</td>
+                <td>RAM</td>
+                <td>87</td>
+                <td>%</td>
+              </tr>
+              <tr>
+                <td>30/10/2025 11:20</td>
+                <td>VNT-DRG-506</td>
+                <td>Hamilton-C6</td>
+                <td>UTI</td>
+                <td>RAM</td>
+                <td>81</td>
+                <td>%</td>
+              </tr>
+              <tr>
+                <td>30/10/2025 11:10</td>
+                <td>VGG-HGL-0137</td>
+                <td>Magnamed OxyMag</td>
+                <td>Pronto-Socorro</td>
+                <td>Bateria</td>
+                <td>14</td>
+                <td>%</td>
+              </tr>
+            </tbody>
           </table>
-          </div>
+        </div>
       </div>
       <div class="graficos">
         <div class="graficoContainer">
-            <div class="graficoHeader">Intercorrência de componente:</div>
-            
+          <div class="graficoHeader">Intercorrência de componente:</div>
+
         </div>
         <div class="graficoContainer">
-            <div class="graficoHeader">Intercorrência gerais por área:</div>
+          <div class="graficoHeader">Intercorrência gerais por área:</div>
         </div>
       </div>
     </div>
@@ -195,20 +196,20 @@
 
 <script>
 
-    let agora = new Date();
+  let agora = new Date();
 
-    let dataFormatada = agora.toLocaleDateString();
-    let horaFormatada = agora.toLocaleTimeString();
+  let dataFormatada = agora.toLocaleDateString();
+  let horaFormatada = agora.toLocaleTimeString();
 
-    let elementoData = document.getElementById("data-atual");
+  let elementoData = document.getElementById("data-atual");
 
-    elementoData.textContent += ` ${dataFormatada} ${horaFormatada}`;
-  
-  async function teste(){
-  const resposta = await fetch(`/controle/hospitais/${sessionStorage.getItem("HOSPITAL_USUARIO")}`);
-  const hospital = await resposta.json();
-  console.log(hospital)
-  sessionStorage.NOME_HOSPITAL_ATUAL = hospital[0].nomeHospital;
+  elementoData.textContent += ` ${dataFormatada} ${horaFormatada}`;
+
+  async function teste() {
+    const resposta = await fetch(`/controle/hospitais/${sessionStorage.getItem("HOSPITAL_USUARIO")}`);
+    const hospital = await resposta.json();
+    console.log(hospital)
+    sessionStorage.NOME_HOSPITAL_ATUAL = hospital[0].nomeHospital;
   }
 
   function toggleSidebar() {

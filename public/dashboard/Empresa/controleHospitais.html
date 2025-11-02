@@ -16,7 +16,7 @@
 <body>
     <div class="div-pai">
         <!-- Cabeçalho -->
-        <header>
+        <header style="position: fixed; z-index: 1000;">
             <div class="header-container">
                 <div class="div-hamburguer" onclick="toggleSidebar()">
                     <!-- Botão Hamburguer -->
@@ -42,7 +42,7 @@
                 </div>
             </div>
         </header>
-
+        <br><br><br><br>
         <!-- Sidebar Modal -->
         <div id="sidebarModal" class="sidebar-modal">
             <img src="/assets/imgs/Zephyrus_2png.png" alt="">
@@ -62,7 +62,8 @@
         <div style="display: flex; justify-content: space-between; align-items: center; padding: 20px;">
             <!-- KPIs de hospitais -->
             <div class="kpi">
-                <div style= "display: flex; flex-direction: column; align-items: center; margin-left: 1%; margin-right: 1%;">
+                <div
+                    style="display: flex; flex-direction: column; align-items: center; margin-left: 1%; margin-right: 1%;">
                     <h3> Última Atualização:</h3>
                     <p id="data-atual"></p>
 
@@ -90,7 +91,8 @@
                     <p>Quantidade Hospitais Estáveis:</p>
                     <h3 id="qtde_estavel">0</h3>
                 </div>
-                <div style= "display: flex; flex-direction: column; align-items: center; margin-left: 1%; margin-right: 1%;  ">
+                <div
+                    style="display: flex; flex-direction: column; align-items: center; margin-left: 1%; margin-right: 1%;  ">
                     <span style="width: 100%; margin: 2px;" class="status critico">Critico ≥ 2 Alertas</span>
                     <span style="width: 100%; margin: 2px;" class="status alerta">Alerta = 1 Alerta</span>
                     <span style="width: 100%; margin: 2px;" class="status estavel">Estável = 0 Alerta</span>
@@ -100,8 +102,8 @@
 
 
         <div style="padding: 20px; display: flex; gap: 10px; flex-wrap: wrap;">
-            <button id="add_hospital" class="button" style="width: 100%; max-width: 12vw ; margin-left: 0px;" type="button"
-                onclick="abrirModalHospital()">
+            <button id="add_hospital" class="button" style="width: 100%; max-width: 12vw ; margin-left: 0px;"
+                type="button" onclick="abrirModalHospital()">
                 <span class="button_text">Adicionar Hospital</span>
                 <span class="button_icon">+</span>
             </button>
@@ -218,7 +220,7 @@
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 <script>
-        /* Definindo o horário na dash*/
+    /* Definindo o horário na dash*/
     let agora = new Date();
 
     let dataFormatada = agora.toLocaleDateString();
@@ -227,10 +229,10 @@
     let elementoData = document.getElementById("data-atual");
 
     elementoData.textContent = `${dataFormatada} ${horaFormatada}`;
-    
-    if(sessionStorage.CARGO_USUARIO != "adminEmpresa"){
-    document.getElementById("add_hospital").style.display = "none";
-    document.getElementById("btnEditarHospital").style.display = "none";    
+
+    if (sessionStorage.CARGO_USUARIO != "adminEmpresa") {
+        document.getElementById("add_hospital").style.display = "none";
+        document.getElementById("btnEditarHospital").style.display = "none";
     }
 
     /* ------------------ UI ------------------ */
@@ -358,7 +360,7 @@
                 <h3>${hospCri[i].nomeHospital}</h3>
                 <span class="status ${hospCri[i].statusHospital}">${hospCri[i].statusHospital}</span>
                 `;
-                divHospital.addEventListener("click", () => {sessionStorage.ID_HOSPITAL_ATUAL = hospCri[i].idHospital; sessionStorage.NOME_HOSPITAL_ATUAL = hospCri[i].nomeHospital; window.location = "controleSalasHosp.html";});
+                divHospital.addEventListener("click", () => { sessionStorage.ID_HOSPITAL_ATUAL = hospCri[i].idHospital; sessionStorage.NOME_HOSPITAL_ATUAL = hospCri[i].nomeHospital; window.location = "controleSalasHosp.html"; });
                 container.appendChild(divHospital);
             }
 
@@ -374,7 +376,7 @@
                 <h3>${hospAlert[i].nomeHospital}</h3>
                 <span class="status ${hospAlert[i].statusHospital}">${hospAlert[i].statusHospital}</span>
                 `;
-                divHospital.addEventListener("click", () => {sessionStorage.ID_HOSPITAL_ATUAL = hospAlert[i].idHospital; sessionStorage.NOME_HOSPITAL_ATUAL = hospAlert[i].nomeHospital; window.location = "controleSalasHosp.html";});
+                divHospital.addEventListener("click", () => { sessionStorage.ID_HOSPITAL_ATUAL = hospAlert[i].idHospital; sessionStorage.NOME_HOSPITAL_ATUAL = hospAlert[i].nomeHospital; window.location = "controleSalasHosp.html"; });
                 container.appendChild(divHospital);
             }
 
@@ -389,7 +391,7 @@
                 <h3>${hospEst[i].nomeHospital}</h3>
                 <span class="status ${hospEst[i].statusHospital}">${hospEst[i].statusHospital}</span>
                 `;
-                divHospital.addEventListener("click", () => {sessionStorage.ID_HOSPITAL_ATUAL = hospEst[i].idHospital; sessionStorage.NOME_HOSPITAL_ATUAL = hospEst[i].nomeHospital; window.location = "controleSalasHosp.html";});
+                divHospital.addEventListener("click", () => { sessionStorage.ID_HOSPITAL_ATUAL = hospEst[i].idHospital; sessionStorage.NOME_HOSPITAL_ATUAL = hospEst[i].nomeHospital; window.location = "controleSalasHosp.html"; });
                 container.appendChild(divHospital);
             }
 

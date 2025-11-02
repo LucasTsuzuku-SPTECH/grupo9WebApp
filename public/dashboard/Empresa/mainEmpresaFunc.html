@@ -1,0 +1,753 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./../../css/dashboards.css">
+    <link rel="icon" href="/assets/imgs/Zephyrus.ico" />
+    <title>Dashboard - Página Principal</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://kit.fontawesome.com/9f7414eb10.js" crossorigin="anonymous"></script>
+    <script src="../../js/sessao.js"></script>
+
+</head>
+
+<body onload="carregarSalasHosp()">
+    <div class="div-pai">
+        <!-- Cabeçalho -->
+        <header style="position: fixed; z-index: 1000;">
+            <div class="header-container">
+                <div class="div-hamburguer" onclick="toggleSidebar()">
+                    <!-- Botão Hamburguer -->
+                    <a class="navbar-mob">
+                        <i id="icone" class="fa-solid fa-bars"></i>
+                    </a>
+                </div>
+                <h2>DASHBOARD - PÁGINA PRINCIPAL</h2>
+                <div class="div-pai-perfil">
+                    <div class="div-linha"></div>
+                    <div class="div-todo-perfil">
+                        <div class="div-filho-perfil">
+                            <img src="../../assets/imgs/profile.png" alt="imagem de perfil" class="img-perfil" />
+                            <img src="../../assets/imgs/seta-para-baixo-braca.png" alt="ver opções" class="img-seta" />
+                        </div>
+                        <div class="div-opcoes">
+                            <div class="div-opcao-sair">
+                                <button style="border: none;" onclick="limparSessao()"
+                                    id="sair"><span>Sair</span></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <br><br><br><br>
+        <!-- Sidebar Modal -->
+        <div id="sidebarModal" class="sidebar-modal">
+            <img src="/assets/imgs/Zephyrus_2png.png" alt="">
+            <div class="sidebar-header">
+                <span>Menu</span>
+                <button onclick="toggleSidebar()" class="btn-fechar">&times;</button>
+            </div>
+            <nav class="sidebar-nav">
+                <a class="pgAtual" href="./mainPage.html">Página principal</a>
+                <a href="./controleHospitais.html">Hospitais</a>
+                <a href="./contas.html">Contas</a>
+            </nav>
+        </div>
+
+        <div class="conteudo-main">
+            <div style="width: 100%; display: flex; flex-direction: row; justify-content: center;">
+                <div class="kpiDash2">
+                    <h2>RAM</h2>Componente com mais intercorrência
+                </div>
+                <div class="kpiDash2">
+                    <h2>03</h2>Máquinas com alertas em CPU
+                </div>
+                <div class="kpiDash2">
+                    <h2>10</h2>Máquinas com alerta em RAM
+                </div>
+                <div class="kpiDash2">
+                    <h2>06</h2>Máquinas com alertas em Disco
+                </div>
+                <div class="kpiDash2">
+                    <h2>04</h2>Máquinas com alertas em Processos
+                </div>
+            </div>
+
+            <div style="width: 100%; display: flex; flex-wrap: wrap; flex-direction: row; justify-content: center;">
+                <div style="width: 45%;" class="graficoContainer2">
+                    <div class="graficoHeader">Ranking de intercorrência por modelos (semanal):</div>
+                    <div class="tabelaWrapper">
+                        <table id="rankingModelo" class="graficoTabela2">
+                            <thead>
+                                <tr>
+                                    <th>Posição</th>
+                                    <th>Modelo</th>
+                                    <th>Total de Intercorrências</th>
+                                </tr>
+                            </thead>
+                        </table>
+                    </div>
+                </div>
+
+                <div style="width: 45%;" class="graficoContainer2">
+                    <div class="graficoHeader">Intercorrências por modelo (semanal):</div>
+                    <canvas id="intercorrenciaModelo"></canvas>
+                </div>
+
+
+                <div style="width: 45%;" class="graficoContainer2">
+                    <div class="graficoHeader">Ranking de intercorrência por área (semanal):</div>
+                    <div class="tabelaWrapper">
+                        <table id="rankingArea" class="graficoTabela2">
+                            <thead>
+                                <tr>
+                                    <th>Posição</th>
+                                    <th>Área</th>
+                                    <th>Total de Intercorrências</th>
+                                </tr>
+                            </thead>
+                        </table>
+                    </div>
+                </div>
+
+                <div style="width: 45%;" class="graficoContainer2">
+                    <div class="graficoHeader">Intercorrências por áreas (semanal):</div>
+                    <canvas id="intercorrenciaArea" style="width: 650px; height: 500px;"></canvas>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="divAnalise">
+            <div style="width: 45%;" class="graficoContainer2">
+                <div class="graficoHeader">Percentual (%) de uso de componente por modelo (semanal):</div>
+                <canvas id="usoComponentes" style="width: 650px; height: 500px;"></canvas>
+            </div>
+
+
+            <div style="width: 100%; background-color: #39a699;">
+                <div style="width: 90%; margin: 60px;">
+                    <select onchange="filtrarGrafHosp()" class="selectHospitais" name="" id="selectHospitais">
+                        <option value="">Selecione um hospital...</option>
+                    </select>
+                </div>
+                <div style="width: 100%; display: flex; flex-direction: row; justify-content: center;">
+                    <div style="width: 45%;" class="graficoContainer2">
+                        <div class="graficoHeader">Percentual de uso de componente por área/hospital
+                            (semanal):</div>
+                        <canvas id="componenteAreaHosp" style="width: 650px; height: 500px;"></canvas>
+                    </div>
+                    <div style="width: 45%;" class="graficoContainer2">
+                        <div class="graficoHeader">Percentual de uso de modelo por área/hospital (semanal):</div>
+                        <canvas id="modeloAreaHosp" style="width: 650px; height: 500px;"></canvas>
+                    </div>
+                </div>
+            </div>
+            <div style="width: 95%;" class="graficoContainer2">
+                <div class="graficoHeader">Ranking de intercorrência por modelos (semanal):</div>
+                <div class="tabelaWrapper">
+                    <table id="rankingModelo" class="graficoTabela2">
+                        <thead>
+                            <tr>
+                                <th>Data/hora</th>
+                                <th>Hospital</th>
+                                <th>Área</th>
+                                <th>Modelo</th>
+                                <th>N° Série</th>
+                                <th>Parâmetro atingido</th>
+                                <th>Consumo</th>
+                                <th>Unidade</th>
+                            </tr>
+                            <tr>
+                                <td>30/10/2025 12:00</td>
+                                <td>Instituto Nacional do Câncer</td>
+                                <td>UTI</td>
+                                <td>Dräger Evita Infinity V500</td>
+                                <td>VNT-DRG-0025</td>
+                                <td>RAM</td>
+                                <td>91</td>
+                                <td>%</td>
+                            </tr>
+                            <tr>
+                                <td>30/10/2025 11:47</td>
+                                <td>Instituto Nacional do Câncer</td>
+                                <td>UTI</td>
+                                <td>Hamilton-C6</td>
+                                <td>VNT-HML-0026</td>
+                                <td>CPU</td>
+                                <td>90</td>
+                                <td>%</td>
+                            </tr>
+                            <tr>
+                                <td>30/10/2025 11:40</td>
+                                <td>Instituto Nacional do Câncer</td>
+                                <td>UTI</td>
+                                <td>Hamilton-C6</td>
+                                <td>VNT-HML-0137</td>
+                                <td>RAM</td>
+                                <td>87</td>
+                                <td>%</td>
+                            </tr>
+                            <tr>
+                                <td>30/10/2025 11:20</td>
+                                <td>Hospital São Paulo</td>
+                                <td>Neonatal</td>
+                                <td>Hamilton-C6</td>
+                                <td>VNT-HML-0002</td>
+                                <td>RAM</td>
+                                <td>81</td>
+                                <td>%</td>
+                            </tr>
+                            <tr>
+                                <td>30/10/2025 11:10</td>
+                                <td>Hospital das Clínicas SP</td>
+                                <td>Pronto-Socorro</td>
+                                <td>Magnamed OxyMag</td>
+                                <td>VNT-MND-0051</td>
+                                <td>Bateria</td>
+                                <td>14</td>
+                                <td>%</td>
+                            </tr>
+                            <tr>
+                                <td>30/10/2025 10:58</td>
+                                <td>Hospital Santa Rita</td>
+                                <td>UTI</td>
+                                <td>Dräger Evita Infinity V500</td>
+                                <td>VNT-DRG-0091</td>
+                                <td>Disco</td>
+                                <td>76</td>
+                                <td>%</td>
+                            </tr>
+                            <tr>
+                                <td>30/10/2025 10:50</td>
+                                <td>Hospital Santa Rita</td>
+                                <td>UTI</td>
+                                <td>Hamilton-C6</td>
+                                <td>VNT-HML-0092</td>
+                                <td>RAM</td>
+                                <td>92</td>
+                                <td>%</td>
+                            </tr>
+                            <tr>
+                                <td>30/10/2025 10:43</td>
+                                <td>Hospital Esperança</td>
+                                <td>Centro cirurgico</td>
+                                <td>GE CARESCAPE R860</td>
+                                <td>VNT-DRG-0166</td>
+                                <td>CPU</td>
+                                <td>88</td>
+                                <td>%</td>
+                            </tr>
+                            <tr>
+                                <td>30/10/2025 10:35</td>
+                                <td>Hospital São José</td>
+                                <td>Internação</td>
+                                <td>Mindray SV300</td>
+                                <td>VNT-MND-0183</td>
+                                <td>CPU</td>
+                                <td>80</td>
+                                <td>%</td>
+                            </tr>
+                            <tr>
+                                <td>30/10/2025 10:25</td>
+                                <td>Hospital Universitário de Campinas</td>
+                                <td>UTI</td>
+                                <td>Dräger Evita Infinity V500</td>
+                                <td>VNT-DRG-0235</td>
+                                <td>RAM</td>
+                                <td>96</td>
+                                <td>%</td>
+                            </tr>
+                            <tr>
+                                <td>30/10/2025 10:15</td>
+                                <td>Hospital Regional de Ribeirão</td>
+                                <td>Pronto-Socorro</td>
+                                <td>Magnamed OxyMag</td>
+                                <td>VNT-MND-0279</td>
+                                <td>Bateria</td>
+                                <td>18</td>
+                                <td>%</td>
+                            </tr>
+                            <tr>
+                                <td>30/10/2025 10:05</td>
+                                <td>Santa Casa de Misericórdia Santos</td>
+                                <td>Neonatal</td>
+                                <td>Hamilton-C6</td>
+                                <td>VNT-HML-0320</td>
+                                <td>RAM</td>
+                                <td>91</td>
+                                <td>%</td>
+                            </tr>
+                            <tr>
+                                <td>30/10/2025 09:55</td>
+                                <td>Hospital das Américas</td>
+                                <td>UTI</td>
+                                <td>GE CARESCAPE R860</td>
+                                <td>VNT-DRG-0409</td>
+                                <td>CPU</td>
+                                <td>89</td>
+                                <td>%</td>
+                            </tr>
+                            <tr>
+                                <td>30/10/2025 09:40</td>
+                                <td>Hospital São Paulo</td>
+                                <td>Neonatal</td>
+                                <td>Dräger Evita Infinity V500</td>
+                                <td>VNT-DRG-0004</td>
+                                <td>RAM</td>
+                                <td>93</td>
+                                <td>%</td>
+                            </tr>
+                            <tr>
+                                <td>30/10/2025 09:25</td>
+                                <td>Instituto Nacional do Câncer</td>
+                                <td>Pronto-Socorro</td>
+                                <td>Magnamed OxyMag</td>
+                                <td>VNT-MND-0030</td>
+                                <td>Bateria</td>
+                                <td>16</td>
+                                <td>%</td>
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
+
+
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<script>
+    function toggleSidebar() {
+        const sidebar = document.getElementById("sidebarModal");
+        const icone = document.getElementById("icone");
+
+        sidebar.classList.toggle("active");
+    }
+
+    function mostrarNavbar() {
+        const larguraTela = window.innerWidth;
+        var menu = document.getElementById("navbar");
+        var icone = document.getElementById("icone");
+
+        if (larguraTela < 1342) {
+            if (getComputedStyle(menu).display == 'none') {
+                menu.style.display = "flex";
+                icone.classList.remove("fa-bars");
+                icone.classList.add("fa-times");
+            } else {
+                menu.style.display = "none";
+                icone.classList.remove("fa-times");
+                icone.classList.add("fa-bars");
+            }
+        }
+    }
+
+    function Sair() {
+        const sair = document.getElementById("sair")
+
+        if (sair) {
+            localStorage.removeItem("email")
+            localStorage.removeItem("senha")
+
+            sessionStorage.clear()
+            console.log(sessionStorage)
+
+            window.location.href = "../../index.html"
+        }
+    }
+
+
+
+
+
+
+    var hospAgrupado;
+    async function carregarSalasHosp() {
+        try {
+            const resposta = await fetch(`/controle/listar/hospitais/salas`);
+            const salas = await resposta.json();
+            const container = document.querySelector(".conteudo-principal");
+
+            let total = salas.length, estavel = 0, alerta = 0, critico = 0;
+            var areas = [];
+            var salaEst = [];
+            var salaAlert = [];
+            var salaCri = [];
+
+            for (const sala of salas) {
+                if (!areas.includes(sala.area)) {
+                    areas.push(sala.area)
+                }
+
+                // Buscar ventiladores da sala
+                const respV = await fetch(`/controle/hospitais/${sala.idSala}/ventiladores`);
+                var ventiladores = respV.status === 204 ? [] : await respV.json();
+
+                // --- MOCK ALERTAS ---
+                let totalAlertas = 0;
+
+                // Distribuir alertas de acordo com o status da sala
+                // Decide primeiro o status do hospital
+                let statusSala;
+                let alertasHosp = 0;
+                const sorteio = Math.random();
+
+                if (sorteio < 0.33) {
+                    statusSala = "estavel";
+                    ventiladores.forEach(v => v.alertas = 0);
+                    totalAlertas = 0;
+
+                } else if (sorteio < 0.66) {
+                    statusSala = "alerta";
+                    // Gera no máximo 2 alertas no total
+                    totalAlertas = Math.floor(Math.random() * 3); // 0,1,2
+                    let restantes = totalAlertas;
+                    ventiladores.forEach(v => {
+                        if (restantes > 0) {
+                            v.alertas = 1;
+                            alertasHosp += v.alertas
+                            restantes--;
+                        } else {
+                            v.alertas = 0;
+                        }
+                    });
+                } else {
+                    statusSala = "critico";
+                    // Gera 3 a 6 alertas no total
+                    totalAlertas = 3 + Math.floor(Math.random() * 4); // 3 a 6
+                    let restantes = totalAlertas;
+                    ventiladores.forEach(v => {
+                        if (restantes > 0) {
+                            const qtd = Math.min(restantes, Math.floor(Math.random() * 3) + 1); // 1 a 3
+                            v.alertas = qtd;
+                            alertasHosp += v.alertas
+                            restantes -= qtd;
+                        } else {
+                            v.alertas = 0;
+                        }
+                    });
+                }
+
+                // Guardar ventiladores com alertas simulados no próprio objeto
+                sala.ventiladoresMock = ventiladores;
+                sala.statusSala = statusSala;
+                sala.alertasTotais = alertasHosp;
+
+                // Contabilizar
+                if (statusSala === "estavel") {
+                    estavel++;
+                    salaEst.push(sala)
+                };
+
+                if (statusSala === "alerta") {
+                    alerta++;
+                    salaAlert.push(sala)
+                }
+                if (statusSala === "critico") {
+                    critico++;
+                    salaCri.push(sala);
+                }
+            }
+
+
+
+
+            hospAgrupado = Object.values(Object.groupBy(salas, s => s.idHospital));
+            //Ranking e Gráficos
+            const listRanking = [];
+            var nomesModelos = [];
+            var dadosModelos = [];
+
+            for (let i = 0; i < hospAgrupado.length; i++) {
+                for (let j = 0; j < hospAgrupado[i].length; j++) {
+                    for (let k = 0; k < hospAgrupado[i][j]['ventiladoresMock'].length; k++)
+                        if (!nomesModelos.includes(hospAgrupado[i][j]['ventiladoresMock'][k]['nome_modelo'])) {
+                            nomesModelos.push(hospAgrupado[i][j]['ventiladoresMock'][k]['nome_modelo'])
+                        };
+                }
+            }
+
+            for (let m = 0; m < nomesModelos.length; m++) {
+                var modeloAtual = nomesModelos[m]
+                var totalAlertasModelo = 0;
+
+                for (let i = 0; i < hospAgrupado.length; i++) {
+                    for (let j = 0; j < hospAgrupado[i].length; j++) {
+                        for (let k = 0; k < hospAgrupado[i][j]['ventiladoresMock'].length; k++)
+                            if (hospAgrupado[i][j]['ventiladoresMock'][k]['nome_modelo'] == modeloAtual) {
+                                totalAlertasModelo += hospAgrupado[i][j]['ventiladoresMock'][k]['alertas'];
+                            };
+                    }
+                }
+                dadosModelos.push(totalAlertasModelo)
+            }
+
+            for (let i = 0; i < nomesModelos.length; i++) {
+                listRanking.push({
+                    nomeModelo: nomesModelos[i],
+                    totalAlertas: dadosModelos[i]
+                });
+            }
+
+            listRanking.sort((a, b) => b.totalAlertas - a.totalAlertas);
+            for (let i = 0; i < listRanking.length; i++) {
+                document.getElementById("rankingModelo").innerHTML += `
+              <th>${[i + 1]}°</th>
+              <th>${listRanking[i].nomeModelo}</th>
+              <th>${listRanking[i].totalAlertas}</th>`
+            }
+
+            const grafIntercorrenciaModelo = document.getElementById('intercorrenciaModelo');
+            grafIntercorrenciaModelo.style.height = '35vh'
+            grafIntercorrenciaModelo.style.width = '100%'
+            new Chart(grafIntercorrenciaModelo, {
+                type: 'bar',
+                data: {
+                    labels: nomesModelos,
+                    datasets: [{
+                        backgroundColor: '#264653',
+                        label: 'Total de intercorrências',
+                        data: dadosModelos,
+                        borderWidth: 2,
+                    }]
+                },
+                options: {
+                    indexAxis: 'y',
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                font: {
+                                    size: 15
+                                }
+                            }
+                        },
+                        x: {
+                            ticks: {
+                                font: {
+                                    size: 15
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+
+
+
+
+
+
+            var areas = [];
+            var alertasArea = [];
+            let rankingArea = [];
+
+            for (let i = 0; i < hospAgrupado.length; i++) {
+                for (let j = 0; j < hospAgrupado[i].length; j++) {
+                    for (let k = 0; k < hospAgrupado[i][j]['ventiladoresMock'].length; k++)
+                        if (!areas.includes(hospAgrupado[i][j]['ventiladoresMock'][k].area)) {
+                            areas.push(hospAgrupado[i][j]['ventiladoresMock'][k].area)
+                        };
+                }
+            }
+
+            for (let a = 0; a < areas.length; a++) {
+                const areaAtual = areas[a];
+                let alerta = 0;
+
+                for (let j = 0; j < hospAgrupado.length; j++) {
+                    for (let k = 0; k < hospAgrupado[j].length; k++) {
+                        const ventiladores = hospAgrupado[j][k]['ventiladoresMock'];
+
+
+                        for (let l = 0; l < ventiladores.length; l++) {
+                            if (ventiladores[l].area == areaAtual) {
+                                alerta += ventiladores[l].alertas;
+                            }
+                        }
+                    }
+                }
+                alertasArea.push(alerta);
+            }
+
+            for (let i = 0; i < areas.length; i++) {
+                rankingArea.push({
+                    nomeArea: areas[i],
+                    totalAlertas: alertasArea[i]
+                });
+            }
+
+            rankingArea.sort((a, b) => b.totalAlertas - a.totalAlertas);
+            for (let i = 0; i < rankingArea.length; i++) {
+                document.getElementById("rankingArea").innerHTML += `
+              <th>${[i + 1]}°</th>
+              <th>${rankingArea[i].nomeArea}</th>
+              <th>${rankingArea[i].totalAlertas}</th>`
+            }
+
+            const grafIntercorrenciaArea = document.getElementById('intercorrenciaArea');
+            grafIntercorrenciaArea.style.height = '40vh'
+            grafIntercorrenciaArea.style.width = '100%'
+
+            new Chart(grafIntercorrenciaArea, {
+                type: 'bar',
+                data: {
+                    labels: areas,
+                    datasets: [{
+                        backgroundColor: '#264653',
+                        label: 'Total de intercorrências',
+                        data: alertasArea,
+                        borderWidth: 2,
+                    }]
+                },
+                options: {
+                    indexAxis: 'y',
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                font: {
+                                    size: 15
+                                }
+                            }
+                        },
+                        x: {
+                            ticks: {
+                                maxRotation: 0,
+                                minRotation: 0,
+                                font: {
+                                    size: 15
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+
+
+
+
+
+            //analise
+            const grafUsoComponentes = document.getElementById('usoComponentes');
+            grafUsoComponentes.style.margin = 0;
+            grafUsoComponentes.style.width = '100%';
+            new Chart(grafUsoComponentes, {
+                type: 'bar',
+                data: {
+                    labels: nomesModelos,
+                    datasets: [
+                        {
+                            label: 'CPU',
+                            data: [25, 40, 30, 20],
+                            backgroundColor: '#2a6677',
+                            borderWidth: 1.5,
+                            borderColor: 'black'
+                        },
+                        {
+                            label: 'RAM',
+                            data: [70, 85, 90, 80],
+                            backgroundColor: '#66a7c7',
+                            borderWidth: 1.5,
+                            borderColor: 'black'
+                        },
+                        {
+                            label: 'DISCO',
+                            data: [35, 25, 45, 30],
+                            backgroundColor: '#8fd6f1',
+                            borderWidth: 1.5,
+                            borderColor: 'black'
+                        },
+                        {
+                            label: 'Processos',
+                            data: [15, 20, 18, 22],
+                            backgroundColor: '#b2ebf2',
+                            borderWidth: 1.5,
+                            borderColor: 'black'
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                            labels: {
+                                color: '#000',
+                                font: { weight: 'bold' }
+                            }
+                        },
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                color: '#000'
+                            },
+                            grid: {
+                                color: '#ccc'
+                            }
+                        },
+                        x: {
+                            ticks: {
+                                color: '#000'
+                            },
+                            grid: {
+                                display: false
+                            }
+                        }
+                    }
+                }
+            });
+
+
+
+
+
+
+            var hospitaisSelect = [];
+
+            for (let i = 0; i < hospAgrupado.length; i++) {
+                let totalAlertasHosp = 0;
+
+                for (let j = 0; j < hospAgrupado[i].length; j++) {
+                    totalAlertasHosp += hospAgrupado[i][j].alertasTotais;
+                }
+
+                hospitaisSelect.push({
+                    idHospital: hospAgrupado[i][0].idHospital,
+                    nomeHospital: hospAgrupado[i][0].nomeHospital,
+                    totalAlertas: totalAlertasHosp
+                });
+            }
+
+            hospitaisSelect.sort((a, b) => b.totalAlertas - a.totalAlertas);
+            for (let i = 0; i < hospitaisSelect.length; i++) {
+                document.getElementById("selectHospitais").innerHTML += `<option value="${hospitaisSelect[i].idHospital}">${hospitaisSelect[i].nomeHospital}</option>`
+            }
+
+
+        } catch (erro) {
+            console.error("Erro:", erro);
+        }
+    }
+
+
+    function filtrarGrafHosp() {
+
+
+
+        console.log(hospAgrupado)
+    }
+</script>

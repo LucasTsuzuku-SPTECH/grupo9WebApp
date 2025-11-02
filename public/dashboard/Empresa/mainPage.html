@@ -16,7 +16,7 @@
 <body onload="carregarSalasHosp()">
   <div class="div-pai">
     <!-- Cabeçalho -->
-    <header>
+    <header style="position: fixed; z-index: 1000;">
       <div class="header-container">
         <div class="div-hamburguer" onclick="toggleSidebar()">
           <!-- Botão Hamburguer -->
@@ -41,7 +41,7 @@
         </div>
       </div>
     </header>
-
+    <br><br><br><br>
     <!-- Sidebar Modal -->
     <div id="sidebarModal" class="sidebar-modal">
       <img src="/assets/imgs/Zephyrus_2png.png" alt="">
@@ -148,7 +148,6 @@
       window.location.href = "../../index.html"
     }
   }
-
 
 
 
@@ -321,6 +320,7 @@
 
 
       const grafIntercorrenciaHosp = document.getElementById('intercorrenciaHosp');
+      grafIntercorrenciaHosp.style.margin = "0px"
       new Chart(grafIntercorrenciaHosp, {
         type: 'bar',
         data: {
@@ -360,6 +360,9 @@
       console.error("Erro:", erro);
     }
   }
+
+
+
 
 
 
@@ -444,6 +447,14 @@
       }
     });
   }
+
+
+
+
+
+
+
+
 
 
 </script>
