@@ -1913,3 +1913,27 @@ header h2 {
   width: 100%;
   height: auto;
 }
+
+.Chamado {
+  margin: 1.5%;
+  background-color:#e0f7fa ;                          
+  border: #264653 1px solid;                     
+  width: 10%;
+  height: 45px;
+  border-radius: 8px;               
+  font-weight: 600;
+  font-size: 1.6vh;
+  cursor: pointer;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15); 
+  transition: all 0.2s ease-in-out;          
+}
+
+.Chamado:hover {
+  background-color: #00796b;        
+  transform: translateY(-2px);      
+}
+
+.Chamado:active {
+  transform: translateY(0);        
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+}

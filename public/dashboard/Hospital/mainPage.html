@@ -56,6 +56,7 @@
         <a class="pgAtual" href="./mainPage.html">Página principal</a>
         <a href="./controleSalas.html">Salas</a>
         <a href="./contas.html">Contas</a>
+        <a style="margin-top: 700px;" href="https://suaempresa.atlassian.net/secure/CreateIssue!default.jspa" target="_blank">Abrir Chamado <i class="fa-solid fa-headset"></i></a>
       </nav>
     </div>
     <div style="display: flex; flex-direction: column; justify-content: center; align-items: center; margin-top: 10px;">
@@ -189,7 +190,7 @@
           </div>
         </div>
       </div>
-     
+      <button class="Chamado" onclick="abrirChamado()">Abrir Chamado <i class="fa-solid fa-headset"></i></button>
     </div>
 
   </div>
@@ -212,6 +213,11 @@
   
   elementoData.textContent += ` ${dataFormatada} ${horaFormatada}`;
   
+  function abrirChamado() {
+    // Substitua pela URL do seu Jira (pode ser Jira Cloud ou Server)
+    const jiraUrl = "https://suaempresa.atlassian.net/secure/CreateIssue!default.jspa";
+    window.open(jiraUrl, "_blank");
+  }
 
   async function hospital() {
     const resposta = await fetch(`/controle/hospitais/${sessionStorage.getItem("HOSPITAL_USUARIO")}`);
