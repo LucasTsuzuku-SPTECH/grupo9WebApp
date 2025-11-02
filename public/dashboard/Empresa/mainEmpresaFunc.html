@@ -51,7 +51,7 @@
                 <button onclick="toggleSidebar()" class="btn-fechar">&times;</button>
             </div>
             <nav class="sidebar-nav">
-                <a class="pgAtual" href="./mainPage.html">Página principal</a>
+                <a class="pgAtual" href="./mainEmpresaFunc.html">Página principal</a>
                 <a href="./controleHospitais.html">Hospitais</a>
                 <a href="./contas.html">Contas</a>
             </nav>
@@ -136,12 +136,13 @@
                 </div>
                 <div style="width: 100%; display: flex; flex-direction: row; justify-content: center;">
                     <div style="width: 45%;" class="graficoContainer2">
-                        <div class="graficoHeader">Percentual de uso de componente por área/hospital
+                        <div class="graficoHeader">Percentual da média de uso de componente por área/hospital
                             (semanal):</div>
                         <canvas id="componenteAreaHosp" style="width: 650px; height: 500px;"></canvas>
                     </div>
                     <div style="width: 45%;" class="graficoContainer2">
-                        <div class="graficoHeader">Percentual de uso de modelo por área/hospital (semanal):</div>
+                        <div class="graficoHeader">Percentual da média de uso de modelo por área/hospital (semanal):
+                        </div>
                         <canvas id="modeloAreaHosp" style="width: 650px; height: 500px;"></canvas>
                     </div>
                 </div>
@@ -715,7 +716,6 @@
 
 
 
-
             var hospitaisSelect = [];
 
             for (let i = 0; i < hospAgrupado.length; i++) {
@@ -744,10 +744,149 @@
     }
 
 
+
+
+
+    var graf1;
+    var graf2;
     function filtrarGrafHosp() {
+        var grafComponenteAreaHosp = document.getElementById('componenteAreaHosp');
+        var grafModeloAreaHosp = document.getElementById('modeloAreaHosp');
+
+        var nomesComponentes = ['CPU', 'RAM', 'Disco', 'Processos'];
+        var componenteData = [];
+
+        var nomesModelos = [];
+        var modeloData = [];
+
+        var nomesArea = [];
+
+        for (let i = 0; i < hospAgrupado.length; i++) {
+            for (let j = 0; j < hospAgrupado[i].length; j++) {
+                for (let k = 0; k < hospAgrupado[i][j]['ventiladoresMock'].length; k++) {
+
+                    if (!nomesModelos.includes(hospAgrupado[i][j]['ventiladoresMock'][k]['nome_modelo'])) {
+                        nomesModelos.push(hospAgrupado[i][j]['ventiladoresMock'][k]['nome_modelo']);
+                    }
+                    if (!nomesArea.includes(hospAgrupado[i][j]['ventiladoresMock'][k]['area'])) {
+                        nomesArea.push(hospAgrupado[i][j]['ventiladoresMock'][k]['area']);
+                    }
+                }
+            }
+        }
+
+        for (let i = 0; i < nomesComponentes.length; i++) {
+            let tempIndex = [];
+            for (let j = 0; j < nomesArea.length; j++) {
+                tempIndex.push(Math.floor(Math.random() * 101));
+            }
+            componenteData.push(tempIndex);
+        }
+
+        for (let i = 0; i < nomesModelos.length; i++) {
+            let tempIndex = [];
+            for (let j = 0; j < nomesArea.length; j++) {
+                tempIndex.push(Math.floor(Math.random() * 101));
+            }
+            modeloData.push(tempIndex);
+        }
 
 
 
-        console.log(hospAgrupado)
+        if (graf1) {
+            graf1.destroy()
+        }
+
+        grafComponenteAreaHosp.style.margin = 0;
+        grafComponenteAreaHosp.width = 1400;
+        grafComponenteAreaHosp.height = 750;
+
+        graf1 = new Chart(grafComponenteAreaHosp, {
+            type: 'bar',
+            data: {
+                labels: nomesArea,
+                datasets: nomesComponentes.map((comp, i) => ({
+                    label: comp,
+                    data: componenteData[i],
+                    backgroundColor: ['#2a6677', '#66a7c7', '#8fd6f1', '#b2ebf2'][i],
+                    borderWidth: 1.5,
+                    borderColor: 'black'
+                }))
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        position: 'top',
+                        labels: { color: '#000', font: { weight: 'bold' } }
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: { color: '#000' },
+                        grid: { color: '#ccc' }
+                    },
+                    x: {
+                        ticks: { color: '#000' },
+                        grid: { display: false }
+                    }
+                }
+            }
+        });
+
+
+
+
+        if (graf2) {
+            graf2.destroy()
+        }
+
+        grafModeloAreaHosp.style.margin = 0;
+        grafModeloAreaHosp.width = 1400;
+        grafModeloAreaHosp.height = 750;
+
+        graf2 = new Chart(grafModeloAreaHosp, {
+            type: 'bar',
+            data: {
+                labels: nomesArea,
+                datasets: nomesModelos.map((modelo, i) => ({
+                    label: modelo,
+                    data: modeloData[i],
+                    backgroundColor: ['#2a6677', '#66a7c7', '#8fd6f1', '#b2ebf2', '#ccefff'][i],
+                    borderWidth: 1.5,
+                    borderColor: 'black'
+                }))
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        position: 'top',
+                        labels: { color: '#000', font: { weight: 'bold' } }
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: { color: '#000' },
+                        grid: { color: '#ccc' }
+                    },
+                    x: {
+                        ticks: { color: '#000' },
+                        grid: { display: false }
+                    }
+                }
+            }
+        });
     }
+
+
+
+
+
+
+
+
+
 </script>
