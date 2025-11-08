@@ -55,6 +55,7 @@
                 <a href="./mainPage.html">Página principal</a>
                 <a class="pgAtual" href="./controleSalas.html">Salas</a>
                 <a href="./contas.html">Contas</a>
+                <a style="margin-top: 700px;" href="https://suaempresa.atlassian.net/secure/CreateIssue!default.jspa" target="_blank">Abrir Chamado <i class="fa-solid fa-headset"></i></a>
             </nav>
         </div>
 
@@ -270,10 +271,11 @@
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
 
-    if (sessionStorage.CARGO_USUARIO != "adminHospital") {
+    if (sessionStorage.CARGO_USUARIO != "adminHosp") {
         document.getElementById("btnEditarHospital").style.display = "none";
         document.getElementById("")
     }
+
     /* Definindo o horário na dash*/
     let agora = new Date();
 
@@ -335,7 +337,7 @@
     /* ------------------ Salas ------------------ */
     async function carregarSalasHosp() {
         try {
-            const resposta = await fetch(`/controle/listar/salas/${sessionStorage.HOSPITAL_USUARIO}`);
+            const resposta = await fetch(`/controle/listar/salas/${sessionStorage.FK}`);
             const salas = await resposta.json();
             const container = document.querySelector(".conteudo-principal2");
             container.innerHTML = "";
@@ -346,145 +348,23 @@
             var salaAlert = [];
             var salaCri = [];
 
+
             for (const sala of salas) {
-                if (!areas.includes(sala.area)) {
-                    areas.push(sala.area)
-                }
-
-                // Buscar ventiladores da sala
-                const respV = await fetch(`/controle/hospitais/${sala.idSala}/ventiladores`);
-                var ventiladores = respV.status === 204 ? [] : await respV.json();
-
-                // --- MOCK ALERTAS ---
-                let totalAlertas = 0;
-
-                // Distribuir alertas de acordo com o status da sala
-                // Decide primeiro o status do hospital
-                let statusSala;
-                const sorteio = Math.random();
-
-                if (sorteio < 0.33) {
-                    statusSala = "estavel";
-                    ventiladores.forEach(v => v.alertas = 0);
-                    totalAlertas = 0;
-
-                } else if (sorteio < 0.66) {
-                    statusSala = "alerta";
-                    // Gera no máximo 2 alertas no total
-                    totalAlertas = Math.floor(Math.random() * 3); // 0,1,2
-                    let restantes = totalAlertas;
-                    ventiladores.forEach(v => {
-                        if (restantes > 0) {
-                            v.alertas = 1;
-                            restantes--;
-                        } else {
-                            v.alertas = 0;
-                        }
-                    });
-                } else {
-                    statusSala = "critico";
-                    // Gera 3 a 6 alertas no total
-                    totalAlertas = 3 + Math.floor(Math.random() * 4); // 3 a 6
-                    let restantes = totalAlertas;
-                    ventiladores.forEach(v => {
-                        if (restantes > 0) {
-                            const qtd = Math.min(restantes, Math.floor(Math.random() * 3) + 1); // 1 a 3
-                            v.alertas = qtd;
-                            restantes -= qtd;
-                        } else {
-                            v.alertas = 0;
-                        }
-                    });
-                }
-
-
-                // Guardar ventiladores com alertas simulados no próprio objeto
-                sala.ventiladoresMock = ventiladores;
-                sala.statusSala = statusSala;
-
-                // Contabilizar
-                if (statusSala === "estavel") {
-                    estavel++;
-                    salaEst.push(sala)
-                };
-
-                if (statusSala === "alerta") {
-                    alerta++;
-                    salaAlert.push(sala)
-                }
-                if (statusSala === "critico") {
-                    critico++;
-                    salaCri.push(sala);
-                }
-            }
-
-
-            for (area of areas) {
+                sala.statusSala = "estavel"
                 const divArea = document.createElement("div");
                 divArea.className = "marcador-area";
-                divArea.innerHTML = `<h2>${area}</h2>`
+                divArea.innerHTML = `<h2>${sala.area}</h2>`
                 container.appendChild(divArea);
-
-                for (let i = 0; i < salaCri.length; i++) {
-                    if (salaCri[i].area == area) {
-
-                        // Renderizar sala
-                        const divSala = document.createElement("div");
-                        divSala.className = "card-hospital";
-
-                        divSala.dataset.status = salaCri[i].statusSala;
-                        divSala.innerHTML = `
-                <h3>Sala ${salaCri[i].numero}</h3>
-                <span class="status ${salaCri[i].statusSala}">${salaCri[i].statusSala}</span>
+                const divSala = document.createElement("div");
+                divSala.className = "card-hospital";
+                divSala.dataset.status = sala.statusSala;
+                divSala.innerHTML = `
+                <h3>Sala ${sala.numero}</h3>
+                <span class="status ${sala.statusSala}">${sala.statusSala}</span>
                 `;
-
-
-                        divSala.addEventListener("click", () => abrirModalVentiladores(salaCri[i].idSala, salaCri[i].numero, salaCri[i].ventiladoresMock));
-                        container.appendChild(divSala);
-                    }
-                }
-
-
-
-                for (let i = 0; i < salaAlert.length; i++) {
-                    if (salaAlert[i].area == area) {
-                        // Renderizar sala
-                        const divSala = document.createElement("div");
-                        divSala.className = "card-hospital";
-
-                        divSala.dataset.status = salaAlert[i].statusSala;
-                        for (let j = 0; j < area.length; j++) {
-                            if (salaAlert[i].area == area[j]) {
-                                divArea.innerHTML = `<h1>${area[j]}</h1>`
-                            }
-                        }
-                        divSala.innerHTML = `
-                <h3>Sala ${salaAlert[i].numero}</h3>
-                <span class="status ${salaAlert[i].statusSala}">${salaAlert[i].statusSala}</span>
-                `;
-                        divSala.addEventListener("click", () => abrirModalVentiladores(salaAlert[i].idSala, salaAlert[i].numero, salaAlert[i].ventiladoresMock));
-                        container.appendChild(divSala);
-                    }
-                }
-
-
-                for (let i = 0; i < salaEst.length; i++) {
-                    if (salaEst[i].area == area) {
-                        // Renderizar sala
-                        const divSala = document.createElement("div");
-                        divSala.className = "card-hospital";
-
-                        divSala.dataset.status = salaEst[i].statusSala;
-                        divSala.innerHTML = `
-                <h3>Sala ${salaEst[i].numero}</h3>
-                <span class="status ${salaEst[i].statusSala}">${salaEst[i].statusSala}</span>
-                `;
-                        divSala.addEventListener("click", () => abrirModalVentiladores(salaEst[i].idSala, salaEst[i].numero, salaEst[i].ventiladoresMock));
-                        container.appendChild(divSala);
-                    }
-                }
+                    divSala.addEventListener("click", () => abrirModalVentiladores(sala.idSala, sala.numero, sala.ventiladoresMock));
+                    container.appendChild(divSala);                    
             }
-
 
             document.getElementById("qtde_total").innerText = total;
             document.getElementById("qtde_estavel").innerText = estavel;
@@ -497,6 +377,7 @@
 
     var ventiladoresEncontrados = [];
     var parametrosEncontrados = [];
+
     async function visualizarVentiladores() {
         ventiladoresEncontrados = [];
         parametrosEncontrados = [];
@@ -510,10 +391,6 @@
                 <span class="btn-text">Visualizar Salas</span>
                 <i class="fa-solid fa-eye"></i>
                 </button>
-                ${sessionStorage.CARGO_USUARIO != "adminHospital" ? "" : `<button class="btn-edit" style="width: 100%; max-width: 12vw ; margin-left: 0px;" type="button" onclick="abrirAddModal()">
-                     <span class="button_text">Adicionar Ventilador</span>
-                    <span class="button_icon">+</span>
-                </button> `}
                 <input id="ipt_pesquisa" oninput="filtrarNSerie()" style="width: 20%;
                 border-radius: 8px;
                 border: 1px solid black;
@@ -570,14 +447,10 @@
                                 <strong>Nº Série:</strong> <span>${v.numero_serie}</span>
                             </div>
                             <div style="display:flex;gap:10px;">
-                                ${sessionStorage.CARGO_USUARIO != "adminHospital" ? "" : `<button class="btn-edit" onclick='abrirModalEdicao(${v.idVentilador}, ${v.idSala}, ${v.idHospital})'>
+                                <button class="btn-edit" onclick='abrirModalEdicao(${v.idVentilador}, ${v.idSala}, ${v.idHospital})'>
                                     <span class="btn-text">Editar</span>
                                     <i class="fa-regular fa-pen-to-square"></i>
                                 </button>
-                                <button class="btn-delete" onclick='confirmarDelete(${v.idVentilador}, ${v.idHospital})'>
-                                    <span class="text">Excluir</span>
-                                    <i class="fa-solid fa-trash icon"></i>
-                                </button>`}
                             </div>
                         </div>
                         <div class="linha-separadora"></div>
@@ -665,14 +538,10 @@
                     <strong>Nº Série:</strong> <span>${ventiladorEncontrado.numero_serie}</span>
                 </div>
                 <div style="display:flex;gap:10px;">
-                    ${sessionStorage.CARGO_USUARIO != "adminHospital" ? " " : `<button class="btn-edit" onclick='abrirModalEdicao(${ventiladorEncontrado.idVentilador}, ${ventiladorEncontrado.idSala}, ${ventiladorEncontrado.idHospital})'>
+                    <button class="btn-edit" onclick='abrirModalEdicao(${ventiladorEncontrado.idVentilador}, ${ventiladorEncontrado.idSala}, ${ventiladorEncontrado.idHospital})'>
                         <span class="btn-text">Editar</span>
                         <i class="fa-regular fa-pen-to-square"></i>
                     </button>
-                    <button class="btn-delete" onclick='confirmarDelete(${ventiladorEncontrado.idVentilador}, ${ventiladorEncontrado.idHospital})'>
-                        <span class="text">Excluir</span>
-                        <i class="fa-solid fa-trash icon"></i>
-                    </button>`}
                 </div>
             </div>
             <div class="linha-separadora"></div>
@@ -778,10 +647,6 @@
             conteudo.innerHTML = `
             <h3>Sala ${numeroSala}
                 <div style="display: flex; flex-direction: row; gap:15px;">
-                    ${sessionStorage.CARGO_USUARIO != "adminHospital" ? "" : `<button class="button" type="button" onclick="abrirAddModal(${idSala})">
-                        <span class="button_text">Adicionar Ventilador</span>
-                        <span class="button_icon">+</span>
-                    </button>`}
                     <button class="btn-fechar-modal" onclick="fecharModal()">X</button>
                 </div>
             </h3>
@@ -806,14 +671,10 @@
                                 <strong>Nº Série:</strong> <span>${v.numero_serie}</span>
                             </div>
                             <div style="display:flex;gap:10px;">
-                                ${sessionStorage.CARGO_USUARIO != "adminHospital" ? " " : `<button class="btn-edit" onclick='abrirModalEdicao(${v.idVentilador}, ${v.idSala}, ${v.idHospital})'>
+                                <button class="btn-edit" onclick='abrirModalEdicao(${v.idVentilador}, ${v.idSala}, ${v.idHospital})'>
                                     <span class="btn-text">Editar</span>
                                     <i class="fa-regular fa-pen-to-square"></i>
                                 </button>
-                                <button class="btn-delete" onclick='confirmarDelete(${v.idVentilador}, ${v.idHospital})'>
-                                    <span class="text">Excluir</span>
-                                    <i class="fa-solid fa-trash icon"></i>
-                                </button>`}
                             </div>
                         </div>
                         <div class="linha-separadora"></div>
@@ -858,35 +719,6 @@
         } catch (err) {
             console.error(err);
         }
-    }
-
-
-    function confirmarDelete(idVentilador, idHospital) {
-        Swal.fire({
-            title: 'Tem certeza?',
-            text: "Você não poderá reverter isso!",
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#3085d6',
-            cancelButtonColor: '#d33',
-            confirmButtonText: 'Sim, deletar!',
-            cancelButtonText: 'Cancelar'
-        }).then(async result => {
-            if (result.isConfirmed) {
-                try {
-                    const resp = await fetch(`/controle/ventiladores/${idVentilador}`, { method: 'DELETE' });
-                    if (!resp.ok) throw new Error("Erro ao deletar ventilador");
-                    const data = await resp.json();
-                    Swal.fire('Deletado!', data.message, 'success');
-                    const card = document.querySelector(`.ventilador button[onclick='confirmarDelete(${idVentilador})']`)?.closest('.ventilador');
-                    if (card) card.remove();
-                    fecharModal();
-                    document.getElementById("validaVentiladores") ? visualizarVentiladores() : carregarSalasHosp().then(filtrarSalasHospitais);
-                } catch {
-                    Swal.fire('Erro!', 'Não foi possível deletar o ventilador.', 'error');
-                }
-            }
-        });
     }
 
     /* ---------- Adicionar Ventilador ---------- */
@@ -1010,7 +842,7 @@
 
 
             // Salas
-            const respHosp = await fetch(`/controle/listar/salas/${sessionStorage.getItem("HOSPITAL_USUARIO")}`);
+            const respHosp = await fetch(`/controle/listar/salas/${sessionStorage.getItem("FK")}`);
             const hospitais = await respHosp.json();
             const selectHospital = document.getElementById("editSelectHospital");
 
@@ -1043,10 +875,10 @@
                     <input type="text" name="nomeComponente-${idx}" value="${comp.nomeComponente}" required disabled>
 
                     <label>Parâmetro Mínimo</label>
-                    <input type="number" name="paramMin-${idx}" value="${comp.parametroMin}" required>
+                    <input type="number" name="paramMin-${idx}" value="${comp.parametroMin}" required disabled>
 
                     <label>Parâmetro Máximo</label>
-                    <input type="number" name="paramMax-${idx}" value="${comp.parametroMax}" required>
+                    <input type="number" name="paramMax-${idx}" value="${comp.parametroMax}" required disabled>
 
                     <button type="button" onclick="removerComponente(this)">Remover</button>
 
@@ -1199,7 +1031,7 @@
 
     // Abrir/Fechar modais
     function abrirModalHospital() {
-        document.getElementById("fkEmpresaHospital").value = sessionStorage.getItem("EMPRESA_USUARIO");
+        document.getElementById("fkEmpresaHospital").value = sessionStorage.getItem("FK");
         carregarEnderecos(); // Carregar endereços no select
     }
 

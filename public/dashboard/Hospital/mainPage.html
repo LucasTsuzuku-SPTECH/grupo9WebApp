@@ -56,6 +56,7 @@
         <a class="pgAtual" href="./mainPage.html">Página principal</a>
         <a href="./controleSalas.html">Salas</a>
         <a href="./contas.html">Contas</a>
+        <a style="margin-top: 700px;" href="https://suaempresa.atlassian.net/secure/CreateIssue!default.jspa" target="_blank">Abrir Chamado <i class="fa-solid fa-headset"></i></a>
       </nav>
     </div>
     <div style="display: flex; flex-direction: column; justify-content: center; align-items: center; margin-top: 10px;">
@@ -189,7 +190,7 @@
           </div>
         </div>
       </div>
-     
+      <button class="Chamado" onclick="abrirChamado()">Abrir Chamado <i class="fa-solid fa-headset"></i></button>
     </div>
 
   </div>
@@ -203,149 +204,157 @@
 
 <script>
 
-  let agora = new Date();
-  
-  let dataFormatada = agora.toLocaleDateString();
-  let horaFormatada = agora.toLocaleTimeString();
+let agora = new Date();
 
-  let elementoData = document.getElementById("data-atual");
-  
-  elementoData.textContent += ` ${dataFormatada} ${horaFormatada}`;
-  
+let dataFormatada = agora.toLocaleDateString();
+let horaFormatada = agora.toLocaleTimeString();
 
-  async function hospital() {
-    const resposta = await fetch(`/controle/hospitais/${sessionStorage.getItem("HOSPITAL_USUARIO")}`);
-    const hospital = await resposta.json();
-    console.log(hospital)
-    sessionStorage.NOME_HOSPITAL_ATUAL = hospital[0].nomeHospital;
-  }
-  
-  function toggleSidebar() {
-    const sidebar = document.getElementById("sidebarModal");
-    const icone = document.getElementById("icone");
-    
-    sidebar.classList.toggle("active");
-  }
-  
-  function mostrarNavbar() {
-    const larguraTela = window.innerWidth;
-    var menu = document.getElementById("navbar");
-    var icone = document.getElementById("icone");
-    
-    if (larguraTela < 1342) {
-      if (getComputedStyle(menu).display == 'none') {
-        menu.style.display = "flex";
-        icone.classList.remove("fa-bars");
-        icone.classList.add("fa-times");
-      } else {
-        menu.style.display = "none";
-        icone.classList.remove("fa-times");
-        icone.classList.add("fa-bars");
-      }
+let elementoData = document.getElementById("data-atual");
+
+elementoData.textContent += ` ${dataFormatada} ${horaFormatada}`;
+
+async function hospital() {
+  const resposta = await fetch(`/controle/hospitais/${sessionStorage.getItem("FK")}`);
+  const hospital = await resposta.json();
+  console.log(hospital)
+  sessionStorage.NOME_HOSPITAL_ATUAL = hospital[0].nomeHospital;
+}
+
+function abrirChamado() {
+  // Substitua pela URL do seu Jira (pode ser Jira Cloud ou Server)
+  const jiraUrl = "https://suaempresa.atlassian.net/secure/CreateIssue!default.jspa";
+  window.open(jiraUrl, "_blank");
+}
+
+function toggleSidebar() {
+  const sidebar = document.getElementById("sidebarModal");
+  const icone = document.getElementById("icone");
+  sidebar.classList.toggle("active");
+}
+
+function mostrarNavbar() {
+  const larguraTela = window.innerWidth;
+  var menu = document.getElementById("navbar");
+  var icone = document.getElementById("icone");
+
+  if (larguraTela < 1342) {
+    if (getComputedStyle(menu).display == 'none') {
+      menu.style.display = "flex";
+      icone.classList.remove("fa-bars");
+      icone.classList.add("fa-times");
+    } else {
+      menu.style.display = "none";
+      icone.classList.remove("fa-times");
+      icone.classList.add("fa-bars");
     }
   }
-  function Sair() {
-    const sair = document.getElementById("sair")
+}
+
+function Sair() {
+  const sair = document.getElementById("sair")
+  
+  if (sair) {
+    localStorage.removeItem("email")
+    localStorage.removeItem("senha")
     
-    if (sair) {
-      localStorage.removeItem("email")
-      localStorage.removeItem("senha")
-      
-      sessionStorage.clear()
-      console.log(sessionStorage)
-      
-      window.location.href = "../../index.html"
-    }
+    sessionStorage.clear()
+    console.log(sessionStorage)
+    
+    window.location.href = "../../index.html"
   }
+}
 
-  var componentes = ["RAM","CPU","DISCO","PROCESSOS","BATERIA"];
-  var intercorrenciacomponente = [10,10,10,24,1];
+// Formação dos gráficos:
 
-  let grafico;
+var componentes = ["RAM","CPU","DISCO","PROCESSOS","BATERIA"];
+var intercorrenciacomponente = [10,10,10,24,1];
 
-  if (grafico) grafico.destroy();
-  
-    const grafIntercorrenciaporcomponente = document.getElementById('Intercorrenciaporcomponente');
-    grafIntercorrenciaporcomponente.width = "100%";
-    grafIntercorrenciaporcomponente.height = "20vh";
-  
-    grafico = new Chart(grafIntercorrenciaporcomponente, {
-      type: 'bar',
-      data: {
-        labels: componentes,
-        datasets: [{
-          backgroundColor: '#264653',
-          label: 'Total de intercorrências',
-          data: intercorrenciacomponente,
-          borderWidth: 2,
-        }]
-      },
-      options: {
-        scales: {
-          y: {
-            beginAtZero: true,
-            ticks: {
-              font: {
-                size: 20
-              }
+let grafico;
+
+if (grafico) grafico.destroy();
+
+  const grafIntercorrenciaporcomponente = document.getElementById('Intercorrenciaporcomponente');
+  grafIntercorrenciaporcomponente.width = "100%";
+  grafIntercorrenciaporcomponente.height = "20vh";
+
+  grafico = new Chart(grafIntercorrenciaporcomponente, {
+    type: 'bar',
+    data: {
+      labels: componentes,
+      datasets: [{
+        backgroundColor: '#264653',
+        label: 'Total de intercorrências',
+        data: intercorrenciacomponente,
+        borderWidth: 2,
+      }]
+    },
+    options: {
+      scales: {
+        y: {
+          beginAtZero: true,
+          ticks: {
+            font: {
+              size: 20
             }
-          },
-          x: {
-            ticks: {
-              maxRotation: 0,
-              minRotation: 0,
-              font: {
-                size: 20
-              }
+          }
+        },
+        x: {
+          ticks: {
+            maxRotation: 0,
+            minRotation: 0,
+            font: {
+              size: 20
             }
           }
         }
       }
-    });
-  var componentes = ["UTI","Neonatal","Pronto-Socorro","Internação","Centro Cirúrgico"];
-  var alertasArea = [35,20,10,5,3];
+    }
+  });
 
-  let grafico2;
+var componentes = ["UTI","Neonatal","Pronto-Socorro","Internação","Centro Cirúrgico"];
+var alertasArea = [35,20,10,5,3];
 
-  if (grafico2) grafico2.destroy();
-  
-    const grafIntercorrenciaporarea = document.getElementById('Intercorrenciaporarea');
-    grafIntercorrenciaporarea.width = "100%";
-    grafIntercorrenciaporarea.height = "20vh";
-  
-    grafico2 = new Chart(grafIntercorrenciaporarea, {
-      type: 'bar',
-      data: {
-        labels: componentes,
-        datasets: [{
-          backgroundColor: '#264653',
-          label: 'Total de intercorrências',
-          data: alertasArea,
-          borderWidth: 2,
-        }]
-      },
-      options: {
-        scales: {
-          y: {
-            beginAtZero: true,
-            ticks: {
-              font: {
-                size: 20
-              }
+let grafico2;
+
+if (grafico2) grafico2.destroy();
+
+  const grafIntercorrenciaporarea = document.getElementById('Intercorrenciaporarea');
+  grafIntercorrenciaporarea.width = "100%";
+  grafIntercorrenciaporarea.height = "20vh";
+
+  grafico2 = new Chart(grafIntercorrenciaporarea, {
+    type: 'bar',
+    data: {
+      labels: componentes,
+      datasets: [{
+        backgroundColor: '#264653',
+        label: 'Total de intercorrências',
+        data: alertasArea,
+        borderWidth: 2,
+      }]
+    },
+    options: {
+      scales: {
+        y: {
+          beginAtZero: true,
+          ticks: {
+            font: {
+              size: 20
             }
-          },
-          x: {
-            ticks: {
-              maxRotation: 0,
-              minRotation: 0,
-              font: {
-                size: 20
-              }
+          }
+        },
+        x: {
+          ticks: {
+            maxRotation: 0,
+            minRotation: 0,
+            font: {
+              size: 20
             }
           }
         }
       }
-    });
+    }
+  });
 
     
 </script>
