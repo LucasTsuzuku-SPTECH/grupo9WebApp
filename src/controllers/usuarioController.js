@@ -23,9 +23,8 @@ function autenticar(req, res) {
                             id_usuario: resultadoAutenticar[0].idUsuario,
                             email: resultadoAutenticar[0].email,
                             nome: resultadoAutenticar[0].nome,
-                            fk_empresa: resultadoAutenticar[0].fkEmpresa,
-                            fk_hospital: resultadoAutenticar[0].fkHospital,
-                            perfil: resultadoAutenticar[0].perfil,
+                            FK: resultadoAutenticar[0].fkHospital != NaN ?  resultadoAutenticar[0].fkHospital : resultadoAutenticar[0].fkEmpresa,
+                            cargo: resultadoAutenticar[0].cargo,
                             statusUser:resultadoAutenticar[0].statusUser
                         });
 

@@ -24,7 +24,7 @@ function HospitalUsuario(fkHospital) {
     console.log("Executando SQL: \n" + instrucaoSql);
     return database.executar(instrucaoSql);
 
-}
+};
 
 function listarSalas() {
     console.log("ACESSEI controleModel listarSalas()");
@@ -164,13 +164,13 @@ function atualizarVentilador(id_ventilador, fk_sala) {
 }
 
 function listarEnderecos() {
-    const sql = `SELECT * FROM Endereco;`;
+    const sql = `SELECT * FROM endereco;`;
     return database.executar(sql);
 }
 
 function criarEndereco(e) {
     const sql = `
-        INSERT INTO Endereco (logradouro, numero, bairro, cidade, estado, cep)
+        INSERT INTO endereco (logradouro, numero, bairro, cidade, estado, cep)
         VALUES ('${e.logradouro}', '${e.numero || ""}', '${e.bairro || ""}', '${e.cidade}', '${e.estado}', '${e.cep || ""}');
     `;
     return database.executar(sql);

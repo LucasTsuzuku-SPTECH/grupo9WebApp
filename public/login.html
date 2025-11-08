@@ -167,18 +167,17 @@
             sessionStorage.EMAIL_USUARIO = json.email
             sessionStorage.NOME_USUARIO = json.nome
             sessionStorage.ID_USUARIO = json.id_usuario
-            sessionStorage.CARGO_USUARIO = json.perfil
-            sessionStorage.HOSPITAL_USUARIO = json.fk_hospital
-            sessionStorage.EMPRESA_USUARIO = json.fk_empresa
+            sessionStorage.CARGO_USUARIO = json.cargo
+            sessionStorage.FK = json.FK 
 
             // Loader e redirecionamento suave
             loader.style.display = 'flex'
             setTimeout(() => {
-              if (json.perfil == "empresa") {
+              if (json.cargo == "funcEmpresa") {
                 window.location = "./dashboard/Empresa/mainEmpresaFunc.html"
-              } else if (json.perfil == "hospital" || json.perfil == "adminHospital") {
+              } else if (json.cargo == "funcHosp" || json.cargo == "adminHosp") {
                 window.location = "./dashboard/Hospital/mainPage.html"
-              } else if (json.perfil == "adminEmpresa") {
+              } else if (json.cargo == "adminEmpresa") {
                 window.location = "./dashboard/Empresa/mainPage.html"
               } else {
 
