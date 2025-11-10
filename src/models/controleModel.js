@@ -164,13 +164,13 @@ function atualizarVentilador(id_ventilador, fk_sala) {
 }
 
 function listarEnderecos() {
-    const sql = `SELECT * FROM endereco;`;
+    const sql = `SELECT * FROM Endereco;`;
     return database.executar(sql);
 }
 
 function criarEndereco(e) {
     const sql = `
-        INSERT INTO endereco (logradouro, numero, bairro, cidade, estado, cep)
+        INSERT INTO Endereco (logradouro, numero, bairro, cidade, estado, cep)
         VALUES ('${e.logradouro}', '${e.numero || ""}', '${e.bairro || ""}', '${e.cidade}', '${e.estado}', '${e.cep || ""}');
     `;
     return database.executar(sql);

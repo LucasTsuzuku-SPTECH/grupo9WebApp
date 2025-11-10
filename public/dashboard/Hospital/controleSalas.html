@@ -55,7 +55,8 @@
                 <a href="./mainPage.html">Página principal</a>
                 <a class="pgAtual" href="./controleSalas.html">Salas</a>
                 <a href="./contas.html">Contas</a>
-                <a style="margin-top: 700px;" href="https://suaempresa.atlassian.net/secure/CreateIssue!default.jspa" target="_blank">Abrir Chamado <i class="fa-solid fa-headset"></i></a>
+                <a style="margin-top: 700px;" href="https://suaempresa.atlassian.net/secure/CreateIssue!default.jspa"
+                    target="_blank">Abrir Chamado <i class="fa-solid fa-headset"></i></a>
             </nav>
         </div>
 
@@ -215,10 +216,6 @@
 
                     <h4>Componentes</h4>
                     <div id="componentesContainer"></div>
-                    <button type="button" class="btn-add" onclick="adicionarParametro()">+ Adicionar
-                        Componente</button>
-
-                    <br><br>
                     <button type="submit" class="btn-submit">Adicionar Ventilador</button>
                 </form>
             </div>
@@ -254,10 +251,6 @@
 
                     <h4>Componentes</h4>
                     <div id="editComponentesContainer"></div>
-                    <button type="button" class="btn-add" onclick="adicionarParametroEdit()">+ Adicionar
-                        Componente</button>
-
-                    <br><br>
                     <button type="submit" class="btn-submit">Salvar</button>
                 </form>
             </div>
@@ -344,26 +337,66 @@
 
             let total = salas.length, estavel = 0, alerta = 0, critico = 0;
             let areas = [];
-            var salaEst = [];
-            var salaAlert = [];
-            var salaCri = [];
-
 
             for (const sala of salas) {
-                sala.statusSala = "estavel"
+                if (!areas.includes(sala.area)) {
+                    areas.push(sala.area)
+                }
+
+                // Buscar ventiladores da sala
+                const respV = await fetch(`/controle/hospitais/${sala.idSala}/ventiladores`);
+                var ventiladores = respV.status === 204 ? [] : await respV.json();
+
+                // --- MOCK ALERTAS ---
+                let totalAlertas = 0;
+
+                // Distribuir alertas de acordo com o status da sala
+                // Decide primeiro o status do hospital
+                let statusSala = "estavel";
+
+
+                // Guardar ventiladores com alertas simulados no próprio objeto
+                sala.ventiladoresMock = ventiladores;
+                sala.statusSala = statusSala;
+
+                // Contabilizar
+                if (statusSala === "estavel") {
+                    estavel++;
+                };
+
+                if (statusSala === "alerta") {
+                    alerta++;
+                }
+                if (statusSala === "critico") {
+                    critico++;
+                }
+            }
+
+
+            for (area of areas) {
                 const divArea = document.createElement("div");
                 divArea.className = "marcador-area";
-                divArea.innerHTML = `<h2>${sala.area}</h2>`
+                divArea.innerHTML = `<h2>${area}</h2>`
                 container.appendChild(divArea);
-                const divSala = document.createElement("div");
-                divSala.className = "card-hospital";
-                divSala.dataset.status = sala.statusSala;
-                divSala.innerHTML = `
-                <h3>Sala ${sala.numero}</h3>
-                <span class="status ${sala.statusSala}">${sala.statusSala}</span>
+
+                for (let i = 0; i < salas.length; i++) {
+                    if (salas[i].area == area) {
+
+                        // Renderizar sala
+                        const divSala = document.createElement("div");
+                        divSala.className = "card-hospital";
+
+                        divSala.dataset.status = salas[i].statusSala;
+                        divSala.innerHTML = `
+                <h3>Sala ${salas[i].numero}</h3>
+                <span class="status ${salas[i].statusSala}">${salas[i].statusSala}</span>
                 `;
-                    divSala.addEventListener("click", () => abrirModalVentiladores(sala.idSala, sala.numero, sala.ventiladoresMock));
-                    container.appendChild(divSala);                    
+
+
+                        divSala.addEventListener("click", () => abrirModalVentiladores(salas[i].idSala, salas[i].numero, salas[i].ventiladoresMock));
+                        container.appendChild(divSala);
+                    }
+                }
             }
 
             document.getElementById("qtde_total").innerText = total;
@@ -405,42 +438,22 @@
         Qtd_deAlertas.innerHTML = "Quantidade Ventiladores em Alertas:"
         qtd_deEstaveis.innerHTML = "Quantidade Ventiladores Estáveis:"
 
-        const respV = await fetch(`/controle/${sessionStorage.HOSPITAL_USUARIO}/ventiladores`);
+        const respV = await fetch(`/controle/${sessionStorage.FK}/ventiladores`);
         let ventiladores = respV.status === 204 ? [] : await respV.json();
 
-        let total = ventiladores.length, estavel = 0, alerta = 0, critico = 0
-        for (const ventilador of ventiladores) {
-            const sorteio = Math.random();
-            if (sorteio < 0.50) {
-                estavel++
-                ventilador.alertas = 0;
-            } else if (sorteio < 0.75) {
-                alerta++
-                ventilador.alertas = Math.floor(Math.random() * 1) + 1;
+        for (const v of ventiladores) {
+            ventiladoresEncontrados.push(v);
+            let statusClass = "estavel";
+            v.alertas = 0;
+            if (v.alertas === 0) statusClass = "estavel";
+            else if (v.alertas === 1) statusClass = "alerta";
+            else statusClass = "critico";
+
+            if (document.getElementById("ipt_pesquisa").value.length > 0) {
+
+                filtrarNSerie();
             } else {
-                critico++
-                ventilador.alertas = 2 + Math.floor(Math.random() * 4);
-            }
-        }
-
-        if (ventiladores.length === 0) {
-            container.innerHTML += `<p>Não há ventiladores cadastrados neste hospital.</p><br>`;
-        } else {
-
-            ventiladores.sort((a, b) => b.alertas - a.alertas);
-            for (const v of ventiladores) {
-                ventiladoresEncontrados.push(v);
-
-                let statusClass = "estavel";
-                if (v.alertas === 0) statusClass = "estavel";
-                else if (v.alertas === 1) statusClass = "alerta";
-                else statusClass = "critico";
-
-                if (document.getElementById("ipt_pesquisa").value.length > 0) {
-
-                    filtrarNSerie();
-                } else {
-                    container.innerHTML += `
+                container.innerHTML += `
                     <div class="ventilador2">
                         <div style="display:flex;justify-content:space-between;align-items:center;">
                             <div style="display:flex;gap:5px;align-items:center;">
@@ -459,7 +472,7 @@
                             <div>
                                 <strong>Modelo:</strong> ${v.nome_modelo}<br>
                             </div>
-                            <div style="display:flex; flex-direction:column; align-items:center; min-width:80px; margin: 5px ;border: 1px solid #ccc; background: #f9f9f9; padding: 10px 20px; border-radius: 10px;">
+                            <div style="display:flex; flex-direction:column; align-items:center; min-width:40px; margin: 5px ;border: 1px solid #ccc; background: #f9f9f9; padding: 10px 20px; border-radius: 10px;">
                                 <span><strong>Quantidade Alertas:</strong> ${v.alertas}</span>
                                 <span class="status ${statusClass}">${statusClass}</span>
                             </div>
@@ -469,41 +482,34 @@
                         <div id="parametros-${v.idVentilador}">Carregando parâmetros...</div>
                     </div>
                 `;
-                }
+            }
 
-                //Buscar parâmetros do ventilador
-                try {
-                    const respParams = await fetch(`/controle/ventiladores/${v.idVentilador}/parametros`);
-                    const parametros = respParams.status === 204 ? [] : await respParams.json();
-                    const divParams = document.getElementById(`parametros-${v.idVentilador}`);
+            //Buscar parâmetros do ventilador
+            try {
+                const respParams = await fetch(`/controle/ventiladores/${v.idVentilador}/parametros`);
+                const parametros = respParams.status === 204 ? [] : await respParams.json();
+                const divParams = document.getElementById(`parametros-${v.idVentilador}`);
 
-                    if (parametros.length === 0) {
-                        divParams.innerHTML = `<p style="font-weight: bold;">Sem parâmetros cadastrados.</p>`;
-                    } else {
-                        divParams.innerHTML = parametros.map(p => `
+                if (parametros.length === 0) {
+                    divParams.innerHTML = `<p style="font-weight: bold;">Sem parâmetros cadastrados.</p>`;
+                } else {
+                    divParams.innerHTML = parametros.map(p => `
                                 <p><strong>${p.nomeComponente} (${p.unidadeMedida}):</strong> 
                                 Min: ${p.parametroMin}, Max: ${p.parametroMax}</p>
                             `).join("");
-                        parametrosEncontrados.push(parametros)
+                    parametrosEncontrados.push(parametros)
 
-                    }
-                } catch (errParams) {
-                    console.error("Erro ao buscar parâmetros:", errParams);
-                    document.getElementById(`parametros-${v.idVentilador}`).innerHTML = "<p>Erro ao carregar parâmetros.</p>";
                 }
+            } catch (errParams) {
+                console.error("Erro ao buscar parâmetros:", errParams);
+                document.getElementById(`parametros-${v.idVentilador}`).innerHTML = "<p>Erro ao carregar parâmetros.</p>";
             }
         }
-
-
-
         document.getElementById("qtde_total").innerText = total;
         document.getElementById("qtde_estavel").innerText = estavel;
         document.getElementById("qtde_alerta").innerText = alerta;
         document.getElementById("qtde_critico").innerText = critico;
     }
-
-
-
 
 
     function filtrarNSerie() {
@@ -724,7 +730,7 @@
     /* ---------- Adicionar Ventilador ---------- */
     async function abrirAddModal(idHospital) {
         // Salas
-        const respHosp = await fetch(`/controle/listar/salas/${sessionStorage.getItem("HOSPITAL_USUARIO")}`);
+        const respHosp = await fetch(`/controle/listar/salas/${sessionStorage.getItem("FK")}`);
         const salas = await respHosp.json();
         const selectSalas = document.getElementById("selectSalas");
         for (sala of salas) {
@@ -733,7 +739,7 @@
         `}
 
 
-        document.getElementById("fkEmpresa").value = sessionStorage.getItem("EMPRESA_USUARIO");
+        document.getElementById("fkEmpresa").value = sessionStorage.getItem("FK ");
         document.getElementById("idHospital").value = idHospital;
         await carregarModelos("selectModelo");
         document.getElementById("addVentiladorModal").style.display = "flex";
@@ -752,36 +758,6 @@
 
     let componenteIndex = 0;
 
-
-    function adicionarParametro() {
-        const container = document.getElementById("componentesContainer");
-        let idx = componenteIndex++;
-
-        const div = document.createElement("div");
-        div.classList.add("form-group");
-        div.innerHTML = `
-        <div class="componente-box">
-            <label>Nome Componente</label>
-            <select name="idComponente-${idx}" id=selectComponente>
-                <option value = "">Selecione um componente</option>
-                <option value = "1">CPU</option>
-                <option value = "2">RAM</option>
-                <option value = "3">Disco</option>    
-                <option value = "4">Bateria</option>
-                <option value = "5">Qtd Processos</option>
-            </select>
-
-            <label>Parâmetro Mínimo</label>
-            <input type="number" name="paramMin-${idx}" required>
-
-            <label>Parâmetro Máximo</label>
-            <input type="number" name="paramMax-${idx}" required>
-
-            <button type="button" onclick="removerComponente(this)">Remover</button>
-        </div>
-    `;
-        container.appendChild(div);
-    }
 
     document.getElementById("formAddVentilador").addEventListener("submit", async e => {
         e.preventDefault();
@@ -880,8 +856,6 @@
                     <label>Parâmetro Máximo</label>
                     <input type="number" name="paramMax-${idx}" value="${comp.parametroMax}" required disabled>
 
-                    <button type="button" onclick="removerComponente(this)">Remover</button>
-
                 </div>
 
             `;
@@ -897,54 +871,9 @@
     // Array global para rastrear componentes removidos
     var componentesRemovidos = [];
 
-    // Função de remover no front
-    function removerComponente(btn) {
-        const box = btn.closest(".form-group");
-
-        // Verifica se esse form-group tem ids de componente já salvo
-        const idParametro = Number(box.querySelector("[name^='idParametro']")?.value);
-
-        if (idParametro) {
-            componentesRemovidos.push(idParametro);
-        }
-        console.log(componentesRemovidos)
-        box.remove();
-    }
-
 
     // Adicionar novo componente na edição
     let compEditIndex = 0;
-
-    function adicionarParametroEdit() {
-        const container = document.getElementById("editComponentesContainer");
-        const idx = compEditIndex++;
-
-        const div = document.createElement("div");
-        div.classList.add("form-group");
-        div.innerHTML = `
-        <div class="componente-box">
-            <!-- sem idComponente/idParametro = será inserido novo -->
-            <label>Nome Componente</label>
-            <select name="idComponente-${idx}" id=selectComponente>
-                <option value = "">Selecione um componente</option>
-                <option value = "1">CPU</option>
-                <option value = "2">RAM</option>
-                <option value = "3">Disco</option>    
-                <option value = "4">Bateria</option>
-                <option value = "5">Qtd Processos</option>
-            </select>
-
-            <label>Parâmetro Mínimo</label>
-            <input type="number" name="paramMin-${idx}" required>
-
-            <label>Parâmetro Máximo</label>
-            <input type="number" name="paramMax-${idx}" required>
-
-            <button type="button" onclick="removerComponente(this)">Remover</button>
-        </div>
-    `;
-        container.appendChild(div);
-    }
 
     // Submit edição ventilador
     document.getElementById("formEditVentilador").addEventListener("submit", async e => {
@@ -1077,9 +1006,11 @@
                 customClass: {
                     popup: 'swal2-popup-modificado'
                 }
+
             });
 
             fecharAddEnderecoModal();
+            abrirModalHospital()
 
             // Atualiza ambos os selects (caso estejam abertos)
             if (document.getElementById("addHospitalModal").style.display === "flex") {
@@ -1090,14 +1021,7 @@
             }
 
         } catch {
-            Swal.fire({
-                title: 'Erro',
-                text: 'Endereço não foi criado.',
-                icon: 'error',
-                customClass: {
-                    popup: 'swal2-popup-modificado'
-                }
-            });
+
         }
     });
 
@@ -1112,7 +1036,7 @@
         try {
             // Buscar todos os hospitais
             selectHospital.innerHTML = `
-            <option value="${sessionStorage.getItem("HOSPITAL_USUARIO")}" selected>
+            <option value="${sessionStorage.getItem("FK")}" selected>
                 ${sessionStorage.getItem("NOME_HOSPITAL_ATUAL")}
             </option>
             `;
