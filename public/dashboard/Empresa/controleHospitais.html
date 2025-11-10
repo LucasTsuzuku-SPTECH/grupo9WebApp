@@ -268,9 +268,6 @@
 
     /* ------------------ Hospitais ------------------ */
     async function carregarHospitais() {
-        var hospCri = [];
-        var hospAlert = [];
-        var hospEst = [];
 
         try {
             const resposta = await fetch("/controle/hospitais");
@@ -281,117 +278,18 @@
             let total = hospitais.length, estavel = 0, alerta = 0, critico = 0;
 
             for (const hospital of hospitais) {
-                // Buscar ventiladores do hospital
-                const respV = await fetch(`/controle/${hospital.idHospital}/ventiladores`);
-                const ventiladores = respV.status === 204 ? [] : await respV.json();
-
-                console.log(ventiladores)
-
-                // --- MOCK ALERTAS ---
-                let totalAlertas = 0;
-
-                // Distribuir alertas de acordo com o status do hospital
-                // Decide primeiro o status do hospital
-                let statusHospital;
-                const sorteio = Math.random();
-
-                if (sorteio < 0.33) {
-                    statusHospital = "estavel";
-                    ventiladores.forEach(v => v.alertas = 0);
-                    totalAlertas = 0;
-
-                } else if (sorteio < 0.66) {
-                    statusHospital = "alerta";
-                    // Gera no máximo 2 alertas no total
-                    totalAlertas = Math.floor(Math.random() * 3); // 0,1,2
-                    let restantes = totalAlertas;
-                    ventiladores.forEach(v => {
-                        if (restantes > 0) {
-                            v.alertas = 1;
-                            restantes--;
-                        } else {
-                            v.alertas = 0;
-                        }
-                    });
-                } else {
-                    statusHospital = "critico";
-                    // Gera 3 a 6 alertas no total
-                    totalAlertas = 3 + Math.floor(Math.random() * 4); // 3 a 6
-                    let restantes = totalAlertas;
-                    ventiladores.forEach(v => {
-                        if (restantes > 0) {
-                            const qtd = Math.min(restantes, Math.floor(Math.random() * 3) + 1); // 1 a 3
-                            v.alertas = qtd;
-                            restantes -= qtd;
-                        } else {
-                            v.alertas = 0;
-                        }
-                    });
-                }
-
-                // Guardar ventiladores com alertas simulados no próprio objeto
-                hospital.ventiladoresMock = ventiladores;
-                hospital.statusHospital = statusHospital;
-
-                // Contabilizar
-                if (statusHospital === "estavel") {
-                    estavel++;
-                    hospEst.push(hospital)
-                };
-
-                if (statusHospital === "alerta") {
-                    alerta++;
-                    hospAlert.push(hospital)
-                }
-                if (statusHospital === "critico") {
-                    critico++;
-                    hospCri.push(hospital);
-                }
-            }
-
-
-            for (let i = 0; i < hospCri.length; i++) {
+               console.log(hospital)
                 // Renderizar hospital
                 const divHospital = document.createElement("div");
                 divHospital.className = "card-hospital";
 
-                divHospital.dataset.status = hospCri[i].statusHospital;
+                hospital.statusHospital = "estavel";
+                divHospital.dataset.status = hospital.statusHospital;
                 divHospital.innerHTML = `
-                <h3>${hospCri[i].nomeHospital}</h3>
-                <span class="status ${hospCri[i].statusHospital}">${hospCri[i].statusHospital}</span>
+                <h3>${hospital.nomeHospital}</h3>
+                <span class = "status ${hospital.statusHospital}">${hospital.statusHospital}</span>
                 `;
-                divHospital.addEventListener("click", () => { sessionStorage.ID_HOSPITAL_ATUAL = hospCri[i].idHospital; sessionStorage.NOME_HOSPITAL_ATUAL = hospCri[i].nomeHospital; window.location = "controleSalasHosp.html"; });
-                container.appendChild(divHospital);
-            }
-
-
-
-            for (let i = 0; i < hospAlert.length; i++) {
-                // Renderizar hospital
-                const divHospital = document.createElement("div");
-                divHospital.className = "card-hospital";
-
-                divHospital.dataset.status = hospAlert[i].statusHospital;
-                divHospital.innerHTML = `
-                <h3>${hospAlert[i].nomeHospital}</h3>
-                <span class="status ${hospAlert[i].statusHospital}">${hospAlert[i].statusHospital}</span>
-                `;
-                divHospital.addEventListener("click", () => { sessionStorage.ID_HOSPITAL_ATUAL = hospAlert[i].idHospital; sessionStorage.NOME_HOSPITAL_ATUAL = hospAlert[i].nomeHospital; window.location = "controleSalasHosp.html"; });
-                container.appendChild(divHospital);
-            }
-
-
-            for (let i = 0; i < hospEst.length; i++) {
-                // Renderizar hospital
-                const divHospital = document.createElement("div");
-                divHospital.className = "card-hospital";
-
-                divHospital.dataset.status = hospEst[i].statusHospital;
-                divHospital.innerHTML = `
-                <h3>${hospEst[i].nomeHospital}</h3>
-                <span class="status ${hospEst[i].statusHospital}">${hospEst[i].statusHospital}</span>
-                `;
-                divHospital.addEventListener("click", () => { sessionStorage.ID_HOSPITAL_ATUAL = hospEst[i].idHospital; sessionStorage.NOME_HOSPITAL_ATUAL = hospEst[i].nomeHospital; window.location = "controleSalasHosp.html"; });
+                divHospital.addEventListener("click", () => { sessionStorage.ID_HOSPITAL_ATUAL = hospital.idHospital; sessionStorage.NOME_HOSPITAL_ATUAL = hospital.nomeHospital; window.location = "controleSalasHosp.html"; });
                 container.appendChild(divHospital);
             }
 
@@ -466,7 +364,7 @@
 
     // Abrir/Fechar modais
     function abrirModalHospital() {
-        document.getElementById("fkEmpresaHospital").value = sessionStorage.getItem("EMPRESA_USUARIO");
+        document.getElementById("fkEmpresaHospital").value = sessionStorage.getItem("FK");
         carregarEnderecos(); // Carregar endereços no select
         document.getElementById("addHospitalModal").style.display = "flex";
     }
@@ -571,7 +469,7 @@
         }
     });
 
-
+ 
 
 
     // Abrir modal edição e carregar hospitais no select

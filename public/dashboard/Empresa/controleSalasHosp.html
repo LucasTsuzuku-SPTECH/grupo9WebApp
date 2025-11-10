@@ -367,43 +367,8 @@
 
                 // Distribuir alertas de acordo com o status da sala
                 // Decide primeiro o status do hospital
-                let statusSala;
-                const sorteio = Math.random();
-
-                if (sorteio < 0.33) {
-                    statusSala = "estavel";
-                    ventiladores.forEach(v => v.alertas = 0);
-                    totalAlertas = 0;
-
-                } else if (sorteio < 0.66) {
-                    statusSala = "alerta";
-                    // Gera no máximo 2 alertas no total
-                    totalAlertas = Math.floor(Math.random() * 3); // 0,1,2
-                    let restantes = totalAlertas;
-                    ventiladores.forEach(v => {
-                        if (restantes > 0) {
-                            v.alertas = 1;
-                            restantes--;
-                        } else {
-                            v.alertas = 0;
-                        }
-                    });
-                } else {
-                    statusSala = "critico";
-                    // Gera 3 a 6 alertas no total
-                    totalAlertas = 3 + Math.floor(Math.random() * 4); // 3 a 6
-                    let restantes = totalAlertas;
-                    ventiladores.forEach(v => {
-                        if (restantes > 0) {
-                            const qtd = Math.min(restantes, Math.floor(Math.random() * 3) + 1); // 1 a 3
-                            v.alertas = qtd;
-                            restantes -= qtd;
-                        } else {
-                            v.alertas = 0;
-                        }
-                    });
-                }
-
+                let statusSala = "estavel";
+               
 
                 // Guardar ventiladores com alertas simulados no próprio objeto
                 sala.ventiladoresMock = ventiladores;
@@ -412,16 +377,13 @@
                 // Contabilizar
                 if (statusSala === "estavel") {
                     estavel++;
-                    salaEst.push(sala)
                 };
 
                 if (statusSala === "alerta") {
                     alerta++;
-                    salaAlert.push(sala)
                 }
                 if (statusSala === "critico") {
                     critico++;
-                    salaCri.push(sala);
                 }
             }
 
@@ -432,64 +394,27 @@
                 divArea.innerHTML = `<h2>${area}</h2>`
                 container.appendChild(divArea);
 
-                for (let i = 0; i < salaCri.length; i++) {
-                    if (salaCri[i].area == area) {
+                for (let i = 0; i < salas.length; i++) {
+                    if (salas[i].area == area) {
 
                         // Renderizar sala
                         const divSala = document.createElement("div");
                         divSala.className = "card-hospital";
 
-                        divSala.dataset.status = salaCri[i].statusSala;
+                        divSala.dataset.status = salas[i].statusSala;
                         divSala.innerHTML = `
-                <h3>Sala ${salaCri[i].numero}</h3>
-                <span class="status ${salaCri[i].statusSala}">${salaCri[i].statusSala}</span>
+                <h3>Sala ${salas[i].numero}</h3>
+                <span class="status ${salas[i].statusSala}">${salas[i].statusSala}</span>
                 `;
 
 
-                        divSala.addEventListener("click", () => abrirModalVentiladores(salaCri[i].idSala, salaCri[i].numero, salaCri[i].ventiladoresMock));
+                        divSala.addEventListener("click", () => abrirModalVentiladores(salas[i].idSala, salas[i].numero, salas[i].ventiladoresMock));
                         container.appendChild(divSala);
                     }
                 }
 
 
 
-                for (let i = 0; i < salaAlert.length; i++) {
-                    if (salaAlert[i].area == area) {
-                        // Renderizar sala
-                        const divSala = document.createElement("div");
-                        divSala.className = "card-hospital";
-
-                        divSala.dataset.status = salaAlert[i].statusSala;
-                        for (let j = 0; j < area.length; j++) {
-                            if (salaAlert[i].area == area[j]) {
-                                divArea.innerHTML = `<h1>${area[j]}</h1>`
-                            }
-                        }
-                        divSala.innerHTML = `
-                <h3>Sala ${salaAlert[i].numero}</h3>
-                <span class="status ${salaAlert[i].statusSala}">${salaAlert[i].statusSala}</span>
-                `;
-                        divSala.addEventListener("click", () => abrirModalVentiladores(salaAlert[i].idSala, salaAlert[i].numero, salaAlert[i].ventiladoresMock));
-                        container.appendChild(divSala);
-                    }
-                }
-
-
-                for (let i = 0; i < salaEst.length; i++) {
-                    if (salaEst[i].area == area) {
-                        // Renderizar sala
-                        const divSala = document.createElement("div");
-                        divSala.className = "card-hospital";
-
-                        divSala.dataset.status = salaEst[i].statusSala;
-                        divSala.innerHTML = `
-                <h3>Sala ${salaEst[i].numero}</h3>
-                <span class="status ${salaEst[i].statusSala}">${salaEst[i].statusSala}</span>
-                `;
-                        divSala.addEventListener("click", () => abrirModalVentiladores(salaEst[i].idSala, salaEst[i].numero, salaEst[i].ventiladoresMock));
-                        container.appendChild(divSala);
-                    }
-                }
             }
 
 
@@ -565,9 +490,9 @@
                 ventiladoresEncontrados.push(v);
 
                 let statusClass = "estavel";
-                if (v.alertas === 0) statusClass = "estavel";
-                else if (v.alertas === 1) statusClass = "alerta";
-                else statusClass = "critico";
+                // if (v.alertas === 0) statusClass = "estavel";
+                // else if (v.alertas === 1) statusClass = "alerta";
+                // else statusClass = "critico";
 
                 if (document.getElementById("ipt_pesquisa").value.length > 0) {
 
@@ -663,9 +588,9 @@
 
     function renderizarVentilador(ventiladorEncontrado, container) {
         let statusClass = "estavel";
-        if (ventiladorEncontrado.alertas === 0) statusClass = "estavel";
-        else if (ventiladorEncontrado.alertas === 1) statusClass = "alerta";
-        else statusClass = "critico";
+        // if (ventiladorEncontrado.alertas === 0) statusClass = "estavel";
+        // else if (ventiladorEncontrado.alertas === 1) statusClass = "alerta";
+        // else statusClass = "critico";
 
         container.innerHTML += `
         <div class="ventilador2">
@@ -1243,7 +1168,7 @@
 
     // Abrir/Fechar modais
     function abrirModalHospital() {
-        document.getElementById("fkEmpresaHospital").value = sessionStorage.getItem("EMPRESA_USUARIO");
+        document.getElementById("fkEmpresaHospital").value = sessionStorage.getItem("FK");
         carregarEnderecos(); // Carregar endereços no select
     }
 
@@ -1302,14 +1227,7 @@
             }
 
         } catch {
-            Swal.fire({
-                title: 'Erro',
-                text: 'Endereço não foi criado.',
-                icon: 'error',
-                customClass: {
-                    popup: 'swal2-popup-modificado'
-                }
-            });
+            
         }
     });
 
