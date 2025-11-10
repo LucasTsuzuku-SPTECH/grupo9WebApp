@@ -337,24 +337,66 @@
 
             let total = salas.length, estavel = 0, alerta = 0, critico = 0;
             let areas = [];
-           
-
 
             for (const sala of salas) {
-                sala.statusSala = "estavel"
+                if (!areas.includes(sala.area)) {
+                    areas.push(sala.area)
+                }
+
+                // Buscar ventiladores da sala
+                const respV = await fetch(`/controle/hospitais/${sala.idSala}/ventiladores`);
+                var ventiladores = respV.status === 204 ? [] : await respV.json();
+
+                // --- MOCK ALERTAS ---
+                let totalAlertas = 0;
+
+                // Distribuir alertas de acordo com o status da sala
+                // Decide primeiro o status do hospital
+                let statusSala = "estavel";
+
+
+                // Guardar ventiladores com alertas simulados no próprio objeto
+                sala.ventiladoresMock = ventiladores;
+                sala.statusSala = statusSala;
+
+                // Contabilizar
+                if (statusSala === "estavel") {
+                    estavel++;
+                };
+
+                if (statusSala === "alerta") {
+                    alerta++;
+                }
+                if (statusSala === "critico") {
+                    critico++;
+                }
+            }
+
+
+            for (area of areas) {
                 const divArea = document.createElement("div");
                 divArea.className = "marcador-area";
-                divArea.innerHTML = `<h2>${sala.area}</h2>`
+                divArea.innerHTML = `<h2>${area}</h2>`
                 container.appendChild(divArea);
-                const divSala = document.createElement("div");
-                divSala.className = "card-hospital";
-                divSala.dataset.status = sala.statusSala;
-                divSala.innerHTML = `
-                <h3>Sala ${sala.numero}</h3>
-                <span class="status ${sala.statusSala}">${sala.statusSala}</span>
+
+                for (let i = 0; i < salas.length; i++) {
+                    if (salas[i].area == area) {
+
+                        // Renderizar sala
+                        const divSala = document.createElement("div");
+                        divSala.className = "card-hospital";
+
+                        divSala.dataset.status = salas[i].statusSala;
+                        divSala.innerHTML = `
+                <h3>Sala ${salas[i].numero}</h3>
+                <span class="status ${salas[i].statusSala}">${salas[i].statusSala}</span>
                 `;
-                divSala.addEventListener("click", () => abrirModalVentiladores(sala.idSala, sala.numero, sala.ventiladoresMock));
-                container.appendChild(divSala);
+
+
+                        divSala.addEventListener("click", () => abrirModalVentiladores(salas[i].idSala, salas[i].numero, salas[i].ventiladoresMock));
+                        container.appendChild(divSala);
+                    }
+                }
             }
 
             document.getElementById("qtde_total").innerText = total;
@@ -964,12 +1006,12 @@
                 customClass: {
                     popup: 'swal2-popup-modificado'
                 }
-                
+
             });
-            
+
             fecharAddEnderecoModal();
             abrirModalHospital()
-            
+
             // Atualiza ambos os selects (caso estejam abertos)
             if (document.getElementById("addHospitalModal").style.display === "flex") {
                 carregarEnderecos();
@@ -977,9 +1019,9 @@
             if (document.getElementById("editHospitalModal").style.display === "flex") {
                 carregarEnderecos();
             }
-            
+
         } catch {
-            
+
         }
     });
 
