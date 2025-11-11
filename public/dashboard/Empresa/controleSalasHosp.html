@@ -368,7 +368,7 @@
                 // Distribuir alertas de acordo com o status da sala
                 // Decide primeiro o status do hospital
                 let statusSala = "estavel";
-               
+
 
                 // Guardar ventiladores com alertas simulados no próprio objeto
                 sala.ventiladoresMock = ventiladores;
@@ -464,19 +464,7 @@
 
 
         let total = ventiladores.length, estavel = 0, alerta = 0, critico = 0
-        for (const ventilador of ventiladores) {
-            const sorteio = Math.random();
-            if (sorteio < 0.50) {
-                estavel++
-                ventilador.alertas = 0;
-            } else if (sorteio < 0.75) {
-                alerta++
-                ventilador.alertas = Math.floor(Math.random() * 1) + 1;
-            } else {
-                critico++
-                ventilador.alertas = 2 + Math.floor(Math.random() * 4);
-            }
-        }
+    
 
         if (ventiladores.length === 0) {
             container.innerHTML += `<p>Não há ventiladores cadastrados neste hospital.</p><br>`;
@@ -492,7 +480,6 @@
                 // else statusClass = "critico";
 
                 if (document.getElementById("ipt_pesquisa").value.length > 0) {
-
                     filtrarNSerie();
                 } else {
                     container.innerHTML += `
@@ -723,13 +710,12 @@
                 conteudo.innerHTML += `<p>Não há ventiladores cadastrados neste hospital.</p><br>`;
             } else {
                 for (const v of ventiladores) {
-                    console.log(v)
 
                     //status coerente com quantidade de alertas
                     let statusClass = "estavel";
-                    if (v.alertas === 0) statusClass = "estavel";
-                    else if (v.alertas === 1) statusClass = "alerta";
-                    else statusClass = "critico";
+                    // if (v.alertas === 0) statusClass = "estavel";
+                    // else if (v.alertas === 1) statusClass = "alerta";
+                    // else statusClass = "critico";
 
                     conteudo.innerHTML += `
                     <div class="ventilador">
@@ -755,7 +741,7 @@
                                 <strong>Modelo:</strong> ${v.nome_modelo}<br>
                             </div>
                             <div style="display:flex; flex-direction:column; align-items:center; min-width:80px; margin: 5px ;border: 1px solid #ccc; background: #f9f9f9; padding: 10px 20px; border-radius: 10px;">
-                                <span><strong>Quantidade Alertas de Hoje:</strong> ${v.alertas}</span>
+                                <span><strong>Quantidade Alertas de Hoje:</strong> 0</span>
                                 <span class="status ${statusClass}">${statusClass}</span>
                             </div>
                         </div>
@@ -902,7 +888,7 @@
         e.preventDefault();
 
         var nomeModelo = document.getElementById("inputModelo").value;
-        var fk_empresa = sessionStorage.getItem("EMPRESA_USUARIO");
+        var fk_empresa = sessionStorage.getItem("FK");
 
 
         if (document.getElementById("selectModelo").style.display == "none") {
@@ -1224,7 +1210,7 @@
             }
 
         } catch {
-            
+
         }
     });
 
