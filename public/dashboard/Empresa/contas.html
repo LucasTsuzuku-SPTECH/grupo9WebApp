@@ -139,10 +139,8 @@
                       <label for="perfilModal" class="form-label">Perfil</label>
                       <select class="form-select" id="perfilModal" required>
                         <option value="" selected disabled>Selecione</option>
-                        <option value="empresa">Funcionário Empresa</option>
+                        <option value="funcEmpresa">Funcionário Empresa</option>
                         <option value="adminEmpresa">Admin Empresa</option>
-                        <option value="hospital">Funcionário Hospital</option>
-                        <option value="adminHospital">Admin Hospital</option>
                       </select>
                     </div>
                     <div class="mb-3" id="divHospitalModal" style="display:none;">
@@ -186,13 +184,9 @@
                       <label for="perfilEditar" class="form-label">Perfil</label>
                       <select class="form-select" id="perfilEditar" required>
                         <option value="" selected disabled>Selecione</option>
-                        <option value="empresa">Funcionário Empresa</option>
+                        <option value="funcEmpresa">Funcionário Empresa</option>
                         <option value="adminEmpresa">Admin Empresa</option>
                       </select>
-                    </div>
-                    <div class="mb-3" id="editarModalHospital" style="display:none;">
-                      <label for="hospitalEditarModal" class="form-label">Hospital</label>
-                      <select class="form-select" id="hospitalEditarModal"></select>
                     </div>
                   </form>
                 </div>
@@ -209,14 +203,6 @@
 </body>
 
 <script>
-  if (sessionStorage.CARGO_USUARIO != "adminEmpresa") {
-    document.getElementById("navBar").innerHTML = ` <a href="./mainEmpresaFunc.html">Página principal</a>
-                <a class="pgAtual" href="./controleHospitais.html">Hospitais</a>
-                <a href="./contas.html">Contas</a>`
-  }
-
-
-
   // -------------------- VARIÁVEIS GLOBAIS ----------------------
   let usuarios = [];
   let hospitais = [];
@@ -226,17 +212,18 @@
   if (sessionStorage.CARGO_USUARIO != "adminEmpresa") {
     document.getElementById("modal_some").style.display = "none";
     document.getElementById("coluna_permissao").style.display = "none";
+    
 
   }
-  
+
   // -------------------- FUNÇÕES AUXILIARES ----------------------
-  function criarLinhaUsuario(usuario, index) {
+  function criarLinhaUsuario(usuario) {
     const tr = document.createElement('tr');
     tr.innerHTML = `
-    <td class="colunaUsuario">${usuario.nomeInstituicao ?? "-"}</td>
+    <td class="colunaUsuario">${usuario.nomeEmpresa ?? "-"}</td>
     <td class="colunaRepresentante">${usuario.nome}</td>
     <td class="colunaEmail">${usuario.email}</td>
-    <td class="colunaTipoAcesso">${usuario.perfil}</td>
+    <td class="colunaTipoAcesso">${usuario.cargo}</td>
     <td class="colunaAcesso">
       <button class="btn-status ${usuario.statusUser === 'ativo' ? 'btn-ativo' : 'btn-inativo'}"
         onclick="${sessionStorage.CARGO_USUARIO != 'adminEmpresa' ? '' : `alterarAcesso(${usuario.idUsuario})`} ">
@@ -249,19 +236,22 @@
       </button>
     </td>`}
   `;
-    tr.style.backgroundColor = index % 2 === 0 ? '#d3d3d3' : '#ffffff';
+    tr.style.backgroundColor = usuario.idUsuario % 2 === 0 ? '#d3d3d3' : '#ffffff';
     return tr;
   }
 
   function preencherTabela(lista) {
     const tbody = document.getElementById('tbody_usuarios');
     tbody.innerHTML = '';
-    lista.forEach((u, i) => tbody.appendChild(criarLinhaUsuario(u, i)));
+    for (i of lista) {
+      tbody.appendChild(criarLinhaUsuario(i))
+      console.log(i)
+    }
   }
 
   // -------------------- CRUD ----------------------
   async function puxarDados() {
-    let idEmpresa = sessionStorage.getItem("EMPRESA_USUARIO")
+    let idEmpresa = sessionStorage.getItem("FK")
     try {
       const res = await fetch(`/contas/contasEmpresa/${idEmpresa}`);
       if (!res.ok) throw new Error("Erro na resposta da API");
@@ -276,7 +266,7 @@
     const usuario = usuarios.find(u => u.idUsuario === idUsuario);
     const novoStatus = usuario.statusUser.toLowerCase() === "ativo" ? "inativo" : "ativo";
     try {
-      await fetch(`/contas/alterarAcesso/${usuario.idUsuario}`, {
+      await fetch(`/contas/alterarAcessoEmpresa/${usuario.idUsuario}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ statusUser: novoStatus })
@@ -301,14 +291,14 @@
     if (atividade === "Ambos") return puxarDados();
     preencherTabela(usuarios.filter(u => u.statusUser === atividade));
   }
+  
   // -------------------- MODAIS ----------------------
-
   function abrirModalEditar(id) {
     usuarioEditarId = id;
     const u = usuarios.find(x => x.idUsuario === id);
     document.getElementById("nomeEditar").value = u.nome;
     document.getElementById("emailEditar").value = u.email;
-    document.getElementById("perfilEditar").value = u.perfil;
+    document.getElementById("perfilEditar").value = u.cargo;
     new bootstrap.Modal(document.getElementById("modalEditarUsuario")).show();
   }
 
@@ -316,11 +306,10 @@
     const nome = document.getElementById("nomeEditar").value;
     const email = document.getElementById("emailEditar").value;
     const perfil = document.getElementById("perfilEditar").value;
-    const fkEmpresa = sessionStorage.getItem("EMPRESA_USUARIO");
-    let fkHospital = null;
+    const fkEmpresa = sessionStorage.getItem("FK");
 
     try {
-      await fetch(`/contas/editar/${usuarioEditarId}`, {
+      await fetch(`/contas/editarContaEmpresa/${usuarioEditarId}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ nome, email, perfil })
@@ -346,9 +335,9 @@
       Swal.fire({ icon: 'error', title: 'Erro', text: 'As senhas não coincidem!' });
       return;
     }
-    let fkEmpresa = sessionStorage.getItem('EMPRESA_USUARIO')
+    let fkEmpresa = sessionStorage.getItem('FK')
     try {
-      await fetch("/contas/cadastrarFunc", {
+      await fetch("/contas/cadastrarFuncEmpresa", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -357,7 +346,6 @@
           senhaServer: senha,
           perfilServer: perfil,
           fkEmpresaServer: fkEmpresa,
-          fkHospitalServer: sessionStorage.HOSPITAL_USUARIO
         })
       });
       Swal.fire({ icon: 'success', title: 'Sucesso', text: 'Usuário cadastrado com sucesso!', timer: 2000, showConfirmButton: false });
@@ -373,15 +361,10 @@
   // -------------------- PERFIL SELECT ----------------------
 
   const perfilEditar = document.getElementById('perfilEditar');
-  const divEditar = document.getElementById('editarModalHospital');
 
   perfilEditar.addEventListener('change', function () {
-    if (this.value === 'hospital' || this.value === 'adminHospital') {
-      divEditar.style.display = 'block';
+    if (this.value === 'funcEmpresa' || this.value === 'adminEmpresa') {
       carregarEditarModal(); // preenche o select do modal de editar
-    } else {
-      divEditar.style.display = 'none';
-      document.getElementById('hospitalEditarModal').innerHTML = '';
     }
   });
 
