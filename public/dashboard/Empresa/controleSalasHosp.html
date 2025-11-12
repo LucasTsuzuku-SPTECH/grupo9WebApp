@@ -275,6 +275,11 @@
 <!-- SweetAlert2 -->
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
+window.addEventListener('beforeunload', function(event) {
+    sessionStorage.removeItem('NOME_HOSPITAL_ATUAL');
+    sessionStorage.removeItem('ID_HOSPITAL_ATUAL');
+})
+
     if (sessionStorage.CARGO_USUARIO != "adminEmpresa") {
         document.getElementById("btnEditarHospital").style.display = "none";
         document.getElementById("navBar").innerHTML = ` <a href="./mainEmpresaFunc.html">Página principal</a>

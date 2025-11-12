@@ -139,8 +139,8 @@
                       <label for="perfilModal" class="form-label">Perfil</label>
                       <select class="form-select" id="perfilModal" required>
                         <option value="" selected disabled>Selecione</option>
-                        <option value="hospital">Funcionário Hospital</option>
-                        <option value="adminHospital">Admin Hospital</option>
+                        <option value="funcHosp">Funcionário Hospital</option>
+                        <option value="adminHosp">Admin Hospital</option>
                       </select>
                     </div>
                   </form>
@@ -180,8 +180,8 @@
                       <label for="perfilEditar" class="form-label">Perfil</label>
                       <select class="form-select" id="perfilEditar" required>
                         <option value="" selected disabled>Selecione</option>
-                        <option value="hospital">Funcionário Hospital</option>
-                        <option value="adminHospital">Admin Hospital</option>
+                        <option value="funcHosp">Funcionário Hospital</option>
+                        <option value="adminHosp">Admin Hospital</option>
                       </select>
                     </div>
                   </form>
@@ -205,7 +205,7 @@
   let usuarioSelecionado = null; // id do usuário
   let usuarioEditarId = null;
 
-  if (sessionStorage.CARGO_USUARIO != "adminHospital") {
+  if (sessionStorage.CARGO_USUARIO != "adminHosp") {
     document.getElementById("modal_some").style.display = "none";
     document.getElementById("coluna_permissao").style.display = "none";
 
@@ -215,17 +215,17 @@
   function criarLinhaUsuario(usuario, index) {
     const tr = document.createElement('tr');
     tr.innerHTML = `
-    <td class="colunaUsuario">${usuario.nomeInstituicao ?? "-"}</td>
+    <td class="colunaUsuario">${usuario.nomeHospital ?? "-"}</td>
     <td class="colunaRepresentante">${usuario.nome}</td>
     <td class="colunaEmail">${usuario.email}</td>
-    <td class="colunaTipoAcesso">${usuario.perfil}</td>
+    <td class="colunaTipoAcesso">${usuario.cargo}</td>
     <td class="colunaAcesso">
       <button class="btn-status  ${usuario.statusUser === 'ativo' ? 'btn-ativo' : 'btn-inativo'}" id="permissao_alterar"
-        onclick="${sessionStorage.CARGO_USUARIO != 'adminHospital' ? '' : `alterarAcesso(${usuario.idUsuario})`} ">
+        onclick="${sessionStorage.CARGO_USUARIO != 'adminHosp' ? '' : `alterarAcesso(${usuario.idUsuario})`} ">
         ${usuario.statusUser.charAt(0).toUpperCase() + usuario.statusUser.slice(1)}
       </button>
     </td>
-    ${sessionStorage.CARGO_USUARIO != 'adminHospital' ? '' : `<td class="colunaEditar" style="text-align:center;">
+    ${sessionStorage.CARGO_USUARIO != 'adminHosp' ? '' : `<td class="colunaEditar" style="text-align:center;">
       <button onclick="abrirModalEditar(${usuario.idUsuario})" style="background:transparent;border:none;">
         <img src="../../assets/imgs/editar.png" alt="Editar" style="width:20px;height:20px;">
       </button>
@@ -239,12 +239,14 @@
   function preencherTabela(lista) {
     const tbody = document.getElementById('tbody_usuarios');
     tbody.innerHTML = '';
-    lista.forEach((u, i) => tbody.appendChild(criarLinhaUsuario(u, i)));
+    for (i of lista) {
+      tbody.appendChild(criarLinhaUsuario(i))
+    }
   }
 
   // -------------------- CRUD ----------------------
   async function puxarDados() {
-    let idHospital = sessionStorage.getItem("HOSPITAL_USUARIO")
+    let idHospital = sessionStorage.getItem("FK")
     try {
       const res = await fetch(`/contas/contasHospital/${idHospital}`);
       if (!res.ok) throw new Error("Erro na resposta da API");
@@ -259,7 +261,7 @@
     const usuario = usuarios.find(u => u.idUsuario === idUsuario);
     const novoStatus = usuario.statusUser.toLowerCase() === "ativo" ? "inativo" : "ativo";
     try {
-      await fetch(`/contas/alterarAcesso/${usuario.idUsuario}`, {
+      await fetch(`/contas/alterarAcessoHospital/${usuario.idUsuario}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ statusUser: novoStatus })
@@ -293,7 +295,7 @@
     const u = usuarios.find(x => x.idUsuario === id);
     document.getElementById("nomeEditar").value = u.nome;
     document.getElementById("emailEditar").value = u.email;
-    document.getElementById("perfilEditar").value = u.perfil;
+    document.getElementById("perfilEditar").value = u.cargo;
     new bootstrap.Modal(document.getElementById("modalEditarUsuario")).show();
   }
 
@@ -303,7 +305,7 @@
     const perfil = document.getElementById("perfilEditar").value;
 
     try {
-      await fetch(`/contas/editar/${usuarioEditarId}`, {
+      await fetch(`/contas/editarContaHospital/${usuarioEditarId}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ nome, email, perfil })
@@ -329,9 +331,9 @@
       Swal.fire({ icon: 'error', title: 'Erro', text: 'As senhas não coincidem!' });
       return;
     }
-    let fkHospital = sessionStorage.getItem('HOSPITAL_USUARIO')
+    let fkHospital = sessionStorage.getItem('FK')
     try {
-      await fetch("/contas/cadastrarFunc", {
+      await fetch("/contas/cadastrarFuncHospital", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -339,8 +341,7 @@
           emailServer: email,
           senhaServer: senha,
           perfilServer: perfil,
-          fkEmpresaServer: sessionStorage.EMPRESA_USUARIO,
-          fkHospitalServer: fkHospital
+          fkHospital: fkHospital,
         })
       });
       Swal.fire({ icon: 'success', title: 'Sucesso', text: 'Usuário cadastrado com sucesso!', timer: 2000, showConfirmButton: false });
