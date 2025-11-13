@@ -65,7 +65,7 @@
     </div>
     <div class="conteudo-principal">
       <div class="KPIs">
-        <div class="kpiDash">
+        <div class="kpiDash" style="border-bottom: 8px solid red;">
           <div class="DadosKPI">
             <h3 style="font-size: 4vh;">03</h3>
             <p> Máquinas com alertas de <b>RAM</b></p>
@@ -74,7 +74,7 @@
             <div style="background-color: red;" class="circulo"> <img src="../../assets/imgs/ram.png"></div>
           </div>
         </div>
-        <div class="kpiDash">
+        <div class="kpiDash" style="border-bottom: 8px solid red;">
           <div class="DadosKPI">
             <h3 style="font-size: 4vh;">01</h3>
             <p> Máquinas com alertas de <b>CPU</b></p>
@@ -83,7 +83,7 @@
             <div style="background-color: red;" class="circulo"> <img src="../../assets/imgs/cpu.png"></div>
           </div>
         </div>
-        <div class="kpiDash">
+        <div class="kpiDash" style="border-bottom: 8px solid green;">
           <div class="DadosKPI">
             <h3 style="font-size: 4vh;">00</h3>
             <p> Máquinas com alertas de <b>Disco</b></p>
@@ -92,7 +92,7 @@
             <div style="background-color: green;" class="circulo"> <img src="../../assets/imgs/disco.png"></div>
           </div>
         </div>
-        <div class="kpiDash">
+        <div class="kpiDash" style="border-bottom: 8px solid green;">
           <div class="DadosKPI">
             <h3 style="font-size: 4vh;">00</h3>
             <p> Máquinas com alertas de <b>Processos</b> </p>
@@ -101,7 +101,7 @@
             <div style="background-color: green;" class="circulo"> <img src="../../assets/imgs/processos.png"></div>
           </div>
         </div>
-        <div class="kpiDash">
+        <div class="kpiDash" style="border-bottom: 8px solid red;">
           <div class="DadosKPI">
             <h3 style="font-size: 4vh;">01</h3>
             <p> Máquinas com alertas <b>Bateria</b></p>
@@ -179,13 +179,13 @@
       <div class="graficos">
         <div class="graficoContainer">
           <div class="graficoHeader">Intercorrência de componente:</div>
-          <div style="width: 100%; height: 100%;">
+          <div style="width: 100%; height: 100%; background-color: white;">
           <canvas id="Intercorrenciaporcomponente"></canvas>
           </div>
         </div>
         <div class="graficoContainer">
           <div class="graficoHeader">Intercorrência gerais por área:</div>
-          <div style="width: 100%; height: 100%;">
+          <div style="width: 100%; height: 100%; background-color: white;">
           <canvas id="Intercorrenciaporarea"></canvas>
           </div>
         </div>
@@ -282,7 +282,7 @@ if (grafico) grafico.destroy();
     data: {
       labels: componentes,
       datasets: [{
-        backgroundColor: '#264653',
+        backgroundColor: '#4FB1F7',
         label: 'Total de intercorrências',
         data: intercorrenciacomponente,
         borderWidth: 2,
@@ -327,7 +327,7 @@ if (grafico2) grafico2.destroy();
     data: {
       labels: componentes,
       datasets: [{
-        backgroundColor: '#264653',
+        backgroundColor: '#4fb1f7',
         label: 'Total de intercorrências',
         data: alertasArea,
         borderWidth: 2,
