@@ -56,7 +56,7 @@
         <button onclick="toggleSidebar()" class="btn-fechar">&times;</button>
       </div>
       <nav id="navBar" class="sidebar-nav">
-        <a style="text-decoration: none;" href="./mainPage.html">Página principal</a>
+        <a id="navMain" style="text-decoration: none;" href="./mainPage.html">Página principal</a>
         <a style="text-decoration: none;" href="./controleHospitais.html">Hospitais</a>
         <a class="pgAtual" style="text-decoration: none;" href="./contas.html">Contas</a>
       </nav>
@@ -212,7 +212,8 @@
   if (sessionStorage.CARGO_USUARIO != "adminEmpresa") {
     document.getElementById("modal_some").style.display = "none";
     document.getElementById("coluna_permissao").style.display = "none";
-    
+    let navMain = document.getElementById("navMain")
+    navMain.href = "./mainEmpresaFunc.html"
 
   }
 

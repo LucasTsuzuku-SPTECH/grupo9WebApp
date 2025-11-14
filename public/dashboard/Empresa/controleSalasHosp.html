@@ -52,7 +52,7 @@
                 <button onclick="toggleSidebar()" class="btn-fechar">&times;</button>
             </div>
             <nav id="navBar" class="sidebar-nav">
-                <a href="./mainPage.html">Página principal</a>
+                <a id="navMain" href="./mainPage.html">Página principal</a>
                 <a class="pgAtual" href="./controleHospitais.html">Hospitais</a>
                 <a href="./contas.html">Contas</a>
             </nav>
@@ -275,16 +275,15 @@
 <!-- SweetAlert2 -->
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
-window.addEventListener('beforeunload', function(event) {
-    sessionStorage.removeItem('NOME_HOSPITAL_ATUAL');
-    sessionStorage.removeItem('ID_HOSPITAL_ATUAL');
-})
+    window.addEventListener('beforeunload', function (event) {
+        sessionStorage.removeItem('NOME_HOSPITAL_ATUAL');
+        sessionStorage.removeItem('ID_HOSPITAL_ATUAL');
+    })
 
     if (sessionStorage.CARGO_USUARIO != "adminEmpresa") {
         document.getElementById("btnEditarHospital").style.display = "none";
-        document.getElementById("navBar").innerHTML = ` <a href="./mainEmpresaFunc.html">Página principal</a>
-                <a class="pgAtual" href="./controleHospitais.html">Hospitais</a>
-                <a href="./contas.html">Contas</a>`
+        let navMain = document.getElementById("navMain")
+        navMain.href = "./mainEmpresaFunc.html"
     }
 
     /* Definindo o horário na dash*/
@@ -469,7 +468,7 @@ window.addEventListener('beforeunload', function(event) {
 
 
         let total = ventiladores.length, estavel = 0, alerta = 0, critico = 0
-    
+
 
         if (ventiladores.length === 0) {
             container.innerHTML += `<p>Não há ventiladores cadastrados neste hospital.</p><br>`;
