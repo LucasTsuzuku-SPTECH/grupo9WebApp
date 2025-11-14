@@ -1,0 +1,1947 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
+
+/* ===========================
+   VARIÁVEIS DE CORES
+=========================== */
+:root {
+  --branco: #ffffff;
+  --preto: #000;
+  --verde-1: #b7e4c7;
+  --verde-2: #92e4ab;
+  --verde-3: #30a799;
+  --verde-4: #264653;
+  --vermelho: #e60e3a;
+}
+
+/* ===========================
+   RESET & BASE
+=========================== */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Poppins';
+  background-color: var(--branco);
+  color: var(--preto);
+}
+
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+.div-pai {
+  background-color: #f9f9f9;
+}
+
+/* ===========================
+   HEADER
+=========================== */
+header {
+  background-color: var(--verde-4);
+  height: 102px;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 50px;
+}
+
+.header-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+}
+
+/* Ícone do menu hambúrguer */
+.div-hamburguer {
+  font-size: 50px;
+  color: var(--verde-4);
+  cursor: pointer;
+  background: none;
+  border: none;
+  transition: background-color 0.3s ease;
+  padding: 5px 10px 5px 10px;
+  border-radius: 4px;
+}
+
+.div-hamburguer:hover {
+  background-color: var(--verde-3);
+}
+
+
+
+/* ===========================
+   PERFIL / BOTÃO SAIR
+=========================== */
+.div-todo-perfil {
+  position: relative;
+  width: 90px;
+}
+
+.div-filho-perfil {
+  background-color: var(--verde-4);
+  border-radius: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 9px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  color: var(--branco);
+}
+
+.div-filho-perfil:hover {
+  background-color: var(--verde-3);
+}
+
+.div-filho-perfil img {
+  width: 35px;
+  height: 35px;
+}
+
+.div-filho-perfil .img-seta {
+  width: 20px;
+  height: 20px;
+}
+
+.div-opcoes {
+  display: none;
+  /* Inicialmente escondido */
+  position: absolute;
+  top: 102%;
+  /* Posiciona a div logo abaixo da "div-todo-perfil" */
+  left: 50%;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  text-align: center;
+  justify-content: center;
+  color: white;
+  border: 1px solid var(--preto);
+  transform: translateX(-50%);
+  /* Alinha no centro */
+  background-color: var(--verde-4);
+  border-radius: 5px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  z-index: 10;
+  transition: color 0.3s ease;
+}
+
+.div-todo-perfil:hover .div-opcoes {
+  display: flex;
+  /* Exibe a div de opções ao passar o mouse */
+}
+
+/* Botão "Sair" */
+.div-opcao-sair button {
+  width: 100%;
+  height: 100%;
+  background: none;
+  border: none;
+  color: white;
+  font-size: 14px;
+  cursor: pointer;
+  transition: color 0.3s ease;
+}
+
+.div-opcao-sair {
+  width: 100%;
+  height: 75%;
+}
+
+.div-opcao-sair:hover {
+  cursor: pointer;
+}
+
+.div-opcoes:hover {
+  background-color: var(--verde-3);
+}
+
+/* ===========================
+   SIDEBAR (MODAL FIXO)
+=========================== */
+.sidebar-modal {
+  position: fixed;
+  top: 0;
+  left: -300px;
+  width: 250px;
+  height: 100%;
+  background-color: var(--verde-4);
+  box-shadow: 2px 0 8px rgba(0, 0, 0, 0.3);
+  transition: left 0.3s ease;
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+  padding-top: 20px;
+}
+
+.sidebar-modal img {
+  width: 15vh;
+  align-self: center;
+}
+
+.sidebar-modal.active {
+  left: 0;
+}
+
+.sidebar-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px;
+  color: var(--branco);
+  font-weight: bold;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.btn-fechar {
+  background: none;
+  border: none;
+  font-size: 45px;
+  color: var(--branco);
+  cursor: pointer;
+  transition: background 0.2s ease;
+  line-height: 0.7;
+  padding: 6px;
+  border-radius: 4px;
+}
+
+.btn-fechar:hover {
+  background-color: var(--verde-3);
+}
+
+.sidebar-nav {
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  padding: 15px;
+}
+
+.sidebar-nav a {
+  color: var(--branco);
+  padding: 10px 0;
+  transition: background 0.2s;
+}
+
+
+.pgAtual {
+  color: var(--branco);
+  background-color: #30a799;
+  padding: 10px 0;
+  transition: background 0.2s;
+  border-radius: 4px;
+}
+
+
+
+.sidebar-nav a:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 4px;
+}
+
+/* Conteúdo principal */
+.conteudo-principal {
+  padding: 30px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  width: 100%;
+}
+
+/* Links de ação */
+.div-links-contas {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  flex-wrap: wrap;
+  margin-bottom: 30px;
+}
+
+.div-links-contas a {
+  background-color: var(--verde-3);
+  color: var(--branco);
+  padding: 15px 25px;
+  border-radius: 12px;
+  font-weight: bold;
+  text-decoration: none;
+  transition: all 0.3s ease;
+}
+
+.div-links-contas a:hover {
+  background-color: var(--verde-2);
+  color: var(--preto);
+  transform: translateY(-3px);
+}
+
+/* Inputs e selects */
+.div-procura {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-bottom: 6vh;
+}
+
+.div-ipt-procura {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.div-ipt-procura label {
+  font-weight: bold;
+  color: var(--preto);
+}
+
+.ipt_procura {
+  padding: 8px 10px;
+  border: 2px solid var(--verde-3);
+  border-radius: 8px;
+  outline: none;
+  transition: 0.2s;
+  height: 40px;
+  /* força a altura igual para input e select */
+  box-sizing: border-box;
+  /* inclui borda e padding na altura total */
+}
+
+.ipt_procura:focus {
+  border-color: var(--verde-2);
+}
+
+/* Tabela de usuários */
+.mostrarUsuarios {
+  width: 100%;
+  max-width: 1200px;
+  overflow-x: auto;
+  margin-top: 20px;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  background-color: var(--branco);
+}
+
+.mostrarUsuarios table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.mostrarUsuarios th,
+.mostrarUsuarios td {
+  padding: 12px 15px;
+  text-align: left;
+}
+
+.mostrarUsuarios thead {
+  background-color: var(--verde-3);
+  color: var(--branco);
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
+.mostrarUsuarios tbody tr:nth-child(even) {
+  background-color: var(--verde-1);
+}
+
+.mostrarUsuarios tbody tr:hover {
+  background-color: var(--verde-2);
+  cursor: pointer;
+}
+
+/* Botão deletar na tabela */
+.colunaDelete button img {
+  width: 20px;
+  height: 20px;
+}
+
+/* SweetAlert será usado para alertas - não precisa de CSS extra */
+
+/* Responsividade */
+@media (max-width: 768px) {
+  .div-procura {
+    flex-direction: column;
+    gap: 15px;
+  }
+
+  .div-links-contas {
+    flex-direction: column;
+    gap: 15px;
+  }
+
+  .mostrarUsuarios {
+    max-width: 100%;
+  }
+}
+
+/* Centraliza todos os cabeçalhos da tabela */
+table thead th {
+  text-align: center;
+  white-space: nowrap;
+  /* impede quebra de linha */
+}
+
+/* Centraliza os conteúdos das células, exceto texto longo se necessário */
+table tbody td {
+  text-align: center;
+  vertical-align: middle;
+}
+
+/* Impede quebra de linha na coluna Usuario */
+table td.colunaUsuario {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Ajuste para o ícone de delete ficar centralizado */
+table td.colunaDelete {
+  justify-content: center;
+  align-items: center;
+}
+
+/* Botões de status de usuário */
+.btn-status {
+  cursor: pointer;
+  padding: 6px 12px;
+  border: none;
+  border-radius: 12px;
+  color: #fff;
+  font-weight: bold;
+  transition: all 0.2s ease;
+  min-width: 80px;
+  text-align: center;
+}
+
+/* Status ativo */
+.btn-ativo {
+  background-color: #2a9d8f;
+  /* verde */
+}
+
+.btn-ativo:hover {
+  background-color: #1f7a6c;
+}
+
+/* Status inativo */
+.btn-inativo {
+  background-color: #e63946;
+  /* vermelho */
+}
+
+.btn-inativo:hover {
+  background-color: #b32c38;
+}
+
+#Imagem_manutencao {
+  display: flex;
+  flex-direction: row;
+  width: 50%;
+  height: auto;
+}
+
+/* Container de Filtro e KPI */
+.container-filtro-kpi {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding: 20px;
+}
+
+/* Estilo do select */
+#filtroCriticidade {
+  color: var(--preto);
+  background-color: #35BBAB;
+  border: 2px solid rgba(38, 70, 83, 1);
+  height: 7.5vh;
+  margin-right: 1.5vw;
+  padding: 10px 20x;
+  font-size: 16px;
+  border-radius: 5px;
+  padding: 10px;
+  font-size: 16px;
+  border-radius: 5px;
+}
+
+.kpi {
+  display: flex;
+  justify-content: center;
+  /* centraliza os itens horizontalmente */
+  align-items: center;
+  /* centraliza verticalmente */
+  gap: 20px;
+  padding: 20px;
+  border-radius: 10px;
+  background-color: #d5d5d5;
+  border-bottom: 2px solid var(--verde-3);
+  width: 100%;
+  /* largura ajusta ao conteúdo */
+  box-sizing: border-box;
+}
+
+.kpi .item {
+  display: flex;
+  align-items: center;
+  padding: 10px 15px;
+  /* padding interno em cada KPI */
+  background: var(--verde-3);
+  /* fundo colorido para destacar */
+  border-radius: 6px;
+  /* cantos arredondados */
+  box-shadow: 1px 1px 6px rgba(0, 0, 0, 0.1);
+  /* leve sombra */
+  width: auto;
+  gap: 10px;
+}
+
+.kpi .item p {
+  font-size: 14px;
+  color: black;
+  /* cor do texto dentro da KPI */
+}
+
+.kpi .item h3 {
+  font-size: 20px;
+  font-weight: bold;
+  color: black;
+  /* cor do texto do valor */
+}
+
+.KPIs {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  flex-direction: row;
+  gap: 20px;
+  width: 100%;
+}
+
+.kpiDash {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+  padding: 4px 15px;
+  border-radius: 10px;
+  background-color: white;
+  width: 14%;
+  margin: 1%;
+  box-shadow: 2px 2px 5px 1px rgba(0, 0, 0, 0.5);
+  box-sizing: border-box;
+}
+
+.DadosKPI {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.imagemKPI {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+
+.circulo {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background-color: #ccc;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+}
+
+.circulo img {
+  width: 70%;
+  height: 70%;
+  object-fit: cover;
+}
+
+.Containertabela {
+  background-color: white;
+  padding: 0;
+  border-radius: 8px;
+  width: 80%;
+  max-height: 400px;
+  height: 300px;
+  min-height: 50px;
+  box-shadow: 5px 5px 10px 2px rgba(0, 0, 0, 0.5);
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 1%;
+}
+
+.graficoHeader {
+  background-color: var(--verde-4);
+  color: white;
+  font-weight: bold;
+  padding: 10px 20px;
+  font-size: 18px;
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
+}
+
+.tabelaWrapper {
+  flex: 1;
+  overflow-y: scroll;
+}
+
+.tabelaWrapper::-webkit-scrollbar {
+  width: 8px;
+}
+
+.tabelaWrapper::-webkit-scrollbar-thumb {
+  background-color: var(--verde-4);
+  border-radius: 10px;
+}
+
+.tabelaWrapper::-webkit-scrollbar-track {
+  background-color: white;
+  border-radius: 10px;
+}
+
+.graficoTabela {
+  width: 100%;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  overflow: hidden;
+  border-collapse: collapse;
+  table-layout: fixed;
+  overflow-y: scroll;
+}
+
+.graficoTabela thead th {
+  position: sticky;
+  background-color: white;
+  top: 0;
+}
+
+.graficoTabela th {
+  position: sticky;
+  text-align: center;
+  color: black;
+  padding: 10px;
+  font-weight: 600;
+  word-wrap: break-word;
+}
+
+.graficoTabela td {
+  text-align: center;
+  padding: 10px;
+  border-bottom: 1px solid #ccc;
+  color: #333;
+}
+
+.graficos {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  flex-direction: row;
+  gap: 20px;
+  width: 100%;
+}
+
+.graficoContainer {
+  background-color: #e0f7fa;
+  padding: 0;
+  border-radius: 8px;
+  width: 40%;
+  height: 400px;
+  min-height: 50px;
+  box-shadow: 5px 5px 10px 2px rgba(0, 0, 0, 0.5);
+  display: flex;
+  flex-direction: column;
+}
+
+/* Conteúdo principal (cards dos hospitais) */
+.marcador-area {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  width: 100%;
+  height: 50px;
+  border-bottom: black 4px solid;
+  border-radius: 4px;
+  background-color: lightgray;
+  padding: 5px;
+}
+
+
+.conteudo-principal {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  padding: 30px;
+  width: 100%;
+}
+
+
+.conteudo-principal2 {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-start;
+  flex-direction: row;
+  gap: 20px;
+  padding: 30px;
+  width: 100%;
+}
+
+/* Card de hospital */
+.card-hospital {
+  background-color: #35BBAB;
+  border: 2px solid var(--preto);
+  border-radius: 8px;
+  gap: 10px;
+  padding: 20px;
+  width: 20vw;
+  text-align: center;
+  height: 20vh;
+  justify-content: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease,
+    border-color 0.3s ease;
+  cursor: pointer;
+}
+
+.card-hospital:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 25px 15px #35BBAB;
+  border-color: var(--preto);
+}
+
+
+/* Bolha de status */
+.status {
+  color: white;
+  padding: 6px 14px;
+  border-radius: 10px;
+  font-weight: bold;
+  text-transform: capitalize;
+  text-align: center;
+}
+
+.status.estavel {
+  background-color: green;
+}
+
+.status.alerta {
+  background-color: goldenrod;
+}
+
+.status.critico {
+  background-color: red;
+}
+
+/* Modal fundo escuro */
+#modalVentiladores {
+  display: none;
+  /* inicialmente oculto */
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.6);
+  /* escurece a tela atrás */
+  z-index: 1000;
+  /* acima de todos os elementos */
+  justify-content: center;
+  align-items: center;
+}
+
+/* Conteúdo interno do modal */
+#conteudoVentiladores {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 10px;
+  max-height: 80vh;
+  /* altura máxima da tela */
+  width: 80vw;
+  /* largura grande, mas não full screen */
+  overflow-y: auto;
+  /* scroll vertical */
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
+}
+
+/* Título do modal */
+#conteudoVentiladores h3 {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  font-size: 1.5rem;
+}
+
+/* Botão fechar modal */
+#conteudoVentiladores .btn-fechar-modal {
+  cursor: pointer;
+  background: red;
+  color: #fff;
+  border: none;
+  font-size: 1.2rem;
+  padding: 5px 10px;
+  border-radius: 5px;
+}
+
+#conteudoVentiladores .btn-fechar-modal:hover {
+  background: darkred;
+}
+
+/* Card de cada ventilador */
+.ventilador {
+  background-color: #e0f7fa;
+  padding: 15px 15px 15px 20px;
+  margin-bottom: 15px;
+  border-radius: 8px;
+  width: 10 0%;
+  min-height: 80px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  border-left: 5px solid #00796b;
+}
+
+
+.ventilador2 {
+  zoom: 90%;
+  background-color: #e0f7fa;
+  padding: 15px 15px 15px 20px;
+  margin-bottom: 5px;
+  border-radius: 8px;
+  width: 70vh;
+  height: 300px;
+  max-width: 700px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  border-left: 5px solid #00796b;
+}
+
+/* Linha separadora entre Nº Série e Modelo */
+.ventilador .linha-separadora {
+  border-top: 1px solid #aaa;
+  margin: 8px 0;
+  /* espaço acima e abaixo da linha */
+}
+
+.navbar-mob {
+  background-color: transparent;
+  color: var(--verde-4);
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.navbar-mob i {
+  color: white;
+}
+
+.btn-adicionar {
+  background-color: var(--verde-4);
+  /* usa a cor que você definiu */
+  color: #ffffff;
+  /* texto branco */
+  border: 1px solid #ffffff;
+  /* borda branca opcional */
+  padding: 8px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.btn-adicionar:hover {
+  background-color: #1f6e75;
+  /* escurece um pouco ao passar o mouse */
+}
+
+header h2 {
+  font-size: 24px;
+  color: white;
+  /* ou o tamanho que você quer */
+  font-weight: 600;
+  /* se quiser controlar a espessura */
+}
+
+/* Botão base */
+.btn-edit {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 8px;
+  width: 140px;
+  height: 40px;
+  padding: 0 16px;
+  border: none;
+  border-radius: 10px;
+  background: white;
+  color: black;
+  border: 1px solid black;
+  font-weight: 700;
+  cursor: pointer;
+  overflow: hidden;
+}
+
+/* Texto some no hover */
+.btn-edit .btn-text {
+  transition: opacity .25s ease;
+}
+
+.btn-edit:hover .btn-text {
+  opacity: 0;
+}
+
+/* Ícone começa colado à direita dentro do botão */
+.btn-edit i {
+  position: absolute;
+  left: calc(100% - 35px);
+  top: 50%;
+  transform: translateY(-50%);
+  transition: left .30s ease, transform .30s ease, opacity .20s ease;
+  font-size: 16px;
+}
+
+/* No hover, o ícone desliza pro centro */
+.btn-edit:hover i {
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.btn-edit:active {
+  transform: scale(1.05);
+  transition: transform 0.1s ease;
+}
+
+.btn-delete {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  width: 140px;
+  height: 40px;
+  border: none;
+  padding: 0 15px;
+  background-color: white;
+  color: red;
+  border: 1px solid red;
+  font-weight: 700;
+  cursor: pointer;
+  border-radius: 10px;
+  transition: 0.3s;
+  overflow: hidden;
+}
+
+/* Texto */
+.btn-delete .text {
+  transition: 0.3s;
+}
+
+/* Ícone */
+.btn-delete .icon {
+  margin-top: 4px;
+  position: absolute;
+  right: 20px;
+  width: 16px;
+  height: 16px;
+  transition: 0.3s;
+  fill: white;
+}
+
+/* Hover → texto some */
+.btn-delete:hover .text {
+  color: transparent;
+}
+
+/* Hover → ícone vai pro centro */
+.btn-delete:hover .icon {
+  right: 50%;
+  transform: translateX(50%);
+}
+
+/* Clique → cresce um pouco */
+.btn-delete:active {
+  transform: scale(1.05);
+  transition: transform 0.1s ease;
+}
+
+.button {
+  width: 200px;
+  height: 40px;
+  border: 1px solid rgb(0, 95, 0);
+  border-radius: 10px;
+  background: white;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s;
+  font-weight: bold;
+  margin-left: -0.8vw;
+}
+
+.button_text {
+  position: absolute;
+  left: 20px;
+  margin-top: 0.05vh;
+  top: 50%;
+  transform: translateY(-50%);
+  transition: all 0.3s;
+  color: rgb(0, 95, 0);
+}
+
+.button_icon {
+  position: absolute;
+  right: 0;
+  top: 0;
+  margin-top: 1.3vh;
+  height: 100%;
+  width: 40px;
+  background: white;
+  display: flex;
+  justify-content: center;
+  transition: all 0.3s;
+  font-size: 20px;
+  color: rgb(0, 95, 0);
+}
+
+.button:hover .button_text {
+  color: transparent;
+}
+
+.button:hover .button_icon {
+  width: 100%;
+  right: 0;
+}
+
+.btn-addcomp {
+  background-color: white;
+  border: 1px solid black;
+  color: black;
+  font-weight: 500;
+  margin-top: -5px;
+}
+
+.btn-addcomp:hover {
+  background-color: white;
+  color: black;
+  border-color: black;
+}
+
+.button:active {
+  transform: scale(1.05);
+  transition: transform 0.1s ease;
+}
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1050;
+}
+
+.modal-content {
+  background: white;
+  padding: 20px;
+  border-radius: 10px;
+  width: 100%;
+  max-width: 40vw;
+  max-height: 80vh;
+  overflow-y: auto;
+  position: relative;
+}
+
+/* --- Overlay dos modais Adicionar / Editar --- */
+#addVentiladorModal,
+#editVentiladorModal,
+#addSalaModal {
+  display: none;
+  /* inicial oculto */
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.6);
+  /* fundo escuro */
+  z-index: 1000;
+  justify-content: center;
+  align-items: center;
+}
+
+/* --- Conteúdo interno --- */
+#addVentiladorModal .modal-content,
+#editVentiladorModal .modal-content,
+#addSalaModal .modal-content {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 10px;
+  max-height: 80vh;
+  width: 100%;
+  max-width: 50vw;
+  overflow-y: auto;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
+}
+
+/* Título com botão fechar alinhado */
+#addVentiladorModal .modal-content h3,
+#editVentiladorModal .modal-content h3,
+#addSalaModal .modal-content h3 {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  font-size: 1.5rem;
+}
+
+/* Botão de fechar no canto */
+#addVentiladorModal .btn-fechar-modal,
+#editVentiladorModal .btn-fechar-modal,
+#addSalaModal .btn-fechar-modal {
+  cursor: pointer;
+  background: red;
+  color: #fff;
+  border: none;
+  font-size: 1.2rem;
+  padding: 5px 10px;
+  border-radius: 5px;
+}
+
+#addVentiladorModal .btn-fechar-modal:hover,
+#editVentiladorModal .btn-fechar-modal:hover,
+#addSalaModal .btn-fechar-modal:hover {
+  background: darkred;
+}
+
+/* Inputs / selects do formulário */
+#addVentiladorModal .form-group,
+#editVentiladorModal .form-group,
+#addSalaModal .form-group {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 15px;
+}
+
+#addVentiladorModal .form-group label,
+#editVentiladorModal .form-group label,
+#addSalaModal .form-group label {
+  font-weight: 600;
+  margin-bottom: 5px;
+}
+
+#addVentiladorModal .form-group input,
+#addVentiladorModal .form-group select,
+#editVentiladorModal .form-group input,
+#editVentiladorModal .form-group select,
+#addSalaModal .form-group input,
+#addSalaModal .form-group select {
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 14px;
+}
+
+/* --- Seção de Componentes --- */
+#addVentiladorModal h4,
+#editVentiladorModal h4 {
+  margin-top: 20px;
+  margin-bottom: 10px;
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: #00796b;
+  border-bottom: 2px solid #00796b;
+  padding-bottom: 4px;
+}
+
+
+/* container de componentes */
+#componentesContainer,
+#editComponentesContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 15px;
+}
+
+/* grupos dentro dos componentes */
+#componentesContainer .form-group,
+#editComponentesContainer .form-group {
+  display: flex;
+  flex-direction: column;
+}
+
+/* inputs/selects dos componentes */
+#componentesContainer input,
+#editComponentesContainer input,
+#componentesContainer select,
+#editComponentesContainer select {
+  padding: 6px 8px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+/* botão de adicionar componente */
+#addVentiladorModal .btn-add,
+#editVentiladorModal .btn-add {
+  background-color: #00796b;
+  color: white;
+  font-weight: 600;
+  padding: 10px 25px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  border: 2px solid #00796b;
+  transition: background-color 0.3s;
+  margin-top: 5px;
+}
+
+#addVentiladorModal .btn-add:hover,
+#editVentiladorModal .btn-add:hover {
+  background-color: transparent;
+  color: #00796b;
+}
+
+/* Botão submit */
+#addVentiladorModal .btn-submit,
+#editVentiladorModal .btn-submit,
+#addSalaModal .btn-submit {
+  width: 130px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: transparent;
+  border: 2px solid #00796b;
+  color: #00796b;
+  font-weight: 600;
+  border-radius: 10px;
+  gap: 8px;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  transition: color .3s, background-color .3s;
+  z-index: 1;
+}
+
+/* bolha que vem de trás */
+#addVentiladorModal .btn-submit::before,
+#editVentiladorModal .btn-submit::before,
+#addSalaModal .btn-submit::before {
+  content: "";
+  position: absolute;
+  width: 150px;
+  height: 130px;
+  background-color: #00796b;
+  border-radius: 50%;
+  left: -120%;
+  top: 0;
+  transition: .3s;
+  z-index: -10;
+}
+
+/* no hover o before se move e "abre" */
+#addVentiladorModal .btn-submit:hover::before,
+#editVentiladorModal .btn-submit:hover::before,
+#addSalaModal .btn-submit:hover::before {
+  transform: translate(100%, -50%);
+  border-radius: 0;
+}
+
+/* muda cor do texto ao passar o mouse */
+#addVentiladorModal .btn-submit:hover,
+#editVentiladorModal .btn-submit:hover,
+#addSalaModal .btn-submit:hover {
+  color: white;
+}
+
+/* efeito click */
+#addVentiladorModal .btn-submit:active,
+#editVentiladorModal .btn-submit:active,
+#addSalaModal .btn-submit:active {
+  transform: translate(1px, 1px);
+  box-shadow: 0 4px 12px rgba(255, 255, 255, 0.6);
+}
+
+
+/* ---------- Overlay dos modais Hospital / Endereço ---------- */
+#addHospitalModal,
+#addEnderecoModal {
+  display: none;
+  /* inicial oculto */
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.6);
+  /* fundo escuro */
+  z-index: 1100;
+  justify-content: center;
+  align-items: center;
+}
+
+/* ---------- Conteúdo interno ---------- */
+#addHospitalModal .modal-content,
+#addEnderecoModal .modal-content {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 10px;
+  width: 100%;
+  max-width: 60vw;
+  max-height: 80vh;
+  overflow-y: auto;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
+  position: relative;
+}
+
+/* Título com botão fechar */
+#addHospitalModal h3,
+#addEnderecoModal h3 {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  font-size: 1.5rem;
+}
+
+/* Botão de fechar */
+#addHospitalModal .btn-fechar-modal,
+#addEnderecoModal .btn-fechar-modal {
+  cursor: pointer;
+  background: red;
+  color: #fff;
+  border: none;
+  font-size: 1.2rem;
+  padding: 5px 10px;
+  border-radius: 5px;
+}
+
+#addHospitalModal .btn-fechar-modal:hover,
+#addEnderecoModal .btn-fechar-modal:hover {
+  background: darkred;
+}
+
+/* Inputs / selects do formulário */
+#addHospitalModal .form-group,
+#addEnderecoModal .form-group {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 15px;
+}
+
+#addHospitalModal .form-group label,
+#addEnderecoModal .form-group label {
+  font-weight: 600;
+  margin-bottom: 5px;
+}
+
+#addHospitalModal .form-group input,
+#addHospitalModal .form-group select,
+#addEnderecoModal .form-group input,
+#addEnderecoModal .form-group select {
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 14px;
+}
+
+/* Botão submit */
+#addHospitalModal .btn-submit,
+#addEnderecoModal .btn-submit {
+  width: 170px;
+  height: 40px;
+  padding: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: transparent;
+  border: 2px solid #00796b;
+  color: #00796b;
+  font-weight: 600;
+  border-radius: 10px;
+  gap: 8px;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  transition: color .3s, background-color .3s;
+  z-index: 1;
+}
+
+/* efeito "bolha" */
+#addHospitalModal .btn-submit::before,
+#addEnderecoModal .btn-submit::before {
+  content: "";
+  position: absolute;
+  width: 190px;
+  height: 130px;
+  background-color: #00796b;
+  border-radius: 50%;
+  left: -120%;
+  top: 0;
+  transition: .3s;
+  z-index: -10;
+}
+
+#addHospitalModal .btn-submit:hover::before,
+#addEnderecoModal .btn-submit:hover::before {
+  transform: translate(100%, -50%);
+  border-radius: 0;
+}
+
+#addHospitalModal .btn-submit:hover,
+#addEnderecoModal .btn-submit:hover {
+  color: white;
+}
+
+/* efeito click */
+#addHospitalModal .btn-submit:active,
+#addEnderecoModal .btn-submit:active {
+  transform: translate(1px, 1px);
+  box-shadow: 0 4px 12px rgba(255, 255, 255, 0.6);
+}
+
+/* ---------- Overlay do modal Editar Hospital ---------- */
+#editHospitalModal {
+  display: none;
+  /* inicial oculto */
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.6);
+  z-index: 1000;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Conteúdo interno */
+#editHospitalModal .modal-content {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 10px;
+  width: 100%;
+  max-width: 60vw;
+  /* mesmo que o addHospitalModal */
+  max-height: 80vh;
+  overflow-y: auto;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
+  position: relative;
+}
+
+/* Título e botão fechar */
+#editHospitalModal h3 {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  font-size: 1.5rem;
+}
+
+#editHospitalModal .btn-fechar-modal {
+  cursor: pointer;
+  background: red;
+  color: #fff;
+  border: none;
+  font-size: 1.2rem;
+  padding: 5px 10px;
+  border-radius: 5px;
+}
+
+#editHospitalModal .btn-fechar-modal:hover {
+  background: darkred;
+}
+
+/* Formulário - grupos verticais como no addHospitalModal */
+#editHospitalModal .form-group {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 15px;
+}
+
+#editHospitalModal .form-group label {
+  font-weight: 600;
+  margin-bottom: 5px;
+}
+
+#editHospitalModal .form-group input,
+#editHospitalModal .form-group select {
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 14px;
+}
+
+/* Botão submit estilizado igual ao addHospitalModal */
+#editHospitalModal .btn-submit {
+  width: 170px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: transparent;
+  border: 2px solid #00796b;
+  color: #00796b;
+  font-weight: 600;
+  border-radius: 10px;
+  gap: 8px;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  transition: color .3s, background-color .3s;
+  margin-top: 10px;
+  z-index: 1;
+}
+
+#editHospitalModal .btn-submit::before {
+  content: "";
+  position: absolute;
+  width: 190px;
+  height: 130px;
+  background-color: #00796b;
+  border-radius: 50%;
+  left: -120%;
+  top: 0;
+  transition: .3s;
+  z-index: -10;
+}
+
+#editHospitalModal .btn-submit:hover::before {
+  transform: translate(100%, -50%);
+  border-radius: 0;
+}
+
+#editHospitalModal .btn-submit:hover {
+  color: white;
+}
+
+#editHospitalModal .btn-submit:active {
+  transform: translate(1px, 1px);
+  box-shadow: 0 4px 12px rgba(255, 255, 255, 0.6);
+}
+
+/* Botão "Criar Novo Endereço" estilizado nos modais Hospital */
+#addHospitalModal .btn-criar-endereco,
+#editHospitalModal .btn-criar-endereco {
+  width: 100%;
+  /* largura total */
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: transparent;
+  border: 2px solid #00796b;
+  color: #00796b;
+  font-weight: 600;
+  border-radius: 10px;
+  gap: 8px;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  transition: color .3s, background-color .3s;
+  margin-top: 20px;
+  /* espaçamento do select */
+  z-index: 1;
+}
+
+#addHospitalModal .btn-criar-endereco:hover,
+#editHospitalModal .btn-criar-endereco:hover {
+  background-color: #00796b;
+  color: white;
+}
+
+#addHospitalModal .btn-criar-endereco:active,
+#editHospitalModal .btn-criar-endereco:active {
+  transform: translate(1px, 1px);
+  box-shadow: 0 4px 12px rgba(255, 255, 255, 0.6);
+}
+
+/* força o swal ficar acima de qualquer modal */
+.swal2-container {
+  z-index: 20000 !important;
+}
+
+.swal2-popup {
+  z-index: 20001 !important;
+}
+
+/* ---------- Overlay do modal Deletar Hospital ---------- */
+#deleteHospitalModal {
+  display: none;
+  /* começa oculto */
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.6);
+  /* fundo escuro */
+  z-index: 1000;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Conteúdo interno */
+#deleteHospitalModal .modal-content {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 10px;
+  width: 100%;
+  max-width: 40vw;
+  /* um pouco menor que add/edit hospital */
+  overflow-y: auto;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
+  position: relative;
+}
+
+/* Título + botão fechar */
+#deleteHospitalModal h3 {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  font-size: 1.4rem;
+}
+
+#deleteHospitalModal .btn-fechar-modal {
+  cursor: pointer;
+  background: red;
+  color: #fff;
+  border: none;
+  font-size: 1.2rem;
+  padding: 5px 10px;
+  border-radius: 5px;
+}
+
+#deleteHospitalModal .btn-fechar-modal:hover {
+  background: darkred;
+}
+
+/* Select */
+#deleteHospitalModal select {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  margin-bottom: 15px;
+  margin-top: 10px;
+  font-size: 14px;
+}
+
+/* Botão submit (igual padrão dos outros) */
+#deleteHospitalModal .btn-submit {
+  width: 170px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: transparent;
+  border: 2px solid red;
+  color: red;
+  font-weight: 600;
+  border-radius: 10px;
+  gap: 8px;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  transition: color .3s, background-color .3s;
+  z-index: 1;
+}
+
+#deleteHospitalModal .btn-submit::before {
+  content: "";
+  position: absolute;
+  width: 190px;
+  height: 130px;
+  background-color: red;
+  border-radius: 50%;
+  left: -120%;
+  top: 0;
+  transition: .3s;
+  z-index: -10;
+}
+
+#deleteHospitalModal .btn-submit:hover::before {
+  transform: translate(100%, -50%);
+  border-radius: 0;
+}
+
+#deleteHospitalModal .btn-submit:hover {
+  color: white;
+}
+
+#deleteHospitalModal .btn-submit:active {
+  transform: translate(1px, 1px);
+  box-shadow: 0 4px 12px rgba(255, 255, 255, 0.6);
+}
+
+#deleteHospitalModal label {
+  font-weight: 600;
+}
+
+/* Cada "componente-box" fica como um bloco */
+.componente-box {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  /* espaçamento entre label/input */
+  padding: 12px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  margin-bottom: 15px;
+  background: #f9f9f9;
+}
+
+/* Labels em negrito */
+.componente-box label {
+  font-weight: 600;
+  font-size: 0.9rem;
+  color: #333;
+}
+
+/* Inputs/selects dentro de componentes */
+.componente-box input,
+.componente-box select {
+  padding: 8px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.componente-box input:focus,
+.componente-box select:focus {
+  border-color: #00796b;
+}
+
+/* Botão remover estilizado */
+.componente-box button {
+  align-self: flex-end;
+  background-color: #d32f2f;
+  color: white;
+  font-weight: 600;
+  border: none;
+  border-radius: 5px;
+  padding: 6px 12px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.componente-box button:hover {
+  background-color: #b71c1c;
+}
+
+/* Modal de Alertas - usa mesma estrutura geral */
+#alertaVentiladorModal {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.6);
+  z-index: 1100;
+  /* acima dos outros modais */
+  justify-content: center;
+  align-items: center;
+}
+
+#alertaVentiladorModal .modal-content {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 10px;
+  width: 100%;
+  max-width: 40vw;
+  max-height: 80vh;
+  overflow-y: auto;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
+}
+
+#alertaVentiladorModal h3 {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+#alertaVentiladorModal .btn-fechar-modal {
+  cursor: pointer;
+  background: red;
+  color: #fff;
+  border: none;
+  font-size: 1.2rem;
+  padding: 5px 10px;
+  border-radius: 5px;
+}
+
+#alertaVentiladorModal .btn-fechar-modal:hover {
+  background: darkred;
+}
+
+#alertasContainer p {
+  background: #f5f5f5;
+  padding: 10px;
+  border-radius: 6px;
+  border-left: 4px solid #00796b;
+}
+
+
+
+
+
+/*Main page*/
+.conteudo-main {
+  display: flex;
+  flex-direction: column;
+  padding: 30px;
+  align-items: flex-start;
+  width: 100%;
+}
+
+
+.kpiDash2 {
+  flex-direction: column;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 5px;
+  padding: 4px 15px;
+  border-radius: 10px;
+  background-color: white;
+  border-bottom: 8px solid var(--verde-3);
+  width: 18%;
+  height: 170px;
+  max-height: 200px;
+  margin: 1%;
+  box-sizing: border-box;
+  box-shadow: 2px 2px 5px 1px rgba(0, 0, 0, 0.5);
+}
+
+
+.graficoContainer2 {
+  background-color: white;
+  padding: 0;
+  margin: 20px;
+  border-radius: 8px;
+  width: 98%;
+  max-height: 450px;
+  height: 100%;
+  min-height: 450px;
+  box-shadow: 5px 5px 10px 2px rgba(0, 0, 0, 0.5);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  
+}
+
+.graficoContainer2 canvas {
+  margin-top: 50px;
+}
+
+
+
+
+
+
+
+/* Tabela */
+.graficoTabela2 {
+  width: 95%;
+  border-radius: 8px;
+  border-collapse: collapse;
+}
+
+.graficoTabela2 th {
+  text-align: left;
+  color: black;
+  padding: 10px;
+  text-align: left;
+  font-weight: 600;
+
+}
+
+.graficoTabela2 thead th {
+  position: sticky;
+  background-color: white;
+  top: 0;
+  font-size: 20px;
+}
+
+.graficoTabela2 td {
+  text-align: left;
+  padding: 10px;
+  border-bottom: 1px solid #ccc;
+  color: black;
+}
+
+.selectHospitais {
+  background-color: #00796b;
+  color: white;
+  border: 2px white solid;
+  border-radius: 4px;
+  height: 30px;
+  width: 450px;
+  font-size: 16px;
+  font-weight: 920;
+}
+
+
+
+.divAnalise {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  background-color: #83cbc3;
+  width: 100%;
+  height: auto;
+}
+
+.Chamado {
+  margin: 1.5%;
+  background-color: #e0f7fa;
+  border: #264653 1px solid;
+  width: 10%;
+  height: 45px;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 1.6vh;
+  cursor: pointer;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+  transition: all 0.2s ease-in-out;
+}
+
+.Chamado:hover {
+  background-color: #00796b;
+  transform: translateY(-2px);
+}
+
+.Chamado:active {
+  transform: translateY(0);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+}
