@@ -10,7 +10,6 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://kit.fontawesome.com/9f7414eb10.js" crossorigin="anonymous"></script>
     <script src="../../js/sessao.js"></script>
-
 </head>
 
 <body onload="inicializacao()">
@@ -55,9 +54,10 @@
                     <option value="anual">Anual</option>
                 </select>
             </div>
+
             <div style="display: flex; flex-direction: row;">
                 <button class="Btn">Gerar relatório</button>
-                <button class="Btn">IA Analista</button>
+                <button class="Btn" id="btnIA" onclick="toggleAISidebar()">Analyst AI</button>
             </div>
         </div>
 
@@ -75,6 +75,22 @@
                 <a href="./contas.html">Contas</a>
             </nav>
         </div>
+
+        <!-- Sidebar da direita (IA) -->
+        <div id="aiSidebar" class="ai-sidebar" aria-hidden="true">
+            <div class="ai-header">
+                <span>Analyst AI</span>
+                <button onclick="toggleAISidebar()" class="btn-fechar">&times;</button>
+            </div>
+            <div class="ai-body">
+                <p>Bem-vindo(a)! <br> Tenha uma análise mais profunda com o auxílio da Analyst AI:</p>
+                <textarea id="aiInput" placeholder="Digite aqui..." rows="5"></textarea>
+                <button class="Btn" onclick="sendToAI()">Enviar</button>
+                <div id="aiResponse" style="margin-top:10px; color:#fff;"></div>
+            </div>
+        </div>
+
+
 
         <br><br><br><br>
 
@@ -161,24 +177,8 @@
                 </div>
 
                 <!-- Info principal 2 -->
-                <div style="width: 45%;" class="container">
-                    <div class="containerHeader">Ranking de intercorrência por hospital (<a
-                            class="periodoSelected"></a>):
-                    </div>
-                    <div class="tabelaWrapper">
-                        <table id="rankingArea" class="tabela">
-                            <thead>
-                                <tr>
-                                    <th>Posição</th>
-                                    <th>Hospital</th>
-                                    <th>Total de Intercorrências</th>
-                                </tr>
-                            </thead>
-                        </table>
-                    </div>
-                </div>
-                <div style="width: 45%;" class="container">
-                    <div class="containerHeader">Percentual de intercorrências de modelos por hospital/modelo (<a
+                <div style="width: 92%;" class="container">
+                    <div class="containerHeader">Percentual de intercorrências de modelos por top 5 hospitas/modelo (<a
                             class="periodoSelected"></a>):</div>
                     <div class="chartContent">
                         <div id="grafMain2"></div>
@@ -300,6 +300,48 @@
 
         sidebar.classList.toggle("active");
     }
+
+
+
+    function toggleAISidebar() {
+        const ai = document.getElementById('aiSidebar');
+        ai.classList.toggle('active');
+        ai.setAttribute('aria-hidden', ai.classList.contains('active') ? 'false' : 'true');
+    }
+
+    function sendToAI() {
+        const input = document.getElementById('aiInput');
+        const resp = document.getElementById('aiResponse');
+        const text = input.value;
+
+        if (!text) {
+            resp.innerHTML = '<em>Digite um prompt válido.</em>';
+            return;
+        }
+
+        resp.innerHTML = 'Processando...';
+
+        gerarResposta(text);
+    }
+
+
+    async function gerarResposta(texto) {
+        const resp = document.getElementById('aiResponse');
+
+        const response = await fetch('/ia/perguntar', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ texto })
+        });
+
+        const data = await response.json();
+        
+        resp.innerHTML = data.resultado;
+    }
+
+
 
     function mostrarNavbar() {
         const larguraTela = window.innerWidth;
