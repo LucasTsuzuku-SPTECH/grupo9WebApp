@@ -1,0 +1,597 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
+
+/* ===========================
+   VARIÁVEIS DE CORES
+=========================== */
+:root {
+  --branco: #ffffff;
+  --preto: #000;
+  --verde-3: #30a799;
+  --verde-4: #264653;
+}
+
+/* ===========================
+   RESET & BASE
+=========================== */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Poppins';
+  background-color: var(--branco);
+  color: var(--preto);
+}
+
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+/* ===========================
+   HEADER
+=========================== */
+header {
+  background-color: var(--verde-4);
+  height: 102px;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 50px;
+}
+
+.header-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+}
+
+header h2 {
+  font-size: 24px;
+  color: white;
+  font-weight: 600;
+}
+
+/* Ícone do menu hambúrguer */
+.div-hamburguer {
+  font-size: 50px;
+  color: var(--verde-4); /* Cor do ícone (será sobrescrita por .navbar-mob i) */
+  cursor: pointer;
+  background: none;
+  border: none;
+  transition: background-color 0.3s ease;
+  padding: 5px 10px 5px 10px;
+  border-radius: 4px;
+}
+
+.div-hamburguer:hover {
+  background-color: var(--verde-3);
+}
+
+.navbar-mob {
+  background-color: transparent;
+  color: var(--verde-4);
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.navbar-mob i {
+  color: white;
+}
+
+
+/* ===========================
+   PERFIL / BOTÃO SAIR
+=========================== */
+.div-todo-perfil {
+  position: relative;
+  width: 90px;
+}
+
+.div-filho-perfil {
+  background-color: var(--verde-4);
+  border-radius: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 9px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  color: var(--branco);
+}
+
+.div-filho-perfil:hover {
+  background-color: var(--verde-3);
+}
+
+.div-filho-perfil img {
+  width: 35px;
+  height: 35px;
+}
+
+.div-filho-perfil .img-seta {
+  width: 20px;
+  height: 20px;
+}
+
+.div-opcoes {
+  display: none;
+  /* Inicialmente escondido */
+  position: absolute;
+  top: 102%;
+  /* Posiciona a div logo abaixo da "div-todo-perfil" */
+  left: 50%;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  text-align: center;
+  justify-content: center;
+  color: white;
+  border: 1px solid var(--preto);
+  transform: translateX(-50%);
+  /* Alinha no centro */
+  background-color: var(--verde-4);
+  border-radius: 5px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  z-index: 10;
+  transition: color 0.3s ease;
+}
+
+.div-todo-perfil:hover .div-opcoes {
+  display: flex;
+  /* Exibe a div de opções ao passar o mouse */
+}
+
+/* Botão "Sair" */
+.div-opcao-sair button {
+  width: 100%;
+  height: 100%;
+  background: none;
+  border: none;
+  color: white;
+  font-size: 14px;
+  cursor: pointer;
+  transition: color 0.3s ease;
+}
+
+.div-opcao-sair {
+  width: 100%;
+  height: 75%;
+}
+
+.div-opcao-sair:hover {
+  cursor: pointer;
+}
+
+.div-opcoes:hover {
+  background-color: var(--verde-3);
+}
+
+/* ===========================
+   SIDEBAR (MODAL FIXO)
+=========================== */
+.sidebar-modal {
+  position: fixed;
+  top: 0;
+  left: -300px;
+  width: 250px;
+  height: 100%;
+  background-color: var(--verde-4);
+  box-shadow: 2px 0 8px rgba(0, 0, 0, 0.3);
+  transition: left 0.3s ease;
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+  padding-top: 20px;
+}
+
+.sidebar-modal img {
+  width: 15vh;
+  align-self: center;
+}
+
+.sidebar-modal.active {
+  left: 0;
+}
+
+.sidebar-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px;
+  color: var(--branco);
+  font-weight: bold;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.btn-fechar {
+  background: none;
+  border: none;
+  font-size: 45px;
+  color: var(--branco);
+  cursor: pointer;
+  transition: background 0.2s ease;
+  line-height: 0.7;
+  padding: 6px;
+  border-radius: 4px;
+}
+
+.btn-fechar:hover {
+  background-color: var(--verde-3);
+}
+
+.sidebar-nav {
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  padding: 15px;
+}
+
+.sidebar-nav a {
+  color: var(--branco);
+  padding: 10px 0;
+  transition: background 0.2s;
+}
+
+
+.pgAtual {
+  color: var(--branco);
+  background-color: #30a799;
+  padding: 10px 0;
+  transition: background 0.2s;
+  border-radius: 4px;
+}
+
+.sidebar-nav a:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 4px;
+}
+
+/* Conteúdo principal da Dashboard */
+.conteudo-principal {
+  padding: 30px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  flex-wrap: wrap; /* Mantido para quebra de linha dos gráficos */
+  justify-content: center;
+  gap: 20px;
+}
+
+/* Tabela de alertas */
+.Containertabela {
+  background-color: white;
+  padding: 0;
+  border-radius: 8px;
+  width: 80%;
+  max-height: 400px;
+  height: 300px;
+  min-height: 50px;
+  box-shadow: 2px 2px 5px 1px rgba(0, 0, 0, 0.5);
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 1%;
+}
+
+.graficoHeader {
+  background-color: white;
+  color: black;
+  font-weight: bold;
+  padding: 10px 20px;
+  font-size: 18px;
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
+  margin-bottom: 10px;
+  font-size: 2vh;
+}
+
+.tabelaWrapper {
+  flex: 1;
+  overflow-y: scroll;
+}
+
+.tabelaWrapper::-webkit-scrollbar {
+  width: 8px;
+}
+
+.tabelaWrapper::-webkit-scrollbar-thumb {
+  background-color: black;
+  border-radius: 10px;
+}
+
+.tabelaWrapper::-webkit-scrollbar-track {
+  background-color: white;
+  border-radius: 10px;
+}
+
+.graficoTabela {
+  width: 100%;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  overflow: hidden;
+  border-collapse: collapse;
+  table-layout: fixed;
+  overflow-y: scroll;
+}
+
+.graficoTabela thead th {
+  position: sticky;
+  background-color: white;
+  top: 0;
+}
+
+.graficoTabela th {
+  position: sticky;
+  text-align: center;
+  color: black;
+  padding: 10px;
+  font-weight: 600;
+  word-wrap: break-word;
+}
+
+.graficoTabela td {
+  text-align: center;
+  padding: 10px;
+  border-bottom: 1px solid #ccc;
+  color: #333;
+}
+
+/* Gráficos */
+.graficos {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  flex-direction: row;
+  gap: 20px;
+  width: 100%;
+}
+
+.graficoContainer {
+  background-color: white;
+  padding: 0;
+  border-radius: 8px;
+  width: 40%; 
+  height: 400px;
+  min-height: 50px;
+  box-shadow: 2px 2px 5px 1px rgba(0, 0, 0, 0.5);
+  display: flex;
+  flex-direction: column;
+}
+
+/* KPIs (Key Performance Indicators) */
+.KPIs {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  flex-direction: row;
+  gap: 20px;
+  width: 100%;
+}
+
+.KPIs a{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.kpiDash {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+  padding: 4px 15px;
+  border-radius: 10px;
+  background-color: white;
+  width: 14%;
+  margin: 1%;
+  box-shadow: 2px 2px 5px 1px rgba(0, 0, 0, 0.5);
+  box-sizing: border-box;
+}
+
+.DadosKPI {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.imagemKPI {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.circulo {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background-color: #ccc;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+}
+
+.circulo img {
+  width: 70%;
+  height: 70%;
+  object-fit: cover;
+}
+
+
+/* Modal de Alertas */
+#modalAlertas {
+  display: none;
+  /* inicial oculto */
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.6);
+  /* fundo escuro */
+  z-index: 1000;
+  justify-content: center;
+  align-items: center;
+}
+
+#modalAlertas .modal-content {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 10px;
+  max-height: 80vh;
+  width: 100%;
+  max-width: 50vw;
+  overflow-y: auto;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
+}
+
+/* Título com botão fechar alinhado */
+#modalAlertas .modal-content h3 {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  font-size: 1.5rem;
+}
+
+#modalAlertas .btn-fechar-modal {
+  cursor: pointer;
+  background: red;
+  color: #fff;
+  border: none;
+  font-size: 1.2rem;
+  padding: 5px 10px;
+  border-radius: 5px;
+}
+
+#modalAlertas .btn-fechar-modal:hover {
+  background: darkred;
+}
+
+/* Botão Fechar no modal */
+#modalAlertas .btn-submit {
+  width: 130px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: transparent;
+  border: 2px solid red;
+  color: red;
+  font-weight: 600;
+  border-radius: 10px;
+  gap: 8px;
+  cursor: pointer;
+  transition: color .3s, background-color .3s;
+}
+
+#modalAlertas .btn-submit:hover {
+  background-color: red;
+  color: white;
+}
+
+/* Força o swal (SweetAlert) ficar acima de qualquer modal */
+.swal2-container {
+  z-index: 20000 !important;
+}
+
+.swal2-popup {
+  z-index: 20001 !important;
+}
+
+/* --- Main Page/Dashboard (Conteúdo) --- */
+.conteudo-main {
+  display: flex;
+  flex-direction: column;
+  padding: 30px;
+  align-items: flex-start;
+  width: 100%;
+}
+
+.ContainerMapa {
+  background-color: white;
+  padding: 0;
+  border-radius: 8px;
+  width: 80%;
+  height: 450px;
+  min-height: 50px;
+  box-shadow: 2px 2px 5px 1px rgba(0, 0, 0, 0.5);
+  display: flex;
+  flex-direction: column;
+}
+
+.graficoContainer2 {
+  background-color: white;
+  padding: 0;
+  margin: 20px;
+  border-radius: 8px;
+  width: 98%;
+  max-height: 450px;
+  height: 100%;
+  min-height: 450px;
+  box-shadow: 5px 5px 10px 2px rgba(0, 0, 0, 0.5);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+
+/* Tabela */
+.graficoTabela2 {
+  width: 95%;
+  border-radius: 8px;
+  border-collapse: collapse;
+}
+
+.graficoTabela2 th {
+  text-align: left;
+  color: black;
+  padding: 10px;
+  text-align: left;
+  font-weight: 600;
+
+}
+
+.graficoTabela2 thead th {
+  position: sticky;
+  background-color: #e0f7fa;
+  top: 0;
+  font-size: 20px;
+}
+
+.graficoTabela2 td {
+  text-align: left;
+  padding: 10px;
+  border-bottom: 1px solid #ccc;
+  color: black;
+}
+
+/* Botão Abrir Chamado */
+.Chamado {
+  margin: 1.5%;
+  background-color:#4fb1f7 ;                          
+  border: #264653 1px solid;                     
+  width: 10%;
+  height: 45px;
+  border-radius: 8px;               
+  font-weight: 600;
+  font-size: 1.6vh;
+  cursor: pointer;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15); 
+  transition: all 0.2s ease-in-out;          
+}
+
+.Chamado:hover {
+  background-color: var(--verde-4);        
+  transform: translateY(-2px);      
+}
