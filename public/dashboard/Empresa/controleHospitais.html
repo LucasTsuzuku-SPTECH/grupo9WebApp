@@ -51,7 +51,7 @@
                 <button onclick="toggleSidebar()" class="btn-fechar">&times;</button>
             </div>
             <nav class="sidebar-nav">
-                <a href="./mainPage.html">Página principal</a>
+                <a id="navMain" href="./mainPage.html">Página principal</a>
                 <a class="pgAtual" href="./controleHospitais.html">Hospitais</a>
                 <a href="./contas.html">Contas</a>
             </nav>
@@ -233,6 +233,8 @@
     if (sessionStorage.CARGO_USUARIO != "adminEmpresa") {
         document.getElementById("add_hospital").style.display = "none";
         document.getElementById("btnEditarHospital").style.display = "none";
+        let navMain = document.getElementById("navMain")
+        navMain.href = "./mainEmpresaFunc.html"
     }
 
     /* ------------------ UI ------------------ */
@@ -278,7 +280,7 @@
             let total = hospitais.length, estavel = 0, alerta = 0, critico = 0;
 
             for (const hospital of hospitais) {
-               console.log(hospital)
+                console.log(hospital)
                 // Renderizar hospital
                 const divHospital = document.createElement("div");
                 divHospital.className = "card-hospital";
@@ -469,7 +471,7 @@
         }
     });
 
- 
+
 
 
     // Abrir modal edição e carregar hospitais no select
