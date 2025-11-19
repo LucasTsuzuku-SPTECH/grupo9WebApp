@@ -520,6 +520,11 @@ table td.colunaDelete {
   width: 100%;
 }
 
+.KPIs a{
+  display: flex;
+  justify-content: space-between;
+}
+
 .kpiDash {
   display: flex;
   justify-content: space-between;
@@ -572,20 +577,33 @@ table td.colunaDelete {
   max-height: 400px;
   height: 300px;
   min-height: 50px;
-  box-shadow: 5px 5px 10px 2px rgba(0, 0, 0, 0.5);
+  box-shadow: 2px 2px 5px 1px rgba(0, 0, 0, 0.5);
   display: flex;
   flex-direction: column;
   margin-bottom: 1%;
 }
 
+.ContainerMapa {
+  background-color: white;
+  padding: 0;
+  border-radius: 8px;
+  width: 98%;
+  height: 450px;
+  min-height: 50px;
+  box-shadow: 2px 2px 5px 1px rgba(0, 0, 0, 0.5);
+  display: flex;
+  flex-direction: column;
+}
 .graficoHeader {
-  background-color: var(--verde-4);
-  color: white;
+  background-color: white;
+  color: black;
   font-weight: bold;
   padding: 10px 20px;
   font-size: 18px;
   border-top-left-radius: 8px;
   border-top-right-radius: 8px;
+  margin-bottom: 10px;
+  font-size: 2vh;
 }
 
 .tabelaWrapper {
@@ -598,7 +616,7 @@ table td.colunaDelete {
 }
 
 .tabelaWrapper::-webkit-scrollbar-thumb {
-  background-color: var(--verde-4);
+  background-color: white;
   border-radius: 10px;
 }
 
@@ -657,7 +675,7 @@ table td.colunaDelete {
   width: 40%; 
   height: 400px;
   min-height: 50px;
-  box-shadow: 5px 5px 10px 2px rgba(0, 0, 0, 0.5);
+  box-shadow: 2px 2px 5px 1px rgba(0, 0, 0, 0.5);
   display: flex;
   flex-direction: column;
 }
