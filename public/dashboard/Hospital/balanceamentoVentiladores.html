@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Dashboard de Monitoramento de Hardware - Ventiladores Pulmonares</title>
   <link rel="icon" href="/assets/imgs/Zephyrus_2png.png" />
-  
+
   <!-- CSS Base -->
   <link rel="stylesheet" href="./../../css/dashboards.css">
   <!-- CSS do Dashboard de Monitoramento -->
@@ -15,7 +15,8 @@
   <!-- Google Fonts - Inter -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+    rel="stylesheet">
 
   <!-- Lucide Icons CDN -->
   <script src="https://unpkg.com/lucide@latest"></script>
@@ -39,7 +40,7 @@
             <i id="icone" class="fa-solid fa-bars"></i>
           </a>
         </div>
-        <h2>DASHBOARD - MONITORAMENTO DE HARDWARE</h2>
+        <h2>DASHBOARD - BALANCEAMENTO DOS VENTILADORES</h2>
         <div class="div-pai-perfil">
           <div class="div-linha"></div>
           <div class="div-todo-perfil">
@@ -67,16 +68,18 @@
       </div>
       <nav class="sidebar-nav">
         <a href="./mainPage.html">Página principal</a>
+        <a href="./balanceamentoVentiladores.html">Balanceamento</a>
         <a href="./controleSalas.html">Salas</a>
         <a href="./contas.html">Contas</a>
-        <a style="margin-top: 700px;" href="https://suaempresa.atlassian.net/secure/CreateIssue!default.jspa" target="_blank">Abrir Chamado <i class="fa-solid fa-headset"></i></a>
+        <a style="margin-top: 700px;" href="https://suaempresa.atlassian.net/secure/CreateIssue!default.jspa"
+          target="_blank">Abrir Chamado <i class="fa-solid fa-headset"></i></a>
       </nav>
     </div>
 
     <!-- CONTEÚDO DO DASHBOARD DE MONITORAMENTO -->
     <div class="monitoring-content">
-      
-     <br>
+
+      <br>
 
       <!-- Container Principal -->
       <div class="monitoring-container">
@@ -171,7 +174,7 @@
               <div class="kpi-icon">
                 <i data-lucide="alert-triangle"></i>
               </div>
-              <h3 class="kpi-title">Alertas de Hardware</h3>
+              <h3 class="kpi-title">Alertas Hardware</h3>
             </div>
             <p class="kpi-value"><span id="totalAlerts"></span> Alertas</p>
             <p class="kpi-subtitle"><span id="criticalAreaText"></span></p>
@@ -200,7 +203,8 @@
               </div>
               <div>
                 <h2 class="distribution-title">Distribuição e Balanceamento de Ventiladores</h2>
-                <p class="distribution-subtitle">Monitoramento de hardware e recomendações de remanejamento por área hospitalar</p>
+                <p class="distribution-subtitle">Monitoramento de hardware e recomendações de remanejamento por área
+                  hospitalar</p>
               </div>
             </div>
             <div class="distribution-total">
@@ -224,7 +228,8 @@
                 </div>
                 <div>
                   <div class="legend-text-title">Necessita Ventiladores</div>
-                  <div class="legend-text-desc">Áreas que precisam receber ventiladores adicionais para atender a demanda crítica</div>
+                  <div class="legend-text-desc">Áreas que precisam receber ventiladores adicionais para atender a
+                    demanda crítica</div>
                 </div>
               </div>
               <div class="legend-item">
@@ -233,7 +238,8 @@
                 </div>
                 <div>
                   <div class="legend-text-title">Pode Enviar</div>
-                  <div class="legend-text-desc">Áreas com capacidade de ceder ventiladores (até 70% do total) para outras áreas</div>
+                  <div class="legend-text-desc">Áreas com capacidade de ceder ventiladores (até 70% do total) para
+                    outras áreas</div>
                 </div>
               </div>
               <div class="legend-item">
@@ -242,7 +248,8 @@
                 </div>
                 <div>
                   <div class="legend-text-title">Status Neutro</div>
-                  <div class="legend-text-desc">Áreas com capacidade estável, sem necessidade ou disponibilidade de transferência</div>
+                  <div class="legend-text-desc">Áreas com capacidade estável, sem necessidade ou disponibilidade de
+                    transferência</div>
                 </div>
               </div>
             </div>
@@ -270,399 +277,471 @@
     </div>
 
   </div>
-
-  <script>
-    function toggleSidebar() {
-      const sidebar = document.getElementById("sidebarModal");
-      const icone = document.getElementById("icone");
-      sidebar.classList.toggle("active");
-    }
-
-    function mostrarNavbar() {
-      const larguraTela = window.innerWidth;
-      var menu = document.getElementById("navbar");
-      var icone = document.getElementById("icone");
-
-      if (larguraTela < 1342) {
-        if (getComputedStyle(menu).display == 'none') {
-          menu.style.display = "flex";
-          icone.classList.remove("fa-bars");
-          icone.classList.add("fa-times");
-        } else {
-          menu.style.display = "none";
-          icone.classList.remove("fa-times");
-          icone.classList.add("fa-bars");
-        }
-      }
-    }
-
-    function Sair() {
-      const sair = document.getElementById("sair")
-      
-      if (sair) {
-        localStorage.removeItem("email")
-        localStorage.removeItem("senha")
-        
-        sessionStorage.clear()
-        console.log(sessionStorage)
-        
-        window.location.href = "../../index.html"
-      }
-    }
-
-    // ===== JAVASCRIPT DO DASHBOARD DE MONITORAMENTO =====
-    
-    // Dados de Ventiladores por Área
-    const ventilatorAreas = [
-      {
-        name: "UTI",
-        total: 20,
-        stable: 17,
-        alerts: 3,
-        risk: 15,
-        needsToReceive: 5,
-        cpuAvg: 68,
-        batteryAvg: 92,
-        trend: "up"
-      },
-      {
-        name: "Pronto Socorro",
-        total: 12,
-        stable: 8,
-        alerts: 4,
-        risk: 33,
-        needsToReceive: 3,
-        cpuAvg: 75,
-        batteryAvg: 85,
-        trend: "up"
-      },
-      {
-        name: "Cirurgia",
-        total: 6,
-        stable: 5,
-        alerts: 1,
-        risk: 17,
-        needsToReceive: 0,
-        cpuAvg: 52,
-        batteryAvg: 95,
-        trend: "down"
-      },
-      {
-        name: "Enfermaria",
-        total: 2,
-        stable: 1,
-        alerts: 1,
-        risk: 50,
-        needsToReceive: 2,
-        cpuAvg: 82,
-        batteryAvg: 78,
-        trend: "down"
-      },
-      {
-        name: "Pediatria",
-        total: 3,
-        stable: 2,
-        alerts: 1,
-        risk: 33,
-        needsToReceive: 1,
-        cpuAvg: 71,
-        batteryAvg: 88,
-        trend: "down"
-      }
-    ];
-
-    // Calcular totais
-    const totalVentilators = ventilatorAreas.reduce((sum, area) => sum + area.total, 0);
-    const totalStable = ventilatorAreas.reduce((sum, area) => sum + area.stable, 0);
-    const totalAlerts = ventilatorAreas.reduce((sum, area) => sum + area.alerts, 0);
-    const stabilityIndex = Math.round((totalStable / totalVentilators) * 100);
-    const highestRiskArea = ventilatorAreas.reduce((max, area) => area.risk > max.risk ? area : max);
-    const areasNeedingReinforcement = ventilatorAreas.filter(area => area.risk >= 30);
-
-    // Calcular capacidade de envio (máximo 70% do total)
-    ventilatorAreas.forEach(area => {
-      const maxCanSend = Math.floor(area.total * 0.7);
-      area.canSend = area.needsToReceive === 0 ? maxCanSend : 0;
-    });
-
-    // Identificar áreas que precisam e áreas prioritárias
-    const areasNeedingVentilators = ventilatorAreas.filter(area => area.needsToReceive > 0);
-    const primaryTarget = areasNeedingVentilators.sort((a, b) => b.risk - a.risk)[0];
-
-    const totalCanRelocate = ventilatorAreas.reduce((sum, area) => sum + area.canSend, 0);
-
-    // Preencher KPIs
-    document.getElementById('stabilityIndex').textContent = stabilityIndex;
-    document.getElementById('stabilityText').textContent = `${totalStable} de ${totalVentilators} ventiladores estáveis`;
-    document.getElementById('totalAlerts').textContent = totalAlerts;
-    document.getElementById('criticalAreaText').textContent = `Área mais crítica: ${highestRiskArea.name} (${highestRiskArea.risk}%)`;
-    document.getElementById('totalCanRelocate').textContent = totalCanRelocate;
-    document.getElementById('totalRelocate').textContent = totalCanRelocate;
-    document.getElementById('totalVentilators').textContent = totalVentilators;
-
-    // Função para obter cor de risco badge
-    function getRiskBadgeClass(risk) {
-      if (risk <= 20) return 'green';
-      if (risk <= 35) return 'yellow';
-      return 'red';
-    }
-
-    // Preencher Áreas Críticas
-    const criticalAreasContainer = document.getElementById('criticalAreasContainer');
-    areasNeedingReinforcement.forEach(area => {
-      const badgeClass = getRiskBadgeClass(area.risk);
-      const div = document.createElement('div');
-      div.className = 'critical-area-item';
-      div.innerHTML = `
-        <div class="critical-area-left">
-          <div class="critical-dot ${badgeClass}"></div>
-          <span class="critical-area-name">${area.name}</span>
-        </div>
-        <div class="critical-area-right">
-          <span class="critical-badge ${badgeClass}">
-            ${area.risk}% risco
-          </span>
-          <span class="critical-alerts">${area.alerts} alertas</span>
-        </div>
-      `;
-      criticalAreasContainer.appendChild(div);
-    });
-
-    // Preencher Grid de Áreas
-    const areasGrid = document.getElementById('areasGrid');
-    ventilatorAreas.forEach(area => {
-      const stabilityPercent = Math.round((area.stable / area.total) * 100);
-
-      let areaType = 'neutral';
-      let badgeText = 'Estável';
-      let badgeClass = 'neutral';
-      
-      if (area.needsToReceive > 0) {
-        areaType = 'needs-ventilators';
-        badgeText = 'Necessita';
-        badgeClass = 'needs';
-      } else if (area.canSend > 0) {
-        areaType = 'can-send';
-        badgeText = 'Disponível';
-        badgeClass = 'can-send';
-      }
-
-      const areaCard = document.createElement('div');
-      areaCard.className = `area-card ${areaType}`;
-      
-      let actionHTML = '';
-      if (area.needsToReceive > 0) {
-        actionHTML = `
-          <div class="recommendation-box-area">
-            <div class="recommendation-header">
-              <i data-lucide="lightbulb"></i>
-              <span class="recommendation-label">Recomendação</span>
-            </div>
-            <div class="recommendation-text">
-              Adicionar <strong>+${area.needsToReceive} ventiladores</strong>
-            </div>
-          </div>
-          <div class="available-box">
-            <div class="available-left">
-              <i data-lucide="package"></i>
-              <span class="available-label">Disponíveis para envio</span>
-            </div>
-            <span class="available-value zero">0</span>
-          </div>
-        `;
-      } else if (area.canSend > 0 && primaryTarget) {
-        actionHTML = `
-          <div class="send-box-area">
-            <div class="send-header">
-              <i data-lucide="send"></i>
-              <span class="send-label">Pode Enviar</span>
-            </div>
-            <div class="send-text">
-              Enviar <strong>${Math.min(area.canSend, primaryTarget.needsToReceive)} ventiladores</strong> para ${primaryTarget.name}
-            </div>
-          </div>
-          <div class="available-box">
-            <div class="available-left">
-              <i data-lucide="package"></i>
-              <span class="available-label">Disponíveis para envio</span>
-            </div>
-            <span class="available-value positive">${area.canSend}</span>
-          </div>
-        `;
-      } else {
-        actionHTML = `
-          <div class="available-box">
-            <div class="available-left">
-              <i data-lucide="package"></i>
-              <span class="available-label">Disponíveis para envio</span>
-            </div>
-            <span class="available-value zero">0</span>
-          </div>
-        `;
-      }
-
-      areaCard.innerHTML = `
-        <div class="area-header">
-          <h3 class="area-name">${area.name}</h3>
-          <div class="area-badge ${badgeClass}">${badgeText}</div>
-        </div>
-        
-        <div class="area-stats">
-          <div class="stat-item">
-            <div class="stat-label">Atual</div>
-            <div class="stat-value">${area.total}</div>
-          </div>
-          <div class="stat-item">
-            <div class="stat-label">Pode Ceder</div>
-            <div class="stat-value success">${area.canSend}</div>
-          </div>
-          <div class="stat-item">
-            <div class="stat-label">Precisa</div>
-            <div class="stat-value highlight">${area.needsToReceive}</div>
-          </div>
-        </div>
-        
-        <div class="stability-section">
-          <div class="stability-header">
-            <span class="stability-label">Estabilidade</span>
-            <span class="stability-percent">${stabilityPercent}%</span>
-          </div>
-          <div class="stability-bar">
-            <div class="stability-bar-fill" style="width: ${stabilityPercent}%"></div>
-          </div>
-        </div>
-        
-        <div class="status-grid">
-          <div class="status-item stable">
-            <i data-lucide="check-circle-2"></i>
-            <span>${area.stable}</span>
-          </div>
-          <div class="status-item alert">
-            <i data-lucide="x-circle"></i>
-            <span>${area.alerts}</span>
-          </div>
-        </div>
-        
-        <div class="hardware-section">
-          <div class="hardware-label">Médias de Hardware</div>
-          <div class="hardware-metrics">
-            <div class="hardware-item">
-              <div class="hardware-item-left cpu">
-                <i data-lucide="cpu"></i>
-                <span class="hardware-item-label">CPU média</span>
-              </div>
-              <span class="hardware-item-value ${area.cpuAvg > 75 ? 'warning' : 'normal'}">${area.cpuAvg}%</span>
-            </div>
-            <div class="hardware-item">
-              <div class="hardware-item-left battery">
-                <i data-lucide="battery"></i>
-                <span class="hardware-item-label">Bateria média</span>
-              </div>
-              <span class="hardware-item-value ${area.batteryAvg < 80 ? 'warning' : 'normal'}">${area.batteryAvg}%</span>
-            </div>
-          </div>
-        </div>
-        
-        ${actionHTML}
-      `;
-      
-      areasGrid.appendChild(areaCard);
-    });
-
-    // Inicializar ícones Lucide
-    lucide.createIcons();
-
-    // Dados de Umidade
-    const humidityData = [
-      { month: 'Jan', value: 65 },
-      { month: 'Fev', value: 67 },
-      { month: 'Mar', value: 70 },
-      { month: 'Abr', value: 69 },
-      { month: 'Mai', value: 70 },
-      { month: 'Jun', value: 72 },
-      { month: 'Jul', value: 75 },
-      { month: 'Ago', value: 94 },
-      { month: 'Set', value: 87 },
-      { month: 'Out', value: 76 },
-      { month: 'Nov', value: 74 },
-      { month: 'Dez', value: 0 },
-    ];
-
-    // Renderizar Gráfico de Umidade com ApexCharts
-    const humidityOptions = {
-      chart: {
-        type: 'bar',
-        height: 280,
-        toolbar: { show: false },
-        fontFamily: 'Inter, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, sans-serif'
-      },
-      series: [{
-        name: 'Umidade',
-        data: humidityData.map(d => d.value)
-      }],
-      xaxis: {
-        categories: humidityData.map(d => d.month),
-        labels: {
-          style: {
-            colors: '#475569',
-            fontSize: '12px',
-            fontWeight: 600,
-            fontFamily: 'Inter, sans-serif'
-          }
-        },
-        axisBorder: { show: true, color: '#cbd5e1' },
-        axisTicks: { show: false }
-      },
-      yaxis: {
-        labels: {
-          style: {
-            colors: '#475569',
-            fontSize: '12px',
-            fontWeight: 600,
-            fontFamily: 'Inter, sans-serif'
-          }
-        }
-      },
-      dataLabels: {
-        enabled: true,
-        style: {
-          fontSize: '12px',
-          fontWeight: 700,
-          colors: ['#fff'],
-          fontFamily: 'Inter, sans-serif'
-        },
-        offsetY: -20
-      },
-      grid: {
-        show: true,
-        borderColor: '#e2e8f0',
-        strokeDashArray: 3,
-        xaxis: { lines: { show: false } }
-      },
-      colors: humidityData.map(d => d.month === 'Ago' ? '#ef4444' : '#3b82f6'),
-      plotOptions: {
-        bar: {
-          distributed: true,
-          borderRadius: 10,
-          borderRadiusApplication: 'end',
-          columnWidth: '60%'
-        }
-      },
-      legend: { show: false },
-      tooltip: {
-        enabled: true,
-        y: {
-          formatter: function (val) { return val + '%' }
-        },
-        style: {
-          fontFamily: 'Inter, sans-serif'
-        }
-      }
-    };
-
-    const humidityChart = new ApexCharts(document.querySelector("#humidityChart"), humidityOptions);
-    humidityChart.render();
-  </script>
 </body>
 
 </html>
+
+<script>
+  function toggleSidebar() {
+    const sidebar = document.getElementById("sidebarModal");
+    const icone = document.getElementById("icone");
+    sidebar.classList.toggle("active");
+  }
+
+  function mostrarNavbar() {
+    const larguraTela = window.innerWidth;
+    var menu = document.getElementById("navbar");
+    var icone = document.getElementById("icone");
+
+    if (larguraTela < 1342) {
+      if (getComputedStyle(menu).display == 'none') {
+        menu.style.display = "flex";
+        icone.classList.remove("fa-bars");
+        icone.classList.add("fa-times");
+      } else {
+        menu.style.display = "none";
+        icone.classList.remove("fa-times");
+        icone.classList.add("fa-bars");
+      }
+    }
+  }
+
+  function Sair() {
+    const sair = document.getElementById("sair")
+
+    if (sair) {
+      localStorage.removeItem("email")
+      localStorage.removeItem("senha")
+
+      sessionStorage.clear()
+      console.log(sessionStorage)
+
+      window.location.href = "../../index.html"
+    }
+  }
+
+  // ===== JAVASCRIPT DO DASHBOARD DE MONITORAMENTO =====
+
+  // Dados de Ventiladores por Área - BALANCEADO
+  const ventilatorAreas = [
+    // ÁREAS QUE NECESSITAM (2 áreas) - VERMELHO
+    {
+      name: "UTI",
+      total: 20,
+      stable: 13,
+      alerts: 7,
+      risk: 35,
+      needsToReceive: 6,  // UTI precisa de 6
+      canSend: 0,         // Não pode enviar
+      cpuAvg: 68,
+      batteryAvg: 92,
+      trend: "up"
+    },
+    {
+      name: "Pronto Socorro",
+      total: 12,
+      stable: 8,
+      alerts: 4,
+      risk: 33,
+      needsToReceive: 4,  // PS precisa de 4
+      canSend: 0,         // Não pode enviar
+      cpuAvg: 75,
+      batteryAvg: 85,
+      trend: "up"
+    },
+
+    // ÁREAS QUE PODEM ENVIAR (4 áreas) - VERDE
+    // Total que podem enviar: 6 + 4 = 10 ventiladores
+    {
+      name: "Cirurgia",
+      total: 8,
+      stable: 7,
+      alerts: 1,
+      risk: 12,
+      needsToReceive: 0,
+      canSend: 3,  // Pode enviar 3
+      cpuAvg: 52,
+      batteryAvg: 95,
+      trend: "stable"
+    },
+    {
+      name: "Centro Obstétrico",
+      total: 10,
+      stable: 9,
+      alerts: 1,
+      risk: 10,
+      needsToReceive: 0,
+      canSend: 3,  // Pode enviar 3
+      cpuAvg: 48,
+      batteryAvg: 96,
+      trend: "stable"
+    },
+    {
+      name: "Maternidade",
+      total: 7,
+      stable: 6,
+      alerts: 1,
+      risk: 14,
+      needsToReceive: 0,
+      canSend: 2,  // Pode enviar 2
+      cpuAvg: 55,
+      batteryAvg: 94,
+      trend: "stable"
+    },
+    {
+      name: "Oncologia",
+      total: 9,
+      stable: 8,
+      alerts: 1,
+      risk: 11,
+      needsToReceive: 0,
+      canSend: 2,  // Pode enviar 2
+      cpuAvg: 50,
+      batteryAvg: 97,
+      trend: "stable"
+    },
+
+    // ÁREAS NEUTRAS (2 áreas) - CINZA
+    {
+      name: "Cardiologia",
+      total: 6,
+      stable: 6,
+      alerts: 0,
+      risk: 0,
+      needsToReceive: 0,
+      canSend: 0,  // Não participa
+      cpuAvg: 55,
+      batteryAvg: 93,
+      trend: "stable"
+    },
+    {
+      name: "Pneumologia",
+      total: 5,
+      stable: 5,
+      alerts: 0,
+      risk: 0,
+      needsToReceive: 0,
+      canSend: 0,  // Não participa
+      cpuAvg: 58,
+      batteryAvg: 91,
+      trend: "stable"
+    }
+  ];
+
+  // Calcular totais
+  const totalVentilators = ventilatorAreas.reduce((sum, area) => sum + area.total, 0);
+  const totalStable = ventilatorAreas.reduce((sum, area) => sum + area.stable, 0);
+  const totalAlerts = ventilatorAreas.reduce((sum, area) => sum + area.alerts, 0);
+  const stabilityIndex = Math.round((totalStable / totalVentilators) * 100);
+  const highestRiskArea = ventilatorAreas.reduce((max, area) => area.risk > max.risk ? area : max);
+  const areasNeedingReinforcement = ventilatorAreas.filter(area => area.risk >= 30);
+
+  // Identificar áreas que precisam e áreas prioritárias
+  const areasNeedingVentilators = ventilatorAreas.filter(area => area.needsToReceive > 0);
+  const primaryTarget = areasNeedingVentilators.sort((a, b) => b.risk - a.risk)[0];
+
+  const totalCanRelocate = ventilatorAreas.reduce((sum, area) => sum + area.canSend, 0);
+  const totalNeeded = ventilatorAreas.reduce((sum, area) => sum + area.needsToReceive, 0);
+
+  // Preencher KPIs
+  document.getElementById('stabilityIndex').textContent = stabilityIndex;
+  document.getElementById('stabilityText').textContent = `${totalStable} de ${totalVentilators} ventiladores estáveis`;
+  document.getElementById('totalAlerts').textContent = totalAlerts;
+  document.getElementById('criticalAreaText').textContent = `Área mais instavél: ${highestRiskArea.name} (${highestRiskArea.risk}% de instabilidade)`;
+  document.getElementById('totalCanRelocate').textContent = totalCanRelocate;
+  document.getElementById('totalRelocate').textContent = totalCanRelocate;
+  document.getElementById('totalVentilators').textContent = totalVentilators;
+
+  // Função para obter cor de risco badge
+  function getRiskBadgeClass(risk) {
+    if (risk <= 20) return 'green';
+    if (risk <= 35) return 'yellow';
+    return 'red';
+  }
+
+  // Preencher Áreas Críticas
+  const criticalAreasContainer = document.getElementById('criticalAreasContainer');
+  areasNeedingReinforcement.forEach(area => {
+    const badgeClass = getRiskBadgeClass(area.risk);
+    const div = document.createElement('div');
+    div.className = 'critical-area-item';
+    div.innerHTML = `
+    <div class="critical-area-left">
+      <div class="critical-dot ${badgeClass}"></div>
+      <span class="critical-area-name">${area.name}</span>
+    </div>
+    <div class="critical-area-right">
+      <span class="critical-badge ${badgeClass}">
+        ${area.risk}% risco
+      </span>
+      <span class="critical-alerts">${area.alerts} ventiladores em alerta</span>
+    </div>
+  `;
+    criticalAreasContainer.appendChild(div);
+  });
+
+  // Distribuir ventiladores entre as áreas que precisam
+  function distributeVentilators() {
+    const areasCanSend = ventilatorAreas.filter(a => a.canSend > 0);
+    const areasNeed = ventilatorAreas.filter(a => a.needsToReceive > 0);
+
+    // Criar mapa de distribuição
+    const distribution = {};
+    areasNeed.forEach(area => {
+      distribution[area.name] = [];
+    });
+
+    // Distribuir de forma equilibrada
+    areasCanSend.forEach(sender => {
+      let remaining = sender.canSend;
+
+      areasNeed.forEach((receiver, index) => {
+        if (remaining > 0) {
+          const amount = Math.min(remaining, Math.ceil(sender.canSend / areasNeed.length));
+          if (amount > 0) {
+            distribution[receiver.name].push({
+              from: sender.name,
+              amount: amount
+            });
+            remaining -= amount;
+          }
+        }
+      });
+    });
+
+    return distribution;
+  }
+
+  const distribution = distributeVentilators();
+
+  // Preencher Grid de Áreas
+  const areasGrid = document.getElementById('areasGrid');
+  ventilatorAreas.forEach(area => {
+    const stabilityPercent = Math.round((area.stable / area.total) * 100);
+
+    let areaType = 'neutral';
+    let badgeText = 'Estável';
+    let badgeClass = 'neutral';
+
+    // IMPORTANTE: Mudar a classe do badge para 'needs' ser VERMELHO
+    if (area.needsToReceive > 0) {
+      areaType = 'needs-ventilators';
+      badgeText = 'Necessita';
+      badgeClass = 'needs';  // Esta classe precisa ser VERMELHA no CSS
+    } else if (area.canSend > 0) {
+      areaType = 'can-send';
+      badgeText = 'Disponível';
+      badgeClass = 'can-send';
+    }
+
+    const areaCard = document.createElement('div');
+    areaCard.className = `area-card ${areaType}`;
+
+    let actionHTML = '';
+    if (area.needsToReceive > 0) {
+      // Mostrar de onde virão os ventiladores
+      const sources = distribution[area.name];
+      let sourceText = '';
+      if (sources && sources.length > 0) {
+        sourceText = sources.map(s => `<strong>${s.amount}</strong> de ${s.from}`).join(', ');
+      }
+
+      actionHTML = `
+      <div class="recommendation-box-area">
+        <div class="recommendation-header">
+          <i data-lucide="lightbulb"></i>
+          <span class="recommendation-label">Recomendação</span>
+        </div>
+        <div class="recommendation-text">
+          Adicionar <strong>+${area.needsToReceive} ventiladores</strong>
+          ${sourceText ? `<br><small style="font-size: 0.85em; color: #475569;">Receber: ${sourceText}</small>` : ''}
+        </div>
+      </div>
+      <div class="available-box">
+        <div class="available-left">
+          <i data-lucide="package"></i>
+          <span class="available-label">Disponíveis para envio</span>
+        </div>
+        <span class="available-value zero">0</span>
+      </div>
+    `;
+    } else if (area.canSend > 0) {
+      // Mostrar para onde irão os ventiladores
+      let targetText = '';
+      const areasNeed = ventilatorAreas.filter(a => a.needsToReceive > 0);
+      if (areasNeed.length > 0) {
+        targetText = areasNeed.map(a => a.name).join(' e ');
+      }
+
+      actionHTML = `
+      <div class="send-box-area">
+        <div class="send-header">
+          <i data-lucide="send"></i>
+          <span class="send-label">Pode Enviar</span>
+        </div>
+        <div class="send-text">
+          Enviar <strong>${area.canSend} ventiladores</strong> para ${targetText}
+        </div>
+      </div>
+      <div class="available-box">
+        <div class="available-left">
+          <i data-lucide="package"></i>
+          <span class="available-label">Disponíveis para envio</span>
+        </div>
+        <span class="available-value positive">${area.canSend}</span>
+      </div>
+    `;
+    } else {
+      actionHTML = `
+      <div class="available-box">
+        <div class="available-left">
+          <i data-lucide="package"></i>
+          <span class="available-label">Disponíveis para envio</span>
+        </div>
+        <span class="available-value zero">0</span>
+      </div>
+    `;
+    }
+
+    areaCard.innerHTML = `
+    <div class="area-header">
+      <h3 class="area-name">${area.name}</h3>
+      <div class="area-badge ${badgeClass}">${badgeText}</div>
+    </div>
+    
+    <div class="area-stats">
+      <div class="stat-item">
+        <div class="stat-label">Atual</div>
+        <div class="stat-value">${area.total}</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-label">Pode Ceder</div>
+        <div class="stat-value success">${area.canSend}</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-label">Precisa</div>
+        <div class="stat-value highlight">${area.needsToReceive}</div>
+      </div>
+    </div>
+    
+    <div class="stability-section">
+      <div class="stability-header">
+        <span class="stability-label">Estabilidade Ventiladores</span>
+        <span class="stability-percent">${stabilityPercent}%</span>
+      </div>
+      <div class="stability-bar">
+        <div class="stability-bar-fill" style="width: ${stabilityPercent}%"></div>
+      </div>
+    </div>
+    
+    <div class="status-grid">
+      <div class="status-item stable">
+        <i data-lucide="check-circle-2"></i>
+        <span>${area.stable}</span>
+      </div>
+      <div class="status-item alert">
+        <i data-lucide="x-circle"></i>
+        <span>${area.alerts}</span>
+      </div>
+    </div>
+    
+    ${actionHTML}
+  `;
+
+    areasGrid.appendChild(areaCard);
+  });
+
+  // Inicializar ícones Lucide
+  lucide.createIcons();
+
+  // Dados de Umidade
+  const humidityData = [
+    { month: 'Jan', value: 65 },
+    { month: 'Fev', value: 67 },
+    { month: 'Mar', value: 70 },
+    { month: 'Abr', value: 69 },
+    { month: 'Mai', value: 70 },
+    { month: 'Jun', value: 72 },
+    { month: 'Jul', value: 75 },
+    { month: 'Ago', value: 94 },
+    { month: 'Set', value: 87 },
+    { month: 'Out', value: 76 },
+    { month: 'Nov', value: 74 },
+    { month: 'Dez', value: 0 },
+  ];
+
+  // Renderizar Gráfico de Umidade com ApexCharts
+  const humidityOptions = {
+    chart: {
+      type: 'bar',
+      height: 280,
+      toolbar: { show: false },
+      fontFamily: 'Inter, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, sans-serif'
+    },
+    series: [{
+      name: 'Umidade',
+      data: humidityData.map(d => d.value)
+    }],
+    xaxis: {
+      categories: humidityData.map(d => d.month),
+      labels: {
+        style: {
+          colors: '#475569',
+          fontSize: '12px',
+          fontWeight: 600,
+          fontFamily: 'Inter, sans-serif'
+        }
+      },
+      axisBorder: { show: true, color: '#cbd5e1' },
+      axisTicks: { show: false }
+    },
+    yaxis: {
+      labels: {
+        style: {
+          colors: '#475569',
+          fontSize: '12px',
+          fontWeight: 600,
+          fontFamily: 'Inter, sans-serif'
+        }
+      }
+    },
+    dataLabels: {
+      enabled: true,
+      style: {
+        fontSize: '12px',
+        fontWeight: 700,
+        colors: ['#fff'],
+        fontFamily: 'Inter, sans-serif'
+      },
+      offsetY: -20
+    },
+    grid: {
+      show: true,
+      borderColor: '#e2e8f0',
+      strokeDashArray: 3,
+      xaxis: { lines: { show: false } }
+    },
+    colors: humidityData.map(d => d.month === 'Ago' ? '#ef4444' : '#3b82f6'),
+    plotOptions: {
+      bar: {
+        distributed: true,
+        borderRadius: 10,
+        borderRadiusApplication: 'end',
+        columnWidth: '60%'
+      }
+    },
+    legend: { show: false },
+    tooltip: {
+      enabled: true,
+      y: {
+        formatter: function (val) { return val + '%' }
+      },
+      style: {
+        fontFamily: 'Inter, sans-serif'
+      }
+    }
+  };
+
+  const humidityChart = new ApexCharts(document.querySelector("#humidityChart"), humidityOptions);
+  humidityChart.render();
+</script>

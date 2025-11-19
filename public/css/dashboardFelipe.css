@@ -1,4 +1,30 @@
 /* ===== DASHBOARD DE MONITORAMENTO DE HARDWARE ===== */
+:root {
+  --branco: #ffffff;
+  --preto: #000;
+  --verde-1: #b7e4c7;
+  --verde-2: #92e4ab;
+  --verde-3: #30a799;
+  --verde-4: #264653;
+  --vermelho: #e60e3a;
+}
+
+/* ===========================
+   RESET & BASE
+=========================== */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Poppins';
+  background-color: var(--branco);
+  color: var(--preto);
+}
+
+
 
 /* Wrapper para o conteúdo do dashboard */
 .monitoring-content {
@@ -585,13 +611,13 @@
 }
 
 .area-card.needs-ventilators {
-  border-left-color: #3b82f6;
-  background: linear-gradient(135deg, #ffffff 0%, #eff6ff 100%);
+  border-left-color: #df0000;
+  background: linear-gradient(135deg, #ffffff 0%, #ffecec 100%);
 }
 
 .area-card.can-send {
-  border-left-color: #10b981;
-  background: linear-gradient(135deg, #ffffff 0%, #f0fdf4 100%);
+  border-left-color: #10b95f;
+  background: linear-gradient(135deg, #ffffff 0%, #e9ffef 100%);
 }
 
 .area-card.neutral {
@@ -626,9 +652,9 @@
 }
 
 .area-badge.needs {
-  background: #dbeafe;
-  color: #1e40af;
-  border-color: #93c5fd;
+  background: #fee2e2;  /* Fundo vermelho claro */
+  color: #991b1b;       /* Texto vermelho escuro */
+  border-color: #fca5a5; /* Borda vermelha */
 }
 
 .area-badge.can-send {
@@ -744,7 +770,7 @@
 
 .status-item.stable {
   background: linear-gradient(135deg, #ecfdf5 0%, #d1fae5 100%);
-  border-color: #a7f3d0;
+  border-color: #5a9c5c;
 }
 
 .status-item.stable svg {
@@ -761,7 +787,7 @@
 
 .status-item.alert {
   background: linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%);
-  border-color: #fecaca;
+  border-color: #d10000;
 }
 
 .status-item.alert svg {
@@ -849,52 +875,60 @@
   color: #ef4444;
 }
 
-/* Recommendation Box - Área precisa receber */
+/* Recommendation Box - Área precisa receber (VERSÃO MODERNA) */
 .recommendation-box-area {
-  background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%);
-  border: 1.5px solid #60a5fa;
-  border-radius: 12px;
-  padding: 16px 18px;
-  margin-bottom: 14px;
+  background: #ffe5e5; /* vermelho bem claro */
+  border: 2px solid #d10000; 
+  border-radius: 14px;
+  padding: 18px 20px;
+  margin-bottom: 16px;
+  box-shadow: 0 4px 10px rgba(209, 0, 0, 0.15); /* sombra leve em vermelho */
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+/* Efeito hover moderno */
+.recommendation-box-area:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 14px rgba(209, 0, 0, 0.22);
 }
 
 .recommendation-header {
   display: flex;
   align-items: center;
-  gap: 10px;
-  margin-bottom: 12px;
+  gap: 12px;
+  margin-bottom: 14px;
 }
 
 .recommendation-header svg {
-  width: 20px;
-  height: 20px;
-  color: #1d4ed8;
+  width: 22px;
+  height: 22px;
+  color: #d10000; /* vermelho forte */
 }
 
 .recommendation-label {
-  color: #1e40af;
-  font-size: 0.8rem;
+  color: #8a0000;
+  font-size: 0.82rem;
   font-weight: 800;
   text-transform: uppercase;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.06em;
 }
 
 .recommendation-text {
-  color: #1e3a8a;
+  color: #7f1d1d; /* vermelho escuro elegante */
   font-size: 1rem;
   font-weight: 700;
-  line-height: 1.4;
+  line-height: 1.45;
 }
 
 .recommendation-text strong {
   font-weight: 900;
-  color: #1e40af;
+  color: #b30000; /* destaque em vermelho vivo */
 }
 
 /* Send Box - Área pode enviar */
 .send-box-area {
   background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%);
-  border: 1.5px solid #6ee7b7;
+  border: 1.5px solid #40723d;
   border-radius: 12px;
   padding: 16px 18px;
   margin-bottom: 14px;
@@ -1019,14 +1053,12 @@
 }
 
 .legend-icon.needs {
-  background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%);
-  border-color: #93c5fd;
+  background: #fecaca;      
+  border-color: #f87171;    
 }
 
 .legend-icon.needs svg {
-  width: 18px;
-  height: 18px;
-  color: #2563eb;
+  color: #b91c1c;           
 }
 
 .legend-icon.can-send {
