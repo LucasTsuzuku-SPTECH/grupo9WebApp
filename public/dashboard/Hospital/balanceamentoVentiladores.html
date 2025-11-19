@@ -7,21 +7,16 @@
   <title>Dashboard de Monitoramento de Hardware - Ventiladores Pulmonares</title>
   <link rel="icon" href="/assets/imgs/Zephyrus_2png.png" />
 
-  <!-- CSS Base -->
   <link rel="stylesheet" href="./../../css/dashboards.css">
-  <!-- CSS do Dashboard de Monitoramento -->
   <link rel="stylesheet" href="./../../css/dashboardFelipe.css">
 
-  <!-- Google Fonts - Inter -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
     rel="stylesheet">
 
-  <!-- Lucide Icons CDN -->
   <script src="https://unpkg.com/lucide@latest"></script>
 
-  <!-- ApexCharts -->
   <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
 
   <script src="https://kit.fontawesome.com/9f7414eb10.js" crossorigin="anonymous"></script>
@@ -31,11 +26,9 @@
 <body onload="hospital()">
   <div class="div-pai">
 
-    <!-- Cabeçalho -->
     <header style="position: fixed; z-index: 1000;">
       <div class="header-container">
         <div class="div-hamburguer" onclick="toggleSidebar()">
-          <!-- Botão Hamburguer -->
           <a class="navbar-mob">
             <i id="icone" class="fa-solid fa-bars"></i>
           </a>
@@ -59,7 +52,6 @@
     </header>
     <br><br><br><br>
 
-    <!-- Sidebar Modal -->
     <div id="sidebarModal" class="sidebar-modal">
       <img src="/assets/imgs/Zephyrus_2png.png" alt="">
       <div class="sidebar-header">
@@ -76,17 +68,13 @@
       </nav>
     </div>
 
-    <!-- CONTEÚDO DO DASHBOARD DE MONITORAMENTO -->
     <div class="monitoring-content">
 
       <br>
 
-      <!-- Container Principal -->
       <div class="monitoring-container">
-        <!-- Banner de Análise Geral -->
         <div class="analysis-banner">
           <div class="analysis-grid">
-            <!-- Análise de Risco -->
             <div class="analysis-section">
               <div class="analysis-header">
                 <div class="analysis-icon red">
@@ -113,7 +101,6 @@
               </div>
             </div>
 
-            <!-- Áreas Críticas -->
             <div class="analysis-section">
               <div class="analysis-header">
                 <div class="analysis-icon orange">
@@ -125,11 +112,9 @@
                 </div>
               </div>
               <div class="critical-areas" id="criticalAreasContainer">
-                <!-- Preenchido via JavaScript -->
-              </div>
+                </div>
             </div>
 
-            <!-- Recomendação -->
             <div class="analysis-section">
               <div class="analysis-header">
                 <div class="analysis-icon blue">
@@ -152,49 +137,50 @@
           </div>
         </div>
 
-        <!-- KPIs Grid -->
-        <div class="kpis-grid">
-          <!-- KPI 1: Índice de Estabilidade -->
-          <div class="kpi-card green">
-            <div class="kpi-bg-circle"></div>
-            <div class="kpi-header">
-              <div class="kpi-icon">
-                <i data-lucide="gauge"></i>
+        <div class="kpis-grid-two">
+
+          <div class="kpi-card green-border">
+            <div class="kpi-content-row">
+              <div class="kpi-text-side">
+                <p class="kpi-title">Estabilidade Operacional</p>
+
+                <h3 class="kpi-value green-text">
+                  <span id="totalStableText"></span>/<span id="totalVentilatorsText"></span> Estáveis
+                </h3>
+
+                <p class="kpi-subtitle">
+                  Quantidade de ventiladores estáveis em relação ao total de ventiladores
+                </p>
               </div>
-              <h3 class="kpi-title">Índice de Estabilidade</h3>
+
+              <div class="kpi-chart-side">
+                <div id="kpiStabilityChart"></div>
+              </div>
             </div>
-            <p class="kpi-value"><span id="stabilityIndex"></span>%</p>
-            <p class="kpi-subtitle"><span id="stabilityText"></span></p>
           </div>
 
-          <!-- KPI 2: Alertas de Hardware -->
-          <div class="kpi-card red">
-            <div class="kpi-bg-circle"></div>
-            <div class="kpi-header">
-              <div class="kpi-icon">
-                <i data-lucide="alert-triangle"></i>
-              </div>
-              <h3 class="kpi-title">Alertas Hardware</h3>
-            </div>
-            <p class="kpi-value"><span id="totalAlerts"></span> Alertas</p>
-            <p class="kpi-subtitle"><span id="criticalAreaText"></span></p>
-          </div>
+          <div class="kpi-card red-border">
+            <div class="kpi-content-row">
+              <div class="kpi-text-side">
+                <p class="kpi-title">Índice de Alertas</p>
 
-          <!-- KPI 3: Remanejamento Disponível -->
-          <div class="kpi-card teal">
-            <div class="kpi-bg-circle"></div>
-            <div class="kpi-header">
-              <div class="kpi-icon">
-                <i data-lucide="refresh-ccw"></i>
+                <h3 class="kpi-value red-text">
+                  <span id="criticalAlertPercentageText"></span>% na
+                  <strong id="criticalAreaNameText">UTI</strong>
+                </h3>
+
+                <p class="kpi-subtitle">
+                  Porcentagem de alertas na área mais crítica em relação ao total de alertas
+                </p>
               </div>
-              <h3 class="kpi-title">Remanejamento Disponível</h3>
+
+              <div class="kpi-chart-side">
+                <div id="kpiAlertChart"></div>
+              </div>
             </div>
-            <p class="kpi-value"><span id="totalCanRelocate"></span> Unidades</p>
-            <p class="kpi-subtitle">Podem ser redistribuídas para áreas críticas</p>
           </div>
         </div>
 
-        <!-- Distribuição de Ventiladores -->
         <div class="distribution-card">
           <div class="distribution-header">
             <div class="distribution-title-area">
@@ -209,16 +195,13 @@
             </div>
             <div class="distribution-total">
               <div class="distribution-total-label">Total de Ventiladores</div>
-              <div class="distribution-total-value"><span id="totalVentilators"></span> unidades</div>
+              <div class="distribution-total-value"><span id="totalVentilatorsDisplay"></span> unidades</div>
             </div>
           </div>
 
-          <!-- Grid de Áreas -->
           <div class="areas-grid" id="areasGrid">
-            <!-- Preenchido via JavaScript -->
-          </div>
+            </div>
 
-          <!-- Legenda -->
           <div class="legend-section">
             <h3 class="legend-title">Legenda de Interpretação</h3>
             <div class="legend-grid">
@@ -256,7 +239,6 @@
           </div>
         </div>
 
-        <!-- Gráfico de Umidade -->
         <div class="humidity-card">
           <div class="humidity-header">
             <div class="humidity-icon-box">
@@ -283,174 +265,114 @@
 
 <script>
   function toggleSidebar() {
-    const sidebar = document.getElementById("sidebarModal");
-    const icone = document.getElementById("icone");
-    sidebar.classList.toggle("active");
-  }
-
-  function mostrarNavbar() {
-    const larguraTela = window.innerWidth;
-    var menu = document.getElementById("navbar");
-    var icone = document.getElementById("icone");
-
-    if (larguraTela < 1342) {
-      if (getComputedStyle(menu).display == 'none') {
-        menu.style.display = "flex";
-        icone.classList.remove("fa-bars");
-        icone.classList.add("fa-times");
-      } else {
-        menu.style.display = "none";
-        icone.classList.remove("fa-times");
-        icone.classList.add("fa-bars");
-      }
-    }
+    document.getElementById("sidebarModal").classList.toggle("active");
   }
 
   function Sair() {
-    const sair = document.getElementById("sair")
-
-    if (sair) {
-      localStorage.removeItem("email")
-      localStorage.removeItem("senha")
-
-      sessionStorage.clear()
-      console.log(sessionStorage)
-
-      window.location.href = "../../index.html"
-    }
+    localStorage.removeItem("email");
+    localStorage.removeItem("senha");
+    sessionStorage.clear();
+    window.location.href = "../../index.html";
   }
 
-  // ===== JAVASCRIPT DO DASHBOARD DE MONITORAMENTO =====
+  // ===== JAVASCRIPT DO DASHBOARD DE MONITORAMENTO (Com Gráficos Radiais) =====
 
   // Dados de Ventiladores por Área - BALANCEADO
   const ventilatorAreas = [
-    // ÁREAS QUE NECESSITAM (2 áreas) - VERMELHO
-    {
-      name: "UTI",
-      total: 20,
-      stable: 13,
-      alerts: 7,
-      risk: 35,
-      needsToReceive: 6,  // UTI precisa de 6
-      canSend: 0,         // Não pode enviar
-      cpuAvg: 68,
-      batteryAvg: 92,
-      trend: "up"
-    },
-    {
-      name: "Pronto Socorro",
-      total: 12,
-      stable: 8,
-      alerts: 4,
-      risk: 33,
-      needsToReceive: 4,  // PS precisa de 4
-      canSend: 0,         // Não pode enviar
-      cpuAvg: 75,
-      batteryAvg: 85,
-      trend: "up"
-    },
-
-    // ÁREAS QUE PODEM ENVIAR (4 áreas) - VERDE
-    // Total que podem enviar: 6 + 4 = 10 ventiladores
-    {
-      name: "Cirurgia",
-      total: 8,
-      stable: 7,
-      alerts: 1,
-      risk: 12,
-      needsToReceive: 0,
-      canSend: 3,  // Pode enviar 3
-      cpuAvg: 52,
-      batteryAvg: 95,
-      trend: "stable"
-    },
-    {
-      name: "Centro Obstétrico",
-      total: 10,
-      stable: 9,
-      alerts: 1,
-      risk: 10,
-      needsToReceive: 0,
-      canSend: 3,  // Pode enviar 3
-      cpuAvg: 48,
-      batteryAvg: 96,
-      trend: "stable"
-    },
-    {
-      name: "Maternidade",
-      total: 7,
-      stable: 6,
-      alerts: 1,
-      risk: 14,
-      needsToReceive: 0,
-      canSend: 2,  // Pode enviar 2
-      cpuAvg: 55,
-      batteryAvg: 94,
-      trend: "stable"
-    },
-    {
-      name: "Oncologia",
-      total: 9,
-      stable: 8,
-      alerts: 1,
-      risk: 11,
-      needsToReceive: 0,
-      canSend: 2,  // Pode enviar 2
-      cpuAvg: 50,
-      batteryAvg: 97,
-      trend: "stable"
-    },
-
-    // ÁREAS NEUTRAS (2 áreas) - CINZA
-    {
-      name: "Cardiologia",
-      total: 6,
-      stable: 6,
-      alerts: 0,
-      risk: 0,
-      needsToReceive: 0,
-      canSend: 0,  // Não participa
-      cpuAvg: 55,
-      batteryAvg: 93,
-      trend: "stable"
-    },
-    {
-      name: "Pneumologia",
-      total: 5,
-      stable: 5,
-      alerts: 0,
-      risk: 0,
-      needsToReceive: 0,
-      canSend: 0,  // Não participa
-      cpuAvg: 58,
-      batteryAvg: 91,
-      trend: "stable"
-    }
+    { name: "UTI", total: 20, stable: 13, alerts: 7, risk: 35, needsToReceive: 6, canSend: 0, cpuAvg: 68, batteryAvg: 92, trend: "up" },
+    { name: "Pronto Socorro", total: 12, stable: 8, alerts: 4, risk: 33, needsToReceive: 4, canSend: 0, cpuAvg: 75, batteryAvg: 85, trend: "up" },
+    { name: "Cirurgia", total: 8, stable: 7, alerts: 1, risk: 12, needsToReceive: 0, canSend: 3, cpuAvg: 52, batteryAvg: 95, trend: "stable" },
+    { name: "Centro Obstétrico", total: 10, stable: 9, alerts: 1, risk: 10, needsToReceive: 0, canSend: 3, cpuAvg: 48, batteryAvg: 96, trend: "stable" },
+    { name: "Maternidade", total: 7, stable: 6, alerts: 1, risk: 14, needsToReceive: 0, canSend: 2, cpuAvg: 55, batteryAvg: 94, trend: "stable" },
+    { name: "Oncologia", total: 9, stable: 8, alerts: 1, risk: 11, needsToReceive: 0, canSend: 2, cpuAvg: 50, batteryAvg: 97, trend: "stable" },
+    { name: "Cardiologia", total: 6, stable: 6, alerts: 0, risk: 0, needsToReceive: 0, canSend: 0, cpuAvg: 55, batteryAvg: 93, trend: "stable" },
+    { name: "Pneumologia", total: 5, stable: 5, alerts: 0, risk: 0, needsToReceive: 0, canSend: 0, cpuAvg: 58, batteryAvg: 91, trend: "stable" }
   ];
 
   // Calcular totais
   const totalVentilators = ventilatorAreas.reduce((sum, area) => sum + area.total, 0);
   const totalStable = ventilatorAreas.reduce((sum, area) => sum + area.stable, 0);
   const totalAlerts = ventilatorAreas.reduce((sum, area) => sum + area.alerts, 0);
-  const stabilityIndex = Math.round((totalStable / totalVentilators) * 100);
-  const highestRiskArea = ventilatorAreas.reduce((max, area) => area.risk > max.risk ? area : max);
-  const areasNeedingReinforcement = ventilatorAreas.filter(area => area.risk >= 30);
+  const stabilityIndex = Math.round((totalStable / totalVentilators) * 100); // 81%
 
-  // Identificar áreas que precisam e áreas prioritárias
-  const areasNeedingVentilators = ventilatorAreas.filter(area => area.needsToReceive > 0);
-  const primaryTarget = areasNeedingVentilators.sort((a, b) => b.risk - a.risk)[0];
+  const highestRiskArea = ventilatorAreas.reduce((max, area) => area.alerts > max.alerts ? area : max);
+  const criticalAreaAlerts = highestRiskArea.alerts;
+  const criticalAlertPercentage = totalAlerts > 0 ? Math.round((criticalAreaAlerts / totalAlerts) * 100) : 0; // 47%
 
   const totalCanRelocate = ventilatorAreas.reduce((sum, area) => sum + area.canSend, 0);
-  const totalNeeded = ventilatorAreas.reduce((sum, area) => sum + area.needsToReceive, 0);
 
-  // Preencher KPIs
-  document.getElementById('stabilityIndex').textContent = stabilityIndex;
-  document.getElementById('stabilityText').textContent = `${totalStable} de ${totalVentilators} ventiladores estáveis`;
-  document.getElementById('totalAlerts').textContent = totalAlerts;
-  document.getElementById('criticalAreaText').textContent = `Área mais instavél: ${highestRiskArea.name} (${highestRiskArea.risk}% de instabilidade)`;
-  document.getElementById('totalCanRelocate').textContent = totalCanRelocate;
+  // Preencher Textos
+  document.getElementById('totalStableText').textContent = totalStable;
+  document.getElementById('totalVentilatorsText').textContent = totalVentilators;
+  document.getElementById('criticalAreaNameText').textContent = highestRiskArea.name;
+  document.getElementById('criticalAlertPercentageText').textContent = criticalAlertPercentage;
   document.getElementById('totalRelocate').textContent = totalCanRelocate;
-  document.getElementById('totalVentilators').textContent = totalVentilators;
+  document.getElementById('totalVentilatorsDisplay').textContent = totalVentilators;
+
+
+  // --- GRÁFICOS RADIAIS KPIs (ApexCharts - CORREÇÃO DE CENTRALIZAÇÃO) ---
+
+  const GREEN_COLOR = '#30a799';
+  const RED_COLOR = '#e60e3a';
+
+  // 1. Gráfico de Estabilidade (Verde)
+  const stabilityOptions = {
+    series: [stabilityIndex], // 81
+    chart: { height: 160, type: 'radialBar', fontFamily: 'Inter, sans-serif' },
+    plotOptions: {
+      radialBar: {
+        hollow: { size: '60%' },
+        dataLabels: {
+          name: { show: false },
+          value: {
+            show: true,
+            fontSize: '24px',
+            fontWeight: 800,
+            color: GREEN_COLOR,
+            offsetY: 8, // <--- AJUSTE CRÍTICO: Movendo o texto mais para BAIXO (Ajustado para +8)
+            formatter: (val) => val + "%"
+          },
+          total: { show: false }
+        },
+        track: { background: '#e0e0e0' }
+      }
+    },
+    colors: [GREEN_COLOR],
+    stroke: { lineCap: 'round' }
+  };
+  const stabilityChartEl = document.querySelector("#kpiStabilityChart");
+  if (stabilityChartEl) new ApexCharts(stabilityChartEl, stabilityOptions).render();
+
+  // 2. Gráfico de Alertas (Vermelho)
+  const alertOptions = {
+    series: [criticalAlertPercentage], // 47
+    chart: { height: 160, type: 'radialBar', fontFamily: 'Inter, sans-serif' },
+    plotOptions: {
+      radialBar: {
+        hollow: { size: '60%' },
+        dataLabels: {
+          name: { show: false },
+          value: {
+            show: true,
+            fontSize: '24px',
+            fontWeight: 800,
+            color: RED_COLOR,
+            offsetY: 8, // <--- AJUSTE CRÍTICO: Movendo o texto mais para BAIXO (Ajustado para +8)
+            formatter: (val) => val + "%"
+          },
+          total: { show: false }
+        },
+        track: { background: '#fee2e2' }
+      }
+    },
+    colors: [RED_COLOR],
+    stroke: { lineCap: 'round' }
+  };
+  const alertChartEl = document.querySelector("#kpiAlertChart");
+  if (alertChartEl) new ApexCharts(alertChartEl, alertOptions).render();
+
+
+  // --- RESTANTE DA LÓGICA (Mantido) ---
 
   // Função para obter cor de risco badge
   function getRiskBadgeClass(risk) {
@@ -461,6 +383,8 @@
 
   // Preencher Áreas Críticas
   const criticalAreasContainer = document.getElementById('criticalAreasContainer');
+  const areasNeedingReinforcement = ventilatorAreas.filter(area => area.risk >= 30);
+  criticalAreasContainer.innerHTML = ''; // Limpa o container
   areasNeedingReinforcement.forEach(area => {
     const badgeClass = getRiskBadgeClass(area.risk);
     const div = document.createElement('div');
@@ -485,30 +409,21 @@
     const areasCanSend = ventilatorAreas.filter(a => a.canSend > 0);
     const areasNeed = ventilatorAreas.filter(a => a.needsToReceive > 0);
 
-    // Criar mapa de distribuição
     const distribution = {};
-    areasNeed.forEach(area => {
-      distribution[area.name] = [];
-    });
+    areasNeed.forEach(area => { distribution[area.name] = []; });
 
-    // Distribuir de forma equilibrada
     areasCanSend.forEach(sender => {
       let remaining = sender.canSend;
-
-      areasNeed.forEach((receiver, index) => {
+      areasNeed.forEach((receiver) => {
         if (remaining > 0) {
           const amount = Math.min(remaining, Math.ceil(sender.canSend / areasNeed.length));
           if (amount > 0) {
-            distribution[receiver.name].push({
-              from: sender.name,
-              amount: amount
-            });
+            distribution[receiver.name].push({ from: sender.name, amount: amount });
             remaining -= amount;
           }
         }
       });
     });
-
     return distribution;
   }
 
@@ -516,6 +431,7 @@
 
   // Preencher Grid de Áreas
   const areasGrid = document.getElementById('areasGrid');
+  areasGrid.innerHTML = ''; // Limpa o container
   ventilatorAreas.forEach(area => {
     const stabilityPercent = Math.round((area.stable / area.total) * 100);
 
@@ -523,11 +439,10 @@
     let badgeText = 'Estável';
     let badgeClass = 'neutral';
 
-    // IMPORTANTE: Mudar a classe do badge para 'needs' ser VERMELHO
     if (area.needsToReceive > 0) {
       areaType = 'needs-ventilators';
       badgeText = 'Necessita';
-      badgeClass = 'needs';  // Esta classe precisa ser VERMELHA no CSS
+      badgeClass = 'needs';
     } else if (area.canSend > 0) {
       areaType = 'can-send';
       badgeText = 'Disponível';
@@ -539,7 +454,6 @@
 
     let actionHTML = '';
     if (area.needsToReceive > 0) {
-      // Mostrar de onde virão os ventiladores
       const sources = distribution[area.name];
       let sourceText = '';
       if (sources && sources.length > 0) {
@@ -566,7 +480,6 @@
       </div>
     `;
     } else if (area.canSend > 0) {
-      // Mostrar para onde irão os ventiladores
       let targetText = '';
       const areasNeed = ventilatorAreas.filter(a => a.needsToReceive > 0);
       if (areasNeed.length > 0) {
@@ -608,7 +521,7 @@
       <h3 class="area-name">${area.name}</h3>
       <div class="area-badge ${badgeClass}">${badgeText}</div>
     </div>
-    
+
     <div class="area-stats">
       <div class="stat-item">
         <div class="stat-label">Atual</div>
@@ -623,7 +536,7 @@
         <div class="stat-value highlight">${area.needsToReceive}</div>
       </div>
     </div>
-    
+
     <div class="stability-section">
       <div class="stability-header">
         <span class="stability-label">Estabilidade Ventiladores</span>
@@ -633,7 +546,7 @@
         <div class="stability-bar-fill" style="width: ${stabilityPercent}%"></div>
       </div>
     </div>
-    
+
     <div class="status-grid">
       <div class="status-item stable">
         <i data-lucide="check-circle-2"></i>
@@ -644,7 +557,7 @@
         <span>${area.alerts}</span>
       </div>
     </div>
-    
+
     ${actionHTML}
   `;
 
@@ -654,7 +567,7 @@
   // Inicializar ícones Lucide
   lucide.createIcons();
 
-  // Dados de Umidade
+  // Gráfico de Umidade
   const humidityData = [
     { month: 'Jan', value: 65 },
     { month: 'Fev', value: 67 },
@@ -714,7 +627,7 @@
         fontFamily: 'Inter, sans-serif'
       },
       offsetY: -20
-    },
+    },  
     grid: {
       show: true,
       borderColor: '#e2e8f0',
