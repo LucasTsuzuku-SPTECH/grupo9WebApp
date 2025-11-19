@@ -1,6 +1,6 @@
 
     const emailJira="zephyrus2g@gmail.com"
-    const tokenJira="ATATT3xFfGF05iWRDCXKhXZYF3yapED-KyRdzr9O-ZTQuM-cAn0_i_LDjiHqJCa6k_XEGkcsrsiRaYLWY5FBP5DcgGyZPMC-RDocHaKZ31N3IhAr-QHnwvdFfoJ7TUTDshD-3DC_3f7aVwUoqWSXSHElna4JT9Hk-NDohn6FFyi8lqwAYl42ZEY=6045C37E";
+    const tokenJira="";
     const dominioJira="zephyrus2g1.atlassian.net";
     const auth=btoa(`${emailJira}:${tokenJira}`)
 
