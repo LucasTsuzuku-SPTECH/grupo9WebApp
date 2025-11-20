@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -11,7 +12,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <script src="https://unpkg.com/lucide@latest"></script>
   <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
-  <script src="https://kit.fontawesome.com/9f7414eb10.js" crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
   <script src="../../js/sessao.js"></script>
 
 </head>
@@ -56,7 +57,8 @@
         <a class="pgAtual" href="./balanceamentoVentiladores.html">Balanceamento</a>
         <a href="./controleSalas.html">Salas</a>
         <a href="./contas.html">Contas</a>
-        <a style="margin-top: 700px;" href="https://suaempresa.atlassian.net/secure/CreateIssue!default.jspa" target="_blank">Abrir Chamado <i class="fa-solid fa-headset"></i></a>
+        <a style="margin-top: 700px;" href="https://suaempresa.atlassian.net/secure/CreateIssue!default.jspa"
+          target="_blank">Abrir Chamado <i class="fa-solid fa-headset"></i></a>
       </nav>
     </div>
 
@@ -128,7 +130,8 @@
             <div class="linha-conteudo-kpi">
               <div class="lado-texto-kpi">
                 <p class="titulo-kpi">Estabilidade Operacional</p>
-                <h3 class="valor-kpi"><span id="textoEstaveis"></span>/<span id="textoTotalVentiladores"></span> Estáveis</h3>
+                <h3 class="valor-kpi"><span id="textoEstaveis"></span>/<span id="textoTotalVentiladores"></span>
+                  Estáveis</h3>
                 <p class="subtitulo-kpi">Quantidade de ventiladores estáveis em relação ao total<br>de ventiladores</p>
               </div>
               <div class="lado-grafico-kpi">
@@ -141,8 +144,10 @@
             <div class="linha-conteudo-kpi">
               <div class="lado-texto-kpi">
                 <p class="titulo-kpi">Índice de Alertas</p>
-                <h3 class="valor-kpi"><span id="textoAlertasAreaCritica"></span> de <span id="textoTotalAlertas"></span> na <strong id="textoNomeAreaCritica">UTI</strong></h3>
-                <p class="subtitulo-kpi">Quantidade de ventiladores em alerta na área mais crítica<br>em relação ao total de ventiladores em alerta</p>
+                <h3 class="valor-kpi"><span id="textoAlertasAreaCritica"></span> de <span id="textoTotalAlertas"></span>
+                  na <strong id="textoNomeAreaCritica">UTI</strong></h3>
+                <p class="subtitulo-kpi">Quantidade de ventiladores em alerta na área mais crítica<br>em relação ao
+                  total de ventiladores em alerta</p>
               </div>
               <div class="lado-grafico-kpi">
                 <div id="graficoAlertasKpi"></div>
@@ -241,7 +246,7 @@
               fontWeight: 800,
               color: '#30a799',
               offsetY: 8,
-              formatter: function(val) { return val + "%" }
+              formatter: function (val) { return val + "%" }
             }
           }
         }
@@ -263,7 +268,7 @@
               fontWeight: 800,
               color: '#e60e3a',
               offsetY: 8,
-              formatter: function(val) { return val + "%" }
+              formatter: function (val) { return val + "%" }
             }
           }
         }
@@ -347,4 +352,5 @@
     }).render();
   </script>
 </body>
+
 </html>
