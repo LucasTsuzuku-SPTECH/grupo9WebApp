@@ -1,0 +1,364 @@
+<!doctype html>
+<html lang="pt-br">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Dashboard — Controle de Ventiladores</title>
+
+  <!-- Bootstrap (mesmo CDN usado na sua página de suporte) -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Google Fonts similar to many dashboards -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      --brand-bg: #0d6efd; /* azul primário */
+      --card-bg: #ffffff;
+      --muted: #6c757d;
+      --surface: #f7f9fc;
+    }
+    html,body{height:100%;font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial; background: var(--surface);}
+
+    /* Navbar semelhante ao estilo da página de suporte */
+    .topbar{background:linear-gradient(90deg, rgba(13,110,253,0.95), rgba(29,78,216,0.95)); color:#fff;}
+    .topbar .brand{font-weight:700; letter-spacing:0.2px}
+
+    /* KPIs */
+    .kpi-card{border-radius:12px; box-shadow: 0 6px 18px rgba(17,24,39,0.06);}
+    .kpi-value{font-size:1.75rem; font-weight:700}
+    .kpi-label{color:var(--muted); font-size:0.85rem}
+
+    /* Small visual gauge (css) */
+    .gauge{height:72px; width:120px; border-radius:8px; display:flex; align-items:center; justify-content:center; flex-direction:column}
+    .gauge .percent{font-weight:700}
+
+    /* Table */
+    .devices-table tbody tr td{vertical-align:middle}
+
+    /* Alerts */
+    .alert-badge{font-weight:600; padding:.25rem .5rem; border-radius:8px}
+
+    /* Charts area spacing */
+    .card-chart{min-height:220px}
+
+    /* Footer small */
+    footer{font-size:0.85rem; color:var(--muted)}
+
+    @media (max-width:768px){
+      .kpi-value{font-size:1.2rem}
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navbar / Topbar -->
+  <nav class="topbar py-3">
+    <div class="container d-flex align-items-center justify-content-between">
+      <div class="d-flex align-items-center gap-3">
+        <img src="https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/svg/2695.svg" alt="logo" width="34" style="filter:invert(1)"/>
+        <div>
+          <div class="brand">HOSP — Monitoramento de Ventiladores</div>
+          <div style="font-size:.85rem; opacity:.9">Painel central de telemetria — RAM · CPU · Disco · Processos · Bateria</div>
+        </div>
+      </div>
+
+      <div class="d-flex align-items-center gap-3">
+        <div class="text-end me-2" style="color:rgba(255,255,255,.95)">
+          <div style="font-weight:600">Sala TI</div>
+          <div style="font-size:.85rem; opacity:.9">Último heartbeat: <span id="last-heartbeat">—</span></div>
+        </div>
+        <button class="btn btn-light btn-sm">Ações</button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Conteúdo -->
+  <main class="container my-4">
+
+    <!-- KPIs -->
+    <div class="row g-3 mb-3">
+      <div class="col-12 col-lg-3">
+        <div class="p-3 kpi-card bg-white">
+          <div class="d-flex justify-content-between align-items-start">
+            <div>
+              <div class="kpi-label">Máquinas em CRÍTICO</div>
+              <div class="kpi-value text-danger" id="kpi-critical">2</div>
+            </div>
+            <div class="gauge bg-light text-center">
+              <div class="percent text-danger">2</div>
+              <div style="font-size:.75rem">críticos</div>
+            </div>
+          </div>
+          <div class="mt-2 text-muted" style="font-size:.85rem">Última atualização: <span id="kpi-updated">—</span></div>
+        </div>
+      </div>
+
+      <div class="col-6 col-lg-3">
+        <div class="p-3 kpi-card bg-white">
+          <div class="kpi-label">Disponibilidade (%)</div>
+          <div class="kpi-value text-success" id="kpi-uptime">99.6</div>
+          <div class="text-muted mt-2" style="font-size:.85rem">SLA: 99.5%</div>
+        </div>
+      </div>
+
+      <div class="col-6 col-lg-3">
+        <div class="p-3 kpi-card bg-white">
+          <div class="kpi-label">Bateria média (%)</div>
+          <div class="kpi-value" id="kpi-battery">82</div>
+          <div class="text-muted mt-2" style="font-size:.85rem">Ventiladores portáteis</div>
+        </div>
+      </div>
+
+      <div class="col-12 col-lg-3">
+        <div class="p-3 kpi-card bg-white d-flex justify-content-between align-items-center">
+          <div>
+            <div class="kpi-label">Máquinas monitoradas</div>
+            <div class="kpi-value" id="kpi-count">20</div>
+          </div>
+          <div class="text-end">
+            <div style="font-size:.85rem; color:var(--muted)">Ambiente</div>
+            <div style="font-size:.9rem; font-weight:600">UTI / Emergência</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Linha com gráficos principais -->
+    <div class="row g-3">
+      <div class="col-12 col-xl-6">
+        <div class="card card-chart p-3">
+          <div class="d-flex justify-content-between align-items-center mb-2">
+            <div><strong>CPU (%) — 15 minutos</strong><div class="text-muted" style="font-size:.85rem">Tendência por máquina (últimos 15 min)</div></div>
+            <div><span class="badge bg-danger">1 crítica</span></div>
+          </div>
+          <canvas id="chart-cpu"></canvas>
+        </div>
+      </div>
+
+      <div class="col-12 col-xl-6">
+        <div class="card card-chart p-3">
+          <div class="d-flex justify-content-between align-items-center mb-2">
+            <div><strong>RAM (%) — 15 minutos</strong><div class="text-muted" style="font-size:.85rem">Consumo e swap</div></div>
+            <div><span class="badge bg-warning text-dark">3 atenção</span></div>
+          </div>
+          <canvas id="chart-ram"></canvas>
+        </div>
+      </div>
+    </div>
+
+    <!-- Segunda linha com disco e bateria + top processos -->
+    <div class="row g-3 mt-1">
+      <div class="col-12 col-lg-6">
+        <div class="card p-3 card-chart">
+          <div class="d-flex justify-content-between align-items-center mb-2">
+            <div><strong>DISCO — I/O & Latência</strong><div class="text-muted" style="font-size:.85rem">IOPS e latência média</div></div>
+            <div><span class="badge bg-info text-dark">Estável</span></div>
+          </div>
+          <canvas id="chart-disk"></canvas>
+        </div>
+      </div>
+
+      <div class="col-12 col-lg-6">
+        <div class="card p-3">
+          <div class="d-flex justify-content-between align-items-center mb-2">
+            <div><strong>BATERIA (%)</strong><div class="text-muted" style="font-size:.85rem">Nível médio das baterias portáteis</div></div>
+            <div><span class="badge bg-success">OK</span></div>
+          </div>
+          <canvas id="chart-battery"></canvas>
+        </div>
+      </div>
+    </div>
+
+    <!-- Top processes + alerts -->
+    <div class="row g-3 mt-2">
+      <div class="col-12 col-lg-6">
+        <div class="card p-3">
+          <div class="d-flex justify-content-between align-items-center mb-2">
+            <div><strong>Top processos (CPU)</strong><div class="text-muted" style="font-size:.85rem">Por máquina</div></div>
+            <div><button class="btn btn-sm btn-outline-secondary">Atualizar</button></div>
+          </div>
+          <div class="mt-2">
+            <ul class="list-group list-group-flush">
+              <li class="list-group-item d-flex justify-content-between align-items-center">proc_monitor <span class="badge bg-primary rounded-pill">35%</span></li>
+              <li class="list-group-item d-flex justify-content-between align-items-center">rt_stream <span class="badge bg-secondary rounded-pill">22%</span></li>
+              <li class="list-group-item d-flex justify-content-between align-items-center">log_writer <span class="badge bg-secondary rounded-pill">12%</span></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-12 col-lg-6">
+        <div class="card p-3">
+          <div class="d-flex justify-content-between align-items-center mb-2">
+            <div><strong>Alertas recentes</strong><div class="text-muted" style="font-size:.85rem">Últimos eventos críticos</div></div>
+            <div><button class="btn btn-sm btn-outline-danger">Mostrar todos</button></div>
+          </div>
+
+          <div class="mt-2">
+            <div class="d-flex align-items-center gap-2 mb-2">
+              <span class="alert-badge bg-danger text-white">CRÍTICO</span>
+              <div>
+                <div style="font-weight:600">Bateria baixa — Vent-07</div>
+                <div class="text-muted" style="font-size:.85rem">12 minutos atrás</div>
+              </div>
+            </div>
+
+            <div class="d-flex align-items-center gap-2 mb-2">
+              <span class="alert-badge bg-warning">ATENÇÃO</span>
+              <div>
+                <div style="font-weight:600">CPU alta — Vent-12</div>
+                <div class="text-muted" style="font-size:.85rem">22 minutos atrás</div>
+              </div>
+            </div>
+
+            <div class="d-flex align-items-center gap-2">
+              <span class="alert-badge bg-info text-dark">INFO</span>
+              <div>
+                <div style="font-weight:600">Atualização de firmware — Vent-03</div>
+                <div class="text-muted" style="font-size:.85rem">1 hora atrás</div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tabela de dispositivos -->
+    <div class="row g-3 mt-3">
+      <div class="col-12">
+        <div class="card p-3">
+          <div class="d-flex justify-content-between align-items-center mb-2">
+            <div><strong>Tabela de máquinas monitoradas</strong><div class="text-muted" style="font-size:.85rem">Visão geral rápida</div></div>
+            <div>
+              <div class="btn-group">
+                <button class="btn btn-sm btn-outline-secondary">Exportar CSV</button>
+                <button class="btn btn-sm btn-outline-secondary">Configuração</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="table-responsive">
+            <table class="table table-hover devices-table">
+              <thead>
+                <tr>
+                  <th>Nome</th>
+                  <th>CPU</th>
+                  <th>RAM</th>
+                  <th>Disco</th>
+                  <th>Bateria</th>
+                  <th>Processos</th>
+                  <th>Status</th>
+                  <th>Último heartbeat</th>
+                </tr>
+              </thead>
+              <tbody id="devices-body">
+                <!-- Linhas exemplo -->
+              </tbody>
+            </table>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <footer class="mt-4">&copy; <strong>HOSP</strong> · Painel gerado — substitua os dados de exemplo pela sua fonte real (API / MQTT / InfluxDB).</footer>
+
+  </main>
+
+  <!-- Dependências JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <!-- Script demo para popular charts e tabela com dados simulados -->
+  <script>
+    // Util - gera array de timestamps (minutos) para os últimos 15 minutos
+    function lastMinutes(n){
+      const now = new Date();
+      const out = [];
+      for(let i=n-1;i>=0;i--){
+        const d = new Date(now.getTime() - i*60*1000);
+        out.push(d.getHours().toString().padStart(2,'0') + ':' + d.getMinutes().toString().padStart(2,'0'));
+      }
+      return out;
+    }
+
+    // Dados simulados
+    const labels15 = lastMinutes(15);
+    function randSeries(base, variance){
+      return labels15.map(()=> Math.max(0, Math.round(base + (Math.random()-0.5)*variance)));
+    }
+
+    // Chart CPU
+    const cpuCtx = document.getElementById('chart-cpu');
+    new Chart(cpuCtx, {
+      type:'line',
+      data:{labels: labels15, datasets:[
+        {label:'Vent-01', data: randSeries(35,40), tension:0.25, fill:false},
+        {label:'Vent-07', data: randSeries(72,20), tension:0.25, fill:false},
+        {label:'Vent-12', data: randSeries(55,30), tension:0.25, fill:false}
+      ]},
+      options:{responsive:true, interaction:{mode:'index', intersect:false}, plugins:{legend:{position:'bottom'}}}
+    });
+
+    // Chart RAM
+    const ramCtx = document.getElementById('chart-ram');
+    new Chart(ramCtx, {
+      type:'line', data:{labels: labels15, datasets:[
+        {label:'Vent-01', data: randSeries(42,20), tension:0.25, fill:false},
+        {label:'Vent-03', data: randSeries(62,20), tension:0.25, fill:false}
+      ]}, options:{responsive:true, plugins:{legend:{position:'bottom'}}}
+    });
+
+    // Disk chart — IOPS (simulado)
+    const diskCtx = document.getElementById('chart-disk');
+    new Chart(diskCtx, {
+      type:'bar', data:{labels: labels15, datasets:[{label:'IOPS', data: randSeries(120,80)}]}, options:{responsive:true, plugins:{legend:{display:false}}}
+    });
+
+    // Battery chart
+    const batteryCtx = document.getElementById('chart-battery');
+    new Chart(batteryCtx, {
+      type:'line', data:{labels: labels15, datasets:[{label:'Bateria média', data: randSeries(82,10), tension:0.3}]}, options:{responsive:true, plugins:{legend:{display:false}}}
+    });
+
+    // Preenche tabela com dados de exemplo
+    const devices = [
+      {name:'Vent-01', cpu:35, ram:42, disk:28, batt:94, procs:72, status:'OK', hb:'0m'},
+      {name:'Vent-03', cpu:62, ram:63, disk:61, batt:78, procs:114, status:'ATENÇÃO', hb:'2m'},
+      {name:'Vent-07', cpu:88, ram:83, disk:91, batt:12, procs:132, status:'CRÍTICO', hb:'12m'},
+      {name:'Vent-12', cpu:79, ram:71, disk:55, batt:44, procs:98, status:'ATENÇÃO', hb:'6m'}
+    ];
+
+    function statusBadge(status){
+      if(status==='CRÍTICO') return '<span class="badge bg-danger">CRÍTICO</span>';
+      if(status==='ATENÇÃO') return '<span class="badge bg-warning text-dark">ATENÇÃO</span>';
+      return '<span class="badge bg-success">OK</span>';
+    }
+
+    const tbody = document.getElementById('devices-body');
+    devices.forEach(d=>{
+      const tr = document.createElement('tr');
+      tr.innerHTML = `
+        <td><strong>${d.name}</strong><div class="text-muted" style="font-size:.8rem">UTI-Ala 3</div></td>
+        <td>${d.cpu}%</td>
+        <td>${d.ram}%</td>
+        <td>${d.disk}%</td>
+        <td>${d.batt}%</td>
+        <td>${d.procs}</td>
+        <td>${statusBadge(d.status)}</td>
+        <td>${d.hb} atrás</td>
+      `;
+      tbody.appendChild(tr);
+    });
+
+    // Atualiza alguns KPIs dinamicamente (demo)
+    document.getElementById('kpi-count').innerText = devices.length;
+    document.getElementById('kpi-battery').innerText = Math.round(devices.reduce((s,x)=>s+x.batt,0)/devices.length);
+    document.getElementById('kpi-uptime').innerText = '99.6';
+    document.getElementById('kpi-updated').innerText = new Date().toLocaleString();
+    document.getElementById('last-heartbeat').innerText = 'há 0m';
+
+  </script>
+</body>
+</html>
