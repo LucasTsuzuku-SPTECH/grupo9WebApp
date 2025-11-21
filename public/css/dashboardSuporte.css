@@ -1,0 +1,14 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
+
+/* ===========================
+   VARIÁVEIS DE CORES
+=========================== */
+:root {
+  --branco: #ffffff;
+  --preto: #000;
+  --verde-1: #b7e4c7;
+  --verde-2: #92e4ab;
+  --verde-3: #30a799;
+  --verde-4: #264653;
+  --vermelho: #e60e3a;
+}
