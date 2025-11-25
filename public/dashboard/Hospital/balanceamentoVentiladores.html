@@ -187,8 +187,11 @@
       </div>
     </div>
   </div>
+    
+  </body>
+  </html>
 
-  <script>
+<script>
     // Função para abrir e fechar o menu lateral
     function toggleSidebar() {
       document.getElementById("sidebarModal").classList.toggle("active");
@@ -204,8 +207,8 @@
 
       // Validação simples
       if (idHospital == undefined || idHospital == null) {
-         console.warn("ID do Hospital não encontrado na sessão.");
-         return; 
+          console.warn("ID do Hospital não encontrado na sessão.");
+          return; 
       }
 
       // Passa o ID na URL da rota
@@ -214,6 +217,7 @@
           if (resposta.ok) {
             resposta.json().then(function (dados) {
               console.log("Dados recebidos:", dados);
+              // Os dados já vêm ordenados e com as chaves corretas do controller
               atualizarDashboardHardware(dados);
             });
           } else {
@@ -231,17 +235,18 @@
       var totalGeral = 0;
       var totalEstaveis = 0;
       var totalAlertas = 0;
-      var totalParaEnviar = 0;
+      
+      // Soma o total de unidades disponíveis para remanejamento (doado *antes* da distribuição)
+      var totalParaEnviar = listaAreas.reduce((acc, area) => acc + (area.status === 'Disponível' ? area.podeEnviar : 0), 0);
 
       // Calcula os totais percorrendo a lista de áreas
       listaAreas.forEach(function (area) {
         totalGeral += area.total;
         totalEstaveis += area.estaveis;
         totalAlertas += area.alertas;
-        totalParaEnviar += area.podeEnviar;
       });
 
-      // Define a área mais crítica (a primeira da lista pois o back-end já ordena)
+      // Define a área mais crítica (a primeira da lista pois o back-end já ordena por risco)
       var areaCritica = listaAreas[0] || { nome: '---', alertas: 0 };
 
       // Atualiza os textos dos KPIs na tela
@@ -255,9 +260,9 @@
       document.getElementById('totalRemanejamento').innerHTML = totalParaEnviar;
       document.getElementById('exibicaoTotalVentiladores').innerHTML = totalGeral;
 
-      // Calcula porcentagens para os gráficos radiais
-      var porcentagemEstabilidade = totalGeral > 0 ? Math.round((totalEstaveis / totalGeral) * 100) : 0;
-      var porcentagemAlertas = totalAlertas > 0 ? Math.round((areaCritica.alertas / totalAlertas) * 100) : 0;
+      // Calcula porcentagens para os gráficos radiais (Usando Math.floor/Truncate)
+      var porcentagemEstabilidade = totalGeral > 0 ? Math.floor((totalEstaveis / totalGeral) * 100) : 0;
+      var porcentagemAlertas = totalAlertas > 0 ? Math.floor((areaCritica.alertas / totalAlertas) * 100) : 0;
 
       criarGraficoRadial('#graficoEstabilidadeKpi', porcentagemEstabilidade, '#30a799');
       criarGraficoRadial('#graficoAlertasKpi', porcentagemAlertas, '#e60e3a');
@@ -287,6 +292,7 @@
 
       // Pega apenas as 4 primeiras áreas
       areasComProblema.slice(0, 4).forEach(function (area) {
+        // O risco já vem como inteiro (floor) do back-end
         var corDaBarra = 'verde';
         if (area.risco > 40) {
           corDaBarra = 'vermelho';
@@ -306,7 +312,7 @@
       });
     }
 
-    // Função que cria os cards principais de cada área
+    // Função que cria os cards principais de cada área (ATUALIZADA)
     function criarCardsDeAreas(listaAreas) {
       var container = document.getElementById('gradeAreas');
       container.innerHTML = '';
@@ -317,13 +323,15 @@
       }
 
       listaAreas.forEach(function (area) {
-        var estabilidadeArea = area.total > 0 ? Math.round((area.estaveis / area.total) * 100) : 0;
-        
+        // Estabilidade já vem como inteiro (floor) do back-end
+        var estabilidadeArea = area.estabilidade; 
+
         // Define estilos e textos baseados no estado da área
         var classeCss = '';
         var textoStatus = 'Estável';
         var corEtiqueta = 'neutro';
         var htmlRodape = '';
+        var textoAcao = area.mensagemAcao; 
 
         if (area.precisa > 0) {
           classeCss = 'precisa-ventiladores';
@@ -331,11 +339,11 @@
           corEtiqueta = 'precisa';
           htmlRodape = `
             <div class="caixa-recomendacao-area">
-                <div class="cabecalho-recomendacao"><i data-lucide="lightbulb"></i> Recomendação</div>
-                <div class="texto-recomendacao">Adicionar <strong>+${area.precisa} ventiladores</strong></div>
+                <div class="cabecalho-recomendacao"><i data-lucide="lightbulb"></i> AÇÃO RECOMENDADA</div>
+                <div class="texto-recomendacao-duas-linhas">${textoAcao}</div>
             </div>
             <div class="caixa-disponivel">
-                <div class="esquerda-disponivel"><i data-lucide="package"></i> Disponível</div>
+                <div class="esquerda-disponivel"><i data-lucide="package"></i> Disponível no Hospital</div>
                 <span class="valor-disponivel zero">0</span>
             </div>`;
         } else if (area.podeEnviar > 0) {
@@ -344,17 +352,17 @@
           corEtiqueta = 'enviar';
           htmlRodape = `
             <div class="caixa-envio-area">
-                <div class="cabecalho-envio"><i data-lucide="send"></i> Pode Enviar</div>
-                <div class="texto-envio">Enviar <strong>${area.podeEnviar} ventiladores</strong></div>
+                <div class="cabecalho-envio"><i data-lucide="send"></i> UNIDADES PARA REMANEJAMENTO</div>
+                <div class="texto-envio-duas-linhas">${textoAcao}</div>
             </div>
             <div class="caixa-disponivel">
-                <div class="esquerda-disponivel"><i data-lucide="package"></i> Disponível</div>
+                <div class="esquerda-disponivel"><i data-lucide="package"></i> Disponível no Hospital</div>
                 <span class="valor-disponivel positivo">${area.podeEnviar}</span>
             </div>`;
         } else {
           htmlRodape = `
             <div class="caixa-disponivel">
-                <div class="esquerda-disponivel"><i data-lucide="package"></i> Disponível</div>
+                <div class="esquerda-disponivel"><i data-lucide="package"></i> Disponível no Hospital</div>
                 <span class="valor-disponivel zero">0</span>
             </div>`;
         }
@@ -436,7 +444,7 @@
       // Reseta as classes e adiciona a nova cor
       divRisco.className = "valor-risco " + dadosRisco.classeCss;
 
-      document.getElementById("textoPeriodoDemanda").innerHTML = `${dadosRisco.periodoDemanda} (Alta Demanda)`;
+      document.getElementById("textoPeriodoDemanda").innerHTML = `${dadosRisco.periodoDemanda} <strong>(Alta Demanda)</strong>`;
     }
 
     // Plota o gráfico de barras de umidade
@@ -473,6 +481,4 @@
     obterDadosUmidade();
     obterDadosMonitoramento();
 
-  </script>
-</body>
-</html>
+</script>

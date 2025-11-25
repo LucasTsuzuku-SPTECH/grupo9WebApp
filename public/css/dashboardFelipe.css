@@ -141,7 +141,7 @@
  }
 
  .sub-risco {
-   font-size: 0.7rem;
+   font-size: 0.8rem;
    color: #777;
  }
 
@@ -523,3 +523,70 @@
    color: #30a799;
  }
 
+/* --- CLASSES REVERTIDAS E SIMPLIFICADAS --- */
+
+/* Estilos para o bloco de Recomendações (Necessita) */
+.caixa-recomendacao-area {
+   background: rgba(230, 14, 58, 0.1); 
+   border: 2px solid var(--vermelho);
+   border-radius: 8px;
+   padding: 10px;
+   margin-bottom: 10px;
+}
+
+.cabecalho-recomendacao {
+   font-size: 0.75rem;
+   font-weight: 800;
+   text-transform: uppercase;
+   margin-bottom: 5px;
+   color: var(--vermelho); 
+   display: flex;
+   align-items: center;
+   gap: 5px;
+}
+
+/* NOVO: Estilo para garantir a leitura clara em duas linhas, sem destaque gigante */
+.texto-recomendacao-duas-linhas {
+   font-size: 0.95rem; /* Um pouco maior que o 0.9 anterior */
+   font-weight: 600;
+   line-height: 1.3; /* Espaçamento de linha para forçar a quebra se necessário */
+   color: #333;
+   /* A quebra de linha será feita pelo tamanho do container e pelo line-height */
+}
+
+
+/* Estilos para o bloco de Envio (Pode Ceder) */
+.caixa-envio-area {
+   background: rgba(48, 167, 153, 0.1); 
+   border: 2px solid var(--verde-3);
+   border-radius: 8px;
+   padding: 10px;
+   margin-bottom: 10px;
+}
+
+.cabecalho-envio {
+   font-size: 0.75rem;
+   font-weight: 800;
+   text-transform: uppercase;
+   margin-bottom: 5px;
+   color: var(--verde-4); 
+   display: flex;
+   align-items: center;
+   gap: 5px;
+}
+
+/* NOVO: Estilo para garantir a leitura clara em duas linhas, sem destaque gigante */
+.texto-envio-duas-linhas {
+   font-size: 0.95rem; /* Um pouco maior que o 0.9 anterior */
+   font-weight: 600;
+   line-height: 1.3; /* Espaçamento de linha para forçar a quebra se necessário */
+   color: #333;
+}
+
+
+/* Mantenha o ajuste no layout do caixa-disponivel */
+.caixa-disponivel .esquerda-disponivel {
+    display: flex;
+    align-items: center;
+    gap: 5px; 
+}
