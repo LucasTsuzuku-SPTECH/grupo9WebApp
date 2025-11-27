@@ -23,6 +23,9 @@ var contasRouter = require("./src/routes/contas");
 var maquinasRouter = require("./src/routes/maquinas");
 var controleRouter = require("./src/routes/controle");
 var emailRouter = require("./src/routes/email")
+var jiraRouter = require("./src/routes/jira")
+var medidasRouter = require("./src/routes/medidas")
+
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
@@ -36,7 +39,8 @@ app.use("/contas", contasRouter);
 app.use("/maquinas", maquinasRouter);
 app.use("/controle", controleRouter);
 app.use("/email", emailRouter)
-
+app.use("/jira", jiraRouter);
+app.use("/medidas", medidasRouter);
 
 app.listen(PORTA_APP, function () {
     console.log(`
