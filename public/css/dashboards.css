@@ -28,6 +28,100 @@ body {
   color: var(--preto);
 }
 
+.corPrincipal {
+  background: #264653;
+}
+
+.navbar-toggler-icon {
+  filter: invert(1);
+
+}
+
+.containerTitulo .logo-titulo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-direction: row;
+}
+
+
+.titulo {
+  font-size: 28px;
+  font-weight: 600;
+  color: white;
+  letter-spacing: 1px;
+  margin: 0;
+}
+
+
+.containerTitulo {
+  display: flex;
+  align-items: start;
+  margin-left: 20px;
+
+}
+
+.nav-item a:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 4px;
+}
+
+.nav-item-selected {
+  background: #30a799;
+  border-radius: 4px;
+
+}
+
+.nav-item-selected a:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 4px;
+
+}
+
+#offcanvasNavbar {
+  width: 16%;
+}
+
+/* Botão de Sair */
+.btn-sair {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background-color: #e63946;
+  color: #fff !important;
+  font-size: 20px;
+  font-weight: bold;
+  padding: 10px;
+  border-radius: 6px;
+  width: 90%;
+  align-self: center;
+  justify-content: center;
+  transition: 0.2s;
+  text-decoration: none;
+}
+
+.btn-sair:hover {
+  background-color: #c92f3e;
+}
+
+/* Abrir chamado */
+.btn-suporte {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: #f5f6fa !important;
+  font-size: 20px;
+  padding: 8px 10px;
+  justify-content: center;
+  text-decoration: none;
+  margin-bottom: 12px;
+}
+
+.icon {
+  width: 22px;
+  height: 22px;
+  filter: invert(1);
+}
 
 a {
   text-decoration: none;
@@ -251,6 +345,7 @@ header {
   flex-direction: row;
   align-items: center;
   width: 100%;
+  height: 100px;
 }
 
 /* Links de ação */
