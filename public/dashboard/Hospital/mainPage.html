@@ -12,7 +12,100 @@
   <script src="https://kit.fontawesome.com/9f7414eb10.js" crossorigin="anonymous"></script>
   <script src="../../js/sessao.js"></script>
   <style>
+    .corPrincipal {
+      background: #264653;
+    }
 
+    .navbar-toggler-icon {
+      filter: invert(1);
+
+    }
+
+    .containerTitulo .logo-titulo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-direction: row;
+    }
+
+
+    .titulo {
+      font-size: 28px;
+      font-weight: 600;
+      color: white;
+      letter-spacing: 1px;
+      margin: 0;
+    }
+
+
+    .containerTitulo {
+      display: flex;
+      align-items: start;
+      margin-left: 20px;
+
+    }
+
+    .nav-item a:hover {
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 4px;
+    }
+
+    .nav-item-selected {
+      background: #30a799;
+      border-radius: 4px;
+
+    }
+
+    .nav-item-selected a:hover {
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 4px;
+
+    }
+
+    #offcanvasNavbar {
+      width: 16%;
+    }
+
+    /* Botão de Sair */
+    .btn-sair {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background-color: #e63946;
+      color: #fff !important;
+      font-size: 20px;
+      font-weight: bold;
+      padding: 10px;
+      border-radius: 6px;
+      width: 90%;
+      align-self: center;
+      justify-content: center;
+      transition: 0.2s;
+      text-decoration: none;
+    }
+
+    .btn-sair:hover {
+      background-color: #c92f3e;
+    }
+
+    /* Abrir chamado */
+    .btn-suporte {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: #f5f6fa !important;
+      font-size: 20px;
+      padding: 8px 10px;
+      justify-content: center;
+      text-decoration: none;
+      margin-bottom: 12px;
+    }
+
+    .icon {
+      width: 22px;
+      height: 22px;
+      filter: invert(1);
+    }
 
     :root {
       --header-height: 70px;
@@ -21,14 +114,14 @@
     .header-custom {
       height: var(--header-height);
       z-index: 1000;
-      background-color: #212529; 
+      background-color: #212529;
       color: white;
       box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     }
 
     body {
       padding-top: var(--header-height);
-      background-color: #f5f6fa; 
+      background-color: #f5f6fa;
     }
 
     /* Estilos para os KPIs */
@@ -44,19 +137,6 @@
       transform: translateY(-2px);
     }
 
-    .kpi-circle {
-      width: 50px;
-      height: 50px;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .kpi-circle img {
-      max-width: 60%;
-      max-height: 60%;
-    }
 
     /* Ajuste para a tabela */
     .table-responsive-custom {
@@ -69,30 +149,66 @@
 
 <body onload="hospital()">
 
-  <header class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top header-custom">
-    <div class="container-fluid">
-      <button class="btn btn-dark" type="button" data-bs-toggle="offcanvas" data-bs-target="#sidebarOffcanvas"
-        aria-controls="sidebarOffcanvas" onclick="toggleSidebar()">
-        <i id="icone" class="fa-solid fa-bars"></i>
+  <nav class="navbar corPrincipal fixed-top py-3">
+    <div class="container-fluid justify-content-start ">
+      <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar"
+        aria-controls="offcanvasNavbar" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon text-white"></span>
       </button>
+      <div class="containerTitulo">
+        <div class="logo-titulo">
+          <img src="/assets/imgs/Zephyrus_2png.png" style="width: 50px;" alt="">
+          <h1 class="titulo">Zephyrus</h1>
+        </div>
 
-      <h2 class="navbar-brand mb-0 ms-3 me-auto">DASHBOARD - PÁGINA PRINCIPAL</h2>
+        <div class="offcanvas offcanvas-start corPrincipal" tabindex="-1" id="offcanvasNavbar"
+          aria-labelledby="offcanvasNavbarLabel">
+          <img src="/assets/imgs/Zephyrus_2png.png"
+            style="width: 170px; align-self: center; margin-bottom: 10px; margin-top: 20px;" alt="">
+          <div class="offcanvas-header" style="border-bottom:2px solid rgba(255, 255, 255, 0.5);">
+            <h4 class="offcanvas-title " style="color: #f5f6fa; " id="offcanvasNavbarLabel">Menu</h4>
+            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas"
+              aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body d-flex flex-column">
+            <ul class="navbar-nav justify-content-start flex-grow-1 pe-3">
+              <li class="nav-item-selected" style="width: 100%;">
+                <a class="nav-link active" style="padding: 5px; color: #f5f6fa; font-size: 22px;"
+                  href="./mainPage.html">Página
+                  principal</a>
+              </li>
+              <li class="nav-item" style="width: 100%;">
+                <a class="nav-link active" style="padding: 5px; color: #f5f6fa;  font-size: 22px;"
+                  href="./balanceamentoVentiladores.html">Balanceamento</a>
+              </li>
+              <li class="nav-item" style="width: 100%;">
+                <a class="nav-link active" style="padding: 5px; color: #f5f6fa;  font-size: 22px;"
+                  href="./controleSalas.html">Salas</a>
+              </li>
+              <li class="nav-item" style="width: 100%;">
+                <a class="nav-link active" style="padding: 5px; color: #f5f6fa;  font-size: 22px;"
+                  href="./contas.html">Contas</a>
+              </li>
+            </ul>
+            <ul class="navbar-nav d-flex flex-column flex-grow-1 pe-3">
+              <li class="nav-item mt-auto d-flex justify-content-center" style="width: 100%;">
+                <a class="btn-suporte" href="/index">
+                  <img style="width: 40px;" src="/assets/imgs/headphoneIcon.png" alt="">
+                  Abrir chamado
+                </a>
+              </li>
+              <li class="nav-item d-flex justify-content-center" style="width: 100%;">
+                <a class="btn-sair" href="/index.html" onclick="sessionStorage.clear()">
+                  <img class="icon" src="https://cdn-icons-png.flaticon.com/512/1828/1828479.png" alt="Logout">
+                  Sair
+                </a>
+              </li>
 
-      <div class="d-flex align-items-center">
-        <div class="vr me-3 text-white-50"></div>
-
-        <div class="dropdown">
-          <a class="nav-link dropdown-toggle text-white" href="#" id="perfilDropdown" role="button"
-            data-bs-toggle="dropdown" aria-expanded="false">
-            <img src="../../assets/imgs/profile.png" alt="imagem de perfil" class="rounded-circle" style="width: 30px;" />
-          </a>
-          <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="perfilDropdown">
-            <li><button class="dropdown-item" onclick="limparSessao()">Sair</button></li>
-          </ul>
+            </ul>
+          </div>
         </div>
       </div>
-    </div>
-  </header>
+  </nav>
 
   <div class="offcanvas offcanvas-start bg-dark text-white" tabindex="-1" id="sidebarOffcanvas"
     aria-labelledby="sidebarOffcanvasLabel">
@@ -109,263 +225,264 @@
         <a class="nav-link text-white" href="./contas.html">Contas</a>
       </nav>
       <div class="mt-auto pt-3 border-top">
-        <a class="btn btn-outline-light w-100"
-          href="https://suaempresa.atlassian.net/secure/CreateIssue!default.jspa" target="_blank">
+        <a class="btn btn-outline-light w-100" href="https://suaempresa.atlassian.net/secure/CreateIssue!default.jspa"
+          target="_blank">
           Abrir Chamado <i class="fa-solid fa-headset"></i>
         </a>
       </div>
     </div>
   </div>
 
-  <main class="container-fluid py-4">
+  <main class="container-fluid py-4 mt-3">
     <div class="row justify-content-center mb-4">
-    <div class="col-lg-10">
+      <div class="col-lg-10">
         <div class="d-flex flex-column flex-md-row justify-content-between align-items-center">
 
-            <div class="text-center text-md-start mb-3 mb-md-0">
-                <h2 class="mb-0">DASHBOARD HOSPITAL</h2>
-                <div class="text-muted" style="font-size: 1rem;">
-                    Última Captura: <span id="data-ultima-captura"></span>
-                </div>
+          <div class="text-center text-md-start mb-3 mb-md-0">
+            <h2 class="mb-0">DASHBOARD HOSPITAL</h2>
+            <div class="text-muted" style="font-size: 1rem;">
+              Última Captura: <span id="data-ultima-captura"></span>
+            </div>
+          </div>
+
+          <div class="d-flex flex-wrap justify-content-center justify-content-md-end g-2">
+
+            <div class="me-3 mb-2 mb-md-0">
+              <label for="filtroTempo" class="form-label mb-0 visually-hidden">Período:</label>
+              <div class="btn-group" role="group" aria-label="Filtro de Período">
+                <input type="radio" class="btn-check" name="filtroTempo" id="tempoHora" autocomplete="off" checked>
+                <label class="btn btn-outline-primary btn-sm" for="tempoHora">Hora</label>
+
+                <input type="radio" class="btn-check" name="filtroTempo" id="tempoDia" autocomplete="off">
+                <label class="btn btn-outline-primary btn-sm" for="tempoDia">Dia</label>
+
+                <input type="radio" class="btn-check" name="filtroTempo" id="tempoSemana" autocomplete="off">
+                <label class="btn btn-outline-primary btn-sm" for="tempoSemana">Semana</label>
+
+                <input type="radio" class="btn-check" name="filtroTempo" id="tempoMes" autocomplete="off">
+                <label class="btn btn-outline-primary btn-sm" for="tempoMes">Mês</label>
+              </div>
             </div>
 
-            <div class="d-flex flex-wrap justify-content-center justify-content-md-end g-2">
-                
-                <div class="me-3 mb-2 mb-md-0">
-                    <label for="filtroTempo" class="form-label mb-0 visually-hidden">Período:</label>
-                    <div class="btn-group" role="group" aria-label="Filtro de Período">
-                        <input type="radio" class="btn-check" name="filtroTempo" id="tempoHora" autocomplete="off" checked>
-                        <label class="btn btn-outline-primary btn-sm" for="tempoHora">Hora</label>
-
-                        <input type="radio" class="btn-check" name="filtroTempo" id="tempoDia" autocomplete="off">
-                        <label class="btn btn-outline-primary btn-sm" for="tempoDia">Dia</label>
-                        
-                        <input type="radio" class="btn-check" name="filtroTempo" id="tempoSemana" autocomplete="off">
-                        <label class="btn btn-outline-primary btn-sm" for="tempoSemana">Semana</label>
-                        
-                        <input type="radio" class="btn-check" name="filtroTempo" id="tempoMes" autocomplete="off">
-                        <label class="btn btn-outline-primary btn-sm" for="tempoMes">Mês</label>
-                    </div>
-                </div>
-
-                <div>
-                    <label for="filtroArea" class="form-label mb-0 visually-hidden">Área:</label>
-                    <select class="form-select form-select-sm" id="filtroArea" aria-label="Filtro de Área">
-                        <option value="todas" selected>Todas as Áreas</option>
-                        <option value="uti">UTI</option>
-                        <option value="pronto_socorro">Pronto-Socorro</option>
-                        <option value="neonatal">Neonatal</option>
-                        </select>
-                </div>
-
-            </div>
-        </div>
-    </div>
-    </div>
-
-      <section class="d-flex justify-content-center align-items-center row g-3 mb-3 KPIs">
-        <div class="col-6 col-md-3 col-lg-2">
-          <div class="card kpi-card-custom h-100 " style="border-bottom: 6px solid red;">
-            <a href="#" class="text-decoration-none text-dark d-flex flex-column h-100 p-3"
-              onclick="abrirModalAlertas('RAM')">
-              <div class="d-flex align-items-center DadosKPI">
-                <div>
-                  <p class="mb-0">Alertas <b>Ativos</b></p>
-                  <h3 class="display-6 mb-0">03</h3>
-                  <div class="mt-2 text-muted" style="font-size:.85rem">Principal causa: <b>RAM</b></div>
-                </div>
-              </div>
-            </a>
-          </div>
-        </div>
-        <div class="col-6 col-md-3 col-lg-2">
-          <div class="card kpi-card-custom h-100" style="border-bottom: 6px solid orange;">
-            <a href="#" class="text-decoration-none text-dark d-flex flex-column h-100 p-3">
-              <div class="d-flex justify-content-between align-items-center DadosKPI">
-                <div>
-                  <p class="mb-0">Tempo desde o último alerta:</p>
-                  <h3 class="display-6 mb-0">7 min</h3>
-                  <div class="mt-2 text-muted" style="font-size:.85rem">
-                    Tipo: <b>RAM</b>
-                  </div>
-                </div>
-              </div>
-            </a>
-          </div>
-        </div>
-        <div class="col-6 col-md-3 col-lg-2">
-          <div class="card kpi-card-custom h-100">
-            <a href="#" class="text-decoration-none text-dark d-flex flex-column h-100 p-3">
-              <div class="d-flex justify-content-between align-items-center DadosKPI">
-                <div>
-                  <p class="mb-0">Máquinas Monitoradas</p>
-                  <h3 class="display-6 mb-0">20</h3>
-                  <div class="mt-2 text-muted" style="font-size:.85rem">Máquinas offline: <b>5</b></div>
-                </div>
-              </div>
-            </a>
-          </div>
-        </div>
-        <div class="col-6 col-md-3 col-lg-2">
-          <div class="card kpi-card-custom h-100">
-            <a href="#" class="text-decoration-none text-dark d-flex flex-column h-100 p-3">
-              <div class="d-flex justify-content-between align-items-center DadosKPI">
-                <div>
-                  <p class="mb-0">Área mais afetada</p>
-                  <h3 class="display-6 mb-0">UTI</h3>
-                  <div class="mt-2 text-muted" style="font-size:.85rem">Total de máquinas críticas <b>2</b></div>
-                </div>
-              </div>
-            </a>
-          </div>
-        </div>
-      </section>
-
-    <div class="d-flex justify-content-center align-items-center flex-column g-3 mb-3">
-
-    <div class="col-lg-10 mt-2 mb-3 Containertabela">
-        <div class="card p-3 h-100">
-            <div class="d-flex justify-content-between align-items-center mb-2">
-                <div>
-                    <strong>Últimos Alertas</strong>
-                    <div class="text-muted" style="font-size:.85rem">Eventos mais recentes</div>
-                </div>
-                <div>
-                    <div class="btn-group">
-                    </div>
-                </div>
+            <div>
+              <label for="filtroArea" class="form-label mb-0 visually-hidden">Área:</label>
+              <select class="form-select form-select-sm" id="filtroArea" aria-label="Filtro de Área">
+                <option value="todas" selected>Todas as Áreas</option>
+                <option value="uti">UTI</option>
+                <option value="pronto_socorro">Pronto-Socorro</option>
+                <option value="neonatal">Neonatal</option>
+              </select>
             </div>
 
-            <div class="card-body p-0">
-                <div class="table-responsive table-responsive-custom">
-                    <table class="table table-hover mb-0"> <thead>
-                            <tr>
-                                <th>Data</th>
-                                <th>Nº Série</th>
-                                <th>Modelo</th>
-                                <th>Área</th>
-                                <th style="width: 25%;">Parâmetro Atingido</th>
-                                <th>Consumo</th>
-                                <th>Unidade</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>30/10/2025 12:00</td>
-                                <td>VNT-DRG-0001</td>
-                                <td>Dräger Evita Infinity V500</td>
-                                <td>UTI</td>
-                                <td>RAM</td>
-                                <td>91</td>
-                                <td>%</td>
-                            </tr>
-                            <tr>
-                                <td>30/10/2025 11:47</td>
-                                <td>VNT-DRG-0106</td>
-                                <td>Hamilton-C6</td>
-                                <td>UTI</td>
-                                <td>CPU</td>
-                                <td>90</td>
-                                <td>%</td>
-                            </tr>
-                            <tr>
-                                <td>30/10/2025 11:40</td>
-                                <td>VNT-DRG-212</td>
-                                <td>Hamilton-C6</td>
-                                <td>UTI</td>
-                                <td>RAM</td>
-                                <td>87</td>
-                                <td>%</td>
-                            </tr>
-                            <tr>
-                                <td>30/10/2025 11:20</td>
-                                <td>VNT-DRG-506</td>
-                                <td>Hamilton-C6</td>
-                                <td>UTI</td>
-                                <td>RAM</td>
-                                <td>81</td>
-                                <td>%</td>
-                            </tr>
-                            <tr>
-                                <td>30/10/2025 11:10</td>
-                                <td>VGG-HGL-0137</td>
-                                <td>Magnamed OxyMag</td>
-                                <td>Pronto-Socorro</td>
-                                <td>Bateria</td>
-                                <td>14</td>
-                                <td>%</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="col-lg-10 mt-1 ContainerMapa">
-      <div class="card h-100">
-        <div class="card-header graficoHeader">
-          <strong>
-          Mapa de Alertas por Área
-          </strong>
-        </div>
-        <div class="card-body d-flex justify-content-center align-items-center" style="min-height: 300px;">
-          <div id="Graficoarea" style="width: 100%; height: 100%;"></div>
+          </div>
         </div>
       </div>
     </div>
-      
-    <div class="col-lg-10 mt-3 mb-2 Containertabela">
-        <div class="card p-3">
-            <div class="d-flex justify-content-between align-items-center mb-2">
-                <div>
-                    <strong>Tabela de máquinas monitoradas</strong>
-                    <div class="text-muted" style="font-size:.85rem">Visão geral rápida</div>
-                </div>
-                <div class="d-flex align-items-center"> 
-                    <input type="search" class="form-control form-control-sm me-2" style="width: 150px;" placeholder="Pesquisar...">
-                    
-                    <div class="btn-group">
-                        </div>
-                </div>
+
+    <section class="d-flex justify-content-center align-items-center row g-3 mb-3 KPIs">
+      <div class="col-6 col-md-3 col-lg-2">
+        <div class="card kpi-card-custom h-100 " style="border-bottom: 6px solid red;">
+          <a href="#" class="text-decoration-none text-dark d-flex flex-column h-100 p-3"
+            onclick="abrirModalAlertas('Alertas')">
+            <div class="d-flex align-items-center DadosKPI">
+              <div>
+                <p class="mb-0">Alertas <b>Ativos</b></p>
+                <h3 class="display-6 mb-0">03</h3>
+                <div class="mt-2 text-muted" style="font-size:.85rem">Principal causa: <b>RAM</b></div>
+              </div>
             </div>
-            <div class="table-responsive">
-                <table class="table table-hover devices-table">
-                    <thead>
-                        <tr>
-                            <th>Nome</th>
-                            <th>CPU</th>
-                            <th>RAM</th>
-                            <th>Disco</th>
-                            <th>Bateria</th>
-                            <th>Processos</th>
-                            <th>Status</th>
-                        </tr>
-                    </thead>
-                    <tbody id="devices-body">
-                    </tbody>
-                </table>
-            </div>
+          </a>
         </div>
-    </div>
+      </div>
+      <div class="col-6 col-md-3 col-lg-2">
+        <div class="card kpi-card-custom h-100" style="border-bottom: 6px solid orange;">
+          <a href="#" class="text-decoration-none text-dark d-flex flex-column h-100 p-3"
+          onclick="abrirModalAlertas('UltimoAlerta')">
+            <div class="d-flex justify-content-between align-items-center DadosKPI">
+              <div>
+                <p class="mb-0">Tempo desde o último alerta:</p>
+                <h3 class="display-6 mb-0">7 min</h3>
+                <div class="mt-2 text-muted" style="font-size:.85rem">
+                  Tipo: <b>RAM</b>
+                </div>
+              </div>
+            </div>
+          </a>
+        </div>
+      </div>
+      <div class="col-6 col-md-3 col-lg-2">
+        <div class="card kpi-card-custom h-100">
+          <a href="#" class="text-decoration-none text-dark d-flex flex-column h-100 p-3"
+          onclick="abrirModalAlertas('MaquinasOFF')">
+            <div class="d-flex justify-content-between align-items-center DadosKPI">
+              <div>
+                <p class="mb-0">Máquinas Monitoradas</p>
+                <h3 class="display-6 mb-0">20</h3>
+                <div class="mt-2 text-muted" style="font-size:.85rem">Máquinas offline: <b>5</b></div>
+              </div>
+            </div>
+          </a>
+        </div>
+      </div>
+      <div class="col-6 col-md-3 col-lg-2">
+        <div class="card kpi-card-custom h-100">
+          <a href="#" class="text-decoration-none text-dark d-flex flex-column h-100 p-3"
+          onclick="abrirModalAlertas('Area')">
+            <div class="d-flex justify-content-between align-items-center DadosKPI">
+              <div>
+                <p class="mb-0">Área mais afetada</p>
+                <h3 class="display-6 mb-0">UTI</h3>
+                <div class="mt-2 text-muted" style="font-size:.85rem">Total de máquinas críticas <b>2</b></div>
+              </div>
+            </div>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <div class="d-flex justify-content-center align-items-center flex-column g-3 mb-3">
+
+      <div class="col-lg-10 mt-2 mb-3 Containertabela">
+        <div class="card p-3 h-100">
+          <div class="d-flex justify-content-between align-items-center mb-2">
+            <div>
+              <strong>Últimos Alertas</strong>
+              <div class="text-muted" style="font-size:.85rem">Eventos mais recentes</div>
+            </div>
+            <div>
+              <div class="btn-group">
+              </div>
+            </div>
+          </div>
+
+          <div class="card-body p-0">
+            <div class="table-responsive table-responsive-custom">
+              <table class="table table-hover mb-0">
+                <thead>
+                  <tr>
+                    <th>Data</th>
+                    <th>Nº Série</th>
+                    <th>Modelo</th>
+                    <th>Área</th>
+                    <th style="width: 25%;">Parâmetro Atingido</th>
+                    <th>Consumo</th>
+                    <th>Unidade</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>30/10/2025 12:00</td>
+                    <td>VNT-DRG-0001</td>
+                    <td>Dräger Evita Infinity V500</td>
+                    <td>UTI</td>
+                    <td>RAM</td>
+                    <td>91</td>
+                    <td>%</td>
+                  </tr>
+                  <tr>
+                    <td>30/10/2025 11:47</td>
+                    <td>VNT-DRG-0106</td>
+                    <td>Hamilton-C6</td>
+                    <td>UTI</td>
+                    <td>CPU</td>
+                    <td>90</td>
+                    <td>%</td>
+                  </tr>
+                  <tr>
+                    <td>30/10/2025 11:40</td>
+                    <td>VNT-DRG-212</td>
+                    <td>Hamilton-C6</td>
+                    <td>UTI</td>
+                    <td>RAM</td>
+                    <td>87</td>
+                    <td>%</td>
+                  </tr>
+                  <tr>
+                    <td>30/10/2025 11:20</td>
+                    <td>VNT-DRG-506</td>
+                    <td>Hamilton-C6</td>
+                    <td>UTI</td>
+                    <td>RAM</td>
+                    <td>81</td>
+                    <td>%</td>
+                  </tr>
+                  <tr>
+                    <td>30/10/2025 11:10</td>
+                    <td>VGG-HGL-0137</td>
+                    <td>Magnamed OxyMag</td>
+                    <td>Pronto-Socorro</td>
+                    <td>Bateria</td>
+                    <td>14</td>
+                    <td>%</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-lg-10 mt-1 ContainerMapa">
+        <div class="card h-100">
+          <div class="card-header graficoHeader">
+            <strong>
+              Mapa de Alertas por Área
+            </strong>
+          </div>
+          <div class="card-body d-flex justify-content-center align-items-center" style="min-height: 300px;">
+            <div id="Graficoarea" style="width: 100%; height: 100%;"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-lg-10 mt-3 mb-2 Containertabela">
+        <div class="card p-3">
+          <div class="d-flex justify-content-between align-items-center mb-2">
+            <div>
+              <strong>Tabela de máquinas monitoradas</strong>
+              <div class="text-muted" style="font-size:.85rem">Visão geral rápida</div>
+            </div>
+            <div class="d-flex align-items-center">
+              <input type="search" class="form-control form-control-sm me-2" style="width: 150px;"
+                placeholder="Pesquisar...">
+
+              <div class="btn-group">
+              </div>
+            </div>
+          </div>
+          <div class="table-responsive">
+            <table class="table table-hover devices-table">
+              <thead>
+                <tr>
+                  <th>Nome</th>
+                  <th>CPU</th>
+                  <th>RAM</th>
+                  <th>Disco</th>
+                  <th>Bateria</th>
+                  <th>Processos</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody id="devices-body">
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
 
 
-    <div class="col-lg-10 mt-2 mb-3">
+      <div class="col-lg-10 mt-2 mb-3">
         <div class="card card-chart p-3">
           <div class="d-flex justify-content-between align-items-center mb-2">
-            <div><strong>Número de Alertas por hora</strong><div class="text-muted" style="font-size:.85rem">Histórico</div></div> 
+            <div><strong>Número de Alertas por hora</strong>
+              <div class="text-muted" style="font-size:.85rem">Histórico</div>
+            </div>
           </div>
           <canvas id="chart-cpu" style="height: 400px; width: 100%;"></canvas>
-          </div>
         </div>
+      </div>
     </div>
 
-    <div class="text-center mb-4">
-      <button class="btn btn-primary btn-lg" onclick="abrirChamado()">
-        Abrir Chamado <i class="fa-solid fa-headset"></i>
-      </button>
-    </div>
-    
   </main>
 
   <div class="modal fade" id="modalAlertas" tabindex="-1" aria-labelledby="modalAlertasLabel" aria-hidden="true">
@@ -394,7 +511,7 @@
   <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
 
   <script>
-    
+
     // Seus scripts JavaScript originais (com ajustes para Bootstrap/Offcanvas/Modal)
     let agora = new Date();
     let dataFormatada = agora.toLocaleDateString();
@@ -464,22 +581,22 @@
       window.location.href = "../../index.html";
     }
 
-    
+
     const devices = [
-      {nome:'Vent-01', cpu:35, ram:42, disk:28, batt:94, procs:72, status:'OK'},
-      {nome:'Vent-03', cpu:62, ram:63, disk:61, batt:78, procs:114, status:'ATENÇÃO'},
-      {nome:'Vent-07', cpu:88, ram:83, disk:91, batt:12, procs:132, status:'CRÍTICO'},
-      {nome:'Vent-12', cpu:79, ram:71, disk:55, batt:44, procs:98, status:'ATENÇÃO'}
+      { nome: 'Vent-01', cpu: 35, ram: 42, disk: 28, batt: 94, procs: 72, status: 'OK' },
+      { nome: 'Vent-03', cpu: 62, ram: 63, disk: 61, batt: 78, procs: 114, status: 'ATENÇÃO' },
+      { nome: 'Vent-07', cpu: 88, ram: 83, disk: 91, batt: 12, procs: 132, status: 'CRÍTICO' },
+      { nome: 'Vent-12', cpu: 79, ram: 71, disk: 55, batt: 44, procs: 98, status: 'ATENÇÃO' }
     ];
 
-    function statusBadge(status){
-      if(status==='CRÍTICO') return '<span class="badge bg-danger">CRÍTICO</span>';
-      if(status==='ATENÇÃO') return '<span class="badge bg-warning text-dark">ATENÇÃO</span>';
+    function statusBadge(status) {
+      if (status === 'CRÍTICO') return '<span class="badge bg-danger">CRÍTICO</span>';
+      if (status === 'ATENÇÃO') return '<span class="badge bg-warning text-dark">ATENÇÃO</span>';
       return '<span class="badge bg-success">OK</span>';
     }
 
     const tbody = document.getElementById('devices-body');
-    devices.forEach(d=>{
+    devices.forEach(d => {
       const tr = document.createElement('tr');
       tr.innerHTML = `
         <td><strong>${d.nome}</strong><div class="text-muted" style="font-size:.8rem">UTI-Ala 3</div></td>
@@ -492,36 +609,36 @@
       `;
       tbody.appendChild(tr);
     });
-    
-    function lastMinutes(n){
+
+    function lastMinutes(n) {
       const now = new Date();
       const out = [];
-      for(let i=n-1;i>=0;i--){
-        const d = new Date(now.getTime() - i*60*1000);
-        out.push(d.getHours().toString().padStart(2,'0') + ':' + d.getMinutes().toString().padStart(2,'0'));
+      for (let i = n - 1; i >= 0; i--) {
+        const d = new Date(now.getTime() - i * 60 * 1000);
+        out.push(d.getHours().toString().padStart(2, '0') + ':' + d.getMinutes().toString().padStart(2, '0'));
       }
       return out;
     }
 
     const labels15 = lastMinutes(60);
-    function randSeries(base, variance){
-      return labels15.map(()=> Math.max(0, Math.round(base + (Math.random()-0.5)*variance)));
+    function randSeries(base, variance) {
+      return labels15.map(() => Math.max(0, Math.round(base + (Math.random() - 0.5) * variance)));
     }
 
     const cpuCtx = document.getElementById('chart-cpu');
     new Chart(cpuCtx, {
-    type:'line',
-    data:{
-      labels: labels15,
-      datasets:[
-        {label:'Alertas', data: randSeries(35,40), tension:0.25, fill:false}
-      ]
-    },
-    options:{
-      responsive:true,
-      interaction:{mode:'index', intersect:false},
-      plugins:{legend:{position:'bottom'}}
-    }
+      type: 'line',
+      data: {
+        labels: labels15,
+        datasets: [
+          { label: 'Alertas', data: randSeries(35, 40), tension: 0.25, fill: false }
+        ]
+      },
+      options: {
+        responsive: true,
+        interaction: { mode: 'index', intersect: false },
+        plugins: { legend: { position: 'bottom' } }
+      }
     });
 
 

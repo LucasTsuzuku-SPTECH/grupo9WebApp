@@ -28,6 +28,100 @@ body {
   color: var(--preto);
 }
 
+.corPrincipal {
+  background: #264653;
+}
+
+.navbar-toggler-icon {
+  filter: invert(1);
+
+}
+
+.containerTitulo .logo-titulo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-direction: row;
+}
+
+
+.titulo {
+  font-size: 28px;
+  font-weight: 600;
+  color: white;
+  letter-spacing: 1px;
+  margin: 0;
+}
+
+
+.containerTitulo {
+  display: flex;
+  align-items: start;
+  margin-left: 20px;
+
+}
+
+.nav-item a:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 4px;
+}
+
+.nav-item-selected {
+  background: #30a799;
+  border-radius: 4px;
+
+}
+
+.nav-item-selected a:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 4px;
+
+}
+
+#offcanvasNavbar {
+  width: 16%;
+}
+
+/* Botão de Sair */
+.btn-sair {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background-color: #e63946;
+  color: #fff !important;
+  font-size: 20px;
+  font-weight: bold;
+  padding: 10px;
+  border-radius: 6px;
+  width: 90%;
+  align-self: center;
+  justify-content: center;
+  transition: 0.2s;
+  text-decoration: none;
+}
+
+.btn-sair:hover {
+  background-color: #c92f3e;
+}
+
+/* Abrir chamado */
+.btn-suporte {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: #f5f6fa !important;
+  font-size: 20px;
+  padding: 8px 10px;
+  justify-content: center;
+  text-decoration: none;
+  margin-bottom: 12px;
+}
+
+.icon {
+  width: 22px;
+  height: 22px;
+  filter: invert(1);
+}
 
 a {
   text-decoration: none;
@@ -251,6 +345,7 @@ header {
   flex-direction: row;
   align-items: center;
   width: 100%;
+  height: 100px;
 }
 
 /* Links de ação */
@@ -1826,116 +1921,6 @@ header h2 {
   border-left: 4px solid #00796b;
 }
 
-
-
-
-
-/*Main page*/
-.conteudo-main {
-  display: flex;
-  flex-direction: column;
-  padding: 30px;
-  align-items: flex-start;
-  width: 100%;
-}
-
-
-.kpiDash2 {
-  flex-direction: column;
-  display: flex;
-  justify-content: center;
-  align-items: flex-start;
-  gap: 5px;
-  padding: 4px 15px;
-  border-radius: 10px;
-  background-color: #d5d5d5;
-  border-bottom: 2px solid var(--verde-3);
-  width: 18%;
-  height: 170px;
-  max-height: 200px;
-  margin: 1%;
-  box-sizing: border-box;
-}
-
-
-.graficoContainer2 {
-  background-color: #e0f7fa;
-  padding: 0;
-  margin: 20px;
-  border-radius: 8px;
-  width: 98%;
-  max-height: 450px;
-  height: 100%;
-  min-height: 450px;
-  box-shadow: 5px 5px 10px 2px rgba(0, 0, 0, 0.5);
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-}
-
-.graficoContainer2 canvas {
-  margin-top: 50px;
-}
-
-
-
-
-
-
-
-/* Tabela */
-.graficoTabela2 {
-  width: 95%;
-  border-radius: 8px;
-  border-collapse: collapse;
-}
-
-.graficoTabela2 th {
-  text-align: left;
-  color: black;
-  padding: 10px;
-  text-align: left;
-  font-weight: 600;
-
-}
-
-.graficoTabela2 thead th {
-  position: sticky;
-  background-color: #e0f7fa;
-  top: 0;
-  font-size: 20px;
-}
-
-.graficoTabela2 td {
-  text-align: left;
-  padding: 10px;
-  border-bottom: 1px solid #ccc;
-  color: black;
-}
-
-.selectHospitais {
-  background-color: #00796b;
-  color: white;
-  border: 2px white solid;
-  border-radius: 4px;
-  height: 30px;
-  width: 450px;
-  font-size: 16px;
-  font-weight: 920;
-}
-
-
-
-.divAnalise {
-  display: flex;
-  flex-direction: column;
-  flex-wrap: wrap;
-  justify-content: center;
-  align-items: center;
-  background-color: #83cbc3;
-  width: 100%;
-  height: auto;
-}
 
 .Chamado {
   margin: 1.5%;
