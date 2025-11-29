@@ -4,321 +4,319 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="./../../css/dashboardsCanuto.css">
     <link rel="icon" href="/assets/imgs/Zephyrus.ico" />
+    <link rel="stylesheet" href="./../../css/dashboardsCanuto.css">
     <title>Dashboard - Página Principal</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://kit.fontawesome.com/9f7414eb10.js" crossorigin="anonymous"></script>
     <script src="../../js/sessao.js"></script>
+
+    <!-- CSS Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- JS Bootstrap -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
 </head>
+
 
 <body onload="inicializacao()">
     <div class="div-pai">
         <!-- Cabeçalho -->
         <nav class="navbar corPrincipal fixed-top py-3">
-            <div class="container-fluid justify-content-start ">
+            <div class="container-fluid justify-content-start">
                 <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas"
                     data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon text-white"></span>
+                    <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="containerTitulo">
                     <div class="logo-titulo">
                         <img src="/assets/imgs/Zephyrus_2png.png" style="width: 50px;" alt="">
                         <h1 class="titulo">Zephyrus</h1>
                     </div>
-
-                    <div class="offcanvas offcanvas-start corPrincipal" tabindex="-1" id="offcanvasNavbar"
-                        aria-labelledby="offcanvasNavbarLabel">
-                        <img src="/assets/imgs/Zephyrus_2png.png"
-                            style="width: 170px; align-self: center; margin-bottom: 10px; margin-top: 20px;" alt="">
-                        <div class="offcanvas-header" style="border-bottom:2px solid rgba(255, 255, 255, 0.5);">
-                            <h4 class="offcanvas-title " style="color: #f5f6fa; " id="offcanvasNavbarLabel">Menu</h4>
-                            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas"
-                                aria-label="Close"></button>
-                        </div>
-                        <div class="offcanvas-body d-flex flex-column">
-                            <ul class="navbar-nav justify-content-start flex-grow-1 pe-3">
-                                <li class="nav-item-selected" style="width: 100%;">
-                                    <a id="navMain" class="nav-link active"
-                                        style="padding: 5px; color: #f5f6fa; font-size: 22px;"
-                                        href="./mainPage.html">Página
-                                        principal</a>
-                                </li>
-                                <li class="nav-item" style="width: 100%;">
-                                    <a class="nav-link active" style="padding: 5px; color: #f5f6fa;  font-size: 22px;"
-                                        href="./controleHospitais.html">Hospitais</a>
-                                </li>
-                                <li class="nav-item" style="width: 100%;">
-                                    <a class="nav-link active" style="padding: 5px; color: #f5f6fa;  font-size: 22px;"
-                                        href="./contas.html">Contas</a>
-                                </li>
-                            </ul>
-                            <ul class="navbar-nav d-flex flex-column flex-grow-1 pe-3">
-                                <li class="nav-item mt-auto d-flex justify-content-center" style="width: 100%;">
-                                    <a class="btn-suporte" href="/index">
-                                        <img style="width: 40px;" src="/assets/imgs/headphoneIcon.png" alt="">
-                                        Abrir chamado
-                                    </a>
-                                </li>
-                                <li class="nav-item d-flex justify-content-center" style="width: 100%;">
-                                    <a class="btn-sair" href="/index.html" onclick="sessionStorage.clear()">
-                                        <img class="icon" src="https://cdn-icons-png.flaticon.com/512/1828/1828479.png"
-                                            alt="Logout">
-                                        Sair
-                                    </a>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
                 </div>
+            </div>
         </nav>
 
-        <div class="offcanvas offcanvas-start bg-dark text-white" tabindex="-1" id="sidebarOffcanvas"
-            aria-labelledby="sidebarOffcanvasLabel">
-            <div class="offcanvas-header justify-content-center">
-                <img src="/assets/imgs/Zephyrus_2png.png" alt="Logo" style="height: 40px;">
-                <button type="button" class="btn-close text-reset btn-close-white" data-bs-dismiss="offcanvas"
+        <!-- Menu Offcanvas -->
+        <div class="offcanvas offcanvas-start corPrincipal" tabindex="-1" id="offcanvasNavbar"
+            aria-labelledby="offcanvasNavbarLabel">
+            <img src="/assets/imgs/Zephyrus_2png.png"
+                style="width: 170px; align-self: center; margin-bottom: 10px; margin-top: 20px;" alt="">
+            <div class="offcanvas-header" style="border-bottom:2px solid rgba(255, 255, 255, 0.5);">
+                <h4 class="offcanvas-title" style="color: #f5f6fa;" id="offcanvasNavbarLabel">Menu</h4>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas"
                     aria-label="Close"></button>
             </div>
-        </header>
-
-        <br><br><br>
-
-        <div class="fastActions">
-            <div>
-                <h3 style="color: white;">Filtro de períodos:</h3>
-                <select onchange="updatePeriodo()" class="selects" style="background-color: rgb(131, 203, 195);"
-                    id="filtroPeriodo">
-                    <option value="semanal">Semanal</option>
-                    <option value="mensal">Mensal</option>
-                    <option value="anual">Anual</option>
-                </select>
-            </div>
-
-            <div style="display: flex; flex-direction: row;">
-                <button class="Btn">Gerar relatório</button>
-                <button class="Btn" id="btnIA" onclick="toggleAISidebar()">Analyst AI</button>
-            </div>
-        </div>
-
-
-        <!-- Sidebar Modal -->
-        <div id="sidebarModal" class="sidebar-modal">
-            <img src="/assets/imgs/Zephyrus_2png.png" alt="">
-            <div class="sidebar-header">
-                <span>Menu</span>
-                <button onclick="toggleSidebar()" class="btn-fechar">&times;</button>
+            <div class="offcanvas-body d-flex flex-column">
+                <ul class="navbar-nav justify-content-start flex-grow-1 pe-3">
+                    <li class="nav-item-selected" style="width: 100%;">
+                        <a id="navMain" class="nav-link active" style="padding: 5px; color: #f5f6fa; font-size: 22px;"
+                            href="./mainPage.html">Página principal</a>
+                    </li>
+                    <li class="nav-item" style="width: 100%;">
+                        <a class="nav-link active" style="padding: 5px; color: #f5f6fa; font-size: 22px;"
+                            href="./controleHospitais.html">Hospitais</a>
+                    </li>
+                    <li class="nav-item" style="width: 100%;">
+                        <a class="nav-link active" style="padding: 5px; color: #f5f6fa; font-size: 22px;"
+                            href="./contas.html">Contas</a>
+                    </li>
+                </ul>
+                <ul class="navbar-nav d-flex flex-column flex-grow-1 pe-3">
+                    <li class="nav-item d-flex justify-content-center" style="width: 100%;">
+                        <a class="btn-sair" href="/index.html" onclick="sessionStorage.clear()">
+                            <img class="icon" src="https://cdn-icons-png.flaticon.com/512/1828/1828479.png"
+                                alt="Logout">
+                            Sair
+                        </a>
+                    </li>
+                </ul>
             </div>
         </div>
 
-        <!-- Sidebar da direita (IA) -->
-        <div id="aiSidebar" class="ai-sidebar" aria-hidden="true">
-            <div class="ai-header">
-                <span>Analyst AI</span>
-                <button onclick="toggleAISidebar()" class="btn-fechar">&times;</button>
-            </div>
-            <div class="ai-body">
-                <p>Bem-vindo(a)! <br> Tenha uma análise mais profunda com o auxílio da Analyst AI:</p>
-                <textarea id="aiInput" placeholder="Digite aqui..." rows="5"></textarea>
-                <button class="Btn" onclick="sendToAI()">Enviar</button>
-                <div id="aiResponse" style="margin-top:10px; color:#fff;"></div>
-            </div>
-        </div>
-
-
-
-        <br><br><br><br>
-
-        <div class="conteudo-main">
-            <!-- Filtro e KPIs -->
-
-            <div id="mainKPI" style="width: 100%; display: flex; flex-direction: column; justify-content: center;">
-                <div style="width: 100%; display: flex; flex-direction: row; justify-content: center;">
-                    <div class="kpiDashMain">
-
-                        <h2
-                            style="display: flex; flex-direction: row; justify-content: space-between; align-items: center;">
-                            RAM<img style="width: 80px; align-self: flex-end;"
-                                src="/assets/imgs/iconsDashCanuto/alert.png"></h2>
-                        <p style="height: 60px;">Componente com mais intercorrência</p>
-
-                    </div>
-                    <div class="kpiDashMain">
-                        <h2
-                            style="display: flex; flex-direction: row; justify-content: space-between; align-items: center;">
-                            100<img style="width: 80px; align-self: flex-end;"
-                                src="/assets/imgs/iconsDashCanuto/alertMedium.png"></h2>
-                        <p style="height: 60px;">Total de intercorrências</p>
-                    </div>
+        <div class="main-content">
+            <div class="fastActions">
+                <div>
+                    <h4 style="margin: 0px; color: white;">Filtro de períodos:</h4>
+                    <select onchange="updatePeriodo()" class="selects"
+                        style="height: 25px; background-color: rgb(131, 203, 195);" id="filtroPeriodo">
+                        <option value="semanal">Semanal</option>
+                        <option value="mensal">Mensal</option>
+                        <option value="anual">Anual</option>
+                    </select>
                 </div>
 
-                <div style="width: 100%; display: flex; flex-direction: row; justify-content: center;">
-                    <div class="kpiDash">
-                        <h2
-                            style="display: flex; flex-direction: row; justify-content: space-between; align-items: center;">
-                            25%<img style="width: 70px; align-self: flex-end;"
-                                src="/assets/imgs/iconsDashCanuto/CPU.png"></h2>
-                        <p style="height: 60px;">Intercorrências em CPU (25/100)</p>
-                    </div>
-                    <div class="kpiDash">
-                        <h2
-                            style="display: flex; flex-direction: row; justify-content: space-between; align-items: center;">
-                            50%<img style="width: 70px; align-self: flex-end;"
-                                src="/assets/imgs/iconsDashCanuto/RAM.png"></h2>
-                        <p style="height: 60px;">Intercorrências em RAM (50/100)</p>
-                    </div>
-                    <div class="kpiDash">
-                        <h2
-                            style="display: flex; flex-direction: row; justify-content: space-between; align-items: center;">
-                            20%<img style="width: 70px; align-self: flex-end;"
-                                src="/assets/imgs/iconsDashCanuto/Disco.png"></h2>
-                        <p style="height: 60px;">Intercorrências em Disco (20/100)</p>
-                    </div>
-                    <div class="kpiDash">
-                        <h2
-                            style="display: flex; flex-direction: row; justify-content: space-between; align-items: center;">
-                            05%<img style="width: 70px; align-self: flex-end;"
-                                src="/assets/imgs/iconsDashCanuto/Processos.png"></h2>
-                        <p style="height: 60px;">Intercorrências em Processos (05/100)</p>
-                    </div>
+                <div style="display: flex; flex-direction: row;">
+                    <button class="Btn">Gerar relatório</button>
+                    <button class="Btn" id="btnIA" onclick="toggleAISidebar()">Analyst AI</button>
                 </div>
             </div>
 
-            <!-- Info principal 1 -->
-            <div style="width: 100%; display: flex; flex-wrap: wrap; flex-direction: row; justify-content: center;">
-                <div style="width: 45%;" class="container">
-                    <div class="containerHeader">Ranking de intercorrência por modelos (<a
-                            class="periodoSelected"></a>):
-                    </div>
-                    <div class="tabelaWrapper">
-                        <table id="rankingModelo" class="tabela">
-                            <thead>
-                                <tr>
-                                    <th>Posição</th>
-                                    <th>Modelo</th>
-                                    <th>Total de Intercorrências</th>
-                                </tr>
-                            </thead>
-                        </table>
-                    </div>
+
+
+
+            <!-- Sidebar da direita (IA) -->
+            <div id="aiSidebar" class="ai-sidebar" aria-hidden="true">
+                <div class="ai-header">
+                    <h1>Analyst AI</h1>
+                    <button onclick="toggleAISidebar()" class="btn-close btn-close-white"></button>
                 </div>
-                <div style="width: 45%;" class="container">
-                    <div class="containerHeader">Percentual de intercorrências por modelo/componente (<a
-                            class="periodoSelected"></a>):
+                <div class="ai-body">
+                    <p style="font-size: 18px;">Bem-vindo(a)! <br> Tenha uma análise mais profunda com o auxílio da
+                        Analyst AI:</p>
+                    <textarea style="font-size: 20px;" id="aiInput" placeholder="Digite aqui..." rows="5"
+                        onkeydown="enterMensagemIA(event)"></textarea>
+                    <button class="Btn" onclick="sendToAI()">Enviar</button>
+                    <div id="aiResponse" style="font-size: 18px; margin-top:10px; color:#fff;"></div>
+                </div>
+            </div>
+
+            <br><br>
+
+            <div class="conteudo-main">
+                <h2 style="margin-left: 70px; margin-bottom: 50px; margin-top: 25px;">Dashboard Principal: Interface de
+                    funcionário</h2>
+
+
+                <!-- Filtro e KPIs -->
+                <div id="mainKPI" style="width: 100%; display: flex; flex-direction: column; justify-content: center;">
+                    <div style="width: 100%; display: flex; flex-direction: row; justify-content: center;">
+                        <div style="border-bottom: rgb(235, 214, 31) solid 4px;" class="kpiDashMain">
+                            <h2
+                                style="display: flex; flex-direction: row; justify-content: space-between; align-items: center;">
+                                RAM
+                                <i class="bi bi-exclamation-circle-fill"
+                                    style="font-size: 60px; color: rgb(235, 214, 31);"></i>
+                            </h2>
+                            <p style="height: 60px;">Componente com mais intercorrência</p>
+                        </div>
+                        <div style="border-bottom: #e63946 solid 4px;" class="kpiDashMain">
+                            <h2
+                                style="display: flex; flex-direction: row; justify-content: space-between; align-items: center;">
+                                100
+                                <i class="bi bi-exclamation-circle-fill" style="font-size: 60px; color: #e63946;"></i>
+                            </h2>
+                            <p style="height: 60px;">Total de intercorrências</p>
+                        </div>
                     </div>
-                    <div class="chartContent">
-                        <div id="grafMain1"></div>
+
+                    <div style="width: 100%; display: flex; flex-direction: row; justify-content: center;">
+                        <div class="kpiDash">
+                            <h2
+                                style="display: flex; flex-direction: row; justify-content: space-between; align-items: center;">
+                                25%
+                                <i class="bi bi-cpu" style="font-size: 50px;"></i>
+                            </h2>
+                            <p style="height: 60px;">Intercorrências em CPU (25/100)</p>
+                        </div>
+                        <div class="kpiDash">
+                            <h2
+                                style="display: flex; flex-direction: row; justify-content: space-between; align-items: center;">
+                                50%
+                                <i class="bi bi-memory" style="font-size: 50px;"></i>
+                            </h2>
+                            <p style="height: 60px;">Intercorrências em RAM (50/100)</p>
+                        </div>
+                        <div class="kpiDash">
+                            <h2
+                                style="display: flex; flex-direction: row; justify-content: space-between; align-items: center;">
+                                20%
+                                <i class="bi bi-hdd" style="font-size: 50px;"></i>
+                            </h2>
+                            <p style="height: 60px;">Intercorrências em Disco (20/100)</p>
+                        </div>
+                        <div class="kpiDash">
+                            <h2
+                                style="display: flex; flex-direction: row; justify-content: space-between; align-items: center;">
+                                05%
+                                <i class="bi bi-diagram-3" style="font-size: 50px;"></i>
+                            </h2>
+                            <p style="height: 60px;">Intercorrências em Processos (05/100)</p>
+                        </div>
                     </div>
                 </div>
 
-                <!-- Info principal 2 -->
-                <div style="width: 92%;" class="container">
-                    <div class="containerHeader">Percentual de intercorrências de modelos por top 5 hospitas/modelo (<a
-                            class="periodoSelected"></a>):</div>
-                    <div class="chartContent">
-                        <div id="grafMain2"></div>
+                <!-- Info principal 1 -->
+                <div style="width: 100%; display: flex; flex-wrap: wrap; flex-direction: row; justify-content: center;">
+                    <div style="width: 45%;" class="container">
+                        <div class="containerHeader">Ranking de intercorrências por modelos (<a
+                                class="periodoSelected"></a>):
+                        </div>
+                        <div class="tabelaWrapper">
+                            <table id="rankingModelo" class="tabela">
+                                <thead>
+                                    <tr>
+                                        <th>Posição</th>
+                                        <th>Modelo</th>
+                                        <th>Total de Intercorrências</th>
+                                    </tr>
+                                </thead>
+                            </table>
+                        </div>
+                    </div>
+                    <div style="width: 45%;" class="container">
+                        <div class="containerHeader">Percentual de intercorrências por modelo/componente (<a
+                                class="periodoSelected"></a>):
+                        </div>
+                        <div class="chartContent">
+                            <div id="grafMain1"></div>
+                        </div>
+                    </div>
+
+                    <!-- Info principal 2 -->
+                    <div class="container">
+                        <div class="containerHeader">Percentual de intercorrências de modelos por top 5 hospitas/modelo
+                            (<a class="periodoSelected"></a>):</div>
+                        <div class="chartContent">
+                            <div id="grafMain2"></div>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
 
 
-        <!-- Visão específica -->
-        <div class="divEspecifica">
-            <h1 style="margin-left: 70px;">Visão específica:</h1>
-            <div style="width: 90%; margin-left: 70px;">
-                <select onchange="updateHospital()" class="selects" style="background-color: #39a699;"
-                    id="filtroHospital">
-                    <option value="">Selecione um hospital...</option>
-                    <option value="teste1">teste1</option>
-                    <option value="teste2">teste2</option>
-                </select>
+            <!-- Visão específica -->
+            <div class="divEspecifica">
+                <h1 style="margin-left: 70px;">Visão específica:</h1>
+                <div style="width: 90%; margin-left: 70px;">
+                    <select onchange="updateHospital()" class="selects" style="background-color: #39a699;"
+                        id="filtroHospital">
+                        <option value="">Selecione um hospital...</option>
+                        <option value="teste1">teste1</option>
+                        <option value="teste2">teste2</option>
+                    </select>
+                </div>
+
+
+                <div style="width: 100%; display: flex; flex-wrap: wrap; flex-direction: row; justify-content: center;">
+                    <div style="width: 45%;" class="container">
+                        <div class="containerHeader">Ranking de intercorrência por área <a class="hospitalSelected"></a>
+                            (<a class="periodoSelected"></a>):</div>
+                        <div class="tabelaWrapper">
+                            <table id="rankingModelo" class="tabela">
+                                <thead>
+                                    <tr>
+                                        <th>Posição</th>
+                                        <th>Área</th>
+                                        <th>Total de Intercorrências</th>
+                                    </tr>
+                                </thead>
+                            </table>
+                        </div>
+                    </div>
+
+                    <div style="width: 45%;" class="container">
+                        <div class="containerHeader">Percentual de intercorrências por área/modelo <a
+                                class="hospitalSelected"></a> (<a class="periodoSelected"></a>):</div>
+                        <div class="chartContent">
+                            <div id="grafEsp1"></div>
+                        </div>
+                    </div>
+
+
+
+                    <div style="width: 45%;" class="container">
+                        <div class="containerHeader">Ranking de intercorrência por modelos <a
+                                class="hospitalSelected"></a>
+                            (<a class="periodoSelected"></a>):</div>
+                        <div class="tabelaWrapper">
+                            <table id="rankingModelo" class="tabela">
+                                <thead>
+                                    <tr>
+                                        <th>Posição</th>
+                                        <th>Modelo</th>
+                                        <th>Total de Intercorrências</th>
+                                    </tr>
+                                </thead>
+                            </table>
+                        </div>
+                    </div>
+
+                    <div style="width: 45%;" class="container">
+                        <div class="containerHeader">Percentual de intercorrências por modelo/componente <a
+                                class="hospitalSelected"></a>
+                            (<a class="periodoSelected"></a>):</div>
+                        <div class="chartContent">
+                            <div id="grafEsp2"></div>
+                        </div>
+                    </div>
+                </div>
             </div>
 
+            <div class="divPrevisao">
+                <h1
+                    style="padding-left: 70px; color: white; -webkit-text-stroke-width: 1px; -webkit-text-stroke-color: #000;">
+                    Previsão baseada no estado atual:</h1>
 
-            <div style="width: 100%; display: flex; flex-wrap: wrap; flex-direction: row; justify-content: center;">
-                <div style="width: 45%;" class="container">
-                    <div class="containerHeader">Ranking de intercorrência por área <a class="hospitalSelected"></a>
-                        (<a class="periodoSelected"></a>):</div>
-                    <div class="tabelaWrapper">
-                        <table id="rankingModelo" class="tabela">
-                            <thead>
-                                <tr>
-                                    <th>Posição</th>
-                                    <th>Área</th>
-                                    <th>Total de Intercorrências</th>
-                                </tr>
-                            </thead>
-                        </table>
-                    </div>
-                </div>
+                <div style="width: 100%; display: flex; flex-wrap: wrap; flex-direction: row; justify-content: center;">
+                    <div style="border: none; border-radius: 4px 0px 0px 4px; width: 45%; height: 360px; margin-right: 0px !important;"
+                        class="container">
+                        <div style="border-radius: 4px 0px 0px 0px;" class="containerHeader">Previsão de Intercorrências
+                            (<a class="periodoSelected"></a>):
+                        </div>
+                        <div class="chartContent">
+                            <div id="grafPrevisao"></div>
+                        </div>
 
-                <div style="width: 45%;" class="container">
-                    <div class="containerHeader">Percentual de intercorrências por área/modelo <a
-                            class="hospitalSelected"></a> (<a class="periodoSelected"></a>):</div>
-                    <div class="chartContent">
-                        <div id="grafEsp1"></div>
-                    </div>
-                </div>
-
-
-
-                <div style="width: 45%;" class="container">
-                    <div class="containerHeader">Ranking de intercorrência por modelos <a class="hospitalSelected"></a>
-                        (<a class="periodoSelected"></a>):</div>
-                    <div class="tabelaWrapper">
-                        <table id="rankingModelo" class="tabela">
-                            <thead>
-                                <tr>
-                                    <th>Posição</th>
-                                    <th>Modelo</th>
-                                    <th>Total de Intercorrências</th>
-                                </tr>
-                            </thead>
-                        </table>
-                    </div>
-                </div>
-
-                <div style="width: 45%;" class="container">
-                    <div class="containerHeader">Percentual de intercorrências por modelo/componente <a
-                            class="hospitalSelected"></a>
-                        (<a class="periodoSelected"></a>):</div>
-                    <div class="chartContent">
-                        <div id="grafEsp2"></div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="divPrevisao">
-            <h1
-                style="padding-left: 70px; color: white; -webkit-text-stroke-width: 1px; -webkit-text-stroke-color: #000;">
-                Previsão baseada no estado atual:</h1>
-
-            <div style="width: 100%; display: flex; flex-wrap: wrap; flex-direction: row; justify-content: center;">
-                <div style="border-radius: 8px 0px 0px 8px; width: 45%; height: 360px; align-self: center; margin-right: 0px;"
-                    class="container">
-                    <div style="border-radius: 8px 0px 0px 0px;" class="containerHeader">Previsão de Intercorrências (<a
-                            class="periodoSelected"></a>):
-                    </div>
-                    <div class="chartContent">
-                        <div id="grafPrevisao"></div>
                     </div>
 
-                </div>
-
-                <div style="box-shadow: 10x 5px 10px 0px rgba(0, 0, 0, 0.5); border-radius: 0px 8px 8px 0px; margin-left: 0px; flex-direction: column; justify-content: flex-start; padding: 15px; width: 45%; align-self: center; background-color: #264653;"
-                    class="container">
-                    <div class="previsoes">
-                        Aumento de 30% ⬆
-                    </div>
-                    <div class="previsoes">
-                        Diminuição de 30% ⬇
+                    <div style="border: none; box-shadow: 10x 5px 10px 0px rgba(0, 0, 0, 0.5); border-radius: 0px 4px 4px 4px; margin-left: 0px !important; flex-direction: column; justify-content: flex-start; padding: 15px; width: 45%; align-self: center; background-color: #264653;"
+                        class="container">
+                        <div class="previsoes">
+                            Aumento de 30% ⬆
+                        </div>
+                        <div class="previsoes">
+                            Diminuição de 30% ⬇
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+
 </body>
 
 </html>
@@ -329,54 +327,38 @@
 <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
+    function inicializacao() {
+        updatePeriodo();
+
+
+
+
+
+
+
+        document.addEventListener('click', function (event) {
+            const aiSidebar = document.getElementById('aiSidebar');
+            const btnIA = document.getElementById('btnIA');
+
+            if (aiSidebar && aiSidebar.classList.contains('active')) {
+                // Se o clique não foi no botão IA ou na sidebar
+                if (!btnIA.contains(event.target) && !aiSidebar.contains(event.target)) {
+                    aiSidebar.classList.remove('active');
+                    aiSidebar.setAttribute('aria-hidden', 'true');
+                }
+            }
+        });
+    }
+
+
+
+
     function toggleSidebar() {
         const sidebar = document.getElementById("sidebarModal");
         const icone = document.getElementById("icone");
 
         sidebar.classList.toggle("active");
     }
-
-
-
-    function toggleAISidebar() {
-        const ai = document.getElementById('aiSidebar');
-        ai.classList.toggle('active');
-        ai.setAttribute('aria-hidden', ai.classList.contains('active') ? 'false' : 'true');
-    }
-
-    function sendToAI() {
-        const input = document.getElementById('aiInput');
-        const resp = document.getElementById('aiResponse');
-        const text = input.value;
-
-        if (!text) {
-            resp.innerHTML = '<em>Digite um prompt válido.</em>';
-            return;
-        }
-
-        resp.innerHTML = 'Processando...';
-
-        gerarResposta(text);
-    }
-
-
-    async function gerarResposta(texto) {
-        const resp = document.getElementById('aiResponse');
-
-        const response = await fetch('/ia/perguntar', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ texto })
-        });
-
-        const data = await response.json();
-        
-        resp.innerHTML = data.resultado;
-    }
-
-
 
     function mostrarNavbar() {
         const larguraTela = window.innerWidth;
@@ -410,6 +392,60 @@
     }
 
 
+
+
+
+
+
+    function toggleAISidebar() {
+        const ai = document.getElementById('aiSidebar');
+        ai.classList.toggle('active');
+        ai.setAttribute('aria-hidden', ai.classList.contains('active') ? 'false' : 'true');
+    }
+
+    function enterMensagemIA(event) {
+        if (event.key === 'Enter' && !event.shiftKey) {
+            event.preventDefault();
+            sendToAI();
+        }
+    }
+
+    function sendToAI() {
+        const input = document.getElementById('aiInput');
+        const resp = document.getElementById('aiResponse');
+        const text = input.value;
+
+        if (!text) {
+            resp.innerHTML = '<em>Digite um prompt válido.</em>';
+            return;
+        }
+
+        resp.innerHTML = 'Processando...';
+
+        gerarResposta(text);
+    }
+
+    async function gerarResposta(texto) {
+        const resp = document.getElementById('aiResponse');
+
+        const response = await fetch('/ia/perguntar', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ texto })
+        });
+
+        const data = await response.json();
+
+        resp.innerHTML = data.resultado;
+    }
+
+
+
+
+
+
     function updatePeriodo() {
         document.querySelectorAll(".periodoSelected").forEach(function (periodoSelected) {
             periodoSelected.innerHTML = `${document.getElementById("filtroPeriodo").value}`;
@@ -427,9 +463,10 @@
     }
 
 
-    function inicializacao() {
-        updatePeriodo();
-    }
+
+
+
+
 
 
     /* ------------------- KPIs -------------------*/
