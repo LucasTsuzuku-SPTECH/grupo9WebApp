@@ -6,57 +6,74 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard - Gestor Empresa</title>
     <link rel="icon" href="/assets/imgs/Zephyrus.icon" />
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="/css/dashboardGestor.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.js"></script>
     <script src="https://kit.fontawesome.com/9f7414eb10.js" crossorigin="anonymous"></script>
 
-
 </head>
 
 <body>
-    <!-- Cabeçalho -->
-    <header style="position: fixed; z-index: 1000;">
-        <div class="header-container">
-            <div class="div-hamburguer" onclick="toggleSidebar()">
-                <!-- Botão Hamburguer -->
-                <a class="navbar-mob">
-                    <i id="icone" class="fa-solid fa-bars"></i>
-                </a>
+    <!-- Cabeçalho (substituído do mainPage) -->
+    <nav class="navbar corPrincipal fixed-top py-3">
+      <div class="container-fluid justify-content-start ">
+        <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar"
+          aria-controls="offcanvasNavbar" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon text-white"></span>
+        </button>
+        <div class="containerTitulo">
+          <div class="logo-titulo">
+            <img src="/assets/imgs/Zephyrus_2png.png" style="width: 50px;" alt="">
+            <h1 class="titulo">Zephyrus</h1>
+          </div>
+
+          <div class="offcanvas offcanvas-start corPrincipal" tabindex="-1" id="offcanvasNavbar"
+            aria-labelledby="offcanvasNavbarLabel">
+            <img src="/assets/imgs/Zephyrus_2png.png"
+              style="width: 170px; align-self: center; margin-bottom: 10px; margin-top: 20px;" alt="">
+            <div class="offcanvas-header" style="border-bottom:2px solid rgba(255, 255, 255, 0.5);">
+              <h4 class="offcanvas-title " style="color: #f5f6fa; " id="offcanvasNavbarLabel">Menu</h4>
+              <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas"
+                aria-label="Close"></button>
             </div>
-            <h2>DASHBOARD - PÁGINA PRINCIPAL</h2>
-            <div class="div-pai-perfil">
-                <div class="div-linha"></div>
-                <div class="div-todo-perfil">
-                    <div class="div-filho-perfil">
-                        <img src="../../assets/imgs/profile.png" alt="imagem de perfil" class="img-perfil" />
-                        <img src="../../assets/imgs/seta-para-baixo-braca.png" alt="ver opções" class="img-seta" />
-                    </div>
-                    <div class="div-opcoes">
-                        <div class="div-opcao-sair">
-                            <button style="border: none;" onclick="limparSessao()" id="sair"><span>Sair</span></button>
-                        </div>
-                    </div>
-                </div>
+            <div class="offcanvas-body d-flex flex-column">
+              <ul class="navbar-nav justify-content-start flex-grow-1 pe-3">
+                <li class="nav-item-selected" style="width: 100%;">
+                  <a id="navMain" class="nav-link active" style="padding: 5px; color: #f5f6fa; font-size: 22px;"
+                    href="./mainPage.html">Página
+                    principal</a>
+                </li>
+                <li class="nav-item" style="width: 100%;">
+                  <a class="nav-link active" style="padding: 5px; color: #f5f6fa;  font-size: 22px;"
+                    href="./controleHospitais.html">Hospitais</a>
+                </li>
+                <li class="nav-item" style="width: 100%;">
+                  <a class="nav-link active" style="padding: 5px; color: #f5f6fa;  font-size: 22px;"
+                    href="./contas.html">Contas</a>
+                </li>
+              </ul>
+              <ul class="navbar-nav d-flex flex-column flex-grow-1 pe-3">
+                <li class="nav-item mt-auto d-flex justify-content-center" style="width: 100%;">
+                  <a class="btn-suporte" href="/index">
+                    <img style="width: 40px;" src="/assets/imgs/headphoneIcon.png" alt="">
+                    Abrir chamado
+                  </a>
+                </li>
+                <li class="nav-item d-flex justify-content-center" style="width: 100%;">
+                  <a class="btn-sair" href="/index.html" onclick="sessionStorage.clear()">
+                    <img class="icon" src="https://cdn-icons-png.flaticon.com/512/1828/1828479.png" alt="Logout">
+                    Sair
+                  </a>
+                </li>
+              </ul>
             </div>
+          </div>
         </div>
-    </header>
+    </nav>
+
     <br><br><br><br>
-    <!-- Sidebar Modal -->
-    <div id="sidebarModal" class="sidebar-modal">
-        <img src="/assets/imgs/Zephyrus_2png.png" alt="">
-        <div class="sidebar-header">
-            <span>Menu</span>
-            <button onclick="toggleSidebar()" class="btn-fechar">&times;</button>
-        </div>
-        <nav class="sidebar-nav">
-            <a class="pgAtual" href="./mainPage.html">Página principal</a>
-            <a href="./controleHospitais.html">Hospitais</a>
-            <a href="./contas.html">Contas</a>
-        </nav>
-    </div>
 
     <!-- Main Content -->
     <main class="container my-4">
@@ -143,8 +160,6 @@
             </div>
         </div>
 
-
-
         <!-- Charts Row -->
         <div class="row g-4 mb-4">
             <div class="col-lg-6">
@@ -183,11 +198,10 @@
             </div>
         </div>
 
-
     </main>
 
     <!-- Bootstrap JS -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 
     <script>
         // checando se o elemento existe antes
@@ -198,14 +212,6 @@
             dateElement.textContent = now.toLocaleDateString('pt-BR', options);
         }
 
-        function toggleSidebar() {
-            const sidebar = document.getElementById("sidebarModal");
-            const icone = document.getElementById("icone");
-            if (sidebar) sidebar.classList.toggle("active");
-            if (icone) icone.classList.toggle('fa-times');
-        }
-
-        // inicializa só se existirem
         window.addEventListener('load', () => {
             try {
                 const statusEl = document.getElementById('statusChart');
@@ -260,30 +266,6 @@
                             maintainAspectRatio: false,
                             scales: { x: { grid: { display: false } }, y: { beginAtZero: true } },
                             plugins: { legend: { position: 'bottom' } }
-                        }
-                    });
-                }
-
-                const rootEl = document.getElementById('rootCauseChart');
-                if (rootEl) {
-                    const rootCtx = rootEl.getContext('2d');
-                    new Chart(rootCtx, {
-                        type: 'bar',
-                        data: {
-                            labels: ['Memória RAM', 'Disco Rígido', 'CPU', 'Rede', 'Outros'],
-                            datasets: [{
-                                label: 'Número de Falhas',
-                                data: [38, 28, 21, 5, 2],
-                                backgroundColor: ['#dc2626', '#ea580c', '#f59e0b', '#84cc16', '#94a3b8'],
-                                borderRadius: 4
-                            }]
-                        },
-                        options: {
-                            indexAxis: 'y',
-                            responsive: true,
-                            maintainAspectRatio: false,
-                            scales: { x: { beginAtZero: true }, y: { grid: { display: false } } },
-                            plugins: { legend: { display: false } }
                         }
                     });
                 }
