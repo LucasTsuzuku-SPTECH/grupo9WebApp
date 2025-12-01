@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="pt-br">
-
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -146,7 +145,6 @@
   </style>
 
 </head>
-
 <body onload="hospital()">
 
   <nav class="navbar corPrincipal fixed-top py-3">
@@ -250,16 +248,16 @@
             <div class="me-3 mb-2 mb-md-0">
               <label for="filtroTempo" class="form-label mb-0 visually-hidden">Período:</label>
               <div class="btn-group" role="group" aria-label="Filtro de Período">
-                <input type="radio" class="btn-check" name="filtroTempo" id="tempoHora" autocomplete="off" checked>
+                <input onclick="Tempo('Hora')" type="radio" class="btn-check" name="filtroTempo" id="tempoHora" autocomplete="off" checked>
                 <label class="btn btn-outline-primary btn-sm" for="tempoHora">Hora</label>
 
-                <input type="radio" class="btn-check" name="filtroTempo" id="tempoDia" autocomplete="off">
+                <input onclick="Tempo('Dia')" type="radio" class="btn-check" name="filtroTempo" id="tempoDia" autocomplete="off">
                 <label class="btn btn-outline-primary btn-sm" for="tempoDia">Dia</label>
 
-                <input type="radio" class="btn-check" name="filtroTempo" id="tempoSemana" autocomplete="off">
+                <input onclick="Tempo('Semana')" type="radio" class="btn-check" name="filtroTempo" id="tempoSemana" autocomplete="off">
                 <label class="btn btn-outline-primary btn-sm" for="tempoSemana">Semana</label>
 
-                <input type="radio" class="btn-check" name="filtroTempo" id="tempoMes" autocomplete="off">
+                <input onclick="Tempo('Mes')" type="radio" class="btn-check" name="filtroTempo" id="tempoMes" autocomplete="off">
                 <label class="btn btn-outline-primary btn-sm" for="tempoMes">Mês</label>
               </div>
             </div>
@@ -536,8 +534,14 @@
       }
     }
 
-    // O listener de clique no window para fechar modais não é mais necessário,
-    // pois o Bootstrap cuida disso automaticamente com o clique no backdrop.
+    function Tempo(Periodo){
+
+      if(Periodo == 'Mes'){
+        
+        ai.innerHTML = `aiiii`
+      }
+
+    }
 
     async function hospital() {
       const resposta = await fetch(`/controle/hospitais/${sessionStorage.getItem("FK")}`);
