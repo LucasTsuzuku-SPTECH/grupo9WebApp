@@ -13,7 +13,7 @@ const s3Client = new S3Client({
 // Busca o JSON de Umidade do S3
 function buscarUmidadeS3() {
     const params = {
-        Bucket: process.env.BUCKET_CLIENT,
+        Bucket: process.env.BUCKET_CLIENT_FERRO,
         Key: "Crawler/Dados-Umidade/umidade_SP.json"
     };
     
@@ -27,7 +27,7 @@ function buscarUmidadeS3() {
 // Busca o CSV de monitoramento do S3
 function buscarMonitoramentoS3() {
     const params = {
-        Bucket: process.env.BUCKET_CLIENT,
+        Bucket: process.env.BUCKET_CLIENT_FERRO,
         Key: "Dados-Mensal/arquivoClientMensal.csv" 
     };
 
