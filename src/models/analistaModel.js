@@ -1,4 +1,4 @@
-import { parse } from "csv-parse/sync";
+var parse = require("csv-parse/sync");
 const { S3Client, GetObjectCommand } = require("@aws-sdk/client-s3");
 const dataMoment = require('moment')
 var database = require("../database/config");
@@ -17,7 +17,7 @@ async function listarAnual() {
 
     const params = {
         Bucket: process.env.BUCKET_CLIENT,
-        Key: `client-zephyrus/AlertasHistorico/${anoAtual}/alertasDoAno.csv`
+        Key: `AlertasHistorico/${anoAtual}/alertasDoAno.csv`
     };
 
     const command = new GetObjectCommand(params);
@@ -25,7 +25,7 @@ async function listarAnual() {
     var resultado = await s3Client.send(command);
     var csvString = await resultado.Body.transformToString();
 
-    const dataJSON = parse(csvString, {
+    const dataJSON = parse.parse(csvString, {
         columns: true,
         skip_empty_lines: true
     });
@@ -41,7 +41,7 @@ async function listarMensal() {
 
     const params = {
         Bucket: process.env.BUCKET_CLIENT,
-        Key: `client-zephyrus/AlertasHistorico/${anoAtual}/${mesAtual}/alertasDo${meses[mes]}.csv`
+        Key: `AlertasHistorico/${anoAtual}/${mesAtual}/alertasDo${meses[mes]}.csv`
     };
 
     const command = new GetObjectCommand(params);
@@ -49,7 +49,7 @@ async function listarMensal() {
     var resultado = await s3Client.send(command);
     var csvString = await resultado.Body.transformToString();
 
-    const dataJSON = parse(csvString, {
+    const dataJSON = parse.parse(csvString, {
         columns: true,
         skip_empty_lines: true
     });
@@ -66,7 +66,7 @@ async function listarSemanal() {
 
     const params = {
         Bucket: process.env.BUCKET_CLIENT,
-        Key: `client-zephyrus/AlertasHistorico/${anoAtual}/${mesAtual}/Semana${semanaAtual}/alertaDaSemana.csv`
+        Key: `AlertasHistorico/${anoAtual}/${mesAtual}/Semana${semanaAtual}/alertaDaSemana.csv`
     };
 
     const command = new GetObjectCommand(params);
@@ -74,7 +74,7 @@ async function listarSemanal() {
     var resultado = await s3Client.send(command);
     var csvString = await resultado.Body.transformToString();
 
-    const dataJSON = parse(csvString, {
+    const dataJSON = parse.parse(csvString, {
         columns: true,
         skip_empty_lines: true
     });

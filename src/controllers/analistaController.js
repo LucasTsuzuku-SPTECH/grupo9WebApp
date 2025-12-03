@@ -2,7 +2,7 @@ var analistaModel = require("../models/analistaModel");
 
 async function listarSemanal(req, res) {
   try {
-    const dadoSemanal = await analistaModelModel.listarSemanal();
+    const dadoSemanal = await analistaModel.listarSemanal();
     res.json(dadoSemanal);
   } catch (err) {
     console.error(err);
@@ -14,7 +14,7 @@ async function listarSemanal(req, res) {
 
 async function listarMensal(req, res) {
   try {
-    const dadoMensal = await analistaModelModel.listarMensal();
+    const dadoMensal = await analistaModel.listarMensal();
     res.json(dadoMensal);
   } catch (err) {
     console.error(err);
@@ -26,7 +26,7 @@ async function listarMensal(req, res) {
 
 async function listarAnual(req, res) {
   try {
-    const dadoAnual = await analistaModelModel.listarAnual();
+    const dadoAnual = await analistaModel.listarAnual();
     res.json(dadoAnual);
   } catch (err) {
     console.error(err);
@@ -39,7 +39,7 @@ async function listarModelos(req, res) {
     var idEmpresa = req.param.FK
 
   try {
-    const dadoAnual = await analistaModelModel.listarModelos(idEmpresa);
+    const dadoAnual = await analistaModel.listarModelos(idEmpresa);
     res.json(dadoAnual);
   } catch (err) {
     console.error(err);
