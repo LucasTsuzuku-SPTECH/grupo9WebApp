@@ -24,6 +24,10 @@ var controleRouter = require("./src/routes/controle");
 var emailRouter = require("./src/routes/email")
 var jiraRouter = require("./src/routes/jira")
 var medidasRouter = require("./src/routes/medidas")
+var analistaRouter = require("./src/routes/analista")
+
+var iaRouter = require("./src/routes/ia");
+
 
 
 app.use(express.json());
@@ -40,6 +44,11 @@ app.use("/controle", controleRouter);
 app.use("/email", emailRouter)
 app.use("/jira", jiraRouter);
 app.use("/medidas", medidasRouter);
+app.use("/analista", analistaRouter)
+
+app.use("/ia", iaRouter)
+
+
 
 app.listen(PORTA_APP, function () {
     console.log(`
@@ -59,6 +68,4 @@ app.listen(PORTA_APP, function () {
 });
 
 
-var iaRouter = require("./src/routes/ia");
-app.use("/ia", iaRouter)
 
