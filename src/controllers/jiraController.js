@@ -1,6 +1,6 @@
 
     const emailJira="zephyrus2g@gmail.com"
-    const tokenJira="";
+    const tokenJira="ATATT3xFfGF0R_padnKDM-eLEIRBYjxADAqp4CBbJn1XFSYIblyXvfjrMfpyESm93HElKwcZ6ntQWCTzM_bHogbJczReiSC8zhbIvYp7qRXpozMXj35wrMjNOVyTypVeIwUuXOVEbjdXAeDp77W8KgqKHq0pXQvDIz5xvsnD9FzQfBLYpjdV3As=7162A9A8";
     const dominioJira="zephyrus2g1.atlassian.net";
     const auth=btoa(`${emailJira}:${tokenJira}`)
 
@@ -17,7 +17,8 @@ async function buscarChamadosJira(req, res) {
         body:JSON.stringify({
             jql:"project='Chamados zephyrus'",
             maxResults:100,
-            fields:["summary","status","assignee","created","priority","customfield_10091","customfield_10092"]
+            fields:["summary","duedate","status","assignee","created","priority","customfield_10091","customfield_10092","resolutiondate"],
+      
         })
     });
     const dados=await resposta.json();
