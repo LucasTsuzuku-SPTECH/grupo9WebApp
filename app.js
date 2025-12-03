@@ -7,7 +7,6 @@ var caminho_env = ambiente_processo === 'producao' ? '.env' : '.env.dev';
 
 require("dotenv").config({ path: caminho_env });
 
-const { GoogleGenAI } = require("@google/genai");
 var express = require("express");
 var cors = require("cors");
 var path = require("path");
@@ -25,6 +24,10 @@ var controleRouter = require("./src/routes/controle");
 var emailRouter = require("./src/routes/email")
 var jiraRouter = require("./src/routes/jira")
 var medidasRouter = require("./src/routes/medidas")
+var analistaRouter = require("./src/routes/analista")
+
+var iaRouter = require("./src/routes/ia");
+
 
 
 app.use(express.json());
@@ -41,6 +44,11 @@ app.use("/controle", controleRouter);
 app.use("/email", emailRouter)
 app.use("/jira", jiraRouter);
 app.use("/medidas", medidasRouter);
+app.use("/analista", analistaRouter)
+
+app.use("/ia", iaRouter)
+
+
 
 app.listen(PORTA_APP, function () {
     console.log(`
@@ -60,15 +68,4 @@ app.listen(PORTA_APP, function () {
 });
 
 
-
-
-// // configurando CORS
-// app.use((req, res, next) => {
-//     res.header('Access-Control-Allow-Origin', '*');
-//     res.header('Access-Control-Allow-Headers', 'Origin, Content-Type, Accept');
-//     next();
-// });
-
-var iaRouter = require("./src/routes/ia");
-app.use("/ia", iaRouter)
 

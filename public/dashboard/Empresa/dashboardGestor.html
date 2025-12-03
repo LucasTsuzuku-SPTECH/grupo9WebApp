@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Gestor Empresa</title>
+    <link rel="icon" href="/assets/imgs/Zephyrus.icon" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/css/dashboardGestor.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.js"></script>
+    <script src="https://kit.fontawesome.com/9f7414eb10.js" crossorigin="anonymous"></script>
+
+</head>
+
+<body>
+    <!-- Cabeçalho (substituído do mainPage) -->
+    <nav class="navbar corPrincipal fixed-top py-3">
+      <div class="container-fluid justify-content-start ">
+        <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar"
+          aria-controls="offcanvasNavbar" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon text-white"></span>
+        </button>
+        <div class="containerTitulo">
+          <div class="logo-titulo">
+            <img src="/assets/imgs/Zephyrus_2png.png" style="width: 50px;" alt="">
+            <h1 class="titulo">Zephyrus</h1>
+          </div>
+
+          <div class="offcanvas offcanvas-start corPrincipal" tabindex="-1" id="offcanvasNavbar"
+            aria-labelledby="offcanvasNavbarLabel">
+            <img src="/assets/imgs/Zephyrus_2png.png"
+              style="width: 170px; align-self: center; margin-bottom: 10px; margin-top: 20px;" alt="">
+            <div class="offcanvas-header" style="border-bottom:2px solid rgba(255, 255, 255, 0.5);">
+              <h4 class="offcanvas-title " style="color: #f5f6fa; " id="offcanvasNavbarLabel">Menu</h4>
+              <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas"
+                aria-label="Close"></button>
+            </div>
+            <div class="offcanvas-body d-flex flex-column">
+              <ul class="navbar-nav justify-content-start flex-grow-1 pe-3">
+                <li class="nav-item-selected" style="width: 100%;">
+                  <a id="navMain" class="nav-link active" style="padding: 5px; color: #f5f6fa; font-size: 22px;"
+                    href="./mainPage.html">Página
+                    principal</a>
+                </li>
+                <li class="nav-item" style="width: 100%;">
+                  <a class="nav-link active" style="padding: 5px; color: #f5f6fa;  font-size: 22px;"
+                    href="./controleHospitais.html">Hospitais</a>
+                </li>
+                <li class="nav-item" style="width: 100%;">
+                  <a class="nav-link active" style="padding: 5px; color: #f5f6fa;  font-size: 22px;"
+                    href="./contas.html">Contas</a>
+                </li>
+              </ul>
+              <ul class="navbar-nav d-flex flex-column flex-grow-1 pe-3">
+                <li class="nav-item mt-auto d-flex justify-content-center" style="width: 100%;">
+                  <a class="btn-suporte" href="/index">
+                    <img style="width: 40px;" src="/assets/imgs/headphoneIcon.png" alt="">
+                    Abrir chamado
+                  </a>
+                </li>
+                <li class="nav-item d-flex justify-content-center" style="width: 100%;">
+                  <a class="btn-sair" href="/index.html" onclick="sessionStorage.clear()">
+                    <img class="icon" src="https://cdn-icons-png.flaticon.com/512/1828/1828479.png" alt="Logout">
+                    Sair
+                  </a>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+    </nav>
+
+    <br><br><br><br>
+
+    <!-- Main Content -->
+    <main class="container my-4">
+        <!-- Stats Cards -->
+        <div class="row g-3 mb-4">
+            <div class="col-md-4">
+                <div class="card stat-card border-0 border-bottom border-success border-5">
+                    <div class="card-body shadow-bottom-right">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <p class="text-muted small mb-1">Operacionais</p>
+                                <p class="stat-value text-success">246</p>
+                            </div>
+                            <div class="bg-success bg-opacity-10 p-3 rounded">
+                                <i class="bi bi-check-circle stat-icon text-success"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card stat-card border-0 border-bottom border-warning border-5">
+                    <div class="card-body shadow-bottom-right">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <p class="text-muted small mb-1">Em Alerta</p>
+                                <p class="stat-value text-warning">6</p>
+                            </div>
+                            <div class="bg-warning bg-opacity-10 p-3 rounded">
+                                <i class="bi bi-exclamation-triangle stat-icon text-warning"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card stat-card border-0 border-bottom border-danger border-5">
+                    <div class="card-body shadow-bottom-right">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <p class="text-muted small mb-1">Críticos</p>
+                                <p class="stat-value text-danger">2</p>
+                            </div>
+                            <div class="bg-danger bg-opacity-10 p-3 rounded">
+                                <i class="bi bi-x-circle stat-icon text-danger"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Uptime Card -->
+        <div class="card uptime-card mb-4">
+            <div class="card-body p-4">
+                <div class="row align-items-start">
+                    <div class="col-md-8">
+                        <p class="text-white-50 mb-2">Taxa de Uptime Global</p>
+                        <div class="d-flex align-items-baseline gap-3">
+                            <h2 class="uptime-percentage">99.2%</h2>
+                            <div class="d-flex align-items-center gap-1 text-green-50">
+                                <i class="bi bi-arrow-up"></i>
+                                <span class="porcentagem">+0.3%</span>
+                            </div>
+                        </div>
+                        <p class="text-white-50 mt-3">
+                            <span class="text-white fw-bold">246</span> de
+                            <span class="text-white fw-bold">248</span> ventiladores operando dentro dos parâmetros
+                            normais
+                        </p>
+                    </div>
+                    <div class="col-md-4 text-md-end mt-3 mt-md-0">
+                        <div class="sla-box">
+                            <p class="text-white-50 small mb-1">Objetivo SLA</p>
+                            <p class="h3 mb-0">99.0%</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="border-top border-white border-opacity-25 mt-4 pt-3">
+                    <div class="d-flex justify-content-between small">
+                        <span class="text-white-50">Última atualização</span>
+                        <span class="text-white">Há 2 minutos</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Charts Row -->
+        <div class="row g-4 mb-4">
+            <div class="col-lg-6">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title mb-4">Status Operacional dos Ventiladores</h5>
+                        <div class="chart-container">
+                            <canvas id="statusChart"></canvas>
+                        </div>
+                        <div class="border-top mt-4 pt-3">
+                            <p class="small text-muted mb-0">
+                                Total de equipamentos monitorados: <span class="fw-semibold text-dark">248</span>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-center mb-4">
+                            <h5 class="card-title mb-0">Total de Alertas Gerados</h5>
+                            <span class="badge bg-light text-dark">Últimos 30 dias</span>
+                        </div>
+                        <div class="chart-container">
+                            <canvas id="alertsChart"></canvas>
+                        </div>
+                        <div class="border-top mt-4 pt-3">
+                            <div class="d-flex justify-content-between small text-muted">
+                                <span>Total de alertas no período: <span class="fw-semibold text-dark">65</span></span>
+                                <span>Média semanal: <span class="fw-semibold text-dark">13.0</span></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        // checando se o elemento existe antes
+        const dateElement = document.getElementById('currentDate');
+        if (dateElement) {
+            const now = new Date();
+            const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+            dateElement.textContent = now.toLocaleDateString('pt-BR', options);
+        }
+
+        window.addEventListener('load', () => {
+            try {
+                const statusEl = document.getElementById('statusChart');
+                if (statusEl) {
+                    const statusCtx = statusEl.getContext('2d');
+                    new Chart(statusCtx, {
+                        type: 'doughnut',
+                        data: {
+                            labels: ['OK', 'Alerta', 'Crítico'],
+                            datasets: [{
+                                data: [246, 6, 2],
+                                backgroundColor: ['#198754', '#ffc107', '#dc3545'],
+                                borderWidth: 2,
+                                borderColor: '#fff'
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            plugins: {
+                                legend: { position: 'bottom' },
+                                tooltip: {
+                                    callbacks: {
+                                        label: function (context) {
+                                            const label = context.label || '';
+                                            const value = context.parsed;
+                                            const total = context.dataset.data.reduce((a, b) => a + b, 0);
+                                            const percentage = ((value / total) * 100).toFixed(1);
+                                            return `${label}: ${value} (${percentage}%)`;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    });
+                }
+
+                const alertsEl = document.getElementById('alertsChart');
+                if (alertsEl) {
+                    const alertsCtx = alertsEl.getContext('2d');
+                    new Chart(alertsCtx, {
+                        type: 'bar',
+                        data: {
+                            labels: ['Sem 1', 'Sem 2', 'Sem 3', 'Sem 4', 'Sem 5'],
+                            datasets: [
+                                { label: 'Alertas', data: [12, 15, 9, 18, 11], backgroundColor: '#ffc107', borderRadius: 4 },
+                                { label: 'Críticos', data: [3, 5, 2, 4, 2], backgroundColor: '#dc3545', borderRadius: 4 }
+                            ]
+                        },
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            scales: { x: { grid: { display: false } }, y: { beginAtZero: true } },
+                            plugins: { legend: { position: 'bottom' } }
+                        }
+                    });
+                }
+            } catch (err) {
+                console.error('Erro ao inicializar charts:', err);
+            }
+        });
+    </script>
+</body>
+
+</html>

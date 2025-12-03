@@ -85,6 +85,7 @@
       flex-direction: row;
       /* Distância entre logo e título */
     }
+ 
 
 
     .titulo {
@@ -130,6 +131,11 @@
       color: white;
       letter-spacing: 1px;
       margin: 0;
+    }
+    .link_tabela{
+      text-decoration: none;
+      color: inherit;
+      
     }
 
 
@@ -201,11 +207,95 @@
       height: 22px;
       filter: invert(1);
     }
+    .table-container-modern {
+  padding: 20px;
+  background: rgba(255,255,255,0.65);
+  backdrop-filter: blur(8px);
+  border-radius: 16px;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+}
+
+.table-modern {
+  width: 100%;
+  border-collapse: collapse;
+  border-radius: 12px;
+  overflow: hidden;
+  font-size: 15px;
+}
+
+.table-modern thead {
+  background: #264653;
+  color: #fff;
+}
+
+.table-modern th {
+  padding: 14px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+
+.table-modern td {
+  padding: 14px;
+  background: #fff;
+  transition: background 0.25s;
+}
+
+.table-modern tbody tr:hover td {
+  background: #f3f7fa;
+}
+
+/* Badge de prioridade */
+.prio-alta {
+  background: #e53935;
+  color: #fff;
+  padding: 6px 10px;
+  border-radius: 10px;
+  font-size: 13px;
+}
+.prio-media {
+  background: #fbc02d;
+  color: #fff;
+  padding: 6px 10px;
+  border-radius: 10px;
+  font-size: 13px;
+
+}
+.prio-baixa {
+  background: #43a047;
+  color: #fff;
+  padding: 6px 10px;
+  border-radius: 10px;
+  font-size: 13px;
+}
+
+.sla-negativo {
+  background: #e53935!important;
+  color: #fff !important;
+  padding: 6px 10px;
+  font-size: 13px;
+  font-weight: bold;
+}
+
+.sla-alerta {
+ background: #fbc02d !important;
+  color: #fff !important;
+  padding: 6px 10px;
+  font-size: 13px;
+}
+
+.link_tabela {
+  text-decoration: none;
+  color: #264653;
+  font-weight: 600;
+}
+.link_tabela:hover {
+  text-decoration: underline;
+}
+
   </style>
 </head>
 
 
-<!-- FIM DO NAVBAR -->
 
 <body>
   <!-- Cabeçalho -->
@@ -289,11 +379,23 @@
   </div>
 
   <br><br>
-  <div class="container">
+  <div class="container-fluid px-5">
     <!-- KPIs -->
     <div class="row kpi-row">
 
-      <div class="col-md-4 card-kpi">
+      <div class="col-md-3 card-kpi">
+        <div class="card shadow-sm card-kpi">
+          <h5>Cumprimento da SLA</h5>
+          <div class="kpiSLACharts" id="kpiSLAChart"></div>
+          <small>Em tempo real</small>
+
+
+
+
+
+        </div>
+      </div>
+      <div class="col-md-3 card-kpi">
         <div class="card shadow-sm card-kpi">
           <h5>Tempo de resolução médio</h5>
           <div id="kpiTempo"></div>
@@ -301,28 +403,28 @@
         </div>
       </div>
 
-      <div class="col-md-4 card-kpi">
+      <div class="col-md-3 card-kpi">
         <div class="card shadow-sm card-kpi">
           <h5>Chamados Abertos</h5>
           <div id="chartChamadosAberto"></div>
 
-          <h3 id="kpiAbertos">36</h3>
+          <h3 id="kpiAbertos"></h3>
           <h5>Prioridade dos chamados</h5>
           <div class="row d-flex justify-content-between gap-2 mt-2">
 
             <div class="col p-2 text-center text-white rounded" style="background-color:#e53935;">
               <p class="m-0 fw-bold">Alta</p>
-              <p class="m-0">12</p>
+              <p class="m-0" id="kpiAlta">-</p>
             </div>
 
             <div class="col p-2 text-center text-white rounded" style="background-color:#fbc02d;">
               <p class="m-0 fw-bold">Média</p>
-              <p class="m-0">12</p>
+              <p class="m-0" id="kpiMedia">-</p>
             </div>
 
             <div class="col p-2 text-center text-white rounded" style="background-color:#43a047;">
               <p class="m-0 fw-bold">Baixa</p>
-              <p class="m-0">12</p>
+              <p class="m-0" id="kpiBaixa">-</p>
             </div>
 
           </div>
@@ -347,7 +449,7 @@
         </div>
       </div>
 
-      <div class="col-md-4 card-kpi">
+      <div class="col-md-3 card-kpi">
         <div class="card shadow-sm card-kpi">
           <h5>Chamados resolvidos</h5>
           <div class="kpiResolvidosCharts" id="kpiResolvidosChart"></div>
@@ -379,7 +481,6 @@
                 </tr>
               </thead>
               <tbody id="tabelaSLA">
-                <!-- Linhas serão inseridas via JS -->
               </tbody>
             </table>
           </div>
@@ -424,20 +525,174 @@
 <!-- ApexCharts -->
 <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
 <script>
+  let chamadosCache = null
+  window.onload = async () => {
 
-  window.onload(plotarGraficoTempo(), plotarGraficoResolucao(), plotarGraficoChamadosAbertos())
+    chamadosCache = await buscarChamados();
+    await plotarGraficoTempo();
+    exibirPrioridade();
+    exibirChamadosSLA()
+    plotarGraficoResolucao();
+        plotarGraficoSLA();
+
+    processarProdutividade()
+
+  };
+  function processarProdutividade(){
+    const chamados=chamadosCache
+    const produtividade={}
+    chamados.forEach(chamado=>{
+      const responsavel=chamado.responsavel?? "Sem responsável"
+      if(!produtividade[responsavel]){
+        produtividade[responsavel]={
+          totalChamados:0,
+          resolvidosNoPrazo:0,
+          somaTemposResolucao:0,
+        totalTempos: 0
+
+        }
+      }
+
+
+
+    const tempoResolucao = calularTempoDeResolucao(chamado)
+
+    produtividade[responsavel].totalChamados++;
+    produtividade[responsavel].somaTemposResolucao += tempoResolucao;
+    produtividade[responsavel].totalTempos++;
+      const resolvido=new Date(chamado.data_conclusao)
+    const slaLimite = chamado.data_limite;
+    if (slaLimite) {
+      const dataLimite = new Date(slaLimite);
+      if (resolvido <= dataLimite) {
+        produtividade[responsavel].resolvidosNoPrazo++;
+      }
+    }
+
+
+
+    })
+  const resultado = []
+
+  Object.keys(produtividade).forEach(pessoa => {
+    const p = produtividade[pessoa];
+
+    const tempoMedio = p.totalTempos > 0
+      ? Math.floor(p.somaTemposResolucao / p.totalTempos)
+      : 0;
+
+    const taxaCumprimento = p.totalChamados > 0
+      ? ((p.resolvidosNoPrazo / p.totalChamados) * 100).toFixed(1)
+      : "0";
+
+    resultado.push({
+      pessoa,
+      tempoMedio,
+      taxaCumprimento,
+      totalChamados: p.totalChamados
+    });
+  });
+console.log(resultado)
+  return resultado;
+
+  }
+  function exibirPrioridade() {
+    const chamados = chamadosCache
+    let abertos = 0
+    let alta = 0
+    let media = 0
+    let baixa = 0
+    chamados.forEach(chamado => {
+      if (chamado.data_conclusao == null) {
+        abertos++
+        if (chamado.prioridade == "Baixa") {
+          baixa++
+        }
+        else if (chamado.prioridade == "Media") {
+          media++
+        }
+        else if (chamado.prioridade == "Alta") {
+          alta++
+        }
+      }
+    })
+    document.getElementById("kpiAbertos").innerText = abertos
+    document.getElementById("kpiAlta").innerText = alta;
+    document.getElementById("kpiMedia").innerText = media;
+    document.getElementById("kpiBaixa").innerText = baixa;
+
+
+
+
+  }function exibirChamadosSLA() {
+
+  const chamados = chamadosCache;
+  chamados.sort((a, b) => new Date(a.data_limite) - new Date(b.data_limite))
+
+  const tabela = document.getElementById("tabelaSLA");
+  tabela.innerHTML = "";
+
+  chamados.forEach(chamado => {
+
+    if (!chamado.data_limite) return;
+    if(chamado.data_conclusao!=null) return
+
+    const hoje = new Date();
+    const dataLimite = new Date(chamado.data_limite);
+    const tempoRestante = dataLimite - hoje;
+
+    const minutos = Math.floor(tempoRestante / 60000);
+    const tempoFormatado = formatarTempo(minutos);
+
+    let classeSLA = "";
+    if (minutos < 0) classeSLA = "sla-negativo";
+    else if (minutos <= 70000) classeSLA = "sla-alerta";
+
+    const prioridade = chamado.prioridade?.toLowerCase() ?? "-";
+    let classePrio = "";
+    if (prioridade.includes("alta")) classePrio = "prio-alta";
+    else if (prioridade.includes("média") || prioridade.includes("media")) classePrio = "prio-media";
+    else classePrio = "prio-baixa";
+
+    const tr = document.createElement("tr");
+
+    tr.innerHTML = `
+      <td><a class="link_tabela" href="${chamado.link}">${chamado.id}</a></td>
+      <td>${chamado.titulo}</td>
+      <td><span class="${classePrio}">${chamado.prioridade}</span></td>
+      <td>${chamado.responsavel ?? "-"}</td>
+      <td class="${classeSLA}">${tempoFormatado}</td>
+      <td>${chamado.hospital ?? "-"}</td>
+      <td>${chamado.area ?? "-"}</td>
+    `;
+
+    tabela.appendChild(tr);
+  });
+}
+
   // ================================
   // KPI - Radial % Resolvidos
+  function calcularPercentual() {
+    const chamados = chamadosCache
+    let resolvidos = 0
+    let total = chamados.length
+    chamados.forEach(chamado => {
+      if (chamado.data_conclusao != null) {
+        resolvidos++
+      }
+
+    })
+    return resolvidos / total * 100
+  }
 
   // ================================
   function plotarGraficoResolucao() {
-    const valor = 12; // sua porcentagem real
+    const valor = Math.round(calcularPercentual(), 1)
 
-    // Função para definir a cor baseada no valor
     function corPorPercentual(p) {
-      if (p <= 40) return '#e53935';  // vermelho
-      if (p <= 70) return '#fbc02d';  // amarelo
-      return '#43a047';               // verde
+      if (p <= 40) return '#e53935';  
+      if (p <= 70) return '#fbc02d';  
+      return '#43a047';              
     }
 
     var optionsResolvidos = {
@@ -487,48 +742,204 @@
     var chartResolvidos = new ApexCharts(document.querySelector("#kpiResolvidosChart"), optionsResolvidos);
     chartResolvidos.render();
   }
+ function calcularPercentualSLA() {
+    const chamados = chamadosCache 
+
+    const chamadosConcluidos = chamados.filter(chamado => {
+        const resolvido = new Date(chamado.data_conclusao)
+        const dataLimite = new Date(chamado.data_limite)
+        return !isNaN(resolvido) && !isNaN(dataLimite)
+    })
+
+    const totalConcluidos = chamadosConcluidos.length
+
+    if (totalConcluidos === 0) {
+        console.warn("Nenhum chamado concluído (com datas válidas) para calcular.");
+        return 0
+    }
+
+    let noPrazo = 0
+    chamadosConcluidos.forEach(chamado => {
+        const resolvido = new Date(chamado.data_conclusao)
+        const dataLimite = new Date(chamado.data_limite)
+
+        if (resolvido <= dataLimite) {
+            noPrazo++
+        }
+    })
+
+    console.log(`Chamados no Prazo: ${noPrazo}, Total Concluído Válido: ${totalConcluidos}`)
+    return (noPrazo / totalConcluidos) * 100
+}
+function plotarGraficoSLA() {
+    const valor = Math.round(calcularPercentualSLA(), 1); 
+    function corPorPercentual(p) {
+      if (p <= 40) return '#e53935';  
+      if (p <= 70) return '#fbc02d';  
+      return '#43a047';               
+    }
+
+    var optionsResolvidos = {
+      series: [valor],
+      chart: {
+        height: 185,
+        type: 'radialBar',
+      },
+      plotOptions: {
+        radialBar: {
+          startAngle: -90,
+          endAngle: 90,
+          hollow: {
+            size: '70%'
+          },
+          track: {
+            background: '#eee',
+            strokeWidth: '100%'
+          },
+          dataLabels: {
+            name: {
+              show: false,
+              text: 'Resolvidos',
+              offsetY: 20,
+              fontSize: '16px'
+            },
+            value: {
+              show: true,
+              offsetY: -20,
+              fontSize: '28px',
+              fontWeight: 600,
+              formatter: () => valor + "%"
+            }
+          }
+        }
+
+      },
+      fill: {
+        colors: [corPorPercentual(valor)]
+      },
+      stroke: {
+        lineCap: 'round'
+      }
+
+    };
+
+    var chartResolvidos = new ApexCharts(document.querySelector("#kpiSLAChart"), optionsResolvidos);
+    chartResolvidos.render();
+  }
 
   //GRAFICO DA KPI DE TEMPO
 
   function plotarGraficoTempo() {
-
+    const { mediaFormatada, tempos } = processarTempoMedioDeResolucao();
+    console.log(tempos)
     var graficoTempoOptions = {
-      series: [{
-        data: [2, 5, 4, 5, 84, 47, 54]
-      }],
+      series: [{ data: tempos, name: "Tempo de resolução (min) " }],
       chart: {
         type: 'area',
         height: 144,
-        sparkline: {
-          enabled: true
-        },
+        sparkline: { enabled: true },
       },
-      stroke: {
-        curve: 'straight'
-      },
-      fill: {
-        opacity: 0.3,
-      },
-      yaxis: {
-        min: 0
-      },
+      stroke: { curve: 'straight' },
+      fill: { opacity: 0.3 },
+      yaxis: { min: 0 },
       colors: ['#30a799'],
       title: {
-        text: '120 min',
+        text: mediaFormatada,
         offsetX: 0,
-
-        style: {
-          fontSize: '24px',
-
-        }
+        style: { fontSize: '24px' }
       }
     };
 
-    var chartTempo = new ApexCharts(document.querySelector("#kpiTempo"), graficoTempoOptions);
-    chartTempo.render();
+    var chartTempo = new ApexCharts(
+      document.querySelector("#kpiTempo"),
+      graficoTempoOptions
+    );
 
+    chartTempo.render();
+  }//AQUI COMECA O CALCULO DO TEMPO MEDIO DOS CHAMADOS 
+  //PRIMEIRO A FUNÇÃO QUE CALCULA O TEMPO MEDIO DE UM CHAMADO
+  function calularTempoDeResolucao(chamado) {
+    if (!chamado.data_criacao || !chamado.data_conclusao) return null;
+    if (chamado.data_criacao === chamado.data_conclusao) return null;
+
+    const criacao = new Date(chamado.data_criacao);
+    const conclusao = new Date(chamado.data_conclusao);
+
+    const diferencaMS = conclusao - criacao;
+    const totalMin = Math.floor(diferencaMS / (1000 * 60));
+
+    return totalMin;
   }
 
+  //AGORA CALCULAR A MEDIA DE TEMPO DOS CHAMADOS, ENTÃO ELE RECEBE UM VETOR DE CHAMADOS
+  function calularTempoMedioDeResolucao(chamados) {
+    let soma = 0;
+    let qtd = 0;
+    let tempos = [];
+
+    chamados.forEach(chamado => {
+      const minutos = calularTempoDeResolucao(chamado);
+
+      if (minutos !== null) {
+        tempos.push(minutos)
+        soma += minutos
+        qtd++
+      }
+    })
+
+    if (qtd === 0) return { media: 0, tempos }
+
+    let media = Math.floor(soma / qtd)
+    tempos = tempos.reverse()
+    return { media, tempos }
+  }
+
+  //Formatar de minutos para dias horas e min
+  function formatarTempo(totalMin) {
+    if (totalMin === null || totalMin === undefined) return "N/A";
+
+    const dias = Math.floor(totalMin / 1440);
+    const horas = Math.floor((totalMin % 1440) / 60);
+    const minutos = totalMin % 60;
+
+    let txt = "";
+    if (dias > 0) txt += `${dias} dia${dias > 1 ? "s" : ""} `;
+    if (horas > 0) txt += `${horas}h `;
+    txt += `${minutos}min`;
+
+    return txt.trim();
+  }
+
+  //CHAMAR TODAS AS FUNCOES
+  //CHAMAR TODAS AS FUNCOES (filtrar apenas últimos 7 dias)
+  function processarTempoMedioDeResolucao() {
+    if (!chamadosCache || chamadosCache.length === 0)
+      return { mediaFormatada: "N/A", tempos: [] };
+
+    const hoje = new Date();
+    const seteDiasAtras = new Date(hoje);
+    seteDiasAtras.setDate(hoje.getDate() - 7);
+
+    const chamadosUltimos7Dias = [];
+
+    chamadosCache.forEach(chamado => {
+      if (!chamado?.data_criacao) return;
+
+      const criacao = new Date(chamado.data_criacao);
+
+      if (!isNaN(criacao) && criacao >= seteDiasAtras && criacao <= hoje) {
+        chamadosUltimos7Dias.push(chamado);
+      }
+    });
+
+    if (chamadosUltimos7Dias.length === 0)
+      return { mediaFormatada: "N/A", tempos: [] };
+
+    const { media, tempos } = calularTempoMedioDeResolucao(chamadosUltimos7Dias);
+    const mediaFormatada = formatarTempo(media);
+
+    return { mediaFormatada, tempos };
+  }
 
 
 
@@ -572,43 +983,60 @@
   // Preenchendo KPIs
   // (Você atualiza aqui com sua API depois)
   // ================================
-  document.getElementById("kpiTempo").innerText = "132";
-  document.getElementById("kpiAbertos").innerText = "18";
+
 </script>
 <script src="../js/chart.js"></script>
 <script>
 
 
+
   async function buscarChamados(params) {
-    const emailJira = "zephyrus2g@gmail.com"
-    const tokenJira = "ATATT3xFfGF05iWRDCXKhXZYF3yapED-KyRdzr9O-ZTQuM-cAn0_i_LDjiHqJCa6k_XEGkcsrsiRaYLWY5FBP5DcgGyZPMC-RDocHaKZ31N3IhAr-QHnwvdFfoJ7TUTDshD-3DC_3f7aVwUoqWSXSHElna4JT9Hk-NDohn6FFyi8lqwAYl42ZEY=6045C37E";
-    const dominioJira = "zephyrus2g1.atlassian.net";
-    const auth = btoa(`${emailJira}:${tokenJira}`)
+
     try {
       const resposta = await fetch("/jira/buscarChamadosJira")
 
-
       const data = await resposta.json();
       console.log(data)
-      //COLOCANDO AS INFORMAÇÕES EM UM VETOR
       const chamados = []
       data.issues.forEach(chamado => {
         const campo = chamado.fields
+        let responsavel_= ""
+        if(campo.assignee!=null){
+        responsavel_=  campo.assignee.displayName
+        }
+        else{
+          responsavel_=campo.assignee
+        }
+        let prioridade=""
+        if(campo.priority.name=="High"){
+          prioridade="Alta"
+        }
+        else if(campo.priority.name=="Medium"){
+          prioridade="Média"
+        }
+        else if(campo.priority.name=="Low"){
+          prioridade="Baixa"
+        }
+         let key= chamado.key
         chamados.push({
           id: chamado.id,
           titulo: campo.summary,
-          prioridade: campo.priority.name,
+          prioridade: prioridade,
           data_criacao: campo.created,
+          data_conclusao: campo.resolutiondate,
           hospital: campo.customfield_10091,
           area: campo.customfield_10092,
-          responsavel: campo.assignee,
-          status: campo.status.name
+          responsavel: responsavel_,
+          status: campo.status.name,
+          data_limite: campo.duedate,
+          link:`https://zephyrus2g1.atlassian.net/jira/software/projects/KAN/list?direction=ASC&selectedIssue=${key}&sortBy=labels`
 
 
         })
 
       });
       console.log(chamados)
+      return chamados
 
     } catch (error) {
       console.log(error)
@@ -616,7 +1044,9 @@
     }
 
   }
-  buscarChamados()
+
+
+
 
 
   var options = {
