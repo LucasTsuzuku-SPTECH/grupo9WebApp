@@ -333,6 +333,8 @@
 <script>
     function inicializacao() {
         updatePeriodo();
+        lerS3();
+
 
 
 
@@ -470,6 +472,9 @@
 
     /*----------SCRIPT DATA COLECT----------*/
     async function lerS3() {
+        const resposta = await fetch(`/analista/anual`);
+        var dadosAnuais = await resposta.json()
+
 
     }
 
