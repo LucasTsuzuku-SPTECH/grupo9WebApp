@@ -15,4 +15,8 @@ router.get("/anual", function (req, res) {
     analistaController.listarAnual(req, res);
 });
 
+router.get("/modelo/:idEmpresa", function (req, res) {
+    analistaController.listarModelos(req, res);
+});
+
 module.exports = router;

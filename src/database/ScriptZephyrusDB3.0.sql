@@ -98,7 +98,7 @@ idUsuario INT NOT NULL AUTO_INCREMENT,
 nome VARCHAR(100) NULL DEFAULT NULL,
 email VARCHAR(100) NOT NULL,
 senha_hash VARCHAR(200) NOT NULL,
-cargo ENUM('adminEmpresa', 'funcEmpresa') NOT NULL,
+cargo ENUM('adminEmpresa', 'funcEmpresa', 'suporteEmpresa') NOT NULL,
 statusUser VARCHAR(8) NULL DEFAULT NULL,
 fkEmpresa INT NOT NULL,
 PRIMARY KEY (idUsuario),
@@ -168,38 +168,37 @@ VALUES
 
 
 INSERT INTO Ventilador (numero_serie, fkModelo, fkSala) VALUES
-('VNT-DRG-0001', 1, 1), ('VNT-GEC-0002', 2, 1), ('VNT-HML-0003', 3, 1),
-('VNT-DRG-0004', 1, 2), ('VNT-GEC-0005', 2, 2), ('VNT-HML-0006', 3, 2),
-('VNT-DRG-0007', 1, 3), ('VNT-GEC-0008', 2, 3), ('VNT-HML-0009', 3, 3),
-('VNT-DRG-0010', 1, 4), ('VNT-GEC-0011', 2, 4), ('VNT-HML-0012', 3, 4),
-('VNT-DRG-0013', 1, 5), ('VNT-GEC-0014', 2, 5), ('VNT-HML-0015', 3, 5),
-('VNT-DRG-0016', 1, 6), ('VNT-GEC-0017', 2, 6), ('VNT-HML-0018', 3, 6),
-('VNT-DRG-0019', 1, 7), ('VNT-GEC-0020', 2, 7), ('VNT-HML-0021', 3, 7),
-('VNT-DRG-0022', 1, 8), ('VNT-GEC-0023', 2, 8), ('VNT-HML-0024', 3, 8),
-('VNT-DRG-0025', 1, 9), ('VNT-GEC-0026', 2, 9), ('VNT-HML-0027', 3, 9),
-('VNT-DRG-0028', 1, 10), ('VNT-GEC-0029', 2, 10), ('VNT-HML-0030', 3, 10),
-('VNT-DRG-0031', 1, 11), ('VNT-GEC-0032', 2, 11), ('VNT-HML-0033', 3, 11),
-('VNT-DRG-0034', 1, 12), ('VNT-GEC-0035', 2, 12), ('VNT-HML-0036', 3, 12),
-('VNT-DRG-0037', 1, 13), ('VNT-GEC-0038', 2, 13), ('VNT-HML-0039', 3, 13),
-('VNT-DRG-0040', 1, 14), ('VNT-GEC-0041', 2, 14), ('VNT-HML-0042', 3, 14),
-('VNT-DRG-0043', 1, 15), ('VNT-GEC-0044', 2, 15), ('VNT-HML-0045', 3, 15),
+('VNT-DRG-0001', 1, 1), ('VNT-GEC-0002', 2, 1), ('VNT-DRG-0003', 1, 1),
+('VNT-GEC-0004', 2, 2), ('VNT-DRG-0005', 1, 2), ('VNT-GEC-0006', 2, 2),
+('VNT-DRG-0007', 1, 3), ('VNT-GEC-0008', 2, 3), ('VNT-DRG-0009', 1, 3),
+('VNT-GEC-0010', 2, 4), ('VNT-DRG-0011', 1, 4), ('VNT-GEC-0012', 2, 4),
+('VNT-DRG-0013', 1, 5), ('VNT-GEC-0014', 2, 5), ('VNT-DRG-0015', 1, 5),
+('VNT-GEC-0016', 2, 6), ('VNT-DRG-0017', 1, 6), ('VNT-GEC-0018', 2, 6),
+('VNT-DRG-0019', 1, 7), ('VNT-GEC-0020', 2, 7), ('VNT-DRG-0021', 1, 7),
+('VNT-GEC-0022', 2, 8), ('VNT-DRG-0023', 1, 8), ('VNT-GEC-0024', 2, 8),
+('VNT-DRG-0025', 1, 9), ('VNT-GEC-0026', 2, 9), ('VNT-DRG-0027', 1, 9),
+('VNT-GEC-0028', 2, 10), ('VNT-DRG-0029', 1, 10), ('VNT-GEC-0030', 2, 10),
+('VNT-DRG-0031', 1, 11), ('VNT-GEC-0032', 2, 11), ('VNT-DRG-0033', 1, 11),
+('VNT-GEC-0034', 2, 12), ('VNT-DRG-0035', 1, 12), ('VNT-GEC-0036', 2, 12),
+('VNT-DRG-0037', 1, 13), ('VNT-GEC-0038', 2, 13), ('VNT-DRG-0039', 1, 13),
+('VNT-GEC-0040', 2, 14), ('VNT-DRG-0041', 1, 14), ('VNT-GEC-0042', 2, 14),
+('VNT-DRG-0043', 1, 15), ('VNT-GEC-0044', 2, 15), ('VNT-DRG-0045', 1, 15),
 
-('VNT-DRG-0046', 1, 16), ('VNT-GEC-0047', 2, 16), ('VNT-HML-0048', 3, 16),
-('VNT-DRG-0049', 1, 17), ('VNT-GEC-0050', 2, 17), ('VNT-HML-0051', 3, 17),
-('VNT-DRG-0052', 1, 18), ('VNT-GEC-0053', 2, 18), ('VNT-HML-0054', 3, 18),
-('VNT-DRG-0055', 1, 19), ('VNT-GEC-0056', 2, 19), ('VNT-HML-0057', 3, 19),
-('VNT-DRG-0058', 1, 20), ('VNT-GEC-0059', 2, 20), ('VNT-HML-0060', 3, 20),
-('VNT-DRG-0061', 1, 21), ('VNT-GEC-0062', 2, 21), ('VNT-HML-0063', 3, 21),
-('VNT-DRG-0064', 1, 22), ('VNT-GEC-0065', 2, 22), ('VNT-HML-0066', 3, 22),
-('VNT-DRG-0067', 1, 23), ('VNT-GEC-0068', 2, 23), ('VNT-HML-0069', 3, 23),
-('VNT-DRG-0070', 1, 24), ('VNT-GEC-0071', 2, 24), ('VNT-HML-0072', 3, 24),
-('VNT-DRG-0073', 1, 25), ('VNT-GEC-0074', 2, 25), ('VNT-HML-0075', 3, 25),
-('VNT-DRG-0076', 1, 26), ('VNT-GEC-0077', 2, 26), ('VNT-HML-0078', 3, 26),
-('VNT-DRG-0079', 1, 27), ('VNT-GEC-0080', 2, 27), ('VNT-HML-0081', 3, 27),
-('VNT-DRG-0082', 1, 28), ('VNT-GEC-0083', 2, 28), ('VNT-HML-0084', 3, 28),
-('VNT-DRG-0085', 1, 29), ('VNT-GEC-0086', 2, 29), ('VNT-HML-0087', 3, 29),
-('VNT-DRG-0088', 1, 30), ('VNT-GEC-0089', 2, 30), ('VNT-HML-0090', 3, 30);
-
+('VNT-HML-0046', 3, 16), ('VNT-MDR-0047', 4, 16), ('VNT-HML-0048', 3, 16),
+('VNT-MDR-0049', 4, 17), ('VNT-HML-0050', 3, 17), ('VNT-MDR-0051', 4, 17),
+('VNT-HML-0052', 3, 18), ('VNT-MDR-0053', 4, 18), ('VNT-HML-0054', 3, 18),
+('VNT-MDR-0055', 4, 19), ('VNT-HML-0056', 3, 19), ('VNT-MDR-0057', 4, 19),
+('VNT-HML-0058', 3, 20), ('VNT-MDR-0059', 4, 20), ('VNT-HML-0060', 3, 20),
+('VNT-MDR-0061', 4, 21), ('VNT-HML-0062', 3, 21), ('VNT-MDR-0063', 4, 21),
+('VNT-HML-0064', 3, 22), ('VNT-MDR-0065', 4, 22), ('VNT-HML-0066', 3, 22),
+('VNT-MDR-0067', 4, 23), ('VNT-HML-0068', 3, 23), ('VNT-MDR-0069', 4, 23),
+('VNT-HML-0070', 3, 24), ('VNT-MDR-0071', 4, 24), ('VNT-HML-0072', 3, 24),
+('VNT-MDR-0073', 4, 25), ('VNT-HML-0074', 3, 25), ('VNT-MDR-0075', 4, 25),
+('VNT-HML-0076', 3, 26), ('VNT-MDR-0077', 4, 26), ('VNT-HML-0078', 3, 26),
+('VNT-MDR-0079', 4, 27), ('VNT-HML-0080', 3, 27), ('VNT-MDR-0081', 4, 27),
+('VNT-HML-0082', 3, 28), ('VNT-MDR-0083', 4, 28), ('VNT-HML-0084', 3, 28),
+('VNT-MDR-0085', 4, 29), ('VNT-HML-0086', 3, 29), ('VNT-MDR-0087', 4, 29),
+('VNT-HML-0088', 3, 30), ('VNT-MDR-0089', 4, 30), ('VNT-HML-0090', 3, 30);
 
 
 INSERT INTO Parametro (fkComponente, fkVentilador, parametroMax, parametroMin) VALUES
@@ -297,11 +296,20 @@ INSERT INTO Parametro (fkComponente, fkVentilador, parametroMax, parametroMin) V
 
 INSERT INTO Usuario_empresa (nome, email, senha_hash, cargo, statusUser, fkEmpresa)
 VALUES
-('Pedro Pereira', 'pedro@empresa.com', 'hash1', 'adminEmpresa', 'ativo', 1), 
-('Ronaldo', 'ronaldo@empresa.com', 'hash2', 'funcEmpresa', 'ativo', 2);   
+('Guilherme', 'guilherme@empresa.com', 'hash1', 'adminEmpresa', 'ativo', 1), 
+('Lucas', 'lucas@empresa.com', 'hash2', 'funcEmpresa', 'ativo', 1),
+('Isabela', 'isabela@empresa.com', 'hash3', 'suporteEmpresa', 'ativo', 1),
+('Pedro Pereira', 'pedro@empresa.com', 'hash4', 'adminEmpresa', 'ativo', 2), 
+('Ronaldo', 'ronaldo@empresa.com', 'hash5', 'funcEmpresa', 'ativo', 2),
+('João Cocasso', 'João@empresa.com', 'hash6', 'suporteEmpresa', 'ativo', 2);
+
 
 
 INSERT INTO Usuario_hospital (nome, email, senha_hash, cargo, statusUser, fkHospital)
 VALUES
-('Homero Sempsom', 'homero@hospital.com', 'hash3', 'adminHosp', 'ativo', 1), 
-('Kelly Ken', 'kelly@hospital.com', 'hash4', 'funcHosp', 'ativo', 2);     
+('Gustavo', 'gustavo@hospital.com', 'hash1', 'adminHosp', 'ativo', 1),
+('Felipe', 'felipe@hospital.com', 'hash2', 'funcHosp', 'ativo', 1),
+('Homero Sempsom', 'homero@hospital.com', 'hash3', 'adminHosp', 'ativo', 2), 
+('Kelly Ken', 'kelly@hospital.com', 'hash4', 'funcHosp', 'ativo', 2);
+ 
+    

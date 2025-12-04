@@ -89,9 +89,10 @@ function listarModelos(idEmpresa) {
     const instrucaoSql = `
         SELECT 
             m.nome,
-            m.fkEmpresa
+            v.numero_serie
         FROM modelo m
         JOIN Empresa e ON m.fkEmpresa = e.idEmpresa
+        INNER JOIN Ventilador v ON v.fkModelo = m.idModelo
         WHERE e.idEmpresa = ${idEmpresa};
     `;
     return database.executar(instrucaoSql);
