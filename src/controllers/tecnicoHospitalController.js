@@ -1,4 +1,14 @@
-var analistaModel = require("../models/tecnicoHospitalModel");
+var tecnicoHospitalModel = require("../models/tecnicoHospitalModel");
+
+async function listarDiario(req, res) {
+  try {
+    const dadoDiario = await tecnicoHospitalModel.listarDiario();
+    res.json(dadoDiario);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json("Erro ao listar dadoDiario");
+  }
+}
 
 async function listarSemanal(req, res) {
   try {
@@ -34,7 +44,23 @@ async function listarAnual(req, res) {
   }
 }
 
+function listarAreas(req, res) {
+  const fk_hospital = req.params.fk_hospital;
+    tecnicoHospitalModel.listarAreas(fk_hospital)
+        .then(function (resultado) {
+            if (resultado.length > 0) {
+                res.json(resultado);
+            } else {
+                res.status(204).send("Nenhuma área encontrada");
+            }
+        })
+        .catch(function (erro) {
+            console.log(erro);
+            console.log("Erro ao buscar Salas: ", erro.sqlMessage);
+            res.status(500).json(erro.sqlMessage);
+        });
+}
 
 
 
-module.exports = {listarSemanal, listarMensal, listarAnual};
+module.exports = {listarDiario, listarSemanal, listarMensal, listarAnual, listarAreas};
