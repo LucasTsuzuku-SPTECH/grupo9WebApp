@@ -21,8 +21,8 @@ async function listarAnual() {
     };
 
     const command = new GetObjectCommand(params);
-
     var resultado = await s3Client.send(command);
+
     var csvString = await resultado.Body.transformToString();
 
     const dataJSON = parse.parse(csvString, {
