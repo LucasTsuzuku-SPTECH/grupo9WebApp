@@ -42,7 +42,7 @@ async function listarSemanal() {
     var anoAtual = new Date().getFullYear()
     var mes = new Date().getMonth()+1;
     var mesAtual = mes < 10 ? ('0' + mes) : mes
-    var semanaAtual = dataMoment.week()
+    var semanaAtual = dataMoment().week()
 
     const params = {
         Bucket: process.env.BUCKET_CLIENT,

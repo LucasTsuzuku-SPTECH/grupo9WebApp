@@ -259,6 +259,9 @@
 
                 <input type="radio" class="btn-check btnTempo" name="filtroTempo" id="tempoMes" autocomplete="off" data-tempo="mensal">
                 <label class="btn btn-outline-primary btn-sm" for="tempoMes">Mês</label>
+
+                <input type="radio" class="btn-check btnTempo" name="filtroTempo" id="tempoAno" autocomplete="off" data-tempo="anual">
+                <label class="btn btn-outline-primary btn-sm" for="tempoAno">Ano</label>
               </div>
             </div>
 
@@ -283,7 +286,7 @@
               <div>
                 <p class="mb-0">Alertas <b>Ativos</b></p>
                 <h3 class="display-6 mb-0">03</h3>
-                <div class="mt-2 text-muted" style="font-size:.85rem">Principal causa: <b>RAM</b></div>
+                <div class="mt-2 text-muted" style="font-size:.85rem"><p class="mb-0">Principal causa: <b>RAM</b></p></div>
               </div>
             </div>
           </a>
@@ -313,7 +316,7 @@
               <div>
                 <p class="mb-0">Máquinas Monitoradas</p>
                 <h3 class="display-6 mb-0">20</h3>
-                <div class="mt-2 text-muted" style="font-size:.85rem">Máquinas offline: <b>5</b></div>
+                <div class="mt-2 text-muted" style="font-size:.85rem"><p class="mb-0" id="">Máquinas offline: </p></div>
               </div>
             </div>
           </a>
@@ -326,8 +329,8 @@
             <div class="d-flex justify-content-between align-items-center DadosKPI">
               <div>
                 <p class="mb-0">Área mais afetada</p>
-                <h3 class="display-6 mb-0">UTI</h3>
-                <div class="mt-2 text-muted" style="font-size:.85rem">Total de máquinas críticas <b>2</b></div>
+                <h3 class="display-6 mb-0" id="areaMaisAfetada">...</h3>
+                <div class="mt-2 text-muted" style="font-size:.85rem"><p class="mb-0" id="quantidadeAlertaArea">Total de máquinas críticas: </p></div>
               </div>
             </div>
           </a>
@@ -508,6 +511,8 @@
     // Nome do hospital
     let ultimaCap;
     let nomeHospital;
+    let selectAreas;
+
     async function ONLOAD() {
       const resposta = await fetch(`/controle/hospitais/${sessionStorage.getItem("FK")}`);
       const hospitalData = await resposta.json();
@@ -517,7 +522,7 @@
 
       //Select de áreas
       const respostaAreas = await fetch(`/tecnicoHospital/areas/${sessionStorage.getItem("FK")}`);
-      const selectAreas = await respostaAreas.json()
+      selectAreas = await respostaAreas.json()
       const select = document.getElementById('filtroArea');
       console.log(selectAreas)
       for(const alerta of selectAreas){
@@ -569,7 +574,21 @@
       let dados = await alertas.json()
       const alertasDoHospital = dados.filter(alerta => alerta.hospital === nomeHospital);
       let alertasDoHospitalAreas;
+      console.log(selectAreas)
       areaSelecionada == "todas" ? alertasDoHospitalAreas = alertasDoHospital : alertasDoHospitalAreas = alertasDoHospital.filter(alerta => alerta.area.toLowerCase() === areaSelecionada.toLowerCase());
+      // Contando alertas por area
+      let contador = {};
+      for (const a of selectAreas) {
+        contador[a.area] = 0;
+      }
+      console.log(contador)
+      for (const a of alertasDoHospital) {
+        if (contador[a.area] !== undefined) {
+          contador[a.area]++;
+        }
+      }
+      console.log(contador)
+
       console.log(alertasDoHospitalAreas)
       console.log(areaSelecionada)
       console.log(tempoSelecionado)
