@@ -37,7 +37,7 @@ async function listarMensal() {
     const meses = ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro']
     var anoAtual = new Date().getFullYear()
     var mes = new Date().getMonth();
-    var mesAtual = mes < 10 ? ('0' + mes) : mes
+    var mesAtual = mes < 10 ? ('0' + mes + 1) : mes + 1
 
     const params = {
         Bucket: process.env.BUCKET_CLIENT,
@@ -60,9 +60,9 @@ async function listarMensal() {
 async function listarSemanal() {
     var anoAtual = new Date().getFullYear()
     var mes = new Date().getMonth();
-    var mesAtual = mes < 10 ? ('0' + mes) : mes
+    var mesAtual = mes < 10 ? ('0' + mes + 1) : mes + 1
 
-    var semanaAtual = dataMoment.week()
+    var semanaAtual = dataMoment().week()
 
     const params = {
         Bucket: process.env.BUCKET_CLIENT,
@@ -89,6 +89,7 @@ function listarModelos(idEmpresa) {
     const instrucaoSql = `
         SELECT 
             m.nome,
+            m.fkEmpresa,
             v.numero_serie
         FROM modelo m
         JOIN Empresa e ON m.fkEmpresa = e.idEmpresa
