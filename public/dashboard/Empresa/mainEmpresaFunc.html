@@ -441,17 +441,18 @@
     var dadosAnuais = [];
     var dadosMensais = [];
     var dadosSemanais = [];
+    var dadosSQL;
 
     async function coletaBucket() {
         const respostaSql = await fetch(`/analista/modelo/${sessionStorage.getItem('FK')}`)
-        var ventiladores = await respostaSql.json()
-        console.log(ventiladores)
+        dadosSQL = await respostaSql.json()
+        console.log(dadosSQL)
 
         const respostaAnual = await fetch(`/analista/anual`);
         var tempAnual = await respostaAnual.json();
-        for (let i = 0; i < ventiladores.length; i++) {
+        for (let i = 0; i < dadosSQL.length; i++) {
             for (let j = 0; j < tempAnual.length; j++) {
-                if (tempAnual[j]['numero_serie'] == ventiladores[i]['numero_serie']) {
+                if (tempAnual[j]['numero_serie'] == dadosSQL[i]['numero_serie']) {
                     dadosAnuais.push(tempAnual[j])
                 }
             }
@@ -459,9 +460,9 @@
 
         const respostaMensal = await fetch(`/analista/mensal`);
         var tempMensal = await respostaMensal.json()
-        for (let i = 0; i < ventiladores.length; i++) {
+        for (let i = 0; i < dadosSQL.length; i++) {
             for (let j = 0; j < tempMensal.length; j++) {
-                if (tempMensal[j]['numero_serie'] == ventiladores[i]['numero_serie']) {
+                if (tempMensal[j]['numero_serie'] == dadosSQL[i]['numero_serie']) {
                     dadosMensais.push(tempMensal[j])
                 }
             }
@@ -469,9 +470,9 @@
 
         const respostaSemanal = await fetch(`/analista/semanal`);
         var tempSemanal = await respostaSemanal.json()
-        for (let i = 0; i < ventiladores.length; i++) {
+        for (let i = 0; i < dadosSQL.length; i++) {
             for (let j = 0; j < tempSemanal.length; j++) {
-                if (tempSemanal[j]['numero_serie'] == ventiladores[i]['numero_serie']) {
+                if (tempSemanal[j]['numero_serie'] == dadosSQL[i]['numero_serie']) {
                     dadosSemanais.push(tempSemanal[j])
                 }
             }
@@ -538,7 +539,7 @@
 
 
         atualizarKPI(dadosUsados);
-
+        atualizarTabela1(dadosUsados);
 
 
 
@@ -637,6 +638,11 @@
                             <p style="height: 48px;">Intercorrências em Processos (${qtdErros[3]}/${totalIntercorrencias})</p>
                         </div>
                     </div> `
+    }
+
+
+    function atualizarTabela1(data) {
+
     }
 
 
