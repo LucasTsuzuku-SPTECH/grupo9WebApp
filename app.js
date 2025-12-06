@@ -25,6 +25,7 @@ var emailRouter = require("./src/routes/email")
 var jiraRouter = require("./src/routes/jira")
 var medidasRouter = require("./src/routes/medidas")
 var analistaRouter = require("./src/routes/analista")
+var gestorRouter = require("./src/routes/gestor")
 
 var iaRouter = require("./src/routes/ia");
 
