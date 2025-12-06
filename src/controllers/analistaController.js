@@ -26,7 +26,7 @@ async function listarMensal(req, res) {
 
 async function listarAnual(req, res) {
   try {
-    const dadoAnual = await analistaModel.listarAnual();
+    var dadoAnual = await analistaModel.listarAnual();
     res.json(dadoAnual);
   } catch (err) {
     console.error(err);
@@ -36,14 +36,14 @@ async function listarAnual(req, res) {
 
 
 async function listarModelos(req, res) {
-    var idEmpresa = req.param.FK
+  var idEmpresa = req.params.idEmpresa
 
   try {
-    const dadoAnual = await analistaModel.listarModelos(idEmpresa);
-    res.json(dadoAnual);
+    const modelos = await analistaModel.listarModelos(idEmpresa);
+    res.json(modelos);
   } catch (err) {
     console.error(err);
-    res.status(500).json("Erro ao listar dadoAnual");
+    res.status(500).json("Erro ao listar modelos");
   }
 }
 
@@ -56,4 +56,4 @@ async function listarModelos(req, res) {
 
 
 
-module.exports = {listarSemanal, listarMensal, listarAnual, listarModelos};
+module.exports = { listarSemanal, listarMensal, listarAnual, listarModelos };

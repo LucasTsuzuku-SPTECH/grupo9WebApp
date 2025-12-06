@@ -21,8 +21,8 @@ async function listarAnual() {
     };
 
     const command = new GetObjectCommand(params);
-
     var resultado = await s3Client.send(command);
+
     var csvString = await resultado.Body.transformToString();
 
     const dataJSON = parse.parse(csvString, {
@@ -37,7 +37,7 @@ async function listarMensal() {
     const meses = ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro']
     var anoAtual = new Date().getFullYear()
     var mes = new Date().getMonth();
-    var mesAtual = mes < 10 ? ('0' + mes) : mes
+    var mesAtual = mes < 10 ? ('0' + mes + 1) : mes + 1
 
     const params = {
         Bucket: process.env.BUCKET_CLIENT,
@@ -60,9 +60,9 @@ async function listarMensal() {
 async function listarSemanal() {
     var anoAtual = new Date().getFullYear()
     var mes = new Date().getMonth();
-    var mesAtual = mes < 10 ? ('0' + mes) : mes
+    var mesAtual = mes < 10 ? ('0' + mes + 1) : mes + 1
 
-    var semanaAtual = dataMoment.week()
+    var semanaAtual = dataMoment().week()
 
     const params = {
         Bucket: process.env.BUCKET_CLIENT,
@@ -89,9 +89,11 @@ function listarModelos(idEmpresa) {
     const instrucaoSql = `
         SELECT 
             m.nome,
-            m.fkEmpresa
-        FROM modelo m
+            m.fkEmpresa,
+            v.numero_serie
+        FROM Modelo m
         JOIN Empresa e ON m.fkEmpresa = e.idEmpresa
+        INNER JOIN Ventilador v ON v.fkModelo = m.idModelo
         WHERE e.idEmpresa = ${idEmpresa};
     `;
     return database.executar(instrucaoSql);
