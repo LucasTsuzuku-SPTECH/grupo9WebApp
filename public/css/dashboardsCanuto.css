@@ -315,6 +315,7 @@ a {
   padding: 8px;
   border-bottom: 1px solid #ccc;
   color: black;
+  font-size: 13px;
 }
 
 /* Select de hospitais */
@@ -328,6 +329,7 @@ a {
   font-size: 12px;
   font-weight: 700;
 }
+
 
 .periodoSelected {
   text-decoration: none;

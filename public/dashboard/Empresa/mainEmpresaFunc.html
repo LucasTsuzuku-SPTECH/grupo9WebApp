@@ -83,9 +83,9 @@
                     <h4 style="margin: 0px; color: white;">Filtro de períodos:</h4>
                     <select onchange="updatePeriodo()" class="selects"
                         style="height: 20px; background-color: rgb(131, 203, 195);" id="filtroPeriodo">
-                        <option value=semanal>Semanal</option>
-                        <option value=mensal>Mensal</option>
-                        <option value=anual>Anual</option>
+                        <option class="opcao" value=semanal>Semanal</option>
+                        <option class="opcao" value=mensal>Mensal</option>
+                        <option class="opcao" value=anual>Anual</option>
                     </select>
                 </div>
 
@@ -185,8 +185,8 @@
                                 class="periodoSelected"></a>):
                         </div>
                         <div class="tabelaWrapper">
-                            <table id="rankingModelo" class="tabela">
-                                <thead>
+                            <table class="tabela">
+                                <thead id="rankingModeloMain">
                                     <tr>
                                         <th>Posição</th>
                                         <th>Modelo</th>
@@ -214,9 +214,9 @@
                 <div style="width: 90%; margin-left: 75px;">
                     <select onchange="updateHospital()" class="selects" style="background-color: #39a699;"
                         id="filtroHospital">
-                        <option value="">Selecione um hospital...</option>
-                        <option value="teste1">teste1</option>
-                        <option value="teste2">teste2</option>
+                        <option class="opcao" value="">Selecione um hospital...</option>
+                        <option class="opcao" value="teste1">teste1</option>
+                        <option class="opcao" value="teste2">teste2</option>
                     </select>
                 </div>
 
@@ -537,20 +537,19 @@
             dadosUsados = dadosAnuais;
         }
 
+        console.log(dadosUsados)
 
         atualizarKPI(dadosUsados);
         atualizarTabela1(dadosUsados);
-
-
-
+        atualizarGraf1(dadosUsados);
 
 
     }
 
-
-    async function atualizarKPI(data) {
+    var totalIntercorrencias;
+    function atualizarKPI(data) {
+        totalIntercorrencias = data.length;
         var maisIntercorrencia;
-        var totalIntercorrencias = data.length;
         var listaComponentes = ['CPU', 'RAM', 'Disco', 'Processos']
         var qtdErros = []
 
@@ -642,7 +641,148 @@
 
 
     function atualizarTabela1(data) {
+        let modelos = [];
+        let qtdErros = [];
 
+        for (let i = 0; i < dadosSQL.length; i++) {
+            if (!modelos.includes(dadosSQL[i].nome)) {
+                modelos.push(dadosSQL[i].nome)
+            }
+        }
+
+        for (let i = 0; i < modelos.length; i++) {
+            let qtd = 0;
+            for (let j = 0; j < dadosSQL.length; j++) {
+                for (let k = 0; k < data.length; k++) {
+                    if (modelos[i] == dadosSQL[j].nome && dadosSQL[j].numero_serie == data[k].numero_serie) {
+                        qtd++;
+                    }
+                }
+            }
+            qtdErros.push(qtd)
+        }
+
+        rankingModeloMain.innerHTML = `<th>Posição</th>
+                                       <th>Modelo</th>
+                                       <th>Total de Intercorrências</th>`
+
+        for (let i = 0; i < modelos.length; i++) {
+            rankingModeloMain.innerHTML += `<td>${i + 1}°</td>
+                                            <td>${modelos[i]}</td>
+                                            <td>${qtdErros[i]}</td>`
+        }
+    }
+
+
+    var grafMain1;
+    function atualizarGraf1(data) {
+        let modelos = [];
+        let intercorrenciasModelo = [];
+        let cpuData = [];
+        let ramData = [];
+        let discoData = [];
+        let procData = [];
+
+
+        for (let i = 0; i < dadosSQL.length; i++) {
+            if (!modelos.includes(dadosSQL[i].nome)) {
+                modelos.push(dadosSQL[i].nome)
+            }
+        }
+
+        for (let i = 0; i < modelos.length; i++) {
+            let qtd = 0;
+            for (let j = 0; j < dadosSQL.length; j++) {
+                for (let k = 0; k < data.length; k++) {
+                    if (modelos[i] == dadosSQL[j].nome && dadosSQL[j].numero_serie == data[k].numero_serie) {
+                        qtd++;
+                    }
+                }
+            }
+            intercorrenciasModelo.push(qtd)
+        }
+
+        for (let i = 0; i < modelos.length; i++) {
+            let qtdCpu = 0;
+            let qtdRam = 0;
+            let qtdDisco = 0;
+            let qtdProc = 0;
+
+            for (let j = 0; j < dadosSQL.length; j++) {
+                for (let k = 0; k < data.length; k++) {
+                    if (modelos[i] == dadosSQL[j].nome && dadosSQL[j].numero_serie == data[k].numero_serie && data[k].componente == "CPU") {
+                        qtdCpu++;
+                    } else if (modelos[i] == dadosSQL[j].nome && dadosSQL[j].numero_serie == data[k].numero_serie && data[k].componente == "RAM") {
+                        qtdRam++;
+                    } else if (modelos[i] == dadosSQL[j].nome && dadosSQL[j].numero_serie == data[k].numero_serie && data[k].componente == "Disco") {
+                        qtdDisco++;
+                    } else if (modelos[i] == dadosSQL[j].nome && dadosSQL[j].numero_serie == data[k].numero_serie && data[k].componente == "Processos") {
+                        qtdProc++;
+                    }
+                }
+            }
+            cpuData.push((qtdCpu * 100 / intercorrenciasModelo[i]).toFixed(2))
+            ramData.push((qtdRam * 100 / intercorrenciasModelo[i]).toFixed(2))
+            discoData.push((qtdDisco * 100 / intercorrenciasModelo[i]).toFixed(2))
+            procData.push((qtdProc * 100 / intercorrenciasModelo[i]).toFixed(2))
+        }
+
+        var dadosMain1 = {
+            series: [{
+                name: "CPU(%)",
+                data: cpuData
+            }, {
+                name: "RAM(%)",
+                data: ramData
+            }, {
+                name: "Disco(%)",
+                data: discoData
+            }, {
+                name: "Processos(%)",
+                data: procData
+            }],
+            colors: ["#83cbc3", "#30a799", "#00796b", "#264653"],
+            chart: {
+                type: 'bar',
+                height: '100%',
+                width: '100%'
+            },
+            plotOptions: {
+                bar: {
+                    horizontal: false,
+                    dataLabels: {
+                        position: 'top',
+                    },
+                }
+            },
+            dataLabels: {
+                enabled: true,
+                offsetX: 0,
+                style: {
+                    fontSize: '12px',
+                    colors: ['#fff']
+                }
+            },
+            stroke: {
+                show: true,
+                width: 1,
+                colors: ['#fff']
+            },
+            tooltip: {
+                shared: true,
+                intersect: false
+            },
+            xaxis: {
+                categories: modelos
+            },
+        };
+
+        if (typeof grafMain1 !== 'undefined' && grafMain1 !== null) {
+            grafMain1.destroy();
+        }
+
+        grafMain1 = new ApexCharts(document.querySelector("#grafMain1"), dadosMain1);
+        grafMain1.render();
     }
 
 
@@ -658,59 +798,7 @@
 
 
 
-    /*-------------------- Dados Principais 1 --------------------*/
-    var dadosMain1 = {
-        series: [{
-            name: "CPU(%)",
-            data: [25, 23, 27, 26]
-        }, {
-            name: "RAM(%)",
-            data: [50, 52, 49, 51]
-        }, {
-            name: "Disco(%)",
-            data: [15, 14, 13, 16]
-        }, {
-            name: "Processos(%)",
-            data: [10, 11, 11, 7]
-        }],
-        colors: ["#83cbc3", "#30a799", "#00796b", "#264653"],
-        chart: {
-            type: 'bar',
-            height: '100%',
-            width: '100%'
-        },
-        plotOptions: {
-            bar: {
-                horizontal: false,
-                dataLabels: {
-                    position: 'top',
-                },
-            }
-        },
-        dataLabels: {
-            enabled: true,
-            offsetX: 0,
-            style: {
-                fontSize: '12px',
-                colors: ['#fff']
-            }
-        },
-        stroke: {
-            show: true,
-            width: 1,
-            colors: ['#fff']
-        },
-        tooltip: {
-            shared: true,
-            intersect: false
-        },
-        xaxis: {
-            categories: ["Modelo 1", "Modelo 2", "Modelo 3", "Modelo 4"]
-        },
-    };
 
-    var grafMain1 = new ApexCharts(document.querySelector("#grafMain1"), dadosMain1);
-    grafMain1.render();
 
 
 

@@ -115,15 +115,13 @@ REFERENCES Empresa (idEmpresa)
 INSERT INTO Endereco (logradouro, numero, bairro, cidade, estado, cep)
 VALUES
 ('Rua das Flores', '123', 'Centro', 'Sao Paulo', 'SP', '01000-000'),          
-('Avenida Paulista', '1000', 'Bela Vista', 'Sao Paulo', 'SP', '01310-100'),  
 ('Rua da Saude', '250', 'Centro', 'Campinas', 'SP', '13010-000'),            
 ('Avenida Joao Pessoa', '1220', 'Centro', 'Porto Alegre', 'RS', '90010-000');
 
 
 INSERT INTO Empresa (nomeEmpresa, cnpj, fkEndereco)
 VALUES
-('Industria Respiratoria LTDA', '12345678000199', 1), 
-('Ventiladores S/A', '98765432000188', 2);           
+('Industria Respiratoria LTDA', '12345678000199', 1);
 
 
 INSERT INTO Componente (nomeComponente, unidadeMedida)
@@ -140,14 +138,14 @@ INSERT INTO Modelo (nome, fkEmpresa)
 VALUES
 ('Drager Evita Infinity V500', 1), 
 ('GE CARESCAPE R860', 1),          
-('Hamilton-C6', 2),                
-('Mindray SV300', 2);              
+('Hamilton-C6', 1),                
+('Mindray SV300', 1);              
 
 
 INSERT INTO Hospital (nomeHospital, cnpj, fkEndereco)
 VALUES
-('Hospital Sao Paulo', '12345678000101', 3),   
-('Hospital das Clinicas SP', '98765432000110', 4);
+('Hospital Sao Paulo', '12345678000101', 2),   
+('Hospital das Clinicas SP', '98765432000110', 3);
 
 
 INSERT INTO Sala (numero, area, fkHospital)
@@ -298,10 +296,7 @@ INSERT INTO Usuario_empresa (nome, email, senha_hash, cargo, statusUser, fkEmpre
 VALUES
 ('Guilherme', 'guilherme@empresa.com', 'hash1', 'adminEmpresa', 'ativo', 1), 
 ('Lucas', 'lucas@empresa.com', 'hash2', 'funcEmpresa', 'ativo', 1),
-('Isabela', 'isabela@empresa.com', 'hash3', 'suporteEmpresa', 'ativo', 1),
-('Pedro Pereira', 'pedro@empresa.com', 'hash4', 'adminEmpresa', 'ativo', 2), 
-('Ronaldo', 'ronaldo@empresa.com', 'hash5', 'funcEmpresa', 'ativo', 2),
-('João Cocasso', 'João@empresa.com', 'hash6', 'suporteEmpresa', 'ativo', 2);
+('Isabela', 'isabela@empresa.com', 'hash3', 'suporteEmpresa', 'ativo', 1);
 
 
 
