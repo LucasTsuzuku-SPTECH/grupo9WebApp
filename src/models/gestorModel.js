@@ -21,8 +21,8 @@ async function listarAnual() {
     };
 
     const command = new GetObjectCommand(params);
-    var resultado = await s3Client.send(command);
 
+    var resultado = await s3Client.send(command);
     var csvString = await resultado.Body.transformToString();
 
     const dataJSON = parse.parse(csvString, {
@@ -37,7 +37,7 @@ async function listarMensal() {
     const meses = ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro']
     var anoAtual = new Date().getFullYear()
     var mes = new Date().getMonth();
-    var mesAtual = mes < 10 ? ('0' + mes + 1) : mes + 1
+    var mesAtual = mes < 10 ? ('0' + mes) : mes
 
     const params = {
         Bucket: process.env.BUCKET_CLIENT,
@@ -60,9 +60,9 @@ async function listarMensal() {
 async function listarSemanal() {
     var anoAtual = new Date().getFullYear()
     var mes = new Date().getMonth();
-    var mesAtual = mes < 10 ? ('0' + mes + 1) : mes + 1
+    var mesAtual = mes < 10 ? ('0' + mes) : mes
 
-    var semanaAtual = dataMoment().week()
+    var semanaAtual = dataMoment.week()
 
     const params = {
         Bucket: process.env.BUCKET_CLIENT,
@@ -82,26 +82,49 @@ async function listarSemanal() {
     return dataJSON
 }
 
+async function listarDiario() {
+    var anoAtual = new Date().getFullYear()
+    var mes = new Date().getMonth();
+    var mesAtual = mes < 10 ? ('0' + mes) : mes
+    var diaAtual = new Date().getDate();
+    var dia = diaAtual < 10 ? ('0' + diaAtual) : diaAtual
 
+    const params = {
+        Bucket: process.env.BUCKET_CLIENT,
+        Key: `AlertasHistorico/${anoAtual}/${mesAtual}/${dia}/alertaDoDia.csv`
+    };
 
-function listarModelos(idEmpresa) {
+    const command = new GetObjectCommand(params);
 
-    const instrucaoSql = `
-        SELECT 
-            m.nome,
-            m.fkEmpresa,
-            v.numero_serie
-        FROM Modelo m
-        JOIN Empresa e ON m.fkEmpresa = e.idEmpresa
-        INNER JOIN Ventilador v ON v.fkModelo = m.idModelo
-        WHERE e.idEmpresa = ${idEmpresa};
-    `;
-    return database.executar(instrucaoSql);
+    var resultado = await s3Client.send(command);
+    var csvString = await resultado.Body.transformToString();
+
+    const dataJSON = parse.parse(csvString, {
+        columns: true,
+        skip_empty_lines: true
+    });
+
+    return dataJSON
 }
 
+
+// function listarModelos(idEmpresa) {
+
+//     const instrucaoSql = `
+//         SELECT 
+//             m.nome,
+//             m.fkEmpresa
+//         FROM modelo m
+//         JOIN Empresa e ON m.fkEmpresa = e.idEmpresa
+//         WHERE e.idEmpresa = ${idEmpresa};
+//     `;
+//     return database.executar(instrucaoSql);
+// }
+
 module.exports = {
+    listarDiario,
     listarAnual,
     listarMensal,
     listarSemanal,
-    listarModelos
+    // listarModelos
 };

@@ -1,4 +1,4 @@
-var analistaModel = require("../models/analistaModel");
+var gestorModel = require("../models/gestorModel");
 
 async function listarSemanal(req, res) {
   try {
@@ -23,10 +23,10 @@ async function listarMensal(req, res) {
 }
 
 
-
+listarModelos
 async function listarAnual(req, res) {
   try {
-    var dadoAnual = await analistaModel.listarAnual();
+    const dadoAnual = await analistaModel.listarAnual();
     res.json(dadoAnual);
   } catch (err) {
     console.error(err);
@@ -34,16 +34,13 @@ async function listarAnual(req, res) {
   }
 }
 
-
-async function listarModelos(req, res) {
-  var idEmpresa = req.params.idEmpresa
-
+async function listarDiario(req, res) {
   try {
-    const modelos = await analistaModel.listarModelos(idEmpresa);
-    res.json(modelos);
+    const dadoAnual = await analistaModel.listarDiario();
+    res.json(dadoAnual);
   } catch (err) {
     console.error(err);
-    res.status(500).json("Erro ao listar modelos");
+    res.status(500).json("Erro ao listar dadoDiario");
   }
 }
 
@@ -56,4 +53,10 @@ async function listarModelos(req, res) {
 
 
 
-module.exports = { listarSemanal, listarMensal, listarAnual, listarModelos };
+
+
+
+
+
+
+module.exports = {listarSemanal, listarMensal, listarAnual, listarDiario};

@@ -6,109 +6,153 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard - Gestor Empresa</title>
     <link rel="icon" href="/assets/imgs/Zephyrus.icon" />
+
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="/css/dashboardGestor.css">
+    
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet" />
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.js"></script>
     <script src="https://kit.fontawesome.com/9f7414eb10.js" crossorigin="anonymous"></script>
 
+    <style>
+        .zephyrus-bg-success { background-color: #30a799 !important; }
+        .zephyrus-text-success { color: #30a799 !important; }
+
+        .kpi-card-icon {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            width: 48px;
+            height: 48px;
+            flex-shrink: 0;
+        }
+
+        .chart-container {
+            position: relative;
+            height: 250px;
+            width: 100%;
+        }
+        
+        .chart-container-lg {
+            position: relative;
+            height: 350px; 
+            width: 100%;
+        }
+
+        .risk-legend-item {
+            font-size: 0.85rem;
+            color: #6c757d;
+            display: flex;
+            align-items: center;
+            margin-bottom: 0.5rem;
+        }
+        .risk-legend-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 3px;
+            margin-right: 8px;
+            display: inline-block;
+        }
+
+        /* Legenda do Gráfico de Linha */
+        .legend-dot {
+            height: 10px;
+            width: 10px;
+            border-radius: 50%;
+            display: inline-block;
+        }
+        .legend-line {
+            height: 4px;
+            width: 32px;
+            display: inline-block;
+            vertical-align: middle;
+        }
+
+        @media (max-width: 768px) {
+            .chart-container { height: 200px; }
+            .chart-container-lg { height: 300px; }
+        }
+    </style>
 </head>
 
 <body>
-    <!-- Cabeçalho (substituído do mainPage) -->
     <nav class="navbar corPrincipal fixed-top py-3">
-      <div class="container-fluid justify-content-start ">
-        <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar"
-          aria-controls="offcanvasNavbar" aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon text-white"></span>
-        </button>
-        <div class="containerTitulo">
-          <div class="logo-titulo">
-            <img src="/assets/imgs/Zephyrus_2png.png" style="width: 50px;" alt="">
-            <h1 class="titulo">Zephyrus</h1>
-          </div>
+        <div class="container-fluid justify-content-start ">
+            <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar"
+                aria-controls="offcanvasNavbar" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon text-white"></span>
+            </button>
+            <div class="containerTitulo">
+                <div class="logo-titulo">
+                    <img src="/assets/imgs/Zephyrus_2png.png" style="width: 50px;" alt="">
+                    <h1 class="titulo">Zephyrus</h1>
+                </div>
 
-          <div class="offcanvas offcanvas-start corPrincipal" tabindex="-1" id="offcanvasNavbar"
-            aria-labelledby="offcanvasNavbarLabel">
-            <img src="/assets/imgs/Zephyrus_2png.png"
-              style="width: 170px; align-self: center; margin-bottom: 10px; margin-top: 20px;" alt="">
-            <div class="offcanvas-header" style="border-bottom:2px solid rgba(255, 255, 255, 0.5);">
-              <h4 class="offcanvas-title " style="color: #f5f6fa; " id="offcanvasNavbarLabel">Menu</h4>
-              <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas"
-                aria-label="Close"></button>
+                <div class="offcanvas offcanvas-start corPrincipal" tabindex="-1" id="offcanvasNavbar"
+                    aria-labelledby="offcanvasNavbarLabel">
+                    <img src="/assets/imgs/Zephyrus_2png.png"
+                        style="width: 170px; align-self: center; margin-bottom: 10px; margin-top: 20px;" alt="">
+                    <div class="offcanvas-header" style="border-bottom:2px solid rgba(255, 255, 255, 0.5);">
+                        <h4 class="offcanvas-title " style="color: #f5f6fa; " id="offcanvasNavbarLabel">Menu</h4>
+                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas"
+                            aria-label="Close"></button>
+                    </div>
+                    <div class="offcanvas-body d-flex flex-column">
+                        <ul class="navbar-nav justify-content-start flex-grow-1 pe-3">
+                            <li class="nav-item-selected" style="width: 100%;">
+                                <a id="navMain" class="nav-link active"
+                                    style="padding: 5px; color: #f5f6fa; font-size: 22px;"
+                                    href="./mainPage.html">Página principal</a>
+                            </li>
+                            <li class="nav-item" style="width: 100%;">
+                                <a class="nav-link active" style="padding: 5px; color: #f5f6fa;  font-size: 22px;"
+                                    href="./controleHospitais.html">Hospitais</a>
+                            </li>
+                            <li class="nav-item" style="width: 100%;">
+                                <a class="nav-link active" style="padding: 5px; color: #f5f6fa;  font-size: 22px;"
+                                    href="./contas.html">Contas</a>
+                            </li>
+                        </ul>
+                        <ul class="navbar-nav d-flex flex-column flex-grow-1 pe-3">
+                            <li class="nav-item mt-auto d-flex justify-content-center" style="width: 100%;">
+                                <a class="btn-suporte" href="/index">
+                                    <img style="width: 40px;" src="/assets/imgs/headphoneIcon.png" alt="">
+                                    Abrir chamado
+                                </a>
+                            </li>
+                            <li class="nav-item d-flex justify-content-center" style="width: 100%;">
+                                <a class="btn-sair" href="/index.html" onclick="sessionStorage.clear()">
+                                    <img class="icon" src="https://cdn-icons-png.flaticon.com/512/1828/1828479.png"
+                                        alt="Logout">
+                                    Sair
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
             </div>
-            <div class="offcanvas-body d-flex flex-column">
-              <ul class="navbar-nav justify-content-start flex-grow-1 pe-3">
-                <li class="nav-item-selected" style="width: 100%;">
-                  <a id="navMain" class="nav-link active" style="padding: 5px; color: #f5f6fa; font-size: 22px;"
-                    href="./mainPage.html">Página
-                    principal</a>
-                </li>
-                <li class="nav-item" style="width: 100%;">
-                  <a class="nav-link active" style="padding: 5px; color: #f5f6fa;  font-size: 22px;"
-                    href="./controleHospitais.html">Hospitais</a>
-                </li>
-                <li class="nav-item" style="width: 100%;">
-                  <a class="nav-link active" style="padding: 5px; color: #f5f6fa;  font-size: 22px;"
-                    href="./contas.html">Contas</a>
-                </li>
-              </ul>
-              <ul class="navbar-nav d-flex flex-column flex-grow-1 pe-3">
-                <li class="nav-item mt-auto d-flex justify-content-center" style="width: 100%;">
-                  <a class="btn-suporte" href="/index">
-                    <img style="width: 40px;" src="/assets/imgs/headphoneIcon.png" alt="">
-                    Abrir chamado
-                  </a>
-                </li>
-                <li class="nav-item d-flex justify-content-center" style="width: 100%;">
-                  <a class="btn-sair" href="/index.html" onclick="sessionStorage.clear()">
-                    <img class="icon" src="https://cdn-icons-png.flaticon.com/512/1828/1828479.png" alt="Logout">
-                    Sair
-                  </a>
-                </li>
-              </ul>
-            </div>
-          </div>
-        </div>
     </nav>
 
     <br><br><br><br>
 
-    <!-- Main Content -->
     <main class="container my-4">
-        <!-- Stats Cards -->
+
+        <div class="d-flex justify-content-between align-items-end mb-4 border-bottom pb-2">
+            <div>
+                <h2 class="fw-bold text-dark mb-1">Dashboard do Gestor</h2>
+                <p class="text-muted mb-0">Visão geral da operação e monitoramento de equipamentos</p>
+            </div>
+            <div class="d-none d-md-block">
+                <span class="badge bg-light text-secondary border">
+                    <i class="bi bi-calendar3 me-1"></i> Hoje
+                </span>
+            </div>
+        </div>
+
         <div class="row g-3 mb-4">
-            <div class="col-md-4">
-                <div class="card stat-card border-0 border-bottom border-success border-5">
-                    <div class="card-body shadow-bottom-right">
-                        <div class="d-flex justify-content-between align-items-center">
-                            <div>
-                                <p class="text-muted small mb-1">Operacionais</p>
-                                <p class="stat-value text-success">246</p>
-                            </div>
-                            <div class="bg-success bg-opacity-10 p-3 rounded">
-                                <i class="bi bi-check-circle stat-icon text-success"></i>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="card stat-card border-0 border-bottom border-warning border-5">
-                    <div class="card-body shadow-bottom-right">
-                        <div class="d-flex justify-content-between align-items-center">
-                            <div>
-                                <p class="text-muted small mb-1">Em Alerta</p>
-                                <p class="stat-value text-warning">6</p>
-                            </div>
-                            <div class="bg-warning bg-opacity-10 p-3 rounded">
-                                <i class="bi bi-exclamation-triangle stat-icon text-warning"></i>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
             <div class="col-md-4">
                 <div class="card stat-card border-0 border-bottom border-danger border-5">
                     <div class="card-body shadow-bottom-right">
@@ -124,72 +168,163 @@
                     </div>
                 </div>
             </div>
-        </div>
-        <!-- Uptime Card -->
-        <div class="card uptime-card mb-4">
-            <div class="card-body p-4">
-                <div class="row align-items-start">
-                    <div class="col-md-8">
-                        <p class="text-white-50 mb-2">Taxa de Uptime Global</p>
-                        <div class="d-flex align-items-baseline gap-3">
-                            <h2 class="uptime-percentage">99.2%</h2>
-                            <div class="d-flex align-items-center gap-1 text-green-50">
-                                <i class="bi bi-arrow-up"></i>
-                                <span class="porcentagem">+0.3%</span>
+
+            <div class="col-md-4">
+                <div class="card stat-card border-0 border-bottom border-warning border-5">
+                    <div class="card-body shadow-bottom-right">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <p class="text-muted small mb-1">Atenção</p>
+                                <p class="stat-value text-warning">6</p>
                             </div>
-                        </div>
-                        <p class="text-white-50 mt-3">
-                            <span class="text-white fw-bold">246</span> de
-                            <span class="text-white fw-bold">248</span> ventiladores operando dentro dos parâmetros
-                            normais
-                        </p>
-                    </div>
-                    <div class="col-md-4 text-md-end mt-3 mt-md-0">
-                        <div class="sla-box">
-                            <p class="text-white-50 small mb-1">Objetivo SLA</p>
-                            <p class="h3 mb-0">99.0%</p>
+                            <div class="bg-warning bg-opacity-10 p-3 rounded">
+                                <i class="bi bi-exclamation-triangle stat-icon text-warning"></i>
+                            </div>
                         </div>
                     </div>
                 </div>
-                <div class="border-top border-white border-opacity-25 mt-4 pt-3">
-                    <div class="d-flex justify-content-between small">
-                        <span class="text-white-50">Última atualização</span>
-                        <span class="text-white">Há 2 minutos</span>
+            </div>
+            <div class="col-md-4">
+                <div class="card stat-card border-0 border-bottom border-success border-5">
+                    <div class="card-body shadow-bottom-right">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <p class="text-muted small mb-1">Operacionais</p>
+                                <p class="stat-value text-success">246</p>
+                            </div>
+                            <div class="bg-success bg-opacity-10 p-3 rounded">
+                                <i class="bi bi-check-circle stat-icon text-success"></i>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- Charts Row -->
+        <div class="card uptime-card mb-4">
+            <div class="card-body p-4">
+                <div class="row align-items-start">
+                    <div class="col-md-8">
+                        <p class="text-black-50 mb-2">Taxa de Uptime Global</p>
+                        <div class="d-flex align-items-baseline gap-3">
+                            <h2 class="text-black uptime-percentage">99.2%</h2>
+                            <div class="d-flex align-items-center gap-1 text-green-50">
+                                <i class="bi bi-arrow-up" style="color: black;"></i>
+                                <span class="porcentagem">+0.3%</span>
+                            </div>
+                        </div>
+                        <p class="text-black-50 mt-3">
+                            <span class="text-black fw-bold">246</span> de
+                            <span class="text-black fw-bold">248</span> ventiladores operando dentro dos parâmetros
+                            normais
+                        </p>
+                    </div>
+                    <div class="col-md-4 text-md-end mt-3 mt-md-0">
+                        <div class="sla-box" style="border: black;">
+                            <p class="text-black-50 small mb-1">Objetivo SLA</p>
+                            <p class="text-black h3 mb-0">99.0%</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="border-top border-white border-opacity-25 mt-4 pt-3">
+                    <div class="d-flex justify-content-between small">
+                        <span class="text-black">Última atualização</span>
+                        <span class="text-black">Há 2 minutos</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card shadow-sm mb-4">
+            <div class="card-body p-4">
+                <div class="row align-items-start">
+                    <div class="col-md-6 mb-3 mb-md-0">
+                        <h5 class="card-title text-uppercase text-muted fw-bold">Tendência de Falhas (12 Meses)</h5>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="d-flex flex-wrap justify-content-md-end gap-3 small">
+                            <div class="d-flex align-items-center">
+                                <span class="legend-dot me-2" style="background-color: #F59E0B;"></span>
+                                <span class="text-body-secondary me-1">Respite-2000</span>
+                                <span class="text-warning fw-medium">(Piorando)</span>
+                            </div>
+                            <div class="d-flex align-items-center">
+                                <span class="legend-dot me-2" style="background-color: #4ADE80;"></span>
+                                <span class="text-body-secondary me-1">Oxy-Gen 5</span>
+                                <span class="text-success fw-medium">(Estável)</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="chart-container-lg mt-4">
+                    <canvas id="failuresChart"></canvas>
+                </div>
+                <div class="d-flex flex-wrap justify-content-center align-items-center gap-4 mt-4 text-body-secondary small">
+                    <div class="d-flex align-items-center">
+                        <span class="legend-line me-2" style="background-color: #F59E0B;"></span>
+                        <span>Respite-2000</span>
+                    </div>
+                    <div class="d-flex align-items-center">
+                        <span class="legend-line me-2" style="background-color: #818CF8;"></span>
+                        <span>Vent-X100</span>
+                    </div>
+                    <div class="d-flex align-items-center">
+                        <span class="legend-line me-2" style="background-color: #4ADE80;"></span>
+                        <span>Oxy-Gen 5</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <div class="row g-4 mb-4">
             <div class="col-lg-6">
-                <div class="card">
+                <div class="card h-100">
                     <div class="card-body">
-                        <h5 class="card-title mb-4">Status Operacional dos Ventiladores</h5>
+                        <h5 class="card-title mb-4">Risco por Área</h5>
                         <div class="chart-container">
-                            <canvas id="statusChart"></canvas>
+                            <canvas id="riskChart"></canvas>
                         </div>
-                        <div class="border-top mt-4 pt-3">
+                        <div class="mt-4 pt-2">
+                            <div class="row row-cols-3 g-2">
+                                <div class="col risk-legend-item">
+                                    <span class="risk-legend-dot" style="background-color: #ef4444;"></span> UTI
+                                </div>
+                                <div class="col risk-legend-item">
+                                    <span class="risk-legend-dot" style="background-color: #f97316;"></span> Neonatal
+                                </div>
+                                <div class="col risk-legend-item">
+                                    <span class="risk-legend-dot" style="background-color: #f59e0b;"></span> PS
+                                </div>
+                                <div class="col risk-legend-item">
+                                    <span class="risk-legend-dot" style="background-color: #3b82f6;"></span> Inter.
+                                </div>
+                                <div class="col risk-legend-item">
+                                    <span class="risk-legend-dot" style="background-color: #10b981;"></span> Cirurg.
+                                </div>
+                            </div>
+                        </div>
+                        <div class="border-top mt-3 pt-3 text-center">
                             <p class="small text-muted mb-0">
-                                Total de equipamentos monitorados: <span class="fw-semibold text-dark">248</span>
+                                Sugestão de suporte: <span class="fw-bold text-danger">Foco na UTI</span>
                             </p>
                         </div>
                     </div>
                 </div>
             </div>
+
             <div class="col-lg-6">
-                <div class="card">
+                <div class="card h-100">
                     <div class="card-body">
                         <div class="d-flex justify-content-between align-items-center mb-4">
-                            <h5 class="card-title mb-0">Total de Alertas Gerados</h5>
-                            <span class="badge bg-light text-dark">Últimos 30 dias</span>
+                            <h5 class="card-title mb-0">Volume de Alertas</h5>
+                            <span class="badge bg-light text-dark">30 dias</span>
                         </div>
                         <div class="chart-container">
                             <canvas id="alertsChart"></canvas>
                         </div>
                         <div class="border-top mt-4 pt-3">
                             <div class="d-flex justify-content-between small text-muted">
-                                <span>Total de alertas no período: <span class="fw-semibold text-dark">65</span></span>
+                                <span>Total de alertas: <span class="fw-semibold text-dark">65</span></span>
                                 <span>Média semanal: <span class="fw-semibold text-dark">13.0</span></span>
                             </div>
                         </div>
@@ -198,53 +333,152 @@
             </div>
         </div>
 
+        <div class="card shadow-sm border-0 mb-5">
+            <div class="card-body p-4">
+                <h1 class="card-title h3 mb-1 fw-bold text-dark">Status por Hospital - Top 5</h1>
+                <p class="card-subtitle text-muted">Distribuição de ventiladores por status operacional</p>
+
+                <div class="row g-4 mt-3">
+                    <div class="col-md-6">
+                        <div class="card h-100 border-danger-subtle bg-danger-subtle bg-opacity-10">
+                            <div class="card-body d-flex align-items-center p-3">
+                                <div class="kpi-card-icon bg-danger-subtle me-3">
+                                    <span class="material-icons-outlined text-danger">error_outline</span>
+                                </div>
+                                <div>
+                                    <p class="mb-0 small text-danger fw-medium">Pior Experiência</p>
+                                    <p class="h5 mb-1 fw-bold text-dark">Hospital das Clínicas</p>
+                                    <p class="mb-0 text-danger fw-semibold">6.8% crítico</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="card h-100 border-success-subtle bg-success-subtle bg-opacity-10">
+                            <div class="card-body d-flex align-items-center p-3">
+                                <div class="kpi-card-icon bg-success-subtle me-3">
+                                    <span class="material-icons-outlined zephyrus-text-success">apartment</span>
+                                </div>
+                                <div>
+                                    <p class="mb-0 small zephyrus-text-success fw-medium">Melhor Performance</p>
+                                    <p class="h5 mb-1 fw-bold text-dark">Hospital São Lucas</p>
+                                    <p class="mb-0 zephyrus-text-success fw-semibold">95.6% operacional</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mt-5">
+                    <div class="d-flex justify-content-end align-items-center gap-3 mb-2 small text-muted">
+                        <div class="d-flex align-items-center gap-2">
+                            <span class="zephyrus-bg-success"
+                                style="width: 12px; height: 12px; border-radius: 2px;"></span>
+                            <span>Operacional</span>
+                        </div>
+                        <div class="d-flex align-items-center gap-2">
+                            <span class="bg-warning" style="width: 12px; height: 12px; border-radius: 2px;"></span>
+                            <span>Atenção</span>
+                        </div>
+                        <div class="d-flex align-items-center gap-2">
+                            <span class="bg-danger" style="width: 12px; height: 12px; border-radius: 2px;"></span>
+                            <span>Crítico</span>
+                        </div>
+                        <button class="btn btn-link text-muted p-0 lh-1">
+                            <span class="material-icons-outlined">filter_list</span>
+                        </button>
+                    </div>
+
+                    <div class="mt-5 table-responsive">
+                        <table class="table table-hover align-middle">
+                            <thead class="table-light">
+                                <tr>
+                                    <th class="fw-bold text-secondary" scope="col">Hospital</th>
+                                    <th class="fw-bold text-secondary" scope="col">Total</th>
+                                    <th class="fw-bold text-secondary" scope="col">Operacional</th>
+                                    <th class="fw-bold text-secondary" scope="col">Atenção</th>
+                                    <th class="fw-bold text-secondary" scope="col">Crítico</th>
+                                    <th class="fw-bold text-secondary" scope="col">Disponib.</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="fw-medium">Hospital das Clínicas</td>
+                                    <td class="text-muted">220</td>
+                                    <td class="fw-semibold zephyrus-text-success">180</td>
+                                    <td class="fw-semibold text-warning">25</td>
+                                    <td class="fw-semibold text-danger">15</td>
+                                    <td class="fw-semibold text-danger">81.8%</td>
+                                </tr>
+                                <tr>
+                                    <td class="fw-medium">Hospital Geral</td>
+                                    <td class="text-muted">155</td>
+                                    <td class="fw-semibold zephyrus-text-success">138</td>
+                                    <td class="fw-semibold text-warning">11</td>
+                                    <td class="fw-semibold text-danger">6</td>
+                                    <td class="fw-semibold text-warning">89.0%</td>
+                                </tr>
+                                <tr>
+                                    <td class="fw-medium">Hospital Regional</td>
+                                    <td class="text-muted">190</td>
+                                    <td class="fw-semibold zephyrus-text-success">165</td>
+                                    <td class="fw-semibold text-warning">18</td>
+                                    <td class="fw-semibold text-danger">7</td>
+                                    <td class="fw-semibold text-warning">86.8%</td>
+                                </tr>
+                                <tr>
+                                    <td class="fw-medium">Hospital Santa Maria</td>
+                                    <td class="text-muted">165</td>
+                                    <td class="fw-semibold zephyrus-text-success">148</td>
+                                    <td class="fw-semibold text-warning">12</td>
+                                    <td class="fw-semibold text-danger">5</td>
+                                    <td class="fw-semibold text-warning">89.7%</td>
+                                </tr>
+                                <tr>
+                                    <td class="fw-medium">Hospital São Lucas</td>
+                                    <td class="text-muted">180</td>
+                                    <td class="fw-semibold zephyrus-text-success">172</td>
+                                    <td class="fw-semibold text-warning">6</td>
+                                    <td class="fw-semibold text-danger">2</td>
+                                    <td class="fw-semibold zephyrus-text-success">95.6%</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
     </main>
 
-    <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 
     <script>
-        // checando se o elemento existe antes
-        const dateElement = document.getElementById('currentDate');
-        if (dateElement) {
-            const now = new Date();
-            const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
-            dateElement.textContent = now.toLocaleDateString('pt-BR', options);
-        }
-
         window.addEventListener('load', () => {
             try {
-                const statusEl = document.getElementById('statusChart');
-                if (statusEl) {
-                    const statusCtx = statusEl.getContext('2d');
-                    new Chart(statusCtx, {
+                Chart.defaults.font.family = "'Segoe UI', 'Roboto', 'Helvetica Neue', 'Arial', sans-serif";
+
+                const riskEl = document.getElementById('riskChart');
+                if (riskEl) {
+                    const riskCtx = riskEl.getContext('2d');
+                    new Chart(riskCtx, {
                         type: 'doughnut',
                         data: {
-                            labels: ['OK', 'Alerta', 'Crítico'],
+                            labels: ['UTI', 'Neonatal', 'P. Socorro', 'Internação', 'C. Cirúrgico'],
                             datasets: [{
-                                data: [246, 6, 2],
-                                backgroundColor: ['#198754', '#ffc107', '#dc3545'],
+                                label: 'Risco por Área',
+                                data: [35, 20, 25, 10, 10],
+                                backgroundColor: ['#ef4444', '#f97316', '#f59e0b', '#3b82f6', '#10b981'],
+                                borderColor: '#fff',
                                 borderWidth: 2,
-                                borderColor: '#fff'
+                                hoverOffset: 4
                             }]
                         },
                         options: {
                             responsive: true,
                             maintainAspectRatio: false,
-                            plugins: {
-                                legend: { position: 'bottom' },
-                                tooltip: {
-                                    callbacks: {
-                                        label: function (context) {
-                                            const label = context.label || '';
-                                            const value = context.parsed;
-                                            const total = context.dataset.data.reduce((a, b) => a + b, 0);
-                                            const percentage = ((value / total) * 100).toFixed(1);
-                                            return `${label}: ${value} (${percentage}%)`;
-                                        }
-                                    }
-                                }
-                            }
+                            cutout: '70%',
+                            plugins: { legend: { display: false }, tooltip: { enabled: true } }
                         }
                     });
                 }
@@ -257,18 +491,97 @@
                         data: {
                             labels: ['Sem 1', 'Sem 2', 'Sem 3', 'Sem 4', 'Sem 5'],
                             datasets: [
-                                { label: 'Alertas', data: [12, 15, 9, 18, 11], backgroundColor: '#ffc107', borderRadius: 4 },
+                                { label: 'Atenção', data: [12, 15, 9, 18, 11], backgroundColor: '#ffc107', borderRadius: 4 },
                                 { label: 'Críticos', data: [3, 5, 2, 4, 2], backgroundColor: '#dc3545', borderRadius: 4 }
                             ]
                         },
                         options: {
                             responsive: true,
                             maintainAspectRatio: false,
-                            scales: { x: { grid: { display: false } }, y: { beginAtZero: true } },
-                            plugins: { legend: { position: 'bottom' } }
+                            scales: { x: { grid: { display: false } }, y: { beginAtZero: true, grid: { borderDash: [2, 4] } } },
+                            plugins: { legend: { position: 'bottom', labels: { boxWidth: 12, usePointStyle: true } } }
                         }
                     });
                 }
+
+                const failuresEl = document.getElementById('failuresChart');
+                if (failuresEl) {
+                    const failuresCtx = failuresEl.getContext('2d');
+                    const colors = {
+                        gridColor: 'rgba(0, 0, 0, 0.1)',
+                        labelColor: 'rgba(0, 0, 0, 0.6)',
+                        tooltipBgColor: '#FFFFFF',
+                        tooltipTitleColor: '#333333',
+                        tooltipBodyColor: '#666666',
+                        tooltipBorderColor: '#dee2e6',
+                        pointBorderColor: '#f8f9fa'
+                    };
+
+                    new Chart(failuresCtx, {
+                        type: 'line',
+                        data: {
+                            labels: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'],
+                            datasets: [
+                                {
+                                    label: 'Respite-2000',
+                                    data: [15, 18, 21, 23, 25, 29, 34, 40, 44, 47, 49, 50],
+                                    borderColor: '#F59E0B',
+                                    backgroundColor: '#F59E0B',
+                                    tension: 0.4, borderWidth: 3, pointRadius: 4,
+                                    pointBackgroundColor: '#F59E0B',
+                                    pointBorderColor: colors.pointBorderColor, pointBorderWidth: 2
+                                },
+                                {
+                                    label: 'Vent-X100',
+                                    data: [30, 32, 29, 30, 31, 28, 30, 31, 30, 29, 29, 28],
+                                    borderColor: '#818CF8',
+                                    backgroundColor: '#818CF8',
+                                    tension: 0.4, borderWidth: 3, pointRadius: 4,
+                                    pointBackgroundColor: '#818CF8',
+                                    pointBorderColor: colors.pointBorderColor, pointBorderWidth: 2
+                                },
+                                {
+                                    label: 'Oxy-Gen 5',
+                                    data: [5, 4, 6, 5, 4, 3, 4, 3, 2, 3, 2, 2],
+                                    borderColor: '#4ADE80',
+                                    backgroundColor: '#4ADE80',
+                                    tension: 0.4, borderWidth: 3, pointRadius: 4,
+                                    pointBackgroundColor: '#4ADE80',
+                                    pointBorderColor: colors.pointBorderColor, pointBorderWidth: 2
+                                }
+                            ]
+                        },
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            plugins: {
+                                legend: { display: false },
+                                tooltip: {
+                                    mode: 'index', intersect: false,
+                                    backgroundColor: colors.tooltipBgColor,
+                                    titleColor: colors.tooltipTitleColor,
+                                    bodyColor: colors.tooltipBodyColor,
+                                    borderColor: colors.tooltipBorderColor,
+                                    borderWidth: 1, padding: 10, cornerRadius: 8
+                                }
+                            },
+                            scales: {
+                                x: {
+                                    grid: { display: false, borderColor: colors.gridColor },
+                                    ticks: { color: colors.labelColor }
+                                },
+                                y: {
+                                    beginAtZero: true, max: 50,
+                                    title: { display: true, text: 'Total de Incidentes', color: colors.labelColor, font: { weight: '500' } },
+                                    grid: { color: colors.gridColor, borderDash: [2, 4], borderColor: colors.gridColor },
+                                    ticks: { color: colors.labelColor, stepSize: 10 }
+                                }
+                            },
+                            interaction: { intersect: false, mode: 'index' }
+                        }
+                    });
+                }
+
             } catch (err) {
                 console.error('Erro ao inicializar charts:', err);
             }

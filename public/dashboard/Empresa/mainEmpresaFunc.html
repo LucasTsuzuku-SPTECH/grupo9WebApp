@@ -83,9 +83,9 @@
                     <h4 style="margin: 0px; color: white;">Filtro de períodos:</h4>
                     <select onchange="updatePeriodo()" class="selects"
                         style="height: 20px; background-color: rgb(131, 203, 195);" id="filtroPeriodo">
-                        <option value="semanal">Semanal</option>
-                        <option value="mensal">Mensal</option>
-                        <option value="anual">Anual</option>
+                        <option class="opcao" value=semanal>Semanal</option>
+                        <option class="opcao" value=mensal>Mensal</option>
+                        <option class="opcao" value=anual>Anual</option>
                     </select>
                 </div>
 
@@ -124,19 +124,18 @@
                 <!-- Filtro e KPIs -->
                 <div id="mainKPI" style="width: 100%; display: flex; flex-direction: column; justify-content: center;">
                     <div style="width: 100%; display: flex; flex-direction: row; justify-content: center;">
-                        <div style="border-bottom: rgb(235, 214, 31) solid 4px;" class="kpiDashMain">
+                        <div style="border-bottom: #30a799 solid 4px;" class="kpiDashMain">
                             <h2
                                 style="display: flex; flex-direction: row; justify-content: space-between; align-items: center;">
-                                RAM
-                                <i class="bi bi-exclamation-circle-fill"
-                                    style="font-size: 48px; color: rgb(235, 214, 31);"></i>
+                                ...
+                                <i class="bi bi-exclamation-circle-fill" style="font-size: 48px; color: #30a799;"></i>
                             </h2>
                             <p style="height: 48px;">Componente com mais intercorrência</p>
                         </div>
-                        <div style="border-bottom: 1px solid rgb(204, 204, 204);;" class="kpiDashMain">
+                        <div style="border-bottom: 1px solid rgb(204, 204, 204);" class="kpiDashMain">
                             <h2
                                 style="display: flex; flex-direction: row; justify-content: space-between; align-items: center;">
-                                100
+                                ...
                                 <i class="bi bi-exclamation-circle-fill" style="font-size: 48px; color: black;"></i>
                             </h2>
                             <p style="height: 48px;">Total de intercorrências</p>
@@ -147,34 +146,34 @@
                         <div class="kpiDash">
                             <h2
                                 style="display: flex; flex-direction: row; justify-content: space-between; align-items: center;">
-                                25%
-                                <i class="bi bi-cpu" style="font-size: 40px;"></i>
+                                ...
+                                <i class="bi bi-cpu" style="font-size: 50px; color: #30a799"></i>
                             </h2>
-                            <p style="height: 48px;">Intercorrências em CPU (25/100)</p>
+                            <p style="height: 48px;">Intercorrências em CPU (.../...)</p>
                         </div>
                         <div class="kpiDash">
                             <h2
                                 style="display: flex; flex-direction: row; justify-content: space-between; align-items: center;">
-                                50%
-                                <i class="bi bi-memory" style="font-size: 40px;"></i>
+                                ...
+                                <i class="bi bi-memory" style="font-size: 50px; color: #30a799"></i>
                             </h2>
-                            <p style="height: 48px;">Intercorrências em RAM (50/100)</p>
+                            <p style="height: 48px;">Intercorrências em RAM (.../...)</p>
                         </div>
                         <div class="kpiDash">
                             <h2
                                 style="display: flex; flex-direction: row; justify-content: space-between; align-items: center;">
-                                20%
-                                <i class="bi bi-hdd" style="font-size: 40px;"></i>
+                                ...
+                                <i class="bi bi-hdd" style="font-size: 50px; color: #30a799"></i>
                             </h2>
-                            <p style="height: 48px;">Intercorrências em Disco (20/100)</p>
+                            <p style="height: 48px;">Intercorrências em Disco (.../...)</p>
                         </div>
                         <div class="kpiDash">
                             <h2
                                 style="display: flex; flex-direction: row; justify-content: space-between; align-items: center;">
-                                05%
-                                <i class="bi bi-diagram-3" style="font-size: 40px;"></i>
+                                ...
+                                <i class="bi bi-diagram-3" style="font-size: 50px; color: #30a799"></i>
                             </h2>
-                            <p style="height: 48px;">Intercorrências em Processos (05/100)</p>
+                            <p style="height: 48px;">Intercorrências em Processos (.../...)</p>
                         </div>
                     </div>
                 </div>
@@ -186,8 +185,8 @@
                                 class="periodoSelected"></a>):
                         </div>
                         <div class="tabelaWrapper">
-                            <table id="rankingModelo" class="tabela">
-                                <thead>
+                            <table class="tabela">
+                                <thead id="rankingModeloMain">
                                     <tr>
                                         <th>Posição</th>
                                         <th>Modelo</th>
@@ -205,15 +204,6 @@
                             <div id="grafMain1"></div>
                         </div>
                     </div>
-
-                    <!-- Info principal 2 -->
-                    <div class="container">
-                        <div class="containerHeader">Percentual de intercorrências de modelos por top 5 hospitas/modelo
-                            (<a class="periodoSelected"></a>):</div>
-                        <div class="chartContent">
-                            <div id="grafMain2"></div>
-                        </div>
-                    </div>
                 </div>
             </div>
 
@@ -224,9 +214,9 @@
                 <div style="width: 90%; margin-left: 75px;">
                     <select onchange="updateHospital()" class="selects" style="background-color: #39a699;"
                         id="filtroHospital">
-                        <option value="">Selecione um hospital...</option>
-                        <option value="teste1">teste1</option>
-                        <option value="teste2">teste2</option>
+                        <option class="opcao" value="">Selecione um hospital...</option>
+                        <option class="opcao" value="teste1">teste1</option>
+                        <option class="opcao" value="teste2">teste2</option>
                     </select>
                 </div>
 
@@ -331,14 +321,9 @@
 <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
-    function inicializacao() {
+    async function inicializacao() {
+        await coletaBucket();
         updatePeriodo();
-        lerS3();
-
-
-
-
-
 
 
 
@@ -358,7 +343,7 @@
 
 
 
-
+    /*sidebar--------------------------------------------------------------------*/
     function toggleSidebar() {
         const sidebar = document.getElementById("sidebarModal");
         const icone = document.getElementById("icone");
@@ -396,13 +381,13 @@
             window.location.href = "../../index.html"
         }
     }
+    /*------------------------------------------------------------------------*/
 
 
 
 
 
-
-
+    /*IA----------------------------------------------------------------------*/
     function toggleAISidebar() {
         const ai = document.getElementById('aiSidebar');
         ai.classList.toggle('active');
@@ -446,17 +431,80 @@
 
         resp.innerHTML = data.resultado;
     }
+    /*------------------------------------------------------------------------------------------------*/
 
 
 
 
 
+    /*SCRIPT DATA COLECT---------------------------------------------------------------------------------*/
+    var dadosAnuais = [];
+    var dadosMensais = [];
+    var dadosSemanais = [];
+    var dadosSQL;
 
-    function updatePeriodo() {
-        document.querySelectorAll(".periodoSelected").forEach(function (periodoSelected) {
-            periodoSelected.innerHTML = `${document.getElementById("filtroPeriodo").value}`;
-        });
+    async function coletaBucket() {
+        const respostaSql = await fetch(`/analista/modelo/${sessionStorage.getItem('FK')}`)
+        dadosSQL = await respostaSql.json()
+        console.log(dadosSQL)
+
+        const respostaAnual = await fetch(`/analista/anual`);
+        var tempAnual = await respostaAnual.json();
+        for (let i = 0; i < dadosSQL.length; i++) {
+            for (let j = 0; j < tempAnual.length; j++) {
+                if (tempAnual[j]['numero_serie'] == dadosSQL[i]['numero_serie']) {
+                    dadosAnuais.push(tempAnual[j])
+                }
+            }
+        }
+
+        const respostaMensal = await fetch(`/analista/mensal`);
+        var tempMensal = await respostaMensal.json()
+        for (let i = 0; i < dadosSQL.length; i++) {
+            for (let j = 0; j < tempMensal.length; j++) {
+                if (tempMensal[j]['numero_serie'] == dadosSQL[i]['numero_serie']) {
+                    dadosMensais.push(tempMensal[j])
+                }
+            }
+        }
+
+        const respostaSemanal = await fetch(`/analista/semanal`);
+        var tempSemanal = await respostaSemanal.json()
+        for (let i = 0; i < dadosSQL.length; i++) {
+            for (let j = 0; j < tempSemanal.length; j++) {
+                if (tempSemanal[j]['numero_serie'] == dadosSQL[i]['numero_serie']) {
+                    dadosSemanais.push(tempSemanal[j])
+                }
+            }
+        }
     }
+    /*----------------------------------------------------------------------------------------------------*/
+
+
+
+
+
+    /*filtros------------------------------------------------------------------------------------------*/
+    var valorFiltro;
+    function updatePeriodo() {
+        valorFiltro = document.getElementById("filtroPeriodo").value
+        let exibicao;
+
+        document.querySelectorAll(".periodoSelected").forEach(function (periodoSelected) {
+            if (valorFiltro == "mensal") {
+                exibicao = 'Mensal'
+            } else if (valorFiltro == "anual") {
+                exibicao = "Anual"
+            } else {
+                exibicao = 'Semanal'
+            }
+            periodoSelected.innerHTML = `${exibicao}`;
+        });
+
+        atualizarDados(valorFiltro)
+    }
+
+
 
     function updateHospital() {
         document.querySelectorAll(".hospitalSelected").forEach(function (hospitalSelected) {
@@ -467,15 +515,274 @@
             }
         });
     }
+    /*------------------------------------------------------------------------------------------------*/
 
 
 
-    /*----------SCRIPT DATA COLECT----------*/
-    async function lerS3() {
-        const resposta = await fetch(`/analista/anual`);
-        var dadosAnuais = await resposta.json()
 
 
+
+
+
+
+
+    /*atualizar dados---------------------------------------------------------------------------------------*/
+    function atualizarDados(data) {
+        var dadosUsados;
+        if (data == 'semanal') {
+            dadosUsados = dadosSemanais;
+        } else if (data == 'mensal') {
+            dadosUsados = dadosMensais;
+        } else {
+            dadosUsados = dadosAnuais;
+        }
+
+        console.log(dadosUsados)
+
+        atualizarKPI(dadosUsados);
+        atualizarTabela1(dadosUsados);
+        atualizarGraf1(dadosUsados);
+
+
+    }
+
+    var totalIntercorrencias;
+    function atualizarKPI(data) {
+        totalIntercorrencias = data.length;
+        var maisIntercorrencia;
+        var listaComponentes = ['CPU', 'RAM', 'Disco', 'Processos']
+        var qtdErros = []
+
+        for (let i = 0; i < listaComponentes.length; i++) {
+            let valorContado = 0;
+            for (let j = 0; j < data.length; j++) {
+                if (data[j]['componente'] == listaComponentes[i]) {
+                    valorContado++;
+                }
+            }
+            qtdErros.push(valorContado)
+        }
+
+        let tempValor = 0;
+        let indexMaior;
+        for (let i = 0; i < qtdErros.length; i++) {
+            if (qtdErros[i] > tempValor) {
+                indexMaior = i;
+                tempValor = qtdErros[i];
+            }
+        }
+        maisIntercorrencia = listaComponentes[indexMaior];
+
+        mainKPI.innerHTML = `<div style="width: 100%; display: flex; flex-direction: row; justify-content: center;">
+                        <div style="border-bottom: ${(qtdErros[indexMaior] * 100 / totalIntercorrencias) > 60 ? '#e60e3a' : (qtdErros[indexMaior] * 100 / totalIntercorrencias) > 30 ? 'rgb(235, 214, 31)' : '#30a799'} solid 4px;" class="kpiDashMain">
+                            <h2
+                                style="display: flex; flex-direction: row; justify-content: space-between; align-items: center;">
+                                ${maisIntercorrencia}
+                                <i class="bi bi-exclamation-circle-fill"
+                                    style="font-size: 48px; color: ${(qtdErros[indexMaior] * 100 / totalIntercorrencias) > 60 ? '#e60e3a' : (qtdErros[indexMaior] * 100 / totalIntercorrencias) > 30 ? 'rgb(235, 214, 31)' : '#30a799'};"></i>
+                            </h2>
+                            <p style="height: 48px;">Componente com mais intercorrência</p>
+                        </div>
+
+                        
+                        <div style="border-bottom: 1px solid rgb(204, 204, 204);" class="kpiDashMain">
+                            <h2
+                                style="display: flex; flex-direction: row; justify-content: space-between; align-items: center;">
+                                ${totalIntercorrencias}
+                                <i class="bi bi-exclamation-circle-fill" style="font-size: 48px; color: black;"></i>
+                            </h2>
+                            <p style="height: 48px;">Total de intercorrências</p>
+                        </div>
+                    </div>
+
+
+
+                    <div style="width: 100%; display: flex; flex-direction: row; justify-content: center;">
+                        <div class="kpiDash" style="border-bottom: 4px solid ${(qtdErros[0] * 100 / totalIntercorrencias) > 60 ? '#e60e3a' : (qtdErros[0] * 100 / totalIntercorrencias) > 30 ? 'rgb(235, 214, 31)' : '#30a799'}">
+                            <h2
+                                style="display: flex; flex-direction: row; justify-content: space-between; align-items: center;">
+                                ${(qtdErros[0] * 100 / totalIntercorrencias).toFixed(1)}%
+                                <i class="bi bi-cpu" style="font-size: 50px; color: ${(qtdErros[0] * 100 / totalIntercorrencias) > 60 ? '#e60e3a' : (qtdErros[0] * 100 / totalIntercorrencias) > 30 ? 'rgb(235, 214, 31)' : '#30a799'}"></i>
+                            </h2>
+                            <p style="height: 48px;">Intercorrências em CPU (${qtdErros[0]}/${totalIntercorrencias})</p>
+                        </div>
+
+
+                        <div class="kpiDash" style="border-bottom: 4px solid ${(qtdErros[1] * 100 / totalIntercorrencias) > 60 ? '#e60e3a' : (qtdErros[1] * 100 / totalIntercorrencias) > 30 ? 'rgb(235, 214, 31)' : '#30a799'}">
+                            <h2
+                                style="display: flex; flex-direction: row; justify-content: space-between; align-items: center;">
+                                ${(qtdErros[1] * 100 / totalIntercorrencias).toFixed(1)}%
+                                <i class="bi bi-memory" style="font-size: 50px; color: ${(qtdErros[1] * 100 / totalIntercorrencias) > 60 ? '#e60e3a' : (qtdErros[1] * 100 / totalIntercorrencias) > 30 ? 'rgb(235, 214, 31)' : '#30a799'}"></i>
+                            </h2>
+                            <p style="height: 48px;">Intercorrências em RAM (${qtdErros[1]}/${totalIntercorrencias})</p>
+                        </div>
+
+
+                        <div class="kpiDash" style="border-bottom: 4px solid ${(qtdErros[2] * 100 / totalIntercorrencias) > 60 ? '#e60e3a' : (qtdErros[2] * 100 / totalIntercorrencias) > 30 ? 'rgb(235, 214, 31)' : '#30a799'}">
+                            <h2
+                                style="display: flex; flex-direction: row; justify-content: space-between; align-items: center;">
+                                ${(qtdErros[2] * 100 / totalIntercorrencias).toFixed(1)}%
+                                <i class="bi bi-hdd" style="font-size: 50px; color: ${(qtdErros[2] * 100 / totalIntercorrencias) > 60 ? '#e60e3a' : (qtdErros[2] * 100 / totalIntercorrencias) > 30 ? 'rgb(235, 214, 31)' : '#30a799'}"></i>
+                            </h2>
+                            <p style="height: 48px;">Intercorrências em Disco (${qtdErros[2]}/${totalIntercorrencias})</p>
+                        </div>
+
+
+                        <div class="kpiDash" style="border-bottom: 4px solid ${(qtdErros[3] * 100 / totalIntercorrencias) > 60 ? '#e60e3a' : (qtdErros[3] * 100 / totalIntercorrencias) > 30 ? 'rgb(235, 214, 31)' : '#30a799'}">
+                            <h2
+                                style="display: flex; flex-direction: row; justify-content: space-between; align-items: center;">
+                                ${(qtdErros[3] * 100 / totalIntercorrencias).toFixed(1)}%
+                                <i class="bi bi-diagram-3" style="font-size: 50px; color: ${(qtdErros[3] * 100 / totalIntercorrencias) > 60 ? '#e60e3a' : (qtdErros[3] * 100 / totalIntercorrencias) > 30 ? 'rgb(235, 214, 31)' : '#30a799'}"></i>
+                            </h2>
+                            <p style="height: 48px;">Intercorrências em Processos (${qtdErros[3]}/${totalIntercorrencias})</p>
+                        </div>
+                    </div> `
+    }
+
+
+    function atualizarTabela1(data) {
+        let modelos = [];
+        let qtdErros = [];
+
+        for (let i = 0; i < dadosSQL.length; i++) {
+            if (!modelos.includes(dadosSQL[i].nome)) {
+                modelos.push(dadosSQL[i].nome)
+            }
+        }
+
+        for (let i = 0; i < modelos.length; i++) {
+            let qtd = 0;
+            for (let j = 0; j < dadosSQL.length; j++) {
+                for (let k = 0; k < data.length; k++) {
+                    if (modelos[i] == dadosSQL[j].nome && dadosSQL[j].numero_serie == data[k].numero_serie) {
+                        qtd++;
+                    }
+                }
+            }
+            qtdErros.push(qtd)
+        }
+
+        rankingModeloMain.innerHTML = `<th>Posição</th>
+                                       <th>Modelo</th>
+                                       <th>Total de Intercorrências</th>`
+
+        for (let i = 0; i < modelos.length; i++) {
+            rankingModeloMain.innerHTML += `<td>${i + 1}°</td>
+                                            <td>${modelos[i]}</td>
+                                            <td>${qtdErros[i]}</td>`
+        }
+    }
+
+
+    var grafMain1;
+    function atualizarGraf1(data) {
+        let modelos = [];
+        let intercorrenciasModelo = [];
+        let cpuData = [];
+        let ramData = [];
+        let discoData = [];
+        let procData = [];
+
+
+        for (let i = 0; i < dadosSQL.length; i++) {
+            if (!modelos.includes(dadosSQL[i].nome)) {
+                modelos.push(dadosSQL[i].nome)
+            }
+        }
+
+        for (let i = 0; i < modelos.length; i++) {
+            let qtd = 0;
+            for (let j = 0; j < dadosSQL.length; j++) {
+                for (let k = 0; k < data.length; k++) {
+                    if (modelos[i] == dadosSQL[j].nome && dadosSQL[j].numero_serie == data[k].numero_serie) {
+                        qtd++;
+                    }
+                }
+            }
+            intercorrenciasModelo.push(qtd)
+        }
+
+        for (let i = 0; i < modelos.length; i++) {
+            let qtdCpu = 0;
+            let qtdRam = 0;
+            let qtdDisco = 0;
+            let qtdProc = 0;
+
+            for (let j = 0; j < dadosSQL.length; j++) {
+                for (let k = 0; k < data.length; k++) {
+                    if (modelos[i] == dadosSQL[j].nome && dadosSQL[j].numero_serie == data[k].numero_serie && data[k].componente == "CPU") {
+                        qtdCpu++;
+                    } else if (modelos[i] == dadosSQL[j].nome && dadosSQL[j].numero_serie == data[k].numero_serie && data[k].componente == "RAM") {
+                        qtdRam++;
+                    } else if (modelos[i] == dadosSQL[j].nome && dadosSQL[j].numero_serie == data[k].numero_serie && data[k].componente == "Disco") {
+                        qtdDisco++;
+                    } else if (modelos[i] == dadosSQL[j].nome && dadosSQL[j].numero_serie == data[k].numero_serie && data[k].componente == "Processos") {
+                        qtdProc++;
+                    }
+                }
+            }
+            cpuData.push((qtdCpu * 100 / intercorrenciasModelo[i]).toFixed(2))
+            ramData.push((qtdRam * 100 / intercorrenciasModelo[i]).toFixed(2))
+            discoData.push((qtdDisco * 100 / intercorrenciasModelo[i]).toFixed(2))
+            procData.push((qtdProc * 100 / intercorrenciasModelo[i]).toFixed(2))
+        }
+
+        var dadosMain1 = {
+            series: [{
+                name: "CPU(%)",
+                data: cpuData
+            }, {
+                name: "RAM(%)",
+                data: ramData
+            }, {
+                name: "Disco(%)",
+                data: discoData
+            }, {
+                name: "Processos(%)",
+                data: procData
+            }],
+            colors: ["#83cbc3", "#30a799", "#00796b", "#264653"],
+            chart: {
+                type: 'bar',
+                height: '100%',
+                width: '100%'
+            },
+            plotOptions: {
+                bar: {
+                    horizontal: false,
+                    dataLabels: {
+                        position: 'top',
+                    },
+                }
+            },
+            dataLabels: {
+                enabled: true,
+                offsetX: 0,
+                style: {
+                    fontSize: '12px',
+                    colors: ['#fff']
+                }
+            },
+            stroke: {
+                show: true,
+                width: 1,
+                colors: ['#fff']
+            },
+            tooltip: {
+                shared: true,
+                intersect: false
+            },
+            xaxis: {
+                categories: modelos
+            },
+        };
+
+        if (typeof grafMain1 !== 'undefined' && grafMain1 !== null) {
+            grafMain1.destroy();
+        }
+
+        grafMain1 = new ApexCharts(document.querySelector("#grafMain1"), dadosMain1);
+        grafMain1.render();
     }
 
 
@@ -484,64 +791,6 @@
 
 
 
-
-    /* ------------------- KPIs -------------------*/
-
-    // mainKPI.innerHTML = ` <div style="width: 100%; display: flex; flex-direction: row; justify-content: center;">
-    //                     <div style="border-bottom: rgb(235, 214, 31) solid 4px;" class="kpiDashMain">
-    //                         <h2
-    //                             style="display: flex; flex-direction: row; justify-content: space-between; align-items: center;">
-    //                             RAM
-    //                             <i class="bi bi-exclamation-circle-fill"
-    //                                 style="font-size: 48px; color: rgb(235, 214, 31);"></i>
-    //                         </h2>
-    //                         <p style="height: 48px;">Componente com mais intercorrência</p>
-    //                     </div>
-    //                     <div style="border-bottom: 1px solid rgb(204, 204, 204);" class="kpiDashMain">
-    //                         <h2
-    //                             style="display: flex; flex-direction: row; justify-content: space-between; align-items: center;">
-    //                             100
-    //                             <i class="bi bi-exclamation-circle-fill" style="font-size: 48px; color: black;"></i>
-    //                         </h2>
-    //                         <p style="height: 48px;">Total de intercorrências</p>
-    //                     </div>
-    //                 </div>
-
-    //                 <div style="width: 100%; display: flex; flex-direction: row; justify-content: center;">
-    //                     <div class="kpiDash">
-    //                         <h2
-    //                             style="display: flex; flex-direction: row; justify-content: space-between; align-items: center;">
-    //                             25%
-    //                             <i class="bi bi-cpu" style="font-size: 40px;"></i>
-    //                         </h2>
-    //                         <p style="height: 48px;">Intercorrências em CPU (25/100)</p>
-    //                     </div>
-    //                     <div class="kpiDash">
-    //                         <h2
-    //                             style="display: flex; flex-direction: row; justify-content: space-between; align-items: center;">
-    //                             50%
-    //                             <i class="bi bi-memory" style="font-size: 40px;"></i>
-    //                         </h2>
-    //                         <p style="height: 48px;">Intercorrências em RAM (50/100)</p>
-    //                     </div>
-    //                     <div class="kpiDash">
-    //                         <h2
-    //                             style="display: flex; flex-direction: row; justify-content: space-between; align-items: center;">
-    //                             20%
-    //                             <i class="bi bi-hdd" style="font-size: 40px;"></i>
-    //                         </h2>
-    //                         <p style="height: 48px;">Intercorrências em Disco (20/100)</p>
-    //                     </div>
-    //                     <div class="kpiDash">
-    //                         <h2
-    //                             style="display: flex; flex-direction: row; justify-content: space-between; align-items: center;">
-    //                             05%
-    //                             <i class="bi bi-diagram-3" style="font-size: 40px;"></i>
-    //                         </h2>
-    //                         <p style="height: 48px;">Intercorrências em Processos (05/100)</p>
-    //                     </div>
-    //                 </div> `
-
     // ----------------------------------------------------------------------------------------------------------------------------
 
 
@@ -549,114 +798,10 @@
 
 
 
-    /*-------------------- Dados Principais 1 --------------------*/
-    var dadosMain1 = {
-        series: [{
-            name: "CPU(%)",
-            data: [25, 23, 27, 26]
-        }, {
-            name: "RAM(%)",
-            data: [50, 52, 49, 51]
-        }, {
-            name: "Disco(%)",
-            data: [15, 14, 13, 16]
-        }, {
-            name: "Processos(%)",
-            data: [10, 11, 11, 7]
-        }],
-        colors: ["#83cbc3", "#30a799", "#00796b", "#264653"],
-        chart: {
-            type: 'bar',
-            height: '100%',
-            width: '100%'
-        },
-        plotOptions: {
-            bar: {
-                horizontal: false,
-                dataLabels: {
-                    position: 'top',
-                },
-            }
-        },
-        dataLabels: {
-            enabled: true,
-            offsetX: 0,
-            style: {
-                fontSize: '12px',
-                colors: ['#fff']
-            }
-        },
-        stroke: {
-            show: true,
-            width: 1,
-            colors: ['#fff']
-        },
-        tooltip: {
-            shared: true,
-            intersect: false
-        },
-        xaxis: {
-            categories: ["Modelo 1", "Modelo 2", "Modelo 3", "Modelo 4"]
-        },
-    };
-
-    var grafMain1 = new ApexCharts(document.querySelector("#grafMain1"), dadosMain1);
-    grafMain1.render();
 
 
-    /*-------------------- Dados Principais 2 --------------------*/
-    var dadosMain2 = {
-        series: [{
-            name: "Modelo 1",
-            data: [25, 23, 27, 26]
-        }, {
-            name: "Modelo 2",
-            data: [50, 52, 49, 51]
-        }, {
-            name: "Modelo 3",
-            data: [15, 14, 13, 16]
-        }, {
-            name: "Modelo 4",
-            data: [10, 11, 11, 7]
-        }],
-        colors: ["#83cbc3", "#30a799", "#00796b", "#264653"],
-        chart: {
-            type: 'bar',
-            height: '100%',
-            width: '100%'
-        },
-        plotOptions: {
-            bar: {
-                horizontal: false,
-                dataLabels: {
-                    position: 'top',
-                },
-            }
-        },
-        dataLabels: {
-            enabled: true,
-            offsetX: 0,
-            style: {
-                fontSize: '12px',
-                colors: ['#fff']
-            }
-        },
-        stroke: {
-            show: true,
-            width: 1,
-            colors: ['#fff']
-        },
-        tooltip: {
-            shared: true,
-            intersect: false
-        },
-        xaxis: {
-            categories: ["Hospital 1", "Hospital 2", "Hospital 3", "Hospital 4"]
-        },
-    };
 
-    var grafMain2 = new ApexCharts(document.querySelector("#grafMain2"), dadosMain2);
-    grafMain2.render();
+
 
 
 
