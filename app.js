@@ -25,6 +25,7 @@ var emailRouter = require("./src/routes/email")
 var jiraRouter = require("./src/routes/jira")
 var medidasRouter = require("./src/routes/medidas")
 var analistaRouter = require("./src/routes/analista")
+var tecnicoHospitalRouter = require("./src/routes/tecnicoHospital")
 var gestorRouter = require("./src/routes/gestor")
 
 var iaRouter = require("./src/routes/ia");
@@ -45,8 +46,8 @@ app.use("/controle", controleRouter);
 app.use("/email", emailRouter)
 app.use("/jira", jiraRouter);
 app.use("/medidas", medidasRouter);
-app.use("/analista", analistaRouter)
-
+app.use("/analista", analistaRouter);
+app.use("/tecnicoHospital", tecnicoHospitalRouter);
 app.use("/ia", iaRouter)
 
 
