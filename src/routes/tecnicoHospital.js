@@ -27,4 +27,8 @@ router.get("/areas/:fk_hospital", function (req, res) {
     tecnicoHospitalController.listarAreas(req, res);
 });
 
+router.get("/ventiladores/:fk_hospital", function (req, res) {
+    tecnicoHospitalController.listarVentiladores(req, res);
+});
+
 module.exports = router;

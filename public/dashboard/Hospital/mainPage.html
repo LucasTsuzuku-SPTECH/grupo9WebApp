@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="pt-br">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -146,6 +147,7 @@
   </style>
 
 </head>
+
 <body onload="ONLOAD(), atualizarDados()">
 
   <nav class="navbar corPrincipal fixed-top py-3">
@@ -249,19 +251,24 @@
             <div class="me-3 mb-2 mb-md-0">
               <label for="filtroTempo" class="form-label mb-0 visually-hidden">Período:</label>
               <div class="btn-group" role="group" aria-label="Filtro de Período">
-                <input type="radio" class="btn-check btnTempo" name="filtroTempo" id="tempoHora" autocomplete="off" data-tempo="ultimaHora">
+                <input type="radio" class="btn-check btnTempo" name="filtroTempo" id="tempoHora" autocomplete="off"
+                  data-tempo="ultimaHora">
                 <label class="btn btn-outline-primary btn-sm" for="tempoHora">Última Hora</label>
 
-                <input type="radio" class="btn-check btnTempo" name="filtroTempo" id="tempoDia" autocomplete="off" data-tempo="diario"checked>
+                <input type="radio" class="btn-check btnTempo" name="filtroTempo" id="tempoDia" autocomplete="off"
+                  data-tempo="diario" checked>
                 <label class="btn btn-outline-primary btn-sm" for="tempoDia">Diário</label>
 
-                <input type="radio" class="btn-check btnTempo" name="filtroTempo" id="tempoSemana" autocomplete="off" data-tempo="semanal">
+                <input type="radio" class="btn-check btnTempo" name="filtroTempo" id="tempoSemana" autocomplete="off"
+                  data-tempo="semanal">
                 <label class="btn btn-outline-primary btn-sm" for="tempoSemana">Semanal</label>
 
-                <input type="radio" class="btn-check btnTempo" name="filtroTempo" id="tempoMes" autocomplete="off" data-tempo="mensal">
+                <input type="radio" class="btn-check btnTempo" name="filtroTempo" id="tempoMes" autocomplete="off"
+                  data-tempo="mensal">
                 <label class="btn btn-outline-primary btn-sm" for="tempoMes">Mensal</label>
 
-                <input type="radio" class="btn-check btnTempo" name="filtroTempo" id="tempoAno" autocomplete="off" data-tempo="anual">
+                <input type="radio" class="btn-check btnTempo" name="filtroTempo" id="tempoAno" autocomplete="off"
+                  data-tempo="anual">
                 <label class="btn btn-outline-primary btn-sm" for="tempoAno">Anual</label>
               </div>
             </div>
@@ -284,9 +291,11 @@
             onclick="abrirModalAlertas('Alertas')">
             <div class="d-flex align-items-center DadosKPI">
               <div>
-                <p class="mb-0">Alertas <b>Ativos</b></p>
-                <h3 class="display-6 mb-0">03</h3>
-                <div class="mt-2 text-muted" style="font-size:.85rem"><p class="mb-0">Principal causa: <b>RAM</b></p></div>
+                <p class="mb-0" id="totalDeAlertas">Total de <b>Alertas</b></p>
+                <h3 class="display-6 mb-0" id="qtdAlertas">...</h3>
+                <div class="mt-2 text-muted" style="font-size:.85rem">
+                  <p class="mb-0" id="principalCausaAlerta">Principal causa: ...</p>
+                </div>
               </div>
             </div>
           </a>
@@ -295,7 +304,7 @@
       <div class="col-6 col-md-3 col-lg-2">
         <div class="card kpi-card-custom h-100">
           <a href="#" class="text-decoration-none text-dark d-flex flex-column h-100 p-3"
-          onclick="abrirModalAlertas('UltimoAlerta')">
+            onclick="abrirModalAlertas('UltimoAlerta')">
             <div class="d-flex justify-content-between align-items-center DadosKPI">
               <div>
                 <p class="mb-0">Tempo desde o último alerta:</p>
@@ -311,12 +320,14 @@
       <div class="col-6 col-md-3 col-lg-2">
         <div class="card kpi-card-custom h-100">
           <a href="#" class="text-decoration-none text-dark d-flex flex-column h-100 p-3"
-          onclick="abrirModalAlertas('MaquinasOFF')">
+            onclick="abrirModalAlertas('MaquinasOFF')">
             <div class="d-flex justify-content-between align-items-center DadosKPI">
               <div>
                 <p class="mb-0">Máquinas Monitoradas</p>
-                <h3 class="display-6 mb-0">20</h3>
-                <div class="mt-2 text-muted" style="font-size:.85rem"><p class="mb-0" id="">Máquinas offline: </p></div>
+                <h3 class="display-6 mb-0" id="MaquinasOnline">...</h3>
+                <div class="mt-2 text-muted" style="font-size:.85rem">
+                  <p class="mb-0" id="MaquinasOffline">Máquinas offline: </p>
+                </div>
               </div>
             </div>
           </a>
@@ -325,12 +336,14 @@
       <div class="col-6 col-md-3 col-lg-2">
         <div class="card kpi-card-custom h-100">
           <a href="#" class="text-decoration-none text-dark d-flex flex-column h-100 p-3"
-          onclick="abrirModalAlertas('Area')">
+            onclick="abrirModalAlertas('Area')">
             <div class="d-flex justify-content-between align-items-center DadosKPI">
               <div>
                 <p class="mb-0">Área mais afetada</p>
                 <h3 class="display-6 mb-0" id="areaMaisAfetada">...</h3>
-                <div class="mt-2 text-muted" style="font-size:.85rem"><p class="mb-0" id="quantidadeAlertaArea">Total de alertas:</p></div>
+                <div class="mt-2 text-muted" style="font-size:.85rem">
+                  <p class="mb-0" id="quantidadeAlertaArea">Total de alertas:</p>
+                </div>
               </div>
             </div>
           </a>
@@ -487,13 +500,17 @@
     <div id="classModal" class="modal-dialog modal-dialog-centered">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="modalAlertasLabel">Carregando...</h5>
+          <div>
+            <h5 class="modal-title" id="modalAlertasLabel">Carregando...</h5>
+            <div class="text-muted" style="font-size:.85rem" id="subTitulo"></div>
+          </div>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
             onclick="fecharModalAlertas()"></button>
         </div>
         <div class="modal-body" id="conteudoModal">Nenhum resultado...
         </div>
         <div class="modal-footer">
+          <div id="footerModal" class="d-flex flex-column align-items-center justify-content-center w-100"></div>
           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"
             onclick="fecharModalAlertas()">Fechar</button>
         </div>
@@ -508,59 +525,85 @@
 
   <script>
 
-    // Nome do hospital
     let nomeHospital; // Utilizo para filtrar pelo hospital atual em outras funções
     let selectAreas; // Utilizo as áreas para filtrar em outras funções
+    let ventiladoresHospitalAtual; //Utilizo para a KPI de maquinas monitoradas
     async function ONLOAD() {
+      // Hospital atual
       const resposta = await fetch(`/controle/hospitais/${sessionStorage.getItem("FK")}`);
       const hospitalData = await resposta.json();
       nomeHospital = hospitalData[0].nomeHospital
       sessionStorage.NOME_HOSPITAL_ATUAL = nomeHospital;
       nomeHospitaldashboard.innerHTML += hospitalData[0].nomeHospital;
-      const respostaVentilador = await fetch(`/controle/${sessionStorage.getItem("FK")}/Ventiladores`)
-      const ventiladoresHospitalAtual = await respostaVentilador.json
 
-      
-      console.log(ventiladoresHospitalAtual)
       //Select de áreas
       const respostaAreas = await fetch(`/tecnicoHospital/areas/${sessionStorage.getItem("FK")}`);
       selectAreas = await respostaAreas.json()
       const select = document.getElementById('filtroArea');
-      for(const alerta of selectAreas){
+      for (const alerta of selectAreas) {
         const novaOpcao = document.createElement('option');
         novaOpcao.value = alerta.area;
         novaOpcao.text = alerta.area;
         select.appendChild(novaOpcao);
       }
+
+      // Todos os ventiladores daquele hospital
+      const respostaVentilador = await fetch(`/tecnicoHospital/ventiladores/${sessionStorage.getItem("FK")}`)
+      ventiladoresHospitalAtual = await respostaVentilador.json()
+
     }
 
 
     // Visão top down
-    let areaSelecionada = "todas";  
+    let areaSelecionada = "todas";
     let tempoSelecionado = "diario";
     document.querySelectorAll(".btnTempo").forEach(btn => { btn.addEventListener("click", () => { tempoSelecionado = btn.dataset.tempo; atualizarDados(); }); });
     document.getElementById("filtroArea").addEventListener("change", e => { areaSelecionada = e.target.value; atualizarDados(); });
 
+
+    let alertasDoHospitalArea; // Últilizo na KPI de alertas
     let ultimaCap; // Utilizo a última captura em outras funções
+    let maquinasRestantes; //Máquinas offlines para colocar na KPI 
     let alertasDaAreaAfetada; // Área mais afetada para útilizar no modal da KPI de área mais afetada
-    async function atualizarDados(){
+
+    async function atualizarDados() {
+      // Pegando o csv baseado no tempo e utilizo ele na função inteira
       const alertas = await fetch(`/tecnicoHospital/${tempoSelecionado}`);
       let dados = await alertas.json()
-      if (dados.length == 0){
-         Swal.fire({
+      if (dados.length == 0) {
+        Swal.fire({
           icon: 'error',
           title: 'Sem Dados!',
           text: 'Esta seleção de tempo está sem dados, tente outra!'
         })
         return
       }
+      //Aplicando os filtros
       const alertasDoHospital = dados.filter(alerta => alerta.hospital === nomeHospital);
-      //KPI de último alerta
       console.log(areaSelecionada)
-      let alertasDoHospitalArea;
       console.log(selectAreas)
       areaSelecionada == "todas" ? alertasDoHospitalArea = alertasDoHospital : alertasDoHospitalArea = alertasDoHospital.filter(alerta => alerta.area.toLowerCase() === areaSelecionada.toLowerCase());
-      ultimaCap = alertasDoHospitalArea[alertasDoHospitalArea.length-1]
+
+      //KPI de alertas
+      qtdAlertas.innerHTML = alertasDoHospitalArea.length
+      let contadorComponente = { "CPU": 0, "RAM": 0, "Disco": 0, "Bateria": 0, "Processos": 0 }
+      for (const a of alertasDoHospitalArea) {
+        if (contadorComponente[a.componente] !== undefined) {
+          contadorComponente[a.componente]++;
+        }
+      }
+      let maiorcomp = null;
+      let maiorValor = 0;
+      for (const comp in contadorComponente) {
+        if (contadorComponente[comp] > maiorValor) {
+          maiorValor = contadorComponente[comp];
+          maiorcomp = comp;
+        }
+      }
+      principalCausaAlerta.innerHTML = `Principal causa: <b>${maiorcomp}</b>`
+    
+      //KPI de último alerta
+      ultimaCap = alertasDoHospitalArea[alertasDoHospitalArea.length - 1]
       ultimaCapTime = ultimaCap.timestamp
       tipoAlerta = ultimaCap.componente
       areaDoAlerta = ultimaCap.area
@@ -568,9 +611,9 @@
       let dataFormatada = agora.toLocaleDateString();
       let horaFormatada = agora.toLocaleTimeString();
       let elementoData = document.getElementById("data-ultima-captura");
-      elementoData.textContent = ` ${dataFormatada} ${horaFormatada}`;
+      elementoData.innerHTML = ` ${dataFormatada} ${horaFormatada}`;
 
-      // KPI tempo desde o último alerta, ele não muda então deixei ele separado
+      // KPI tempo desde o último alerta
       const dataCap = new Date(ultimaCapTime)
       const dataAtual = new Date();
       const diferencaEmMS = dataAtual.getTime() - dataCap.getTime();
@@ -585,8 +628,33 @@
       tempoUltimoAlerta.innerHTML = `${dias}d ${horas}h ${minutos}m`
       tipoAlertaAcionado.innerHTML = `Tipo: <b>${tipoAlerta}</b>${areaSelecionada == "todas" ? ` - Área: <b>${areaDoAlerta}</b>` : ``}`
 
+      // Contando máquinas Online e offline
+      let qtdMaquinasOnline = 0;
+      console.log(ventiladoresHospitalAtual)
+
+      let ventiladoresHospitalAtualFiltrados = ventiladoresHospitalAtual
+      if (areaSelecionada != "todas") {
+        ventiladoresHospitalAtualFiltrados = ventiladoresHospitalAtualFiltrados.filter(ventilador => ventilador.area == areaSelecionada)
+      }
+      maquinasRestantes = [...ventiladoresHospitalAtualFiltrados];
+
+      for (let i = 0; i < alertasDoHospitalArea.length; i++) {
+        const NumeroSerieDaVez = alertasDoHospitalArea[i].numero_serie;
+        for (let j = 0; j < maquinasRestantes.length; j++) {
+          if (maquinasRestantes[j].numero_serie === NumeroSerieDaVez) {
+            maquinasRestantes.splice(j, 1);
+            qtdMaquinasOnline++
+            break;
+          }
+        }
+      }
+      let qtdMaquinasOffline = maquinasRestantes.length;
+      MaquinasOnline.innerHTML = qtdMaquinasOnline;
+      MaquinasOffline.innerHTML = `Máquinas offline: <b>${qtdMaquinasOffline}</b>`
+
+
       // Contando alertas por area
-      if(areaSelecionada == "todas"){
+      if (areaSelecionada == "todas") {
         let contador = {};
         for (const a of selectAreas) {
           contador[a.area] = 0;
@@ -619,12 +687,129 @@
 
 
     function abrirModalAlertas(exibir) {
-      const myModal = new bootstrap.Modal(document.getElementById('modalAlertas'));
+      const modalEl = document.getElementById('modalAlertas');
+      const myModal = bootstrap.Modal.getInstance(modalEl) || new bootstrap.Modal(modalEl);
+      myModal.hide();
+      setTimeout(() => {
       myModal.show();
+      }, 300);
+      footerModal.innerHTML = ``
+
+      //KPI de alertas
+      if(exibir == "Alertas"){
+        let classModal = document.getElementById('classModal');
+        classModal.classList.add('modal-xl');
+        modalAlertasLabel.innerHTML = `Todos os Alertas`;
+        subTitulo.innerHTML = `Do mais novo para o mais antigo`
+        let html = `
+        <div class="card-body p-0">
+          <div class="table-responsive table-responsive-custom">
+            <table class="table table-hover devices-table mb-0">
+              <thead>
+                <tr>
+                  <th>Data/Hora</th>
+                  <th>Nº Série</th>
+                  <th>Área</th>
+                  <th>Componente</th>
+                  <th>Alerta</th>
+                  <th>Valor Lido</th>
+                  <th>Limite</th>
+                </tr>
+              </thead>
+              <tbody>
+        `;
+        alertasDoHospitalArea.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+        let alertasExibidos = alertasDoHospitalArea.slice(0, 20);
+        alertasExibidos.forEach(alerta => {
+          html += `
+          <tr>
+            <td>${alerta.timestamp}</td>
+            <td>${alerta.numero_serie}</td>
+            <td>${alerta.area}</td>
+            <td>${alerta.componente}</td>
+            <td>${alerta.tipo_alerta}</td>
+            <td><span style="color: red;">${alerta.valor_lido}</span></td>
+            <td>${alerta.tipo_alerta.toLowerCase() == "abaixo"
+              ? `<span>${alerta.min_permitido}</span>`
+              : `<span>${alerta.max_permitido}</span>`} ${alerta.componente == "Disco" ? ` - GB` : alerta.componente == "Processos" ? ` - Inteiro` : ` - %`}
+            </td>
+          </tr>
+        `;
+        });
+
+        html += `
+        </tbody>
+        </table>
+        </div>
+        </div>
+      `;
+        conteudoModal.innerHTML = html;
+        footerModal.innerHTML = `${alertasDoHospitalArea.length > 20 ? `<p> Mostrando <b>20</b> alertas mais recentes</p>
+        <button type="button" class="btn btn-secondary" onclick="abrirModalAlertas('todosDadosAlertas')">
+        Ver todos os ${alertasDoHospitalArea.length} alertas →
+        </button>` : `` }`
+      }
+
+
+      //KPI de alerta com todos os dados
+      else if(exibir == "todosDadosAlertas"){
+                let classModal = document.getElementById('classModal');
+        classModal.classList.add('modal-xl');
+        modalAlertasLabel.innerHTML = `Todos os Alertas`;
+        subTitulo.innerHTML = `Do mais novo para o mais antigo`
+        let html = `
+        <div class="card-body p-0">
+          <div class="table-responsive table-responsive-custom">
+            <table class="table table-hover devices-table mb-0">
+              <thead>
+                <tr>
+                  <th>Data/Hora</th>
+                  <th>Nº Série</th>
+                  <th>Área</th>
+                  <th>Componente</th>
+                  <th>Alerta</th>
+                  <th>Valor Lido</th>
+                  <th>Limite</th>
+                </tr>
+              </thead>
+              <tbody>
+        `;
+        alertasDoHospitalArea.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+        alertasDoHospitalArea.forEach(alerta => {
+          html += `
+          <tr>
+            <td>${alerta.timestamp}</td>
+            <td>${alerta.numero_serie}</td>
+            <td>${alerta.area}</td>
+            <td>${alerta.componente}</td>
+            <td>${alerta.tipo_alerta}</td>
+            <td><span style="color: red;">${alerta.valor_lido}</span></td>
+            <td>${alerta.tipo_alerta.toLowerCase() == "abaixo"
+              ? `<span>${alerta.min_permitido}</span>`
+              : `<span>${alerta.max_permitido}</span>`} ${alerta.componente == "Disco" ? ` - GB` : alerta.componente == "Processos" ? ` - Inteiro` : ` - %`}
+            </td>
+          </tr>
+        `;
+        });
+
+        html += `
+        </tbody>
+        </table>
+        </div>
+        </div>
+      `;
+
+        conteudoModal.innerHTML = html;
+        footerModal.innerHTML = `${alertasDoHospitalArea.length > 20 ? `<p> Mostrando todos os alertas</p>
+        <button type="button" class="btn btn-secondary" onclick="abrirModalAlertas('Alertas')">
+        Ver apenas 20 alertas
+        </button>` : `` }`
+      }
       // Modal da KPI de último alerta
-      if(exibir == "UltimoAlerta"){
+      else if (exibir == "UltimoAlerta") {
         let classModal = document.getElementById('classModal');
         classModal.classList.remove('modal-xl');
+        classModal.classList.remove('modal-lg');
         modalAlertasLabel.innerHTML = `Último alerta:`
         conteudoModal.innerHTML = `
         <table class="table table-sm table-striped">
@@ -647,21 +832,21 @@
                 </tr>
                 <tr>
                     <th scope="row">Tipo de Alerta</th>
-                    <td >${ultimaCap.tipo_alerta} do ${ultimaCap.tipo_alerta.toLowerCase() == "abaixo" 
-                            ? `<span>Mínimo</span>` 
-                            : `<span>Máximo</span>`}</td>
+                    <td >${ultimaCap.tipo_alerta} do ${ultimaCap.tipo_alerta.toLowerCase() == "abaixo"
+            ? `<span>Mínimo</span>`
+            : `<span>Máximo</span>`}</td>
                 </tr>
                 <tr>
                     <th scope="row">Valor Capturado</th>
                     <td><span style="color: red;">${ultimaCap.valor_lido}</span></td>
                 </tr>
                 <tr>
-                    <th scope="row">Limite ${ultimaCap.tipo_alerta.toLowerCase() == "abaixo" 
-                            ? `<span>(Min)</span>` 
-                            : `<span>(Max)</span>`}</th>
-                    <td >  ${ultimaCap.tipo_alerta.toLowerCase() == "abaixo" 
-                            ? `<span>${ultimaCap.min_permitido}</span>` 
-                            : `<span>${ultimaCap.max_permitido}</span>`} ${ultimaCap.componente == "Disco" ? ` - GB` : ultimaCap.componente == "Processos" ? ` - Inteiro` : ` - %`}
+                    <th scope="row">Limite ${ultimaCap.tipo_alerta.toLowerCase() == "abaixo"
+            ? `<span>(Min)</span>`
+            : `<span>(Max)</span>`}</th>
+                    <td >  ${ultimaCap.tipo_alerta.toLowerCase() == "abaixo"
+            ? `<span>${ultimaCap.min_permitido}</span>`
+            : `<span>${ultimaCap.max_permitido}</span>`} ${ultimaCap.componente == "Disco" ? ` - GB` : ultimaCap.componente == "Processos" ? ` - Inteiro` : ` - %`}
                     </td>
                 </tr>
             </tbody>
@@ -671,8 +856,105 @@
         </p>
       `;
       }
+
+      //KPI Máquinas offlines
+      else if (exibir == "MaquinasOFF") {
+        let classModal = document.getElementById('classModal');
+        classModal.classList.add('modal-lg');
+        classModal.classList.remove('modal-xl');
+        modalAlertasLabel.innerHTML = `Ventiladores OFFLINES:`;
+        subTitulo.innerHTML = `Máquinas do seu hospital que se encontram sem sinal`
+        let html = `
+      <div class="card-body p-0">
+        <div class="table-responsive table-responsive-custom">
+          <table class="table table-hover devices-table mb-0">
+            <thead>
+              <tr>
+                <th>Nº Série</th>
+                <th>Modelo</th>
+                <th>Área</th>
+                <th>Sala</th>
+              </tr>
+            </thead>
+            <tbody>
+      `;
+        maquinasRestantes.forEach(alerta => {
+          html += `
+          <tr>
+            <td>${alerta.numero_serie}</td>
+            <td>${alerta.nome_modelo}</td>
+            <td>${alerta.area}</td>
+            <td>${alerta.numero}</td>
+          </tr>
+        `;
+        });
+
+        html += `
+            </tbody>
+          </table>
+        </div>
+      </div>
+      `;
+
+        conteudoModal.innerHTML = html;
+      }
       // KPI de área mais afetada
-      else if(exibir == "Area"){
+      else if (exibir == "Area") {
+        let classModal = document.getElementById('classModal');
+        classModal.classList.add('modal-xl');
+        modalAlertasLabel.innerHTML = `Alertas da área mais afetada:`;
+        subTitulo.innerHTML = `Do mais novo para o mais antigo`
+        let html = `
+        <div class="card-body p-0">
+          <div class="table-responsive table-responsive-custom">
+            <table class="table table-hover devices-table mb-0">
+              <thead>
+                <tr>
+                  <th>Data/Hora</th>
+                  <th>Nº Série</th>
+                  <th>Área</th>
+                  <th>Componente</th>
+                  <th>Alerta</th>
+                  <th>Valor Lido</th>
+                  <th>Limite</th>
+                </tr>
+              </thead>
+              <tbody>
+        `;
+        alertasDaAreaAfetada.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+        let alertasExibidos = alertasDaAreaAfetada.slice(0, 20);
+        alertasExibidos.forEach(alerta => {
+          html += `
+          <tr>
+            <td>${alerta.timestamp}</td>
+            <td>${alerta.numero_serie}</td>
+            <td>${alerta.area}</td>
+            <td>${alerta.componente}</td>
+            <td>${alerta.tipo_alerta}</td>
+            <td><span style="color: red;">${alerta.valor_lido}</span></td>
+            <td>${alerta.tipo_alerta.toLowerCase() == "abaixo"
+              ? `<span>${alerta.min_permitido}</span>`
+              : `<span>${alerta.max_permitido}</span>`} ${alerta.componente == "Disco" ? ` - GB` : alerta.componente == "Processos" ? ` - Inteiro` : ` - %`}
+            </td>
+          </tr>
+        `;
+        });
+
+        html += `
+        </tbody>
+        </table>
+        </div>
+        </div>
+      `;
+        conteudoModal.innerHTML = html;
+        footerModal.innerHTML = `${alertasDaAreaAfetada.length > 20 ? `<p> Mostrando <b>20</b> alertas mais recentes</p>
+        <button type="button" class="btn btn-secondary" onclick="abrirModalAlertas('todosDadosArea')">
+        Ver todos os ${alertasDaAreaAfetada.length} alertas →
+        </button>` : `` }`
+      }
+
+      // Todos os dados KPI de área mais afetada
+      else if (exibir == "todosDadosArea") {
         let classModal = document.getElementById('classModal');
         classModal.classList.add('modal-xl');
         modalAlertasLabel.innerHTML = `Alertas da área mais afetada:`;
@@ -694,32 +976,35 @@
               <tbody>
         `;
         alertasDaAreaAfetada.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
-        alertasDaAreaAfetada.forEach(alerta => {  
+        alertasDaAreaAfetada.forEach(alerta => {
           html += `
-            <tr>
-              <td>${alerta.timestamp}</td>
-              <td>${alerta.numero_serie}</td>
-              <td>${alerta.area}</td>
-              <td>${alerta.componente}</td>
-              <td>${alerta.tipo_alerta}</td>
-              <td><span style="color: red;">${alerta.valor_lido}</span></td>
-              <td>${alerta.tipo_alerta.toLowerCase() == "abaixo" 
-                            ? `<span>${alerta.min_permitido}</span>` 
-                            : `<span>${alerta.max_permitido}</span>`} ${alerta.componente == "Disco" ? ` - GB` : alerta.componente == "Processos" ? ` - Inteiro` : ` - %`}
-              </td>
-            </tr>
-          `;
+          <tr>
+            <td>${alerta.timestamp}</td>
+            <td>${alerta.numero_serie}</td>
+            <td>${alerta.area}</td>
+            <td>${alerta.componente}</td>
+            <td>${alerta.tipo_alerta}</td>
+            <td><span style="color: red;">${alerta.valor_lido}</span></td>
+            <td>${alerta.tipo_alerta.toLowerCase() == "abaixo"
+              ? `<span>${alerta.min_permitido}</span>`
+              : `<span>${alerta.max_permitido}</span>`} ${alerta.componente == "Disco" ? ` - GB` : alerta.componente == "Processos" ? ` - Inteiro` : ` - %`}
+            </td>
+          </tr>
+        `;
         });
 
         html += `
-              </tbody>
-            </table>
-          </div>
+        </tbody>
+        </table>
         </div>
-        `;
+        </div>
+      `;
 
         conteudoModal.innerHTML = html;
-
+        footerModal.innerHTML = `${alertasDaAreaAfetada.length > 20 ? `<p> Mostrando todos os alertas</p>
+        <button type="button" class="btn btn-secondary" onclick="abrirModalAlertas('Area')">
+        Ver apenas 20 alertas
+        </button>` : `` }`
       }
     }
 

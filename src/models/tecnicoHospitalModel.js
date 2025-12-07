@@ -55,8 +55,6 @@ async function listarDiario() {
         columns: true,
         skip_empty_lines: true
     });
-    console.log(dataJSON)
-
     return dataJSON
 }
 
@@ -141,6 +139,21 @@ function listarAreas(fkHospital){
 }
 
 
+function listarVentiladores(fkHospital){
+    console.log("ACESSEI O Model Ventiladores");
+    var instrucaoSql=`SELECT v.idVentilador, v.numero_serie, m.nome AS nome_modelo,
+               h.nomeHospital AS nome_hospital, h.idHospital as idHospital, 
+                s.idSala as idSala, s.numero as numero , s.area as area
+        FROM Ventilador v
+        JOIN Modelo m ON v.fkModelo = m.idModelo
+        JOIN Sala s ON v.fkSala = s.idSala
+        JOIN Hospital h ON s.fkHospital = h.idHospital
+        WHERE h.idHospital = ${fkHospital}
+        ORDER BY idSala; `
+    return database.executar(instrucaoSql); 
+}
+
+
 
 module.exports = {
     listarUltimaHora,
@@ -148,5 +161,6 @@ module.exports = {
     listarSemanal,
     listarMensal,
     listarAnual,
-    listarAreas
+    listarAreas,
+    listarVentiladores
 };

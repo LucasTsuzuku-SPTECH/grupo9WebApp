@@ -68,11 +68,27 @@ function listarAreas(req, res) {
         })
         .catch(function (erro) {
             console.log(erro);
-            console.log("Erro ao buscar Salas: ", erro.sqlMessage);
+            console.log("Erro ao buscar Areas: ", erro.sqlMessage);
+            res.status(500).json(erro.sqlMessage);
+        });
+}
+
+function listarVentiladores(req, res) {
+    const fk_hospital = req.params.fk_hospital;
+    tecnicoHospitalModel.listarVentiladores(fk_hospital)
+        .then(resultado => {
+            if (resultado.length > 0) {
+                res.json(resultado);
+            } else {
+                res.status(204).send("Nenhum ventilador encontrado!");
+            }
+        })
+        .catch(erro => {
+            console.error("Erro ao buscar ventiladores: ", erro.sqlMessage);
             res.status(500).json(erro.sqlMessage);
         });
 }
 
 
 
-module.exports = {listarUltimaHora,listarDiario, listarSemanal, listarMensal, listarAnual, listarAreas};
+module.exports = {listarUltimaHora,listarDiario, listarSemanal, listarMensal, listarAnual, listarAreas, listarVentiladores};
