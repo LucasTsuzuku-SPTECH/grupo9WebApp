@@ -48,6 +48,7 @@ app.use("/jira", jiraRouter);
 app.use("/medidas", medidasRouter);
 app.use("/analista", analistaRouter);
 app.use("/tecnicoHospital", tecnicoHospitalRouter);
+app.use("/gestor", gestorRouter);
 app.use("/ia", iaRouter)
 
 

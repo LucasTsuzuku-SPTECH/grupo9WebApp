@@ -12,16 +12,10 @@ const s3Client = new S3Client({
     }
 });
 
-async function listarDiario() {
-    var anoAtual = new Date().getFullYear()
-    var mes = new Date().getMonth()+1;
-    var mesAtual = mes < 10 ? ('0' + mes) : mes
-    var semanaAtual = dataMoment.week()
-    var diaAtual = dataMoment.days
-
+async function listarUltimaHora() {
     const params = {
         Bucket: process.env.BUCKET_CLIENT,
-        Key: `AlertasHistorico/${anoAtual}/${mesAtual}/Semana${semanaAtual}/alertaDaSemana.csv`
+        Key: `Alertas/alertaDiario.csv`
     };
 
     const command = new GetObjectCommand(params);
@@ -33,6 +27,35 @@ async function listarDiario() {
         columns: true,
         skip_empty_lines: true
     });
+
+    const agora = new Date();
+    const umaHoraAtras = new Date(agora.getTime() - 60 * 60 * 1000);
+
+    const filtrados = dataJSON.filter(item => {
+        const dataItem = new Date(item.timestamp.replace(" ", "T"));
+        return dataItem >= umaHoraAtras;
+    });
+    
+    return filtrados
+}
+
+
+async function listarDiario() {
+    const params = {
+        Bucket: process.env.BUCKET_CLIENT,
+        Key: `Alertas/alertaDiario.csv`
+    };
+
+    const command = new GetObjectCommand(params);
+
+    var resultado = await s3Client.send(command);
+    var csvString = await resultado.Body.transformToString();
+
+    const dataJSON = parse.parse(csvString, {
+        columns: true,
+        skip_empty_lines: true
+    });
+    console.log(dataJSON)
 
     return dataJSON
 }
@@ -120,6 +143,7 @@ function listarAreas(fkHospital){
 
 
 module.exports = {
+    listarUltimaHora,
     listarDiario,
     listarSemanal,
     listarMensal,

@@ -23,7 +23,6 @@ async function listarMensal(req, res) {
 }
 
 
-listarModelos
 async function listarAnual(req, res) {
   try {
     const dadoAnual = await analistaModel.listarAnual();

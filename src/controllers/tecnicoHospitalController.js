@@ -1,5 +1,17 @@
 var tecnicoHospitalModel = require("../models/tecnicoHospitalModel");
 
+
+
+async function listarUltimaHora(req, res) {
+  try {
+    const dadoUltimaHora = await tecnicoHospitalModel.listarUltimaHora();
+    res.json(dadoUltimaHora);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json("Erro ao listar dadoUltimaHora");
+  }
+}
+
 async function listarDiario(req, res) {
   try {
     const dadoDiario = await tecnicoHospitalModel.listarDiario();
@@ -63,4 +75,4 @@ function listarAreas(req, res) {
 
 
 
-module.exports = {listarDiario, listarSemanal, listarMensal, listarAnual, listarAreas};
+module.exports = {listarUltimaHora,listarDiario, listarSemanal, listarMensal, listarAnual, listarAreas};

@@ -3,6 +3,10 @@ var router = express.Router();
 
 var tecnicoHospitalController = require("../controllers/tecnicoHospitalController");
 
+router.get("/ultimaHora", function (req, res) {
+    tecnicoHospitalController.listarUltimaHora(req, res);
+});
+
 router.get("/diario", function (req, res) {
     tecnicoHospitalController.listarDiario(req, res);
 });

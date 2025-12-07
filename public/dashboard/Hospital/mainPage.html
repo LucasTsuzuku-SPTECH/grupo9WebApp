@@ -10,6 +10,7 @@
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script src="https://kit.fontawesome.com/9f7414eb10.js" crossorigin="anonymous"></script>
   <script src="../../js/sessao.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   <style>
     .corPrincipal {
       background: #264653;
@@ -248,23 +249,22 @@
             <div class="me-3 mb-2 mb-md-0">
               <label for="filtroTempo" class="form-label mb-0 visually-hidden">Período:</label>
               <div class="btn-group" role="group" aria-label="Filtro de Período">
-                <input type="radio" class="btn-check btnTempo" name="filtroTempo" id="tempoHora" autocomplete="off" data-tempo="Hora" checked>
-                <label class="btn btn-outline-primary btn-sm" for="tempoHora">Hora</label>
+                <input type="radio" class="btn-check btnTempo" name="filtroTempo" id="tempoHora" autocomplete="off" data-tempo="ultimaHora">
+                <label class="btn btn-outline-primary btn-sm" for="tempoHora">Última Hora</label>
 
-                <input type="radio" class="btn-check btnTempo" name="filtroTempo" id="tempoDia" autocomplete="off" data-tempo="diario">
-                <label class="btn btn-outline-primary btn-sm" for="tempoDia">Dia</label>
+                <input type="radio" class="btn-check btnTempo" name="filtroTempo" id="tempoDia" autocomplete="off" data-tempo="diario"checked>
+                <label class="btn btn-outline-primary btn-sm" for="tempoDia">Diário</label>
 
                 <input type="radio" class="btn-check btnTempo" name="filtroTempo" id="tempoSemana" autocomplete="off" data-tempo="semanal">
-                <label class="btn btn-outline-primary btn-sm" for="tempoSemana">Semana</label>
+                <label class="btn btn-outline-primary btn-sm" for="tempoSemana">Semanal</label>
 
                 <input type="radio" class="btn-check btnTempo" name="filtroTempo" id="tempoMes" autocomplete="off" data-tempo="mensal">
-                <label class="btn btn-outline-primary btn-sm" for="tempoMes">Mês</label>
+                <label class="btn btn-outline-primary btn-sm" for="tempoMes">Mensal</label>
 
                 <input type="radio" class="btn-check btnTempo" name="filtroTempo" id="tempoAno" autocomplete="off" data-tempo="anual">
-                <label class="btn btn-outline-primary btn-sm" for="tempoAno">Ano</label>
+                <label class="btn btn-outline-primary btn-sm" for="tempoAno">Anual</label>
               </div>
             </div>
-
             <div>
               <label for="filtroArea" class="form-label mb-0 visually-hidden">Área:</label>
               <select class="form-select form-select-sm" id="filtroArea" aria-label="Filtro de Área">
@@ -330,7 +330,7 @@
               <div>
                 <p class="mb-0">Área mais afetada</p>
                 <h3 class="display-6 mb-0" id="areaMaisAfetada">...</h3>
-                <div class="mt-2 text-muted" style="font-size:.85rem"><p class="mb-0" id="quantidadeAlertaArea">Total de máquinas críticas: </p></div>
+                <div class="mt-2 text-muted" style="font-size:.85rem"><p class="mb-0" id="quantidadeAlertaArea">Total de alertas:</p></div>
               </div>
             </div>
           </a>
@@ -484,14 +484,14 @@
   </main>
 
   <div class="modal fade" id="modalAlertas" tabindex="-1" aria-labelledby="modalAlertasLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
+    <div id="classModal" class="modal-dialog modal-dialog-centered">
       <div class="modal-content">
         <div class="modal-header">
           <h5 class="modal-title" id="modalAlertasLabel">Carregando...</h5>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
             onclick="fecharModalAlertas()"></button>
         </div>
-        <div class="modal-body" id="conteudoModal">
+        <div class="modal-body" id="conteudoModal">Nenhum resultado...
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"
@@ -509,37 +509,61 @@
   <script>
 
     // Nome do hospital
-    let ultimaCap;
-    let nomeHospital;
-    let selectAreas;
-
+    let nomeHospital; // Utilizo para filtrar pelo hospital atual em outras funções
+    let selectAreas; // Utilizo as áreas para filtrar em outras funções
     async function ONLOAD() {
       const resposta = await fetch(`/controle/hospitais/${sessionStorage.getItem("FK")}`);
       const hospitalData = await resposta.json();
       nomeHospital = hospitalData[0].nomeHospital
       sessionStorage.NOME_HOSPITAL_ATUAL = nomeHospital;
       nomeHospitaldashboard.innerHTML += hospitalData[0].nomeHospital;
+      const respostaVentilador = await fetch(`/controle/${sessionStorage.getItem("FK")}/Ventiladores`)
+      const ventiladoresHospitalAtual = await respostaVentilador.json
 
+      
+      console.log(ventiladoresHospitalAtual)
       //Select de áreas
       const respostaAreas = await fetch(`/tecnicoHospital/areas/${sessionStorage.getItem("FK")}`);
       selectAreas = await respostaAreas.json()
       const select = document.getElementById('filtroArea');
-      console.log(selectAreas)
       for(const alerta of selectAreas){
         const novaOpcao = document.createElement('option');
         novaOpcao.value = alerta.area;
         novaOpcao.text = alerta.area;
         select.appendChild(novaOpcao);
       }
+    }
 
 
-      // Última captura
-      const KPItempo = await fetch(`/tecnicoHospital/mensal`);
-      let dados = await KPItempo.json()
-      const alertasDoHospital = dados.filter(alerta => alerta.hospital === nomeHospital); 
-      ultimaCap = dados[dados.length-1]
+    // Visão top down
+    let areaSelecionada = "todas";  
+    let tempoSelecionado = "diario";
+    document.querySelectorAll(".btnTempo").forEach(btn => { btn.addEventListener("click", () => { tempoSelecionado = btn.dataset.tempo; atualizarDados(); }); });
+    document.getElementById("filtroArea").addEventListener("change", e => { areaSelecionada = e.target.value; atualizarDados(); });
+
+    let ultimaCap; // Utilizo a última captura em outras funções
+    let alertasDaAreaAfetada; // Área mais afetada para útilizar no modal da KPI de área mais afetada
+    async function atualizarDados(){
+      const alertas = await fetch(`/tecnicoHospital/${tempoSelecionado}`);
+      let dados = await alertas.json()
+      if (dados.length == 0){
+         Swal.fire({
+          icon: 'error',
+          title: 'Sem Dados!',
+          text: 'Esta seleção de tempo está sem dados, tente outra!'
+        })
+        return
+      }
+      const alertasDoHospital = dados.filter(alerta => alerta.hospital === nomeHospital);
+      //KPI de último alerta
+      console.log(areaSelecionada)
+      let alertasDoHospitalArea;
+      console.log(selectAreas)
+      areaSelecionada == "todas" ? alertasDoHospitalArea = alertasDoHospital : alertasDoHospitalArea = alertasDoHospital.filter(alerta => alerta.area.toLowerCase() === areaSelecionada.toLowerCase());
+      ultimaCap = alertasDoHospitalArea[alertasDoHospitalArea.length-1]
       ultimaCapTime = ultimaCap.timestamp
       tipoAlerta = ultimaCap.componente
+      areaDoAlerta = ultimaCap.area
       let agora = new Date(ultimaCapTime);
       let dataFormatada = agora.toLocaleDateString();
       let horaFormatada = agora.toLocaleTimeString();
@@ -559,37 +583,35 @@
       const milissegundosRestantesDaHora = diferencaEmMS % msPorHora;
       const minutos = Math.floor(milissegundosRestantesDaHora / msPorMinuto);
       tempoUltimoAlerta.innerHTML = `${dias}d ${horas}h ${minutos}m`
-      tipoAlertaAcionado.innerHTML += `<b>${tipoAlerta}</b>`
-    }
+      tipoAlertaAcionado.innerHTML = `Tipo: <b>${tipoAlerta}</b>${areaSelecionada == "todas" ? ` - Área: <b>${areaDoAlerta}</b>` : ``}`
 
-
-    // Visão top down
-    let areaSelecionada = "todas";  
-    let tempoSelecionado = "Hora";
-    document.querySelectorAll(".btnTempo").forEach(btn => { btn.addEventListener("click", () => { tempoSelecionado = btn.dataset.tempo; atualizarDados(); }); });
-    document.getElementById("filtroArea").addEventListener("change", e => { areaSelecionada = e.target.value; atualizarDados(); });
-
-    async function atualizarDados(){
-      const alertas = await fetch(`/tecnicoHospital/${tempoSelecionado}`);
-      let dados = await alertas.json()
-      const alertasDoHospital = dados.filter(alerta => alerta.hospital === nomeHospital);
-      let alertasDoHospitalAreas;
-      console.log(selectAreas)
-      areaSelecionada == "todas" ? alertasDoHospitalAreas = alertasDoHospital : alertasDoHospitalAreas = alertasDoHospital.filter(alerta => alerta.area.toLowerCase() === areaSelecionada.toLowerCase());
       // Contando alertas por area
-      let contador = {};
-      for (const a of selectAreas) {
-        contador[a.area] = 0;
-      }
-      console.log(contador)
-      for (const a of alertasDoHospital) {
-        if (contador[a.area] !== undefined) {
-          contador[a.area]++;
+      if(areaSelecionada == "todas"){
+        let contador = {};
+        for (const a of selectAreas) {
+          contador[a.area] = 0;
         }
-      }
-      console.log(contador)
+        for (const a of alertasDoHospital) {
+          if (contador[a.area] !== undefined) {
+            contador[a.area]++;
+          }
+        }
+        let maiorArea = null;
+        let maiorValor = 0;
+        for (const area in contador) {
+          if (contador[area] > maiorValor) {
+            maiorValor = contador[area];
+            maiorArea = area;
+          }
+        }
+        quantidadeAlertaArea.innerHTML = `Total de alertas: <b>${maiorValor}</b>`
+        areaMaisAfetada.innerHTML = `${maiorArea == "Internacao" ? `Internação` : `${maiorArea}`}`
+        alertasDaAreaAfetada = alertasDoHospital.filter(alerta => alerta.area === maiorArea);
 
-      console.log(alertasDoHospitalAreas)
+        console.log(contador)
+        console.log(maiorArea)
+      }
+      console.log(alertasDoHospitalArea)
       console.log(areaSelecionada)
       console.log(tempoSelecionado)
     }
@@ -599,7 +621,10 @@
     function abrirModalAlertas(exibir) {
       const myModal = new bootstrap.Modal(document.getElementById('modalAlertas'));
       myModal.show();
+      // Modal da KPI de último alerta
       if(exibir == "UltimoAlerta"){
+        let classModal = document.getElementById('classModal');
+        classModal.classList.remove('modal-xl');
         modalAlertasLabel.innerHTML = `Último alerta:`
         conteudoModal.innerHTML = `
         <table class="table table-sm table-striped">
@@ -627,25 +652,77 @@
                             : `<span>Máximo</span>`}</td>
                 </tr>
                 <tr>
+                    <th scope="row">Valor Capturado</th>
+                    <td><span style="color: red;">${ultimaCap.valor_lido}</span></td>
+                </tr>
+                <tr>
                     <th scope="row">Limite ${ultimaCap.tipo_alerta.toLowerCase() == "abaixo" 
                             ? `<span>(Min)</span>` 
                             : `<span>(Max)</span>`}</th>
                     <td >  ${ultimaCap.tipo_alerta.toLowerCase() == "abaixo" 
                             ? `<span>${ultimaCap.min_permitido}</span>` 
-                            : `<span>${ultimaCap.max_permitido}</span>`}</td>
-                </tr>
-                <tr>
-                    <th scope="row">Valor Capturado</th>
-                    <td>${ultimaCap.valor_lido}</td>
+                            : `<span>${ultimaCap.max_permitido}</span>`} ${ultimaCap.componente == "Disco" ? ` - GB` : ultimaCap.componente == "Processos" ? ` - Inteiro` : ` - %`}
+                    </td>
                 </tr>
             </tbody>
         </table>
         <p class="text-muted small mt-3">
             Atenção: O componente ${ultimaCap.componente} apresentou o valor ${ultimaCap.valor_lido} na área ${ultimaCap.area}.
         </p>
-    `;
+      `;
+      }
+      // KPI de área mais afetada
+      else if(exibir == "Area"){
+        let classModal = document.getElementById('classModal');
+        classModal.classList.add('modal-xl');
+        modalAlertasLabel.innerHTML = `Alertas da área mais afetada:`;
+        let html = `
+        <div class="card-body p-0">
+          <div class="table-responsive table-responsive-custom">
+            <table class="table table-hover devices-table mb-0">
+              <thead>
+                <tr>
+                  <th>Data/Hora</th>
+                  <th>Nº Série</th>
+                  <th>Área</th>
+                  <th>Componente</th>
+                  <th>Alerta</th>
+                  <th>Valor Lido</th>
+                  <th>Limite</th>
+                </tr>
+              </thead>
+              <tbody>
+        `;
+        alertasDaAreaAfetada.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+        alertasDaAreaAfetada.forEach(alerta => {  
+          html += `
+            <tr>
+              <td>${alerta.timestamp}</td>
+              <td>${alerta.numero_serie}</td>
+              <td>${alerta.area}</td>
+              <td>${alerta.componente}</td>
+              <td>${alerta.tipo_alerta}</td>
+              <td><span style="color: red;">${alerta.valor_lido}</span></td>
+              <td>${alerta.tipo_alerta.toLowerCase() == "abaixo" 
+                            ? `<span>${alerta.min_permitido}</span>` 
+                            : `<span>${alerta.max_permitido}</span>`} ${alerta.componente == "Disco" ? ` - GB` : alerta.componente == "Processos" ? ` - Inteiro` : ` - %`}
+              </td>
+            </tr>
+          `;
+        });
+
+        html += `
+              </tbody>
+            </table>
+          </div>
+        </div>
+        `;
+
+        conteudoModal.innerHTML = html;
+
       }
     }
+
 
     function fecharModalAlertas() {
       const modalElement = document.getElementById('modalAlertas');
