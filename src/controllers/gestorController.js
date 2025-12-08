@@ -22,8 +22,6 @@ async function listarMensal(req, res) {
   }
 }
 
-
-listarModelos
 async function listarAnual(req, res) {
   try {
     const dadoAnual = await analistaModel.listarAnual();
@@ -43,20 +41,6 @@ async function listarDiario(req, res) {
     res.status(500).json("Erro ao listar dadoDiario");
   }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 module.exports = {listarSemanal, listarMensal, listarAnual, listarDiario};

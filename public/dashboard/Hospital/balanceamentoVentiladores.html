@@ -2,506 +2,577 @@
 <html lang="pt-BR">
 
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Dashboard - Balanceamento de Ventiladores</title>
-  <link rel="icon" href="/assets/imgs/Zephyrus_2png.png">
-  <link rel="stylesheet" href="./../../css/dashboards.css">
-  <link rel="stylesheet" href="./../../css/dashboardFelipe.css">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
-  integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <script src="https://unpkg.com/lucide@latest"></script>
-  <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
-  <script src="../../js/sessao.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Balanceamento de Ventiladores</title>
+    <link rel="icon" href="/assets/imgs/Zephyrus_2png.png">
+    <link rel="stylesheet" href="./../../css/dashboards.css">
+    <link rel="stylesheet" href="./../../css/dashboardFelipe.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
+    <script src="../../js/sessao.js"></script>
 
-  <style>
-    /* Cores para os níveis de risco */
-    .valor-risco.perigo { color: #e60e3a; }
-    .valor-risco.alerta { color: #f59e0b; }
-    .valor-risco.seguro { color: #30a799; }
-    .corPrincipal {background: #264653;}
-  </style>
+    <style>
+        /* Cores para os níveis de risco */
+        .valor-risco.perigo {
+            color: #e60e3a;
+        }
+
+        .valor-risco.alerta {
+            color: #f59e0b;
+        }
+
+        .valor-risco.seguro {
+            color: #30a799;
+        }
+
+        .corPrincipal {
+            background: #264653;
+        }
+    </style>
 </head>
 
 <body>
-  <div class="div-pai">
+    <div class="div-pai">
 
-  <nav class="navbar corPrincipal fixed-top py-3">
-    <div class="container-fluid justify-content-start ">
-      <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar"
-        aria-controls="offcanvasNavbar" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon text-white"></span>
-      </button>
-      <div class="containerTitulo">
-        <div class="logo-titulo">
-          <img src="/assets/imgs/Zephyrus_2png.png" style="width: 50px;" alt="">
-          <h1 class="titulo">Zephyrus</h1>
-        </div>
-
-        <div class="offcanvas offcanvas-start corPrincipal" tabindex="-1" id="offcanvasNavbar"
-          aria-labelledby="offcanvasNavbarLabel">
-          <img src="/assets/imgs/Zephyrus_2png.png"
-            style="width: 170px; align-self: center; margin-bottom: 10px; margin-top: 20px;" alt="">
-          <div class="offcanvas-header" style="border-bottom:2px solid rgba(255, 255, 255, 0.5);">
-            <h4 class="offcanvas-title " style="color: #f5f6fa; " id="offcanvasNavbarLabel">Menu</h4>
-            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas"
-              aria-label="Close"></button>
-          </div>
-          <div class="offcanvas-body d-flex flex-column">
-            <ul class="navbar-nav justify-content-start flex-grow-1 pe-3">
-              <li class="nav-item" style="width: 100%;">
-                <a class="nav-link active" style="padding: 5px; color: #f5f6fa; font-size: 22px;"
-                  href="./mainPage.html">Página
-                  principal</a>
-              </li>
-              <li class="nav-item-selected" style="width: 100%;">
-                <a class="nav-link active" style="padding: 5px; color: #f5f6fa;  font-size: 22px;"
-                  href="./balanceamentoVentiladores.html">Balanceamento</a>
-              </li>
-              <li class="nav-item" style="width: 100%;">
-                <a class="nav-link active" style="padding: 5px; color: #f5f6fa;  font-size: 22px;"
-                  href="./controleSalas.html">Salas</a>
-              </li>
-              <li class="nav-item" style="width: 100%;">
-                <a class="nav-link active" style="padding: 5px; color: #f5f6fa;  font-size: 22px;"
-                  href="./contas.html">Contas</a>
-              </li>
-            </ul>
-            <ul class="navbar-nav d-flex flex-column flex-grow-1 pe-3">
-              <li class="nav-item mt-auto d-flex justify-content-center" style="width: 100%;">
-                <a class="btn-suporte" href="/index">
-                  <img style="width: 40px;" src="/assets/imgs/headphoneIcon.png" alt="">
-                  Abrir chamado
-                </a>
-              </li>
-              <li class="nav-item d-flex justify-content-center" style="width: 100%;">
-                <a class="btn-sair" href="/index.html" onclick="sessionStorage.clear()">
-                  <img class="icon" src="https://cdn-icons-png.flaticon.com/512/1828/1828479.png" alt="Logout">
-                  Sair
-                </a>
-              </li>
-
-            </ul>
-          </div>
-        </div>
-      </div>
-  </nav>
-    <div class="conteudo-monitoramento">
-      <div class="container-monitoramento">
-
-        <div class="caixa-padrao">
-          <div class="cabecalho-grafico">Análise Preditiva e Riscos</div>
-          <div class="corpo-caixa">
-            <div class="layout-duas-colunas">
-
-              <div class="coluna-empilhada">
-                <div class="secao-analise">
-                  <div class="cabecalho-secao">
-                    <div class="icone-secao vermelho"><i data-lucide="alert-triangle"></i></div>
-                    <div>
-                      <h3 class="titulo-secao">Análise de Risco</h3>
-                      <p class="subtitulo-secao">Monitoramento sazonal</p>
+        <nav class="navbar corPrincipal py-3">
+            <div class="container-fluid justify-content-start ">
+                <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas"
+                    data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon text-white"></span>
+                </button>
+                <div class="containerTitulo">
+                    <div class="logo-titulo">
+                        <img src="/assets/imgs/Zephyrus_2png.png" style="width: 50px;" alt="">
+                        <h1 class="titulo">Zephyrus</h1>
                     </div>
-                  </div>
-                  <div class="grade-risco">
-                    <div>
-                      <div class="rotulo-risco">Relatório Histórico</div>
-                      <div class="valor-risco">Pico de Umidade</div>
-                      <div class="sub-risco" id="textoPicoHistorico">Carregando...</div>
+
+                    <div class="offcanvas offcanvas-start corPrincipal" tabindex="-1" id="offcanvasNavbar"
+                        aria-labelledby="offcanvasNavbarLabel">
+                        <img src="/assets/imgs/Zephyrus_2png.png"
+                            style="width: 170px; align-self: center; margin-bottom: 10px; margin-top: 20px;" alt="">
+                        <div class="offcanvas-header" style="border-bottom:2px solid rgba(255, 255, 255, 0.5);">
+                            <h4 class="offcanvas-title " style="color: #f5f6fa; " id="offcanvasNavbarLabel">Menu</h4>
+                            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas"
+                                aria-label="Close"></button>
+                        </div>
+                        <div class="offcanvas-body d-flex flex-column">
+                            <ul class="navbar-nav justify-content-start flex-grow-1 pe-3">
+                                <li class="nav-item" style="width: 100%;">
+                                    <a class="nav-link active" style="padding: 5px; color: #f5f6fa; font-size: 22px;"
+                                        href="./mainPage.html">Página
+                                        principal</a>
+                                </li>
+                                <li class="nav-item-selected" style="width: 100%;">
+                                    <a class="nav-link active" style="padding: 5px; color: #f5f6fa;  font-size: 22px;"
+                                        href="./balanceamentoVentiladores.html">Balanceamento</a>
+                                </li>
+                                <li class="nav-item" style="width: 100%;">
+                                    <a class="nav-link active" style="padding: 5px; color: #f5f6fa;  font-size: 22px;"
+                                        href="./controleSalas.html">Salas</a>
+                                </li>
+                                <li class="nav-item" style="width: 100%;">
+                                    <a class="nav-link active" style="padding: 5px; color: #f5f6fa;  font-size: 22px;"
+                                        href="./contas.html">Contas</a>
+                                </li>
+                            </ul>
+                            <ul class="navbar-nav d-flex flex-column flex-grow-1 pe-3">
+                                <li class="nav-item mt-auto d-flex justify-content-center" style="width: 100%;">
+                                    <a class="btn-suporte" href="/index">
+                                        <img style="width: 40px;" src="/assets/imgs/headphoneIcon.png" alt="">
+                                        Abrir chamado
+                                    </a>
+                                </li>
+                                <li class="nav-item d-flex justify-content-center" style="width: 100%;">
+                                    <a class="btn-sair" href="/index.html" onclick="sessionStorage.clear()">
+                                        <img class="icon" src="https://cdn-icons-png.flaticon.com/512/1828/1828479.png"
+                                            alt="Logout">
+                                        Sair
+                                    </a>
+                                </li>
+
+                            </ul>
+                        </div>
                     </div>
-                    <div>
-                      <div class="rotulo-risco">Risco Atual</div>
-                      <div class="valor-risco" id="textoNivelRisco">---</div>
-                      <div class="sub-risco" id="textoPeriodoDemanda">Calculando...</div>
+                </div>
+            </nav>
+
+        <div class="conteudo-monitoramento">
+            <div class="container-monitoramento">
+
+                <div class="d-flex flex-column flex-md-row justify-content-between align-items-center mb-4">
+                    <div class="text-center text-md-start">
+                        <h2 class="mb-0" style="color: #212529; font-weight: 600;">Dashboard Preditiva e Prescritiva
+                        </h2>
+                        <div class="text-muted" style="font-size: 1rem; margin-top: 5px;">
+                            Balanceamento de Ventiladores • Monitoramento Climático: <strong>São Paulo - SP</strong>
+                        </div>
                     </div>
-                  </div>
+
+                    <div class="text-end mt-3 mt-md-0">
+                        <div class="text-muted" style="font-size: 0.9rem;">
+                            Última atualização dos dados:
+                        </div>
+                        <div style="font-size: 1.2rem; font-weight: bold; color: #264653;">
+                            <i data-lucide="clock" style="width: 18px; margin-right: 5px;"></i>
+                            <span id="momentoUltimaAtualizacao">Aguardando dados...</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="caixa-padrao">
+                    <div class="cabecalho-grafico">Análise Preditiva e Riscos</div>
+                    <div class="corpo-caixa">
+                        <div class="layout-duas-colunas">
+
+                            <div class="coluna-empilhada">
+                                <div class="secao-analise">
+                                    <div class="cabecalho-secao">
+                                        <div class="icone-secao vermelho"><i data-lucide="alert-triangle"></i></div>
+                                        <div>
+                                            <h3 class="titulo-secao">Análise de Risco</h3>
+                                            <p class="subtitulo-secao">Monitoramento sazonal</p>
+                                        </div>
+                                    </div>
+                                    <div class="grade-risco">
+                                        <div>
+                                            <div class="rotulo-risco">Relatório Histórico</div>
+                                            <div class="valor-risco">Pico de Umidade</div>
+                                            <div class="sub-risco" id="textoPicoHistorico">Carregando...</div>
+                                        </div>
+                                        <div>
+                                            <div class="rotulo-risco">Risco Atual</div>
+                                            <div class="valor-risco" id="textoNivelRisco">---</div>
+                                            <div class="sub-risco" id="textoPeriodoDemanda">Calculando...</div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="secao-analise">
+                                    <div class="cabecalho-secao">
+                                        <div class="icone-secao azul"><i data-lucide="lightbulb"></i></div>
+                                        <div>
+                                            <h3 class="titulo-secao">Recomendação</h3>
+                                            <p class="subtitulo-secao">Ação sugerida de balanceamento</p>
+                                        </div>
+                                    </div>
+                                    <div class="valor-recomendacao">Reforçar Áreas Críticas</div>
+                                    <div class="acao-recomendacao">
+                                        <i data-lucide="arrow-right"></i>
+                                        <span>Remanejamento: <span id="totalRemanejamento">0</span> ventiladores
+                                            disponíveis</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="secao-analise altura-total">
+                                <div class="cabecalho-secao">
+                                    <div class="icone-secao laranja"><i data-lucide="file-text"></i></div>
+                                    <div>
+                                        <h3 class="titulo-secao">Áreas Críticas</h3>
+                                        <p class="subtitulo-secao">Necessitam atenção imediata</p>
+                                    </div>
+                                </div>
+                                <div id="containerAreasCriticas"></div>
+                            </div>
+
+                        </div>
+                    </div>
                 </div>
 
-                <div class="secao-analise">
-                  <div class="cabecalho-secao">
-                    <div class="icone-secao azul"><i data-lucide="lightbulb"></i></div>
-                    <div>
-                      <h3 class="titulo-secao">Recomendação</h3>
-                      <p class="subtitulo-secao">Ação sugerida de balanceamento</p>
+                <div class="grade-kpis">
+                    <div class="cartao-kpi borda-verde">
+                        <div class="linha-conteudo-kpi">
+                            <div class="lado-texto-kpi">
+                                <p class="titulo-kpi">Estabilidade Operacional</p>
+                                <h3 class="valor-kpi"><span id="textoEstaveis">0</span>/<span
+                                        id="textoTotalVentiladores">0</span>
+                                    Estáveis</h3>
+                                <p class="subtitulo-kpi">Quantidade de ventiladores estáveis em relação ao total</p>
+                            </div>
+                            <div class="lado-grafico-kpi">
+                                <div id="graficoEstabilidadeKpi"></div>
+                            </div>
+                        </div>
                     </div>
-                  </div>
-                  <div class="valor-recomendacao">Reforçar Áreas Críticas</div>
-                  <div class="acao-recomendacao">
-                    <i data-lucide="arrow-right"></i>
-                    <span>Remanejamento: <span id="totalRemanejamento">0</span> ventiladores disponíveis</span>
-                  </div>
+
+                    <div class="cartao-kpi borda-vermelha">
+                        <div class="linha-conteudo-kpi">
+                            <div class="lado-texto-kpi">
+                                <p class="titulo-kpi">Índice de Alertas</p>
+                                <h3 class="valor-kpi"><span id="textoAlertasAreaCritica">0</span> de <span
+                                        id="textoTotalAlertas">0</span>
+                                    na <strong id="textoNomeAreaCritica">---</strong></h3>
+                                <p class="subtitulo-kpi">Alertas na área mais crítica em relação ao total</p>
+                            </div>
+                            <div class="lado-grafico-kpi">
+                                <div id="graficoAlertasKpi"></div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-              </div>
 
-              <div class="secao-analise altura-total">
-                <div class="cabecalho-secao">
-                  <div class="icone-secao laranja"><i data-lucide="file-text"></i></div>
-                  <div>
-                    <h3 class="titulo-secao">Áreas Críticas</h3>
-                    <p class="subtitulo-secao">Necessitam atenção imediata</p>
-                  </div>
+                <div class="caixa-padrao">
+                    <div class="cabecalho-grafico">
+                        Distribuição e Balanceamento
+                        <span class="etiqueta-cabecalho">Total: <span id="exibicaoTotalVentiladores">0</span>
+                            Unidades</span>
+                    </div>
+                    <div class="corpo-caixa">
+                        <div class="linha-subtitulo-distribuicao">
+                            <p>Monitoramento de hardware e recomendações de remanejamento por área hospitalar</p>
+                        </div>
+                        <div class="grade-areas" id="gradeAreas"></div>
+                    </div>
                 </div>
-                <div id="containerAreasCriticas"></div>
-              </div>
+
+                <div class="caixa-padrao">
+                    <div class="cabecalho-grafico">Evolução Mensal da Umidade (São Paulo)</div>
+                    <div class="corpo-caixa">
+                        <div id="graficoUmidade" style="height: 350px;"></div>
+                        <div class="alerta-umidade-perigo">
+                            <i data-lucide="alert-triangle"></i>
+                            <span>Carregando análise...</span>
+                        </div>
+                    </div>
+                </div>
 
             </div>
-          </div>
         </div>
-
-        <div class="grade-kpis">
-          <div class="cartao-kpi borda-verde">
-            <div class="linha-conteudo-kpi">
-              <div class="lado-texto-kpi">
-                <p class="titulo-kpi">Estabilidade Operacional</p>
-                <h3 class="valor-kpi"><span id="textoEstaveis">0</span>/<span id="textoTotalVentiladores">0</span>
-                  Estáveis</h3>
-                <p class="subtitulo-kpi">Quantidade de ventiladores estáveis em relação ao total</p>
-              </div>
-              <div class="lado-grafico-kpi">
-                <div id="graficoEstabilidadeKpi"></div>
-              </div>
-            </div>
-          </div>
-
-          <div class="cartao-kpi borda-vermelha">
-            <div class="linha-conteudo-kpi">
-              <div class="lado-texto-kpi">
-                <p class="titulo-kpi">Índice de Alertas</p>
-                <h3 class="valor-kpi"><span id="textoAlertasAreaCritica">0</span> de <span id="textoTotalAlertas">0</span>
-                  na <strong id="textoNomeAreaCritica">---</strong></h3>
-                <p class="subtitulo-kpi">Alertas na área mais crítica em relação ao total</p>
-              </div>
-              <div class="lado-grafico-kpi">
-                <div id="graficoAlertasKpi"></div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="caixa-padrao">
-          <div class="cabecalho-grafico">
-            Distribuição e Balanceamento
-            <span class="etiqueta-cabecalho">Total: <span id="exibicaoTotalVentiladores">0</span> Unidades</span>
-          </div>
-          <div class="corpo-caixa">
-            <div class="linha-subtitulo-distribuicao">
-              <p>Monitoramento de hardware e recomendações de remanejamento por área hospitalar</p>
-            </div>
-            <div class="grade-areas" id="gradeAreas"></div>
-          </div>
-        </div>
-
-        <div class="caixa-padrao">
-          <div class="cabecalho-grafico">Evolução Mensal da Umidade (São Paulo)</div>
-          <div class="corpo-caixa">
-            <div id="graficoUmidade" style="height: 350px;"></div>
-            <div class="alerta-umidade-perigo">
-              <i data-lucide="alert-triangle"></i>
-              <span>Carregando análise...</span>
-            </div>
-          </div>
-        </div>
-
-      </div>
     </div>
-  </div>
-    
-  </body>
-  </html>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
-integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
-crossorigin="anonymous"></script>
-<script>
-    // Função para abrir e fechar o menu lateral
-    function toggleSidebar() {
-      document.getElementById("sidebarModal").classList.toggle("active");
-    }
 
-    // Carrega os ícones da biblioteca Lucide
-    lucide.createIcons();
-
-    // Função principal para buscar dados de monitoramento (Hardware)
-    function obterDadosMonitoramento() {
-      // Pega o ID do hospital da sessão do usuário
-      var idHospital = sessionStorage.FK;
-
-      // Validação simples
-      if (idHospital == undefined || idHospital == null) {
-          console.warn("ID do Hospital não encontrado na sessão.");
-          return; 
-      }
-
-      // Passa o ID na URL da rota
-      fetch(`/medidas/monitoramento/${idHospital}`, { cache: 'no-store' })
-        .then(function (resposta) {
-          if (resposta.ok) {
-            resposta.json().then(function (dados) {
-              console.log("Dados recebidos:", dados);
-              // Os dados já vêm ordenados e com as chaves corretas do controller
-              atualizarDashboardHardware(dados);
-            });
-          } else {
-            console.error("Erro na resposta da API");
-          }
-        })
-        .catch(function (erro) {
-          console.error("Erro na requisição:", erro);
-          document.getElementById('gradeAreas').innerHTML = '<p style="color:red; padding:20px">Erro ao carregar dados.</p>';
-        });
-    }
-
-    // Atualiza todos os elementos da tela relacionados ao Hardware
-    function atualizarDashboardHardware(listaAreas) {
-      var totalGeral = 0;
-      var totalEstaveis = 0;
-      var totalAlertas = 0;
-      
-      // Soma o total de unidades disponíveis para remanejamento (doado *antes* da distribuição)
-      var totalParaEnviar = listaAreas.reduce((acc, area) => acc + (area.status === 'Disponível' ? area.podeEnviar : 0), 0);
-
-      // Calcula os totais percorrendo a lista de áreas
-      listaAreas.forEach(function (area) {
-        totalGeral += area.total;
-        totalEstaveis += area.estaveis;
-        totalAlertas += area.alertas;
-      });
-
-      // Define a área mais crítica (a primeira da lista pois o back-end já ordena por risco)
-      var areaCritica = listaAreas[0] || { nome: '---', alertas: 0 };
-
-      // Atualiza os textos dos KPIs na tela
-      document.getElementById('textoEstaveis').innerHTML = totalEstaveis;
-      document.getElementById('textoTotalVentiladores').innerHTML = totalGeral;
-      document.getElementById('textoTotalAlertas').innerHTML = totalAlertas;
-      
-      document.getElementById('textoAlertasAreaCritica').innerHTML = areaCritica.alertas;
-      document.getElementById('textoNomeAreaCritica').innerHTML = areaCritica.nome;
-      
-      document.getElementById('totalRemanejamento').innerHTML = totalParaEnviar;
-      document.getElementById('exibicaoTotalVentiladores').innerHTML = totalGeral;
-
-      // Calcula porcentagens para os gráficos radiais (Usando Math.floor/Truncate)
-      var porcentagemEstabilidade = totalGeral > 0 ? Math.floor((totalEstaveis / totalGeral) * 100) : 0;
-      var porcentagemAlertas = totalAlertas > 0 ? Math.floor((areaCritica.alertas / totalAlertas) * 100) : 0;
-
-      criarGraficoRadial('#graficoEstabilidadeKpi', porcentagemEstabilidade, '#30a799');
-      criarGraficoRadial('#graficoAlertasKpi', porcentagemAlertas, '#e60e3a');
-
-      // Renderiza as listas e cards
-      criarListaAreasCriticas(listaAreas);
-      criarCardsDeAreas(listaAreas);
-      
-      // Atualiza os ícones novamente para os novos elementos criados
-      lucide.createIcons();
-    }
-
-    // Função que cria a lista lateral de áreas com problemas
-    function criarListaAreasCriticas(listaAreas) {
-      var container = document.getElementById('containerAreasCriticas');
-      container.innerHTML = '';
-
-      // Filtra apenas áreas que têm alertas
-      var areasComProblema = listaAreas.filter(function (area) {
-        return area.alertas > 0;
-      });
-
-      if (areasComProblema.length === 0) {
-        container.innerHTML = '<div style="color: #64748b; padding: 15px;">Nenhuma área crítica encontrada.</div>';
-        return;
-      }
-
-      // Pega apenas as 4 primeiras áreas
-      areasComProblema.slice(0, 4).forEach(function (area) {
-        // O risco já vem como inteiro (floor) do back-end
-        var corDaBarra = 'verde';
-        if (area.risco > 40) {
-          corDaBarra = 'vermelho';
-        } else if (area.risco >= 10) {
-          corDaBarra = 'amarelo';
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+        crossorigin="anonymous"></script>
+    <script>
+        // Função para abrir e fechar o menu lateral
+        function toggleSidebar() {
+            document.getElementById("sidebarModal").classList.toggle("active");
         }
 
-        var divItem = document.createElement('div');
-        divItem.className = 'item-area-critica';
-        divItem.innerHTML = `
-            <div class="barra-critica ${corDaBarra}"></div>
-            <div>
-                <span class="nome-area-critica">${area.nome}</span><br>
-                <span class="detalhes-criticos">${area.risco}% Risco • ${area.alertas} alertas</span>
-            </div>`;
-        container.appendChild(divItem);
-      });
-    }
+        // Carrega os ícones da biblioteca Lucide
+        lucide.createIcons();
 
-    // Função que cria os cards principais de cada área (ATUALIZADA)
-    function criarCardsDeAreas(listaAreas) {
-      var container = document.getElementById('gradeAreas');
-      container.innerHTML = '';
-
-      if (listaAreas.length === 0) {
-         container.innerHTML = '<p>Nenhum ventilador encontrado no banco.</p>';
-         return;
-      }
-
-      listaAreas.forEach(function (area) {
-        // Estabilidade já vem como inteiro (floor) do back-end
-        var estabilidadeArea = area.estabilidade; 
-
-        // Define estilos e textos baseados no estado da área
-        var classeCss = '';
-        var textoStatus = 'Estável';
-        var corEtiqueta = 'neutro';
-        var htmlRodape = '';
-        var textoAcao = area.mensagemAcao; 
-
-        if (area.precisa > 0) {
-          classeCss = 'precisa-ventiladores';
-          textoStatus = 'Necessita';
-          corEtiqueta = 'precisa';
-          htmlRodape = `
-            <div class="caixa-recomendacao-area">
-                <div class="cabecalho-recomendacao"><i data-lucide="lightbulb"></i> AÇÃO RECOMENDADA</div>
-                <div class="texto-recomendacao-duas-linhas">${textoAcao}</div>
-            </div>
-            <div class="caixa-disponivel">
-                <div class="esquerda-disponivel"><i data-lucide="package"></i> Disponível no Hospital</div>
-                <span class="valor-disponivel zero">0</span>
-            </div>`;
-        } else if (area.podeEnviar > 0) {
-          classeCss = 'pode-enviar';
-          textoStatus = 'Disponível';
-          corEtiqueta = 'enviar';
-          htmlRodape = `
-            <div class="caixa-envio-area">
-                <div class="cabecalho-envio"><i data-lucide="send"></i> UNIDADES PARA REMANEJAMENTO</div>
-                <div class="texto-envio-duas-linhas">${textoAcao}</div>
-            </div>
-            <div class="caixa-disponivel">
-                <div class="esquerda-disponivel"><i data-lucide="package"></i> Disponível no Hospital</div>
-                <span class="valor-disponivel positivo">${area.podeEnviar}</span>
-            </div>`;
-        } else {
-          htmlRodape = `
-            <div class="caixa-disponivel">
-                <div class="esquerda-disponivel"><i data-lucide="package"></i> Disponível no Hospital</div>
-                <span class="valor-disponivel zero">0</span>
-            </div>`;
+        // Função auxiliar para atualizar o horário no topo da tela (NOVA)
+        function atualizarHorarioTela() {
+            const agora = new Date();
+            const opcoes = {
+                day: '2-digit', month: '2-digit', year: 'numeric',
+                hour: '2-digit', minute: '2-digit', second: '2-digit'
+            };
+            document.getElementById('momentoUltimaAtualizacao').innerText = agora.toLocaleDateString('pt-BR', opcoes);
         }
 
-        var divCard = document.createElement('div');
-        divCard.className = 'cartao-area ' + classeCss;
-        divCard.innerHTML = `
-            <div class="cabecalho-area">
-                <h3 class="nome-area">${area.nome}</h3>
-                <div class="etiqueta-area ${corEtiqueta}">${textoStatus}</div>
-            </div>
-            <div class="estatisticas-area">
-                <div class="item-estatistica"><div class="rotulo-estatistica">Atual</div><div class="valor-estatistica">${area.total}</div></div>
-                <div class="item-estatistica"><div class="rotulo-estatistica">Pode Ceder</div><div class="valor-estatistica sucesso">${area.podeEnviar}</div></div>
-                <div class="item-estatistica"><div class="rotulo-estatistica">Precisa</div><div class="valor-estatistica destaque">${area.precisa}</div></div>
-            </div>
-            <div class="secao-estabilidade">
-                <div class="cabecalho-estabilidade"><span>Estabilidade</span><span>${estabilidadeArea}%</span></div>
-                <div class="barra-estabilidade"><div class="preenchimento-barra-estabilidade" style="width: ${estabilidadeArea}%"></div></div>
-            </div>
-            <div class="grade-status">
-                <div class="item-status estavel"><i data-lucide="check-circle-2"></i><span>${area.estaveis}</span></div>
-                <div class="item-status alerta"><i data-lucide="x-circle"></i><span>${area.alertas}</span></div>
-            </div>
-            ${htmlRodape}`;
-        container.appendChild(divCard);
-      });
-    }
+        // Função principal para buscar dados de monitoramento (Hardware)
+        function obterDadosMonitoramento() {
+            // Pega o ID do hospital da sessão do usuário
+            var idHospital = sessionStorage.FK;
 
-    // Função auxiliar para criar gráficos radiais (Círculos de porcentagem)
-    function criarGraficoRadial(idElemento, valor, cor) {
-      document.querySelector(idElemento).innerHTML = '';
-      
-      var opcoes = {
-        series: [valor],
-        chart: { height: 160, type: 'radialBar', fontFamily: 'Poppins, sans-serif' },
-        plotOptions: {
-          radialBar: {
-            hollow: { size: '60%' },
-            dataLabels: {
-              name: { show: false },
-              value: { show: true, fontSize: '24px', fontWeight: 800, color: cor, offsetY: 8, formatter: function(val) { return val + "%" } }
+            // Validação simples
+            if (idHospital == undefined || idHospital == null) {
+                console.warn("ID do Hospital não encontrado na sessão.");
+                return;
             }
-          }
-        },
-        colors: [cor]
-      };
-      
-      var grafico = new ApexCharts(document.querySelector(idElemento), opcoes);
-      grafico.render();
-    }
 
-    // Função principal para buscar dados de Umidade (JSON do S3)
-    function obterDadosUmidade() {
-      fetch(`/medidas/umidade`, { cache: 'no-store' })
-        .then(function (resposta) {
-          if (resposta.ok) {
-            resposta.json().then(function (dados) {
-              atualizarGraficoUmidade(dados);
-              atualizarTextoRisco(dados.analiseRisco);
+            // Passa o ID na URL da rota
+            fetch(`/medidas/monitoramento/${idHospital}`, { cache: 'no-store' })
+                .then(function (resposta) {
+                    if (resposta.ok) {
+                        resposta.json().then(function (dados) {
+                            console.log("Dados recebidos:", dados);
+                            // CHAMADA PARA ATUALIZAR O HORÁRIO DA TELA
+                            atualizarHorarioTela(); 
+                            // ------------------------------------------------
+                            atualizarDashboardHardware(dados);
+                        });
+                    } else {
+                        console.error("Erro na resposta da API");
+                    }
+                })
+                .catch(function (erro) {
+                    console.error("Erro na requisição:", erro);
+                    document.getElementById('gradeAreas').innerHTML = '<p style="color:red; padding:20px">Erro ao carregar dados.</p>';
+                });
+        }
+
+        // Atualiza todos os elementos da tela relacionados ao Hardware
+        function atualizarDashboardHardware(listaAreas) {
+            var totalGeral = 0;
+            var totalEstaveis = 0;
+            var totalAlertas = 0;
+
+            // Soma o total de unidades disponíveis para remanejamento (doado *antes* da distribuição)
+            var totalParaEnviar = listaAreas.reduce((acc, area) => acc + (area.status === 'Disponível' ? area.podeEnviar : 0), 0);
+
+            // Calcula os totais percorrendo a lista de áreas
+            listaAreas.forEach(function (area) {
+                totalGeral += area.total;
+                totalEstaveis += area.estaveis;
+                totalAlertas += area.alertas;
             });
-          } else {
-            console.error("Erro ao buscar umidade");
-          }
-        })
-        .catch(function (erro) {
-          console.error(erro);
-        });
-    }
 
-    // Atualiza os textos de risco com base na análise do back-end
-    function atualizarTextoRisco(dadosRisco) {
-      if (!dadosRisco) return;
-      
-      document.getElementById("textoPicoHistorico").innerHTML = `Pico em <strong>${dadosRisco.picoHistorico}</strong>`;
-      
-      var divRisco = document.getElementById("textoNivelRisco");
-      divRisco.textContent = dadosRisco.nivelRisco;
-      // Reseta as classes e adiciona a nova cor
-      divRisco.className = "valor-risco " + dadosRisco.classeCss;
+            // Define a área mais crítica (a primeira da lista pois o back-end já ordena por risco)
+            var areaCritica = listaAreas[0] || { nome: '---', alertas: 0 };
 
-      document.getElementById("textoPeriodoDemanda").innerHTML = `${dadosRisco.periodoDemanda} <strong>(Alta Demanda)</strong>`;
-    }
+            // Atualiza os textos dos KPIs na tela
+            document.getElementById('textoEstaveis').innerHTML = totalEstaveis;
+            document.getElementById('textoTotalVentiladores').innerHTML = totalGeral;
+            document.getElementById('textoTotalAlertas').innerHTML = totalAlertas;
 
-    // Plota o gráfico de barras de umidade
-    function atualizarGraficoUmidade(pacoteDados) {
-      var dadosGrafico = pacoteDados.grafico;
-      document.querySelector("#graficoUmidade").innerHTML = '';
-      
-      var opcoes = {
-        chart: { type: 'bar', height: 350, toolbar: { show: false }, fontFamily: 'Poppins, sans-serif' },
-        series: [{ name: 'Umidade Média', data: dadosGrafico.data }],
-        xaxis: { 
-          categories: dadosGrafico.labels, 
-          labels: { style: { colors: '#64748b', fontSize: '12px' } } 
-        },
-        colors: dadosGrafico.colors,
-        plotOptions: { bar: { distributed: true, borderRadius: 4, columnWidth: '50%' } },
-        legend: { show: false },
-        dataLabels: { enabled: false },
-        tooltip: { y: { formatter: function(val) { return val + "%" } } }
-      };
-      
-      var grafico = new ApexCharts(document.querySelector("#graficoUmidade"), opcoes);
-      grafico.render();
+            document.getElementById('textoAlertasAreaCritica').innerHTML = areaCritica.alertas;
+            document.getElementById('textoNomeAreaCritica').innerHTML = areaCritica.nome;
 
-      // Texto de alerta abaixo do gráfico
-      var divAlerta = document.querySelector(".alerta-umidade-perigo");
-      if (divAlerta && pacoteDados.kpi) {
-        divAlerta.innerHTML = `<i data-lucide="alert-triangle"></i><span>Pico de umidade em <strong>${pacoteDados.kpi.mesPico}</strong>: aumento de internações previsto para <strong>${pacoteDados.kpi.mesesPrevisao}</strong>.</span>`;
-        lucide.createIcons({ root: divAlerta });
-      }
-    }
+            document.getElementById('totalRemanejamento').innerHTML = totalParaEnviar;
+            document.getElementById('exibicaoTotalVentiladores').innerHTML = totalGeral;
 
-    // Chamadas iniciais ao carregar a página
-    obterDadosUmidade();
-    obterDadosMonitoramento();
+            // Calcula porcentagens para os gráficos radiais (Usando Math.floor/Truncate)
+            var porcentagemEstabilidade = totalGeral > 0 ? Math.floor((totalEstaveis / totalGeral) * 100) : 0;
+            var porcentagemAlertas = totalAlertas > 0 ? Math.floor((areaCritica.alertas / totalAlertas) * 100) : 0;
 
-</script>
+            criarGraficoRadial('#graficoEstabilidadeKpi', porcentagemEstabilidade, '#30a799');
+            criarGraficoRadial('#graficoAlertasKpi', porcentagemAlertas, '#e60e3a');
+
+            // Renderiza as listas e cards
+            criarListaAreasCriticas(listaAreas);
+            criarCardsDeAreas(listaAreas);
+
+            // Atualiza os ícones novamente para os novos elementos criados
+            lucide.createIcons();
+        }
+
+        // Função que cria a lista lateral de áreas com problemas
+        function criarListaAreasCriticas(listaAreas) {
+            var container = document.getElementById('containerAreasCriticas');
+            container.innerHTML = '';
+
+            // Filtra apenas áreas que têm alertas
+            var areasComProblema = listaAreas.filter(function (area) {
+                return area.alertas > 0;
+            });
+
+            if (areasComProblema.length === 0) {
+                container.innerHTML = '<div style="color: #64748b; padding: 15px;">Nenhuma área crítica encontrada.</div>';
+                return;
+            }
+
+            // Pega apenas as 4 primeiras áreas
+            areasComProblema.slice(0, 4).forEach(function (area) {
+                // O risco já vem como inteiro (floor) do back-end
+                var corDaBarra = 'verde';
+                if (area.risco > 40) {
+                    corDaBarra = 'vermelho';
+                } else if (area.risco >= 10) {
+                    corDaBarra = 'amarelo';
+                }
+
+                var divItem = document.createElement('div');
+                divItem.className = 'item-area-critica';
+                divItem.innerHTML = `
+                    <div class="barra-critica ${corDaBarra}"></div>
+                    <div>
+                        <span class="nome-area-critica">${area.nome}</span><br>
+                        <span class="detalhes-criticos">${area.risco}% Risco • ${area.alertas} alertas</span>
+                    </div>`;
+                container.appendChild(divItem);
+            });
+        }
+
+        // Função que cria os cards principais de cada área (ATUALIZADA)
+        function criarCardsDeAreas(listaAreas) {
+            var container = document.getElementById('gradeAreas');
+            container.innerHTML = '';
+
+            if (listaAreas.length === 0) {
+                container.innerHTML = '<p>Nenhum ventilador encontrado no banco.</p>';
+                return;
+            }
+
+            listaAreas.forEach(function (area) {
+                // Estabilidade já vem como inteiro (floor) do back-end
+                var estabilidadeArea = area.estabilidade;
+
+                // Define estilos e textos baseados no estado da área
+                var classeCss = '';
+                var textoStatus = 'Estável';
+                var corEtiqueta = 'neutro';
+                var htmlRodape = '';
+                var textoAcao = area.mensagemAcao;
+
+                if (area.precisa > 0) {
+                    classeCss = 'precisa-ventiladores';
+                    textoStatus = 'Necessita';
+                    corEtiqueta = 'precisa';
+                    htmlRodape = `
+                        <div class="caixa-recomendacao-area">
+                            <div class="cabecalho-recomendacao"><i data-lucide="lightbulb"></i> AÇÃO RECOMENDADA</div>
+                            <div class="texto-recomendacao-duas-linhas">${textoAcao}</div>
+                        </div>
+                        <div class="caixa-disponivel">
+                            <div class="esquerda-disponivel"><i data-lucide="package"></i> Disponível no Hospital</div>
+                            <span class="valor-disponivel zero">0</span>
+                        </div>`;
+                } else if (area.podeEnviar > 0) {
+                    classeCss = 'pode-enviar';
+                    textoStatus = 'Disponível';
+                    corEtiqueta = 'enviar';
+                    htmlRodape = `
+                        <div class="caixa-envio-area">
+                            <div class="cabecalho-envio"><i data-lucide="send"></i> UNIDADES PARA REMANEJAMENTO</div>
+                            <div class="texto-envio-duas-linhas">${textoAcao}</div>
+                        </div>
+                        <div class="caixa-disponivel">
+                            <div class="esquerda-disponivel"><i data-lucide="package"></i> Disponível no Hospital</div>
+                            <span class="valor-disponivel positivo">${area.podeEnviar}</span>
+                        </div>`;
+                } else {
+                    htmlRodape = `
+                        <div class="caixa-disponivel">
+                            <div class="esquerda-disponivel"><i data-lucide="package"></i> Disponível no Hospital</div>
+                            <span class="valor-disponivel zero">0</span>
+                        </div>`;
+                }
+
+                var divCard = document.createElement('div');
+                divCard.className = 'cartao-area ' + classeCss;
+                divCard.innerHTML = `
+                        <div class="cabecalho-area">
+                            <h3 class="nome-area">${area.nome}</h3>
+                            <div class="etiqueta-area ${corEtiqueta}">${textoStatus}</div>
+                        </div>
+                        <div class="estatisticas-area">
+                            <div class="item-estatistica"><div class="rotulo-estatistica">Atual</div><div class="valor-estatistica">${area.total}</div></div>
+                            <div class="item-estatistica"><div class="rotulo-estatistica">Pode Ceder</div><div class="valor-estatistica sucesso">${area.podeEnviar}</div></div>
+                            <div class="item-estatistica"><div class="rotulo-estatistica">Precisa</div><div class="valor-estatistica destaque">${area.precisa}</div></div>
+                        </div>
+                        <div class="secao-estabilidade">
+                            <div class="cabecalho-estabilidade"><span>Estabilidade</span><span>${estabilidadeArea}%</span></div>
+                            <div class="barra-estabilidade"><div class="preenchimento-barra-estabilidade" style="width: ${estabilidadeArea}%"></div></div>
+                        </div>
+                        <div class="grade-status">
+                            <div class="item-status estavel"><i data-lucide="check-circle-2"></i><span>${area.estaveis}</span></div>
+                            <div class="item-status alerta"><i data-lucide="x-circle"></i><span>${area.alertas}</span></div>
+                        </div>
+                        ${htmlRodape}`;
+                container.appendChild(divCard);
+            });
+        }
+
+        // Função auxiliar para criar gráficos radiais (Círculos de porcentagem)
+        function criarGraficoRadial(idElemento, valor, cor) {
+            document.querySelector(idElemento).innerHTML = '';
+
+            var opcoes = {
+                series: [valor],
+                chart: { height: 160, type: 'radialBar', fontFamily: 'Poppins, sans-serif' },
+                plotOptions: {
+                    radialBar: {
+                        hollow: { size: '60%' },
+                        dataLabels: {
+                            name: { show: false },
+                            value: { show: true, fontSize: '24px', fontWeight: 800, color: cor, offsetY: 8, formatter: function (val) { return val + "%" } }
+                        }
+                    }
+                },
+                colors: [cor]
+            };
+
+            var grafico = new ApexCharts(document.querySelector(idElemento), opcoes);
+            grafico.render();
+        }
+
+        // Função principal para buscar dados de Umidade (JSON do S3)
+        function obterDadosUmidade() {
+            fetch(`/medidas/umidade`, { cache: 'no-store' })
+                .then(function (resposta) {
+                    if (resposta.ok) {
+                        resposta.json().then(function (dados) {
+                            // ------------------------------------------------
+                            // CHAMADA PARA ATUALIZAR O HORÁRIO DA TELA
+                            atualizarHorarioTela();
+                            // ------------------------------------------------
+                            atualizarGraficoUmidade(dados);
+                            atualizarTextoRisco(dados.analiseRisco);
+                        });
+                    } else {
+                        console.error("Erro ao buscar umidade");
+                    }
+                })
+                .catch(function (erro) {
+                    console.error(erro);
+                });
+        }
+
+        // Atualiza os textos de risco com base na análise do back-end
+        function atualizarTextoRisco(dadosRisco) {
+            if (!dadosRisco) return;
+
+            document.getElementById("textoPicoHistorico").innerHTML = `Pico em <strong>${dadosRisco.picoHistorico}</strong>`;
+
+            var divRisco = document.getElementById("textoNivelRisco");
+            divRisco.textContent = dadosRisco.nivelRisco;
+            // Reseta as classes e adiciona a nova cor
+            divRisco.className = "valor-risco " + dadosRisco.classeCss;
+
+            document.getElementById("textoPeriodoDemanda").innerHTML = `${dadosRisco.periodoDemanda} <strong>(Alta Demanda)</strong>`;
+        }
+
+        // Plota o gráfico de barras de umidade
+        function atualizarGraficoUmidade(pacoteDados) {
+            var dadosGrafico = pacoteDados.grafico;
+            document.querySelector("#graficoUmidade").innerHTML = '';
+
+            var opcoes = {
+                chart: { type: 'bar', height: 350, toolbar: { show: false }, fontFamily: 'Poppins, sans-serif' },
+                series: [{ name: 'Umidade Média', data: dadosGrafico.data }],
+                xaxis: {
+                    categories: dadosGrafico.labels,
+                    labels: { style: { colors: '#64748b', fontSize: '12px' } }
+                },
+                colors: dadosGrafico.colors,
+                plotOptions: { bar: { distributed: true, borderRadius: 4, columnWidth: '50%' } },
+                legend: { show: false },
+                dataLabels: { enabled: false },
+                tooltip: { y: { formatter: function (val) { return val + "%" } } }
+            };
+
+            var grafico = new ApexCharts(document.querySelector("#graficoUmidade"), opcoes);
+            grafico.render();
+
+            // Texto de alerta abaixo do gráfico
+            var divAlerta = document.querySelector(".alerta-umidade-perigo");
+            if (divAlerta && pacoteDados.kpi) {
+                divAlerta.innerHTML = `<i data-lucide="alert-triangle"></i><span>Pico de umidade em <strong>${pacoteDados.kpi.mesPico}</strong>: aumento de internações previsto para <strong>${pacoteDados.kpi.mesesPrevisao}</strong>.</span>`;
+                lucide.createIcons({ root: divAlerta });
+            }
+        }
+
+        // Chamadas iniciais ao carregar a página
+        // Envolve as chamadas dentro de uma função para usar no onload do body
+        function inicializarDash() {
+            obterDadosUmidade();
+            obterDadosMonitoramento();
+            // Inicia o intervalo de atualização
+            configurarPeriodoAtualizacao();
+        }
+
+        // Configura o intervalo de atualização (função adicionada no onload)
+        function configurarPeriodoAtualizacao() {
+            // Atualiza os dados a cada 5 segundos (5000ms) - Ajuste o tempo conforme necessário
+            setInterval(() => {
+                // A função atualizarHorarioTela() será chamada dentro das funções de fetch (.then)
+                obterDadosMonitoramento();
+                obterDadosUmidade();
+            }, 5000);
+        }
+
+        // Chama a inicialização no final, garantindo que todas as funções foram declaradas
+        inicializarDash();
+    </script>
+</body>
+
+</html>
