@@ -10,17 +10,21 @@
   "author": "Feito pelos desenvolvedores @ São Paulo Tech School / Bandtec Digital School",
   "license": "MIT",
   "dependencies": {
-    "@aws-sdk/client-s3": "^3.937.0",
+    "@aws-sdk/client-s3": "^3.946.0",
+    "@google/genai": "^0.14.1",
+    "aws-sdk": "^2.1692.0",
     "cors": "^2.8.5",
+    "csv-parse": "^6.1.0",
     "dotenv": "^16.4.5",
+    "ejs": "^3.1.10",
+    "express": "^4.19.2",
     "express-session": "^1.18.2",
+    "moment": "^2.30.1",
     "mysql2": "^3.9.4",
     "nodemailer": "^7.0.10",
     "nodemon": "^2.0.7",
-    "path": "^0.12.7",
-    "@google/genai": "^0.14.1",
-    "express": "^4.19.2",
     "papaparse": "^5.4.1",
-    "ejs": "^3.1.10"
+    "parse": "^7.1.2",
+    "path": "^0.12.7"
   }
 }

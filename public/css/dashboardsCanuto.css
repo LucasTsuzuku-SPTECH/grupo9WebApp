@@ -315,6 +315,7 @@ a {
   padding: 8px;
   border-bottom: 1px solid #ccc;
   color: black;
+  font-size: 13px;
 }
 
 /* Select de hospitais */
@@ -329,6 +330,7 @@ a {
   font-weight: 700;
 }
 
+
 .periodoSelected {
   text-decoration: none;
   font-style: none;
@@ -339,7 +341,7 @@ a {
 /* Área de análise */
 .divEspecifica {
   width: 100%;
-  background-color: #83cbc3;
+  background-color: #83cbc388;
   padding: 16px 0px 16px 0px;
   margin-top: 16px;
 }
@@ -348,7 +350,7 @@ a {
   display: flex;
   flex-direction: column;
   flex-wrap: wrap;
-  background-color: #5eaca3;
+  background-color: #5eaca399;
   justify-content: center;
   align-items: flex-start;
   width: 100%;
