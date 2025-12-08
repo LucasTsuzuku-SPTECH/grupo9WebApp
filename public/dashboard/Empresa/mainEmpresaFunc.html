@@ -298,8 +298,8 @@
                 </div>
             </div>
 
-            <div class="divPrevisao">
-                <h2 style="padding-left: 75px;">Previsão baseada no estado atual:</h2>
+            <!-- <div class="divPrevisao">
+                <h2 style="padding-left: 75px;">5 Previsões baseadas no estado atual:</h2>
 
                 <div style="width: 100%; display: flex; flex-wrap: wrap; flex-direction: row; justify-content: center;">
 
@@ -329,7 +329,7 @@
                         </div>
                     </div>
                 </div>
-            </div>
+            </div> -->
         </div>
     </div>
 
@@ -441,7 +441,10 @@
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({ texto })
+            body: JSON.stringify({
+                texto,
+                dadosUsados
+            })
         });
 
         const data = await response.json();
@@ -530,7 +533,6 @@
         atualizarGraf1(dadosUsados);
         // atualizarPrevisao(dadosUsados);
         updateHospital();
-        console.log(dadosUsados)
     }
 
 
@@ -1340,55 +1342,143 @@
 
 
 
-    // var dadosEsp2 = {
-    //     series: [{
-    //         name: "CPU(%)",
-    //         data: [25, 23, 27, 26]
-    //     }, {
-    //         name: "RAM(%)",
-    //         data: [50, 52, 49, 51]
-    //     }, {
-    //         name: "Disco(%)",
-    //         data: [15, 14, 13, 16]
-    //     }, {
-    //         name: "Processos(%)",
-    //         data: [10, 11, 11, 7]
-    //     }],
-    //     colors: ["#83cbc3", "#30a799", "#00796b", "#264653"],
-    //     chart: {
-    //         type: 'bar',
-    //         height: '100%',
-    //         width: '100%'
-    //     },
-    //     plotOptions: {
-    //         bar: {
-    //             horizontal: false,
-    //             dataLabels: {
-    //                 position: 'top',
-    //             },
+
+
+    /* Previsão ----------------------------------------------------------------------------------------------------*/
+    // var categorias;
+    // var grafPrevisao = null;
+    // function calcularRegressaoLinear(x, y) {
+    //     const n = x.length;
+    //     const mediaX = x.reduce((s, v) => s + v, 0) / n;
+    //     const mediaY = y.reduce((s, v) => s + v, 0) / n;
+
+    //     let numerador = 0;
+    //     let denominador = 0;
+
+    //     for (let i = 0; i < n; i++) {
+    //         numerador += (x[i] - mediaX) * (y[i] - mediaY);
+    //         denominador += (x[i] - mediaX) ** 2;
+    //     }
+
+    //     const b = denominador === 0 ? 0 : numerador / denominador;
+    //     const a = mediaY - b * mediaX;
+
+    //     return { a, b };
+    // }
+
+
+    // function calcularVariancia(x, y, a, b) {
+    //     const n = x.length;
+    //     let soma = 0;
+
+    //     for (let i = 0; i < n; i++) {
+    //         const yPrev = a + b * x[i];
+    //         const residuo = y[i] - yPrev;
+    //         soma += residuo ** 2;
+    //     }
+
+    //     return soma / Math.max(1, (n - 1));
+    // }
+
+
+    // function gerarRuido() {
+    //     let u = 0, v = 0;
+    //     while (u === 0) u = Math.random();
+    //     while (v === 0) v = Math.random();
+    //     return Math.sqrt(-2.0 * Math.log(u)) * Math.cos(2 * Math.PI * v);
+    // }
+
+
+    // function atualizarPrevisao(data) {
+
+    //     const dadosAgrupados = agruparPorPeriodo(dadosUsados, valorFiltro);
+
+    //     const x = dadosAgrupados.map((_, i) => i + 1);
+    //     const y = dadosAgrupados.map(item => item.total);
+
+    //     if (x.length < 2) return;
+
+    //     const { a, b } = calcularRegressaoLinear(x, y);
+
+    //     const variancia = calcularVariancia(x, y, a, b);
+    //     const desvioPadrao = Math.sqrt(variancia);
+
+    //     let previsoes = [];
+    //     let categoriasPrevisao = [];
+    //     const base = x.length;
+
+    //     for (let i = 1; i <= 5; i++) {
+    //         const xi = base + i;
+    //         let valor = a + b * xi;
+
+    //         valor += gerarRuido() * desvioPadrao;
+
+    //         if (valor < 0) valor = 0;
+
+    //         previsoes.push(Math.round(valor));
+    //         categoriasPrevisao.push(`Prev ${i}`);
+    //     }
+
+    //     var dadosPrevisao = {
+    //         series: [{
+    //             name: "Intercorrências",
+    //             data: previsoes
+    //         }],
+    //         chart: {
+    //             height: '100%',
+    //             type: 'line',
+    //             zoom: {
+    //                 enabled: false
+    //             }
+    //         },
+    //         dataLabels: {
+    //             enabled: false
+    //         },
+    //         stroke: {
+    //             curve: 'straight'
+    //         },
+    //         markers: {
+    //             size: 5,
+    //             colors: ['#00000'],
+    //             strokeColors: '#fff',
+    //             strokeWidth: 2,
+    //             hover: {
+    //                 size: 7,
+    //             }
+    //         },
+    //         grid: {
+    //             row: {
+    //                 colors: ['#f3f3f3', 'transparent'],
+    //                 opacity: 0.5
+    //             }
+    //         },
+    //         xaxis: {
+    //             categories: categorias
     //         }
-    //     },
-    //     dataLabels: {
-    //         enabled: true,
-    //         offsetX: 0,
-    //         style: {
-    //             fontSize: '12px',
-    //             colors: ['#fff']
-    //         }
-    //     },
-    //     stroke: {
-    //         show: true,
-    //         width: 1,
-    //         colors: ['#fff']
-    //     },
-    //     tooltip: {
-    //         shared: true,
-    //         intersect: false
-    //     },
-    //     xaxis: {
-    //         categories: ["Modelo 1", "Modelo 2", "Modelo 3", "Modelo 4"]
-    //     },
-    // };
+    //     };
+
+
+
+    //     if (grafPrevisao) {
+    //         grafPrevisao.destroy();
+    //     }
+
+    //     grafPrevisao = new ApexCharts(document.querySelector("#grafPrevisao"), dadosPrevisao);
+    //     grafPrevisao.render();
+    // }
+
+
+    // function atualizarPrevisao(data) {
+    //     if (valorFiltro == "semanal") {
+    //         categorias = ['Semana 1', 'Semana 2', 'Semana 3', 'Semana 4', 'Semana 5']
+    //     } else if (valorFiltro == "mensal") {
+    //         categorias = ['Mês 1', 'Mês 2', 'Mês 3', 'Mês 4', 'Mês 5']
+    //     } else {
+    //         categorias = ['Ano 1', 'Ano 2', 'Ano 3', 'Ano 4', 'Ano 5']
+    //     }
+
+    //     let totalIntercorrencias = dadosUsados.length;
+    //     console.log(dadosUsados)
 
 
 
@@ -1396,59 +1486,13 @@
 
 
 
-    /*-------------------- Previsão --------------------*/
 
-    var dadosPrevisao = {
-        series: [{
-            name: "Intercorrências",
-            data: [80, 95, 90, 105, 100, 110, 120, 135, 150]
-        }],
-        chart: {
-            height: '100%',
-            type: 'line',
-            zoom: {
-                enabled: false
-            }
-        },
-        dataLabels: {
-            enabled: false
-        },
-        stroke: {
-            curve: 'straight'
-        },
-        markers: {
-            size: 5,
-            colors: ['#00000'],
-            strokeColors: '#fff',
-            strokeWidth: 2,
-            hover: {
-                size: 7,
-            }
-        },
-        grid: {
-            row: {
-                colors: ['#f3f3f3', 'transparent'],
-                opacity: 0.5
-            }
-        },
-        xaxis: {
-            categories: [
-                'Semana 1',
-                'Semana 2',
-                'Semana 3',
-                'Semana 4',
-                'Semana 5',
-                'Semana 6',
-                'Semana 7',
-                'Semana 8',
-                'Semana 9'
-            ]
-        }
-    };
+
+
+    // }
 
 
 
 
-    var grafPrevisao = new ApexCharts(document.querySelector("#grafPrevisao"), dadosPrevisao);
-    grafPrevisao.render();
+
 </script>
