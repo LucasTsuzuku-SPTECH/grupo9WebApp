@@ -80,9 +80,9 @@
         <div class="main-content">
             <div class="fastActions">
                 <div>
-                    <h4 style="margin: 0px; color: white;">Filtro de períodos:</h4>
+                    <h4 style="margin: 0px; color: black;">Filtro de períodos:</h4>
                     <select onchange="updatePeriodo()" class="selects"
-                        style="height: 20px; background-color: rgb(131, 203, 195);" id="filtroPeriodo">
+                        style="height: 20px" id="filtroPeriodo">
                         <option class="opcao" value=semanal>Semanal</option>
                         <option class="opcao" value=mensal>Mensal</option>
                         <option class="opcao" value=anual>Anual</option>
@@ -90,7 +90,7 @@
                 </div>
 
                 <div style="display: flex; flex-direction: row;">
-                    <button class="Btn" id="btnIA" onclick="toggleAISidebar()">Analyst AI</button>
+                    <button class="BtnWhite" id="btnIA" onclick="toggleAISidebar()">Analyst AI</button>
                 </div>
             </div>
 
@@ -122,16 +122,13 @@
 
                 <!-- Filtro e KPIs -->
                 <div id="mainKPI" style="width: 100%; display: flex; flex-direction: column; justify-content: center;">
-                    </head>
-
-                    <body>
-                        <h3 style="padding-left: 150px">Indicador de intercorrências:</h3>
-                        <div
-                            style="padding-left: 140px; display: flex; flex-direction: row; width: 50%; justify-content: flex-start; margin-bottom: 10px;">
-
+                    <div
+                        style="padding-left: 20vh; width: 100%; display: flex; flex-direction: column; justify-content: center; margin-bottom: 10px;">
+                        <h3>Indicador de intercorrências:</h3>
+                        <div style="display: flex; flex-direction: row; width: 100%;">
                             <!-- Verde -->
                             <div class="kpiDash"
-                                style="height: 95px; border-bottom: 4px solid #30a799; width: 150px; margin: 0 10px; text-align: center;">
+                                style="height: 95px; border-bottom: 4px solid #30a799; width: 150px; margin: 0.6%; text-align: center;">
                                 <h2 style="font-size: 28px; margin: 20px 0;">
                                     <span style="color: #30a799;">&lt; 30%</span>
                                 </h2>
@@ -155,42 +152,42 @@
                                 </h2>
                                 <p style="height: 48px; font-weight: 600;">Alerta crítico</p>
                             </div>
-
                         </div>
-                        <div style="width: 100%; display: flex; flex-direction: row; justify-content: center;">
-                            <div class="kpiDash">
-                                <h2
-                                    style="display: flex; flex-direction: row; justify-content: space-between; align-items: center;">
-                                    ...
-                                    <i class="bi bi-cpu" style="font-size: 50px; color: #30a799"></i>
-                                </h2>
-                                <p style="height: 48px;">Intercorrências em CPU (.../...)</p>
-                            </div>
-                            <div class="kpiDash">
-                                <h2
-                                    style="display: flex; flex-direction: row; justify-content: space-between; align-items: center;">
-                                    ...
-                                    <i class="bi bi-memory" style="font-size: 50px; color: #30a799"></i>
-                                </h2>
-                                <p style="height: 48px;">Intercorrências em RAM (.../...)</p>
-                            </div>
-                            <div class="kpiDash">
-                                <h2
-                                    style="display: flex; flex-direction: row; justify-content: space-between; align-items: center;">
-                                    ...
-                                    <i class="bi bi-hdd" style="font-size: 50px; color: #30a799"></i>
-                                </h2>
-                                <p style="height: 48px;">Intercorrências em Disco (.../...)</p>
-                            </div>
-                            <div class="kpiDash">
-                                <h2
-                                    style="display: flex; flex-direction: row; justify-content: space-between; align-items: center;">
-                                    ...
-                                    <i class="bi bi-diagram-3" style="font-size: 50px; color: #30a799"></i>
-                                </h2>
-                                <p style="height: 48px;">Intercorrências em Processos (.../...)</p>
-                            </div>
+                    </div>
+                    <div style="width: 100%; display: flex; flex-direction: row; justify-content: center;">
+                        <div class="kpiDash">
+                            <h2
+                                style="display: flex; flex-direction: row; justify-content: space-between; align-items: center;">
+                                ...
+                                <i class="bi bi-cpu" style="font-size: 50px; color: #30a799"></i>
+                            </h2>
+                            <p style="height: 48px;">Intercorrências em CPU (.../...)</p>
                         </div>
+                        <div class="kpiDash">
+                            <h2
+                                style="display: flex; flex-direction: row; justify-content: space-between; align-items: center;">
+                                ...
+                                <i class="bi bi-memory" style="font-size: 50px; color: #30a799"></i>
+                            </h2>
+                            <p style="height: 48px;">Intercorrências em RAM (.../...)</p>
+                        </div>
+                        <div class="kpiDash">
+                            <h2
+                                style="display: flex; flex-direction: row; justify-content: space-between; align-items: center;">
+                                ...
+                                <i class="bi bi-hdd" style="font-size: 50px; color: #30a799"></i>
+                            </h2>
+                            <p style="height: 48px;">Intercorrências em Disco (.../...)</p>
+                        </div>
+                        <div class="kpiDash">
+                            <h2
+                                style="display: flex; flex-direction: row; justify-content: space-between; align-items: center;">
+                                ...
+                                <i class="bi bi-diagram-3" style="font-size: 50px; color: #30a799"></i>
+                            </h2>
+                            <p style="height: 48px;">Intercorrências em Processos (.../...)</p>
+                        </div>
+                    </div>
                 </div>
 
                 <!-- Info principal 1 -->
@@ -235,7 +232,7 @@
             <div class="divEspecifica">
                 <h2 style="margin-left: 75px;">Visão específica:</h2>
                 <div style="width: 90%; margin-left: 75px;">
-                    <select onchange="hospitalSelecionado()" class="selects" style="background-color: #39a699;"
+                    <select onchange="hospitalSelecionado()" class="selects"
                         id="filtroHospital">
                         <option value="todos">Todos os hospitais</option>
                     </select>
@@ -568,13 +565,13 @@
         }
         maisIntercorrencia = listaComponentes[indexMaior];
 
-        mainKPI.innerHTML = `<h3 style="padding-left: 150px">Indicador de intercorrências:</h3>
-                        <div
-                            style="padding-left: 140px; display: flex; flex-direction: row; width: 50%; justify-content: flex-start; margin-bottom: 10px;">
-
+        mainKPI.innerHTML = ` <div
+                        style="padding-left: 20vh; width: 100%; display: flex; flex-direction: column; justify-content: center; margin-bottom: 10px;">
+                        <h3>Indicador de intercorrências:</h3>
+                        <div style="display: flex; flex-direction: row; width: 100%;">
                             <!-- Verde -->
                             <div class="kpiDash"
-                                style="height: 95px; border-bottom: 4px solid #30a799; width: 150px; margin: 0 10px; text-align: center;">
+                                style="height: 95px; border-bottom: 4px solid #30a799; width: 150px; margin: 0.6%; text-align: center;">
                                 <h2 style="font-size: 28px; margin: 20px 0;">
                                     <span style="color: #30a799;">&lt; 30%</span>
                                 </h2>
@@ -598,8 +595,8 @@
                                 </h2>
                                 <p style="height: 48px; font-weight: 600;">Alerta crítico</p>
                             </div>
-
-                        </div>  
+                        </div>
+                    </div>
         <div style="width: 100%; display: flex; flex-direction: row; justify-content: center;">
                         <div class="kpiDash" style="border-bottom: 4px solid ${(qtdErros[0] * 100 / totalIntercorrencias) > 60 ? '#e60e3a' : (qtdErros[0] * 100 / totalIntercorrencias) > 30 ? 'rgb(235, 214, 31)' : '#30a799'}">
                             <h2
