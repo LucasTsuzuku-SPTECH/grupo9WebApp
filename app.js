@@ -15,6 +15,7 @@ var HOST_APP = process.env.APP_HOST;
 
 var app = express();
 
+
 var indexRouter = require("./src/routes/index");
 var usuarioRouter = require("./src/routes/usuarios");
 var contasRouter = require("./src/routes/contas");
@@ -23,6 +24,12 @@ var controleRouter = require("./src/routes/controle");
 var emailRouter = require("./src/routes/email")
 var jiraRouter = require("./src/routes/jira")
 var medidasRouter = require("./src/routes/medidas")
+var analistaRouter = require("./src/routes/analista")
+var tecnicoHospitalRouter = require("./src/routes/tecnicoHospital")
+var gestorRouter = require("./src/routes/gestor")
+
+var iaRouter = require("./src/routes/ia");
+
 
 
 app.use(express.json());
@@ -39,6 +46,14 @@ app.use("/controle", controleRouter);
 app.use("/email", emailRouter)
 app.use("/jira", jiraRouter);
 app.use("/medidas", medidasRouter);
+app.use("/analista", analistaRouter)
+app.use("/gestor", gestorRouter)
+
+app.use("/analista", analistaRouter);
+app.use("/tecnicoHospital", tecnicoHospitalRouter);
+app.use("/ia", iaRouter)
+
+
 
 app.listen(PORTA_APP, function () {
     console.log(`
@@ -56,3 +71,6 @@ app.listen(PORTA_APP, function () {
     \tSe .:producao:. você está se conectando ao banco remoto. \n\n
     \t\tPara alterar o ambiente, comente ou descomente as linhas 1 ou 2 no arquivo 'app.js'\n\n`);
 });
+
+
+
