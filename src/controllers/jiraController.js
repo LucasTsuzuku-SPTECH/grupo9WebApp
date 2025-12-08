@@ -1,11 +1,11 @@
 
     const emailJira="zephyrus2g@gmail.com"
-    const tokenJira="ATATT3xFfGF0R_padnKDM-eLEIRBYjxADAqp4CBbJn1XFSYIblyXvfjrMfpyESm93HElKwcZ6ntQWCTzM_bHogbJczReiSC8zhbIvYp7qRXpozMXj35wrMjNOVyTypVeIwUuXOVEbjdXAeDp77W8KgqKHq0pXQvDIz5xvsnD9FzQfBLYpjdV3As=7162A9A8";
+    const tokenJira="";
     const dominioJira="zephyrus2g1.atlassian.net";
     const auth=btoa(`${emailJira}:${tokenJira}`)
 
 async function buscarChamadosJira(req, res) {
-    
+
     try{// Lógica para buscar chamados do Jira
     const resposta=await fetch(`https://${dominioJira}/rest/api/3/search/jql`,{
         method:"POST",
@@ -28,6 +28,23 @@ async function buscarChamadosJira(req, res) {
         res.status(500).json({ error: "Erro ao buscar chamados do Jira" });
     }
 }
-module.exports = {
-    buscarChamadosJira
-};
+const { existeChamadoInterno, criarChamadoInterno } = require("../../jiraService");
+
+async function verificarChamado(req, res) {
+  const { numeroSerie, componente } = req.params;
+  const existe = await existeChamadoInterno(numeroSerie, componente);
+  res.json({ existe });
+}
+
+async function criarChamado(req, res) {
+  const { issue } = req.body;
+  const key = await criarChamadoInterno(issue);
+  
+  if (!key) {
+    return res.status(500).json({ error: "Erro ao criar chamado" });
+  }
+  
+  res.json({ key });
+}
+
+module.exports = { verificarChamado, criarChamado, buscarChamadosJira};
