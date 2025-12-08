@@ -445,6 +445,8 @@
 
   <br><br>
   <div class="container-fluid px-5">
+    <h1>Dashboard Suporte</h1>
+    <h6 id="ultimaAtualizacao"></h6>
     <!-- KPIs -->
     <div class="row kpi-row">
 
@@ -1215,8 +1217,12 @@ function plotarGraficoSLA() {
 
     try {
       const resposta = await fetch("/jira/buscarChamadosJira")
-
       const data = await resposta.json();
+      const ultimaAtualizacao = new Date(). toLocaleString('pt-BR', {
+        timeZone: 'America/Sao_Paulo',
+        hour12: false
+      });
+      document.getElementById("ultimaAtualizacao").innerText = `Ultima Atualização: ${ultimaAtualizacao}`;
       console.log(data)
       const chamados = []
       data.issues.forEach(chamado => {

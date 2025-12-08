@@ -90,11 +90,11 @@ router.post("/processarAlertas", async (req, res) => {
       total: alertas.length
     });
 
-  } catch (erro) {
+  } }catch (erro) {
     console.error("Erro ao processar alertas:", erro);
     res.status(500).json({ erro: "Erro ao processar alertas" });
-  }
-});
+  };
+    });
 
 
 module.exports = router;
