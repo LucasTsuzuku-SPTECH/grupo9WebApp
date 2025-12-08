@@ -17,7 +17,6 @@ function buscarMonitoramento(req, res) {
             const textoCsv = resultados[0];
             const listaDoBanco = resultados[1];
 
-            // 1. CSV para JSON
             const linhas = textoCsv.split('\n');
             const cabecalho = linhas[0].trim().split(',').map(col => col.trim());
             const listaCsv = [];
@@ -31,62 +30,96 @@ function buscarMonitoramento(req, res) {
                 }
             }
 
-            // 2. Agrupa Banco
             let mapaDeAreas = {};
             let mapaDeParametros = {};
             listaDoBanco.forEach(function (registro) {
-                const id = registro.idVentilador;
+                const idVentiladorSerial = registro.numero_serie; 
+                
                 if (!mapaDeAreas[registro.nome_area]) {
                     mapaDeAreas[registro.nome_area] = {
                         nome: registro.nome_area,
                         total: 0, estaveis: 0, alertas: 0, listaIds: new Set()
                     };
                 }
-                if (!mapaDeParametros[id]) mapaDeParametros[id] = [];
+                
+                if (!mapaDeParametros[idVentiladorSerial]) mapaDeParametros[idVentiladorSerial] = [];
                 if (registro.nomeComponente) {
-                    mapaDeParametros[id].push({ componente: registro.nomeComponente, max: registro.parametroMax, min: registro.parametroMin });
+                    mapaDeParametros[idVentiladorSerial].push({ 
+                        componente: registro.nomeComponente, 
+                        max: parseFloat(registro.parametroMax), 
+                        min: parseFloat(registro.parametroMin)  
+                    });
                 }
-                mapaDeAreas[registro.nome_area].listaIds.add(id);
+                mapaDeAreas[registro.nome_area].listaIds.add(idVentiladorSerial);
             });
 
-            // 3. Verifica Alertas
-            for (let nomeArea in mapaDeAreas) {
-                let area = mapaDeAreas[nomeArea];
-                area.listaIds.forEach(function (idVentilador) {
-                    area.total++;
-                    const leitura = listaCsv.find(item => item.ID == idVentilador);
-                    let temAlerta = false;
-                    if (leitura) {
-                        const limites = mapaDeParametros[idVentilador] || [];
-                        for (let i = 0; i < limites.length; i++) {
-                            let limite = limites[i];
-                            let chave = Object.keys(leitura).find(k => k.toUpperCase() === limite.componente.toUpperCase());
-                            if (chave) {
-                                let valor = parseFloat(leitura[chave]);
-                                if (!isNaN(valor) && (valor > limite.max || valor < limite.min)) { temAlerta = true; break; }
+
+            let idsComAlerta = new Set();
+            
+            listaCsv.forEach(leitura => {
+                const idVentiladorSerial = leitura.numero_serie; 
+
+                if (idVentiladorSerial && mapaDeParametros[idVentiladorSerial]) {
+                    
+                    const nomeComponenteLido = leitura.componente;
+                    const limitesDoBanco = mapaDeParametros[idVentiladorSerial] || [];
+                    
+                    let valorLidoLimpo = leitura.valor_lido;
+                    valorLidoLimpo = valorLidoLimpo.replace(/[^0-9.,-]+/g, '').trim(); 
+                    valorLidoLimpo = parseFloat(valorLidoLimpo.replace(',', '.')); 
+                    
+                    let temAlertaValido = false;
+                    
+                    for (let i = 0; i < limitesDoBanco.length; i++) {
+                        let limite = limitesDoBanco[i];
+                        
+                        if (limite.componente.toUpperCase() === nomeComponenteLido.toUpperCase()) {
+                            
+                            if (!isNaN(valorLidoLimpo) && (valorLidoLimpo > limite.max || valorLidoLimpo < limite.min)) { 
+                                temAlertaValido = true;
+                                break; 
                             }
                         }
                     }
-                    if (temAlerta) area.alertas++; else area.estaveis++;
+                    
+                    if (temAlertaValido) {
+                        idsComAlerta.add(idVentiladorSerial);
+                    }
+                }
+            });
+
+
+            for (let nomeArea in mapaDeAreas) {
+                let area = mapaDeAreas[nomeArea];
+                
+                area.total = 0;
+                area.alertas = 0;
+                area.estaveis = 0;
+
+                area.listaIds.forEach(function (idVentiladorString) {
+                    area.total++; 
+                    
+                    if (idsComAlerta.has(idVentiladorString)) { 
+                        area.alertas++; 
+                    } else {
+                        area.estaveis++; 
+                    }
                 });
             }
 
-            // 4. Lógica de Risco e Disponibilidade Inicial
+
             let listaAreas = Object.values(mapaDeAreas).map(function (area) {
-                // Math.floor para garantir inteiros (truncate)
                 let risco = area.total > 0 ? Math.floor((area.alertas / area.total) * 100) : 0;
                 let estabilidade = area.total > 0 ? Math.floor((area.estaveis / area.total) * 100) : 0;
 
                 let precisaReceber = 0;
                 let podeDoar = 0;
 
-                // Regra: Disponível se Estabilidade >= 90%. Cede 80% dos ESTÁVEIS (truncate).
                 if (estabilidade >= 90) {
                     podeDoar = Math.floor(area.estaveis * 0.80);
                 }
-                // Regra: Necessita se Risco > 10%
                 else if (risco > 10) {
-                    precisaReceber = Math.ceil(area.alertas / 2); // Necessidade inicial é um chute, será limitada na distribuição
+                    precisaReceber = Math.ceil(area.alertas / 2); 
                 }
 
                 return {
@@ -102,15 +135,13 @@ function buscarMonitoramento(req, res) {
                 };
             });
 
-            // 5. Distribuição
             let doadores = listaAreas.filter(a => a.podeDoar > 0);
             let necessitados = listaAreas.filter(a => a.precisaReceber > 0);
 
-            // Ordena quem doa mais primeiro para distribuir
             doadores.sort((a, b) => b.podeDoar - a.podeDoar);
 
             necessitados.forEach(function (receptor) {
-                let falta = receptor.precisaReceber; // O quanto ela pediu inicialmente
+                let falta = receptor.precisaReceber; 
 
                 for (let i = 0; i < doadores.length; i++) {
                     let doador = doadores[i];
@@ -118,11 +149,10 @@ function buscarMonitoramento(req, res) {
                     if (falta <= 0) break;
                     if (doador.podeDoar <= 0) continue;
 
-                    // Quantidade real a ser movimentada (min entre o que falta e o que o doador tem)
                     let qtdPassada = Math.min(falta, doador.podeDoar);
 
-                    doador.podeDoar -= qtdPassada; // Doador cede
-                    falta -= qtdPassada; // Receptor recebe
+                    doador.podeDoar -= qtdPassada; 
+                    falta -= qtdPassada; 
 
                     receptor.origemDoacao.push({
                         nome: doador.nome,
@@ -131,47 +161,38 @@ function buscarMonitoramento(req, res) {
                 }
             });
 
-            // 6. Formatação Final (Com mensagens específicas e chaves do Front-end)
             let respostaFinal = listaAreas.map(function (area) {
 
                 let status = "Estável";
                 let mensagem = "Estabilidade adequada. Operação normal.";
                 let valorAcao = 0;
 
-                // Campos para compatibilidade com o Front-end original (usado para CSS)
                 let valorPrecisaFront = 0;
                 let valorPodeEnviarFront = 0;
 
-                // Estado NECESSITA
                 if (area.precisaReceber > 0 || area.origemDoacao.length > 0) {
                     status = "Necessita";
                     valorPrecisaFront = area.precisaReceber;
 
                     let totalRecebido = area.origemDoacao.reduce((acc, curr) => acc + curr.qtd, 0);
-                    valorAcao = area.precisaReceber; // Mostra o que ela precisa no KPI
+                    valorAcao = area.precisaReceber; 
 
                     if (totalRecebido > 0) {
-                        // Recebeu ajuda
                         let fontes = area.origemDoacao.map(o => `${o.qtd} unidades da ${o.nome}`).join(', ');
 
                         if (totalRecebido < area.precisaReceber) {
-                            // Se recebeu menos do que pediu, fala o que falta
                             mensagem = `- Adicionar +${totalRecebido} unidades. Deve receber de: ${fontes}.<br>- Faltam ${area.precisaReceber - totalRecebido} unidades.`;
                         } else {
-                            // Deve receber o suficiente
                             mensagem = `- Adicionar +${totalRecebido} unidades.<br>- Deve receber ${fontes}.`;
                         }
                     } else {
-                        // Não recebeu nada
                         mensagem = `É necessário remanejar ${area.precisaReceber} unidades o quanto antes.`;
                     }
 
                 } else {
-                    // Recalcula o original (80% dos estáveis) antes da distribuição, para exibição correta de "Pode Ceder"
                     let doacaoOriginal = Math.floor(area.estaveis * 0.80);
 
                     if (doacaoOriginal > 0) {
-                        // Estado DISPONÍVEL
                         status = "Disponível";
                         valorPodeEnviarFront = doacaoOriginal;
                         valorAcao = doacaoOriginal;
@@ -179,11 +200,9 @@ function buscarMonitoramento(req, res) {
                         let valorSobrando = area.podeDoar;
 
                         if (valorSobrando < doacaoOriginal) {
-                            // Foi doador
                             let qtdDoada = doacaoOriginal - valorSobrando;
                             mensagem = `- Enviar ${qtdDoada} unidades.<br>- Restam unidades ${valorSobrando} disponíveis.`;
                         } else {
-                            // Não doou para ninguém
                             mensagem = `Pode enviar ${doacaoOriginal} unidades para apoiar áreas em estado crítico.`;
                         }
 
@@ -203,18 +222,15 @@ function buscarMonitoramento(req, res) {
                     risco: area.risco,
                     estabilidade: area.estabilidade,
 
-                    // Campos Visuais (mensagem de ação e valor principal)
                     status: status,
                     mensagemAcao: mensagem,
                     valorAcao: valorAcao,
 
-                    // Campos de Controle Lógico (Compatibilidade com seu Script HTML)
                     precisa: valorPrecisaFront,
                     podeEnviar: valorPodeEnviarFront
                 };
             });
 
-            // Ordena por risco (área mais crítica primeiro)
             respostaFinal.sort((a, b) => b.risco - a.risco);
             res.json(respostaFinal);
 
@@ -225,6 +241,7 @@ function buscarMonitoramento(req, res) {
 }
 
 function buscarUmidade(req, res) {
+    
     medidaModel.buscarUmidadeS3().then(resultado => {
         if (resultado && resultado.length > 0) {
             let labels = [], dados = [], cores = [], maior = -1, pico = -1;
