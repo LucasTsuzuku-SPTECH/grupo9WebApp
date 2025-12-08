@@ -142,11 +142,12 @@ a {
 }
 
 .uptime-card {
-  background: linear-gradient(135deg, #9fc4db 0%, #6fd2db 100%);
+  background: linear-gradient(135deg, #ffffff 0%, #ffffff 100%);
   color: white;
-  border: none;
+  border:rgba(0, 0, 0, 0.1) solid 2px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
+
 
 .uptime-percentage {
   font-size: 3.5rem;
@@ -159,9 +160,8 @@ a {
 }
 
 .sla-box {
-  background: rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: #b7e4c7;
+  border: 2px solid rgba(255, 255, 255, 0.2);
   border-radius: 0.5rem;
   padding: 1rem;
 }
