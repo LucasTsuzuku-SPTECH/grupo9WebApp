@@ -166,12 +166,19 @@
     <br><br><br><br>
 
     <main class="container my-4">
+         <div class="mb-3 me-3">
+                    <p class="text-muted small mb-1">Período Selecionado</p>
+                    <p class="fw-bold text-dark" id="indicadorData" style="font-size: 1.2rem;">08/12/2025</p>
+                </div>
         <div class="d-flex justify-content-between align-items-end mb-4 border-bottom pb-2">
+            
             <div>
                 <h2 class="fw-bold text-dark mb-1">Painel do Gestor</h2>
                 <p class="text-muted mb-0">Visão geral da operação e monitoramento dos equipamentos</p>
             </div>
+            
             <div class="d-none d-md-block">
+
                 <div class="btn-group me-3" role="group">
                     <input type="radio" class="btn-check filtro-periodo" id="btnDiario" name="periodo" value="diario"
                         checked>
@@ -189,6 +196,7 @@
                     <input type="radio" class="btn-check filtro-periodo" id="btnAnual" name="periodo" value="anual">
                     <label class="btn btn-outline-secondary" for="btnAnual"><i class="bi bi-calendar me-1"></i>
                         Anual</label>
+                        
                 </div>
 
                 <div class="dropdown d-inline-block">
@@ -203,17 +211,21 @@
                             <hr class="dropdown-divider">
                         </li>
                     </ul>
+                
                 </div>
+                
             </div>
+             
         </div>
 
+        
         <div class="row g-3 mb-4">
             <div class="col-md-4">
                 <div class="card stat-card border-0 border-bottom border-danger border-5">
                     <div class="card-body shadow-bottom-right">
                         <div class="d-flex justify-content-between align-items-center">
                             <div>
-                                <p class="text-muted small mb-1">Críticos</p>
+                                <p class="text-muted small mb-1">Coletas Críticas</p>
                                 <p class="stat-value text-danger" id="criticosValue" data-bs-toggle="tooltip"
                                     data-bs-placement="top" title="">2%</p>
                             </div>
@@ -229,7 +241,7 @@
                     <div class="card-body shadow-bottom-right">
                         <div class="d-flex justify-content-between align-items-center">
                             <div>
-                                <p class="text-muted small mb-1">Atenção</p>
+                                <p class="text-muted small mb-1">Coletas em Atenção</p>
                                 <p class="stat-value text-warning" id="atencaoValue" data-bs-toggle="tooltip"
                                     data-bs-placement="top" title="">6%</p>
                             </div>
@@ -245,9 +257,9 @@
                     <div class="card-body shadow-bottom-right">
                         <div class="d-flex justify-content-between align-items-center">
                             <div>
-                                <p class="text-muted small mb-1">Operacionais</p>
+                                <p class="text-muted small mb-1">Coletas Operacionais</p>
                                 <p class="stat-value text-success" id="operacionaisValue" data-bs-toggle="tooltip"
-                                    data-bs-placement="top" title="">92%</p>
+                                    data-bs-placement="top" title="">0%</p>
                             </div>
                             <div class="bg-success bg-opacity-10 p-3 rounded">
                                 <i class="bi bi-check-circle stat-icon text-success"></i>
@@ -264,18 +276,18 @@
                     <div class="col-md-8">
                         <p class="text-black-50 mb-2">Taxa de Uptime Global</p>
                         <div class="d-flex align-items-baseline gap-3">
-                            <h2 class="text-black uptime-percentage">99.2%</h2>
+                            <h2 class="text-black uptime-percentage">0.%</h2>
                         </div>
                         <p class="text-black-50 mt-3">
-                            <span class="text-black fw-bold">246</span> de
-                            <span class="text-black fw-bold">248</span> das coletas dentro dos parâmetros
+                            <span class="text-black fw-bold">0</span> de
+                            <span class="text-black fw-bold">0</span> das coletas dentro dos parâmetros
                             normais
                         </p>
                     </div>
                     <div class="col-md-4 text-md-end mt-3 mt-md-0">
                         <div class="sla-box" style="border: black;">
                             <p class="text-black-50 small mb-1">Objetivo SLA</p>
-                            <p class="text-black h3 mb-0">99.0%</p>
+                            <p class="text-black h3 mb-0">95.0%</p>
                         </div>
                     </div>
                 </div>
@@ -468,7 +480,7 @@
     <script>
         // variaveis globais pra usar em tudo
         let dadosGestor = null;
-        let periodoAtual = 'diario';
+        let periodoAtual = 'anual';
         let modeloAtual = 'todos';
         let chartsInstances = {
             riskChart: null,
@@ -476,12 +488,51 @@
             failuresChart: null
         };
 
+        function atualizarIndicadorData() {
+            const periodo = periodoAtual || 'atual';
+            const dataEl = document.getElementById('indicadorData');
+
+            if (!dataEl) return;
+
+            const hoje = new Date();
+            const dia = String(hoje.getDate()).padStart(2, '0');
+            const mes = String(hoje.getMonth() + 1).padStart(2, '0');
+            const ano = String(hoje.getFullYear()).slice(-2);
+            const nomesMeses = ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho',
+                'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'];
+            const mesNome = nomesMeses[hoje.getMonth()];
+
+            let textoData = '';
+
+            switch (periodo) {
+                case 'diario':
+                    textoData = `${dia}/${mes}/${ano}`;
+                    break;
+                case 'semanal':
+                    const semanaDoAno = Math.ceil((hoje - new Date(hoje.getFullYear(), 0, 1)) / 86400000 / 7);
+                    textoData = `Semana ${semanaDoAno}/${ano}`;
+                    break;
+                case 'mensal':
+                    textoData = `${mesNome}/${ano}`;
+                    break;
+                case 'anual':
+                    textoData = `${hoje.getFullYear()}`;
+                    break;
+            }
+
+            dataEl.textContent = textoData;
+        }
+
+
+
+
         // aqui cuidamos dos eventos de clique no filtro de periodo
         function inicializarFiltro() {
             const botoesperiodo = document.querySelectorAll('.filtro-periodo');
             botoesperiodo.forEach(botao => {
                 botao.addEventListener('change', (e) => {
                     periodoAtual = e.target.value;
+                    atualizarIndicadorData(); // Atualizar data
                     carregarDadosGestor();
                 });
             });
@@ -605,7 +656,7 @@
 
             console.log(`volume calculado: ${volumeTexto} | media: ${mediaTexto}`);
         }
-        
+
         // aqui a gente chama as funcoes que desenham os graficos
         function atualizarGraficos() {
             if (!dadosGestor) return;
@@ -847,21 +898,21 @@
                 console.error('dados de hospital nao disponiveis');
                 return;
             }
-            
+
             const tbody = document.querySelector('table tbody');
             if (!tbody) return;
-            
+
             tbody.innerHTML = '';
-            
+
             const hospitais = dadosGestor.uptimeRealPorHospital;
-            
+
             console.log('hospitais pra montar a tabela:', hospitais);
-            
+
             // montando a tabela
             hospitais.forEach(hospital => {
                 const tr = document.createElement('tr');
                 const classUptime = parseFloat(hospital.uptime) >= 90 ? 'zephyrus-text-success' : 'text-warning';
-                
+
                 tr.innerHTML = `
                     <td class="fw-medium">${hospital.nomeHospital}</td>
                     <td class="text-muted">${hospital.ventiladores}</td>
@@ -877,7 +928,7 @@
             if (hospitais.length > 0) {
                 const melhorHospital = hospitais[0];
                 const piorHospital = hospitais[hospitais.length - 1];
-                
+
                 console.log('melhor:', melhorHospital);
                 console.log('pior:', piorHospital);
 
@@ -889,7 +940,7 @@
         function atualizarCardsMelhorPior(melhor, pior) {
             const cardPiorContainer = document.querySelector('.col-md-6:has(.border-danger-subtle)');
             const cardMelhorContainer = document.querySelector('.col-md-6:has(.border-success-subtle)');
-            
+
             if (cardPiorContainer) {
                 cardPiorContainer.innerHTML = `
                     <div class="card h-100 border-danger-subtle bg-danger-subtle bg-opacity-10">
@@ -927,6 +978,7 @@
         window.addEventListener('load', () => {
             Chart.defaults.font.family = "'Segoe UI', 'Roboto', 'Helvetica Neue', 'Arial', sans-serif";
             inicializarFiltro();
+            atualizarIndicadorData(); // Inicializar com data padrão
             carregarDadosGestor();
             setInterval(carregarDadosGestor, 300000);
         });
