@@ -90,7 +90,6 @@
                 </div>
 
                 <div style="display: flex; flex-direction: row;">
-                    <button class="Btn">Gerar relatório</button>
                     <button class="Btn" id="btnIA" onclick="toggleAISidebar()">Analyst AI</button>
                 </div>
             </div>
@@ -107,7 +106,7 @@
                 <div class="ai-body">
                     <p style="font-size: 14px;">Bem-vindo(a)! <br> Tenha uma análise mais profunda com o auxílio da
                         Analyst AI:</p>
-                    <textarea style="font-size: 16px;" id="aiInput" placeholder="Digite aqui..." rows="4"
+                    <textarea style="resize:none; font-size: 16px;" id="aiInput" placeholder="Digite aqui..." rows="4"
                         onkeydown="enterMensagemIA(event)"></textarea>
                     <button class="Btn" onclick="sendToAI()">Enviar</button>
                     <div id="aiResponse" style="font-size: 14px; margin-top:8px; color:#fff;"></div>
@@ -123,59 +122,75 @@
 
                 <!-- Filtro e KPIs -->
                 <div id="mainKPI" style="width: 100%; display: flex; flex-direction: column; justify-content: center;">
-                    <div style="width: 100%; display: flex; flex-direction: row; justify-content: center;">
-                        <div style="border-bottom: #30a799 solid 4px;" class="kpiDashMain">
-                            <h2
-                                style="display: flex; flex-direction: row; justify-content: space-between; align-items: center;">
-                                ...
-                                <i class="bi bi-exclamation-circle-fill" style="font-size: 48px; color: #30a799;"></i>
-                            </h2>
-                            <p style="height: 48px;">Componente com mais intercorrência</p>
-                        </div>
-                        <div style="border-bottom: 1px solid rgb(204, 204, 204);" class="kpiDashMain">
-                            <h2
-                                style="display: flex; flex-direction: row; justify-content: space-between; align-items: center;">
-                                ...
-                                <i class="bi bi-exclamation-circle-fill" style="font-size: 48px; color: black;"></i>
-                            </h2>
-                            <p style="height: 48px;">Total de intercorrências</p>
-                        </div>
-                    </div>
+                    </head>
 
-                    <div style="width: 100%; display: flex; flex-direction: row; justify-content: center;">
-                        <div class="kpiDash">
-                            <h2
-                                style="display: flex; flex-direction: row; justify-content: space-between; align-items: center;">
-                                ...
-                                <i class="bi bi-cpu" style="font-size: 50px; color: #30a799"></i>
-                            </h2>
-                            <p style="height: 48px;">Intercorrências em CPU (.../...)</p>
+                    <body>
+                        <h3 style="padding-left: 150px">Indicador de intercorrências:</h3>
+                        <div
+                            style="padding-left: 140px; display: flex; flex-direction: row; width: 50%; justify-content: flex-start; margin-bottom: 10px;">
+
+                            <!-- Verde -->
+                            <div class="kpiDash"
+                                style="height: 95px; border-bottom: 4px solid #30a799; width: 150px; margin: 0 10px; text-align: center;">
+                                <h2 style="font-size: 28px; margin: 20px 0;">
+                                    <span style="color: #30a799;">&lt; 30%</span>
+                                </h2>
+                                <p style="height: 48px; font-weight: 600;">Normal</p>
+                            </div>
+
+                            <!-- Amarelo -->
+                            <div class="kpiDash"
+                                style="height: 95px; border-bottom: 4px solid rgb(235, 214, 31); width: 150px; margin: 0 10px; text-align: center;">
+                                <h2 style="font-size: 28px; margin: 20px 0;">
+                                    <span style="color: rgb(235, 214, 31);">≥ 30%</span>
+                                </h2>
+                                <p style="height: 48px; font-weight: 600;">Alerta</p>
+                            </div>
+
+                            <!-- Vermelho -->
+                            <div class="kpiDash"
+                                style="height: 95px; border-bottom: 4px solid #e60e3a; width: 150px; margin: 0 10px; text-align: center;">
+                                <h2 style="font-size: 28px; margin: 20px 0;">
+                                    <span style="color: #e60e3a;">≥ 60%</span>
+                                </h2>
+                                <p style="height: 48px; font-weight: 600;">Alerta crítico</p>
+                            </div>
+
                         </div>
-                        <div class="kpiDash">
-                            <h2
-                                style="display: flex; flex-direction: row; justify-content: space-between; align-items: center;">
-                                ...
-                                <i class="bi bi-memory" style="font-size: 50px; color: #30a799"></i>
-                            </h2>
-                            <p style="height: 48px;">Intercorrências em RAM (.../...)</p>
+                        <div style="width: 100%; display: flex; flex-direction: row; justify-content: center;">
+                            <div class="kpiDash">
+                                <h2
+                                    style="display: flex; flex-direction: row; justify-content: space-between; align-items: center;">
+                                    ...
+                                    <i class="bi bi-cpu" style="font-size: 50px; color: #30a799"></i>
+                                </h2>
+                                <p style="height: 48px;">Intercorrências em CPU (.../...)</p>
+                            </div>
+                            <div class="kpiDash">
+                                <h2
+                                    style="display: flex; flex-direction: row; justify-content: space-between; align-items: center;">
+                                    ...
+                                    <i class="bi bi-memory" style="font-size: 50px; color: #30a799"></i>
+                                </h2>
+                                <p style="height: 48px;">Intercorrências em RAM (.../...)</p>
+                            </div>
+                            <div class="kpiDash">
+                                <h2
+                                    style="display: flex; flex-direction: row; justify-content: space-between; align-items: center;">
+                                    ...
+                                    <i class="bi bi-hdd" style="font-size: 50px; color: #30a799"></i>
+                                </h2>
+                                <p style="height: 48px;">Intercorrências em Disco (.../...)</p>
+                            </div>
+                            <div class="kpiDash">
+                                <h2
+                                    style="display: flex; flex-direction: row; justify-content: space-between; align-items: center;">
+                                    ...
+                                    <i class="bi bi-diagram-3" style="font-size: 50px; color: #30a799"></i>
+                                </h2>
+                                <p style="height: 48px;">Intercorrências em Processos (.../...)</p>
+                            </div>
                         </div>
-                        <div class="kpiDash">
-                            <h2
-                                style="display: flex; flex-direction: row; justify-content: space-between; align-items: center;">
-                                ...
-                                <i class="bi bi-hdd" style="font-size: 50px; color: #30a799"></i>
-                            </h2>
-                            <p style="height: 48px;">Intercorrências em Disco (.../...)</p>
-                        </div>
-                        <div class="kpiDash">
-                            <h2
-                                style="display: flex; flex-direction: row; justify-content: space-between; align-items: center;">
-                                ...
-                                <i class="bi bi-diagram-3" style="font-size: 50px; color: #30a799"></i>
-                            </h2>
-                            <p style="height: 48px;">Intercorrências em Processos (.../...)</p>
-                        </div>
-                    </div>
                 </div>
 
                 <!-- Info principal 1 -->
@@ -297,39 +312,6 @@
                     </div>
                 </div>
             </div>
-
-            <!-- <div class="divPrevisao">
-                <h2 style="padding-left: 75px;">5 Previsões baseadas no estado atual:</h2>
-
-                <div style="width: 100%; display: flex; flex-wrap: wrap; flex-direction: row; justify-content: center;">
-
-                    <div style="border: none; border-radius: 4px 0px 0px 4px; width: 40%; margin-right: 0px !important;"
-                        class="container">
-                        <div style="border-radius: 4px 0px 0px 0px;" class="containerHeader">Previsão de Intercorrências
-                            (<a class="periodoSelected"></a>):
-                        </div>
-                        <div class="chartContent">
-                            <div id="grafPrevisao"></div>
-                        </div>
-                    </div>
-
-                    <div class="previsao-container">
-                        <div class="previsao-card card-aumento">
-                            <span>
-                                <h4>Semana 1</h4><br>Previsão de Aumento: 30%
-                            </span>
-                            <i class="bi bi-graph-up-arrow previsao-icone"></i>
-                        </div>
-
-                        <div class="previsao-card card-diminuicao">
-                            <span>
-                                <h4>Semana 2</h4><br>Previsão de Diminuição: 15%
-                            </span>
-                            <i class="bi bi-graph-down-arrow previsao-icone"></i>
-                        </div>
-                    </div>
-                </div>
-            </div> -->
         </div>
     </div>
 
@@ -354,7 +336,7 @@
             const btnIA = document.getElementById('btnIA');
 
             if (aiSidebar && aiSidebar.classList.contains('active')) {
-                // Se o clique não foi no botão IA ou na sidebar
+
                 if (!btnIA.contains(event.target) && !aiSidebar.contains(event.target)) {
                     aiSidebar.classList.remove('active');
                     aiSidebar.setAttribute('aria-hidden', 'true');
@@ -433,7 +415,28 @@
         gerarResposta(text);
     }
 
+    let dadosCombinados = [];
     async function gerarResposta(texto) {
+        dadosCombinados = [];
+
+        for (let i = 0; i < dadosUsados.length; i++) {
+
+            for (let j = 0; j < dadosSQL.length; j++) {
+
+                if (dadosUsados[i].numero_serie === dadosSQL[j].numero_serie) {
+
+                    dadosCombinados.push({
+                        ...dadosUsados[i],
+                        modelo: dadosSQL[j].nome
+                    });
+
+                    break;
+                }
+            }
+
+        }
+
+
         const resp = document.getElementById('aiResponse');
 
         const response = await fetch('/ia/perguntar', {
@@ -443,7 +446,7 @@
             },
             body: JSON.stringify({
                 texto,
-                dadosUsados
+                dadosCombinados
             })
         });
 
@@ -528,10 +531,12 @@
             dadosUsados = dadosAnuais;
         }
 
+        console.log(dadosUsados)
+
+
         atualizarKPI(dadosUsados);
         atualizarTabela1(dadosUsados);
         atualizarGraf1(dadosUsados);
-        // atualizarPrevisao(dadosUsados);
         updateHospital();
     }
 
@@ -563,29 +568,39 @@
         }
         maisIntercorrencia = listaComponentes[indexMaior];
 
-        mainKPI.innerHTML = `<div style="width: 100%; display: flex; flex-direction: row; justify-content: center;">
-                        <div style="border-bottom: ${(qtdErros[indexMaior] * 100 / totalIntercorrencias) > 60 ? '#e60e3a' : (qtdErros[indexMaior] * 100 / totalIntercorrencias) > 30 ? 'rgb(235, 214, 31)' : '#30a799'} solid 4px;" class="kpiDashMain">
-                            <h2
-                                style="display: flex; flex-direction: row; justify-content: space-between; align-items: center;">
-                                ${maisIntercorrencia}
-                                <i class="bi bi-exclamation-circle-fill"
-                                    style="font-size: 48px; color: ${(qtdErros[indexMaior] * 100 / totalIntercorrencias) > 60 ? '#e60e3a' : (qtdErros[indexMaior] * 100 / totalIntercorrencias) > 30 ? 'rgb(235, 214, 31)' : '#30a799'};"></i>
-                            </h2>
-                            <p style="height: 48px;">Componente com mais intercorrência</p>
-                        </div>
+        mainKPI.innerHTML = `<h3 style="padding-left: 150px">Indicador de intercorrências:</h3>
+                        <div
+                            style="padding-left: 140px; display: flex; flex-direction: row; width: 50%; justify-content: flex-start; margin-bottom: 10px;">
 
-                        <div style="border-bottom: 1px solid rgb(204, 204, 204);" class="kpiDashMain">
-                            <h2
-                                style="display: flex; flex-direction: row; justify-content: space-between; align-items: center;">
-                                ${totalIntercorrencias}
-                                <i class="bi bi-exclamation-circle-fill" style="font-size: 48px; color: black;"></i>
-                            </h2>
-                            <p style="height: 48px;">Total de intercorrências</p>
-                        </div>
-                    </div>
+                            <!-- Verde -->
+                            <div class="kpiDash"
+                                style="height: 95px; border-bottom: 4px solid #30a799; width: 150px; margin: 0 10px; text-align: center;">
+                                <h2 style="font-size: 28px; margin: 20px 0;">
+                                    <span style="color: #30a799;">&lt; 30%</span>
+                                </h2>
+                                <p style="height: 48px; font-weight: 600;">Normal</p>
+                            </div>
 
+                            <!-- Amarelo -->
+                            <div class="kpiDash"
+                                style="height: 95px; border-bottom: 4px solid rgb(235, 214, 31); width: 150px; margin: 0 10px; text-align: center;">
+                                <h2 style="font-size: 28px; margin: 20px 0;">
+                                    <span style="color: rgb(235, 214, 31);">≥ 30%</span>
+                                </h2>
+                                <p style="height: 48px; font-weight: 600;">Alerta</p>
+                            </div>
 
-                    <div style="width: 100%; display: flex; flex-direction: row; justify-content: center;">
+                            <!-- Vermelho -->
+                            <div class="kpiDash"
+                                style="height: 95px; border-bottom: 4px solid #e60e3a; width: 150px; margin: 0 10px; text-align: center;">
+                                <h2 style="font-size: 28px; margin: 20px 0;">
+                                    <span style="color: #e60e3a;">≥ 60%</span>
+                                </h2>
+                                <p style="height: 48px; font-weight: 600;">Alerta crítico</p>
+                            </div>
+
+                        </div>  
+        <div style="width: 100%; display: flex; flex-direction: row; justify-content: center;">
                         <div class="kpiDash" style="border-bottom: 4px solid ${(qtdErros[0] * 100 / totalIntercorrencias) > 60 ? '#e60e3a' : (qtdErros[0] * 100 / totalIntercorrencias) > 30 ? 'rgb(235, 214, 31)' : '#30a799'}">
                             <h2
                                 style="display: flex; flex-direction: row; justify-content: space-between; align-items: center;">
@@ -698,6 +713,36 @@
             ],
             colors: ["#83cbc3", "#30a799", "#00796b", "#264653"],
             chart: { type: 'bar', height: '165%', width: '110%' },
+            annotations: {
+                yaxis: [
+                    {
+                        y: 60,
+                        borderColor: '#e60e3a',
+                        label: {
+                            borderColor: '#e60e3a',
+                            style: {
+                                color: '#fff',
+                                background: '#e60e3a',
+                                fontSize: '13px'
+                            },
+                            text: 'Nível crítico 60%'
+                        }
+                    },
+                    {
+                        y: 30,
+                        borderColor: 'rgb(235, 214, 31)',
+                        label: {
+                            borderColor: 'rgb(235, 214, 31)',
+                            style: {
+                                color: '#00000',
+                                background: 'rgb(235, 214, 31)',
+                                fontSize: '13px'
+                            },
+                            text: 'Alerta 30%'
+                        }
+                    }
+                ]
+            },
             plotOptions: {
                 bar: {
                     horizontal: false,
@@ -806,7 +851,7 @@
                 }
             }
 
-            qtdCpu += (intercorrenciasModelo[i] - (qtdCpu + qtdRam + qtdDisco + qtdProc))
+
 
             cpuData.push((qtdCpu * 100 / intercorrenciasModelo[i]).toFixed(1))
             ramData.push((qtdRam * 100 / intercorrenciasModelo[i]).toFixed(1))
@@ -970,6 +1015,36 @@
                     dataLabels: { position: 'top' },
                     columnWidth: '85%'
                 }
+            },
+            annotations: {
+                yaxis: [
+                    {
+                        y: 60,
+                        borderColor: '#e60e3a',
+                        label: {
+                            borderColor: '#e60e3a',
+                            style: {
+                                color: '#fff',
+                                background: '#e60e3a',
+                                fontSize: '13px'
+                            },
+                            text: 'Nível crítico 60%'
+                        }
+                    },
+                    {
+                        y: 30,
+                        borderColor: 'rgb(235, 214, 31)',
+                        label: {
+                            borderColor: 'rgb(235, 214, 31)',
+                            style: {
+                                color: '#00000',
+                                background: 'rgb(235, 214, 31)',
+                                fontSize: '13px'
+                            },
+                            text: 'Alerta 30%'
+                        }
+                    }
+                ]
             },
             dataLabels: {
                 enabled: true,
@@ -1186,6 +1261,36 @@
                     columnWidth: '85%'
                 }
             },
+            annotations: {
+                yaxis: [
+                    {
+                        y: 60,
+                        borderColor: '#e60e3a',
+                        label: {
+                            borderColor: '#e60e3a',
+                            style: {
+                                color: '#fff',
+                                background: '#e60e3a',
+                                fontSize: '13px'
+                            },
+                            text: 'Nível crítico 60%'
+                        }
+                    },
+                    {
+                        y: 30,
+                        borderColor: 'rgb(235, 214, 31)',
+                        label: {
+                            borderColor: 'rgb(235, 214, 31)',
+                            style: {
+                                color: '#00000',
+                                background: 'rgb(235, 214, 31)',
+                                fontSize: '13px'
+                            },
+                            text: 'Alerta 30%'
+                        }
+                    }
+                ]
+            },
             dataLabels: {
                 enabled: true,
                 offsetX: 0,
@@ -1338,161 +1443,4 @@
         setupGrafEspPaginationControls2();
         renderGrafEspPage2();
     }
-
-
-
-
-
-
-    /* Previsão ----------------------------------------------------------------------------------------------------*/
-    // var categorias;
-    // var grafPrevisao = null;
-    // function calcularRegressaoLinear(x, y) {
-    //     const n = x.length;
-    //     const mediaX = x.reduce((s, v) => s + v, 0) / n;
-    //     const mediaY = y.reduce((s, v) => s + v, 0) / n;
-
-    //     let numerador = 0;
-    //     let denominador = 0;
-
-    //     for (let i = 0; i < n; i++) {
-    //         numerador += (x[i] - mediaX) * (y[i] - mediaY);
-    //         denominador += (x[i] - mediaX) ** 2;
-    //     }
-
-    //     const b = denominador === 0 ? 0 : numerador / denominador;
-    //     const a = mediaY - b * mediaX;
-
-    //     return { a, b };
-    // }
-
-
-    // function calcularVariancia(x, y, a, b) {
-    //     const n = x.length;
-    //     let soma = 0;
-
-    //     for (let i = 0; i < n; i++) {
-    //         const yPrev = a + b * x[i];
-    //         const residuo = y[i] - yPrev;
-    //         soma += residuo ** 2;
-    //     }
-
-    //     return soma / Math.max(1, (n - 1));
-    // }
-
-
-    // function gerarRuido() {
-    //     let u = 0, v = 0;
-    //     while (u === 0) u = Math.random();
-    //     while (v === 0) v = Math.random();
-    //     return Math.sqrt(-2.0 * Math.log(u)) * Math.cos(2 * Math.PI * v);
-    // }
-
-
-    // function atualizarPrevisao(data) {
-
-    //     const dadosAgrupados = agruparPorPeriodo(dadosUsados, valorFiltro);
-
-    //     const x = dadosAgrupados.map((_, i) => i + 1);
-    //     const y = dadosAgrupados.map(item => item.total);
-
-    //     if (x.length < 2) return;
-
-    //     const { a, b } = calcularRegressaoLinear(x, y);
-
-    //     const variancia = calcularVariancia(x, y, a, b);
-    //     const desvioPadrao = Math.sqrt(variancia);
-
-    //     let previsoes = [];
-    //     let categoriasPrevisao = [];
-    //     const base = x.length;
-
-    //     for (let i = 1; i <= 5; i++) {
-    //         const xi = base + i;
-    //         let valor = a + b * xi;
-
-    //         valor += gerarRuido() * desvioPadrao;
-
-    //         if (valor < 0) valor = 0;
-
-    //         previsoes.push(Math.round(valor));
-    //         categoriasPrevisao.push(`Prev ${i}`);
-    //     }
-
-    //     var dadosPrevisao = {
-    //         series: [{
-    //             name: "Intercorrências",
-    //             data: previsoes
-    //         }],
-    //         chart: {
-    //             height: '100%',
-    //             type: 'line',
-    //             zoom: {
-    //                 enabled: false
-    //             }
-    //         },
-    //         dataLabels: {
-    //             enabled: false
-    //         },
-    //         stroke: {
-    //             curve: 'straight'
-    //         },
-    //         markers: {
-    //             size: 5,
-    //             colors: ['#00000'],
-    //             strokeColors: '#fff',
-    //             strokeWidth: 2,
-    //             hover: {
-    //                 size: 7,
-    //             }
-    //         },
-    //         grid: {
-    //             row: {
-    //                 colors: ['#f3f3f3', 'transparent'],
-    //                 opacity: 0.5
-    //             }
-    //         },
-    //         xaxis: {
-    //             categories: categorias
-    //         }
-    //     };
-
-
-
-    //     if (grafPrevisao) {
-    //         grafPrevisao.destroy();
-    //     }
-
-    //     grafPrevisao = new ApexCharts(document.querySelector("#grafPrevisao"), dadosPrevisao);
-    //     grafPrevisao.render();
-    // }
-
-
-    // function atualizarPrevisao(data) {
-    //     if (valorFiltro == "semanal") {
-    //         categorias = ['Semana 1', 'Semana 2', 'Semana 3', 'Semana 4', 'Semana 5']
-    //     } else if (valorFiltro == "mensal") {
-    //         categorias = ['Mês 1', 'Mês 2', 'Mês 3', 'Mês 4', 'Mês 5']
-    //     } else {
-    //         categorias = ['Ano 1', 'Ano 2', 'Ano 3', 'Ano 4', 'Ano 5']
-    //     }
-
-    //     let totalIntercorrencias = dadosUsados.length;
-    //     console.log(dadosUsados)
-
-
-
-
-
-
-
-
-
-
-    // }
-
-
-
-
-
 </script>
