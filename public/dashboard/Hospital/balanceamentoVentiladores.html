@@ -228,6 +228,30 @@
                             <p>Monitoramento de hardware e recomendações de remanejamento por área hospitalar</p>
                         </div>
                         <div class="grade-areas" id="gradeAreas"></div>
+                        <div class="divisor-legenda"></div>
+                        <div class="legenda-dashboard">
+                            <div class="item-legenda">
+                                <div class="icone-legenda neutro"><i data-lucide="activity"></i></div>
+                                <div class="texto-legenda">
+                                    <strong>Estável</strong>
+                                    <span>Estabilidade ≥ 90% e Risco ≤ 10%</span>
+                                </div>
+                            </div>
+                            <div class="item-legenda">
+                                <div class="icone-legenda enviar"><i data-lucide="package-check"></i></div>
+                                <div class="texto-legenda">
+                                    <strong>Disponível</strong>
+                                    <span>Estabilidade ≥ 90% (Pode Ceder)</span>
+                                </div>
+                            </div>
+                            <div class="item-legenda">
+                                <div class="icone-legenda precisa"><i data-lucide="siren"></i></div>
+                                <div class="texto-legenda">
+                                    <strong>Necessita</strong>
+                                    <span>Estabilidade < 90% (Risco Alto)</span>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
@@ -258,7 +282,7 @@
         // Carrega os ícones da biblioteca Lucide
         lucide.createIcons();
 
-        // Função auxiliar para atualizar o horário no topo da tela (NOVA)
+        // Função auxiliar para atualizar o horário no topo da tela 
         function atualizarHorarioTela() {
             const agora = new Date();
             const opcoes = {
@@ -268,7 +292,7 @@
             document.getElementById('momentoUltimaAtualizacao').innerText = agora.toLocaleDateString('pt-BR', opcoes);
         }
 
-        // Função principal para buscar dados de monitoramento (Hardware)
+        // Função principal para buscar dados de monitoramento 
         function obterDadosMonitoramento() {
             // Pega o ID do hospital da sessão do usuário
             var idHospital = sessionStorage.FK;
@@ -304,7 +328,7 @@
             var totalEstaveis = 0;
             var totalAlertas = 0;
 
-            // Soma o total de unidades disponíveis para remanejamento (doado *antes* da distribuição)
+            // Soma o total de unidades disponíveis para remanejamento 
             var totalParaEnviar = listaAreas.reduce((acc, area) => acc + (area.status === 'Disponível' ? area.podeEnviar : 0), 0);
 
             // Calcula os totais percorrendo a lista de áreas
@@ -380,7 +404,7 @@
             });
         }
 
-        // Função que cria os cards principais de cada área (ATUALIZADA)
+        // Função que cria os cards principais de cada área 
         function criarCardsDeAreas(listaAreas) {
             var container = document.getElementById('gradeAreas');
             container.innerHTML = '';
@@ -555,7 +579,7 @@
             configurarPeriodoAtualizacao();
         }
 
-        // Configura o intervalo de atualização (função adicionada no onload)
+        // Configura o intervalo de atualização 
         function configurarPeriodoAtualizacao() {
             // Atualiza os dados a cada 5 segundos 
             setInterval(() => {

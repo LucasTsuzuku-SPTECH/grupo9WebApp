@@ -166,17 +166,17 @@
     <br><br><br><br>
 
     <main class="container my-4">
-         <div class="mb-3 me-3">
-                    <p class="text-muted small mb-1">Período Selecionado</p>
-                    <p class="fw-bold text-dark" id="indicadorData" style="font-size: 1.2rem;">08/12/2025</p>
-                </div>
+        <div class="mb-3 me-3">
+            <p class="text-muted small mb-1">Período Selecionado</p>
+            <p class="fw-bold text-dark" id="indicadorData" style="font-size: 1.2rem;">08/12/2025</p>
+        </div>
         <div class="d-flex justify-content-between align-items-end mb-4 border-bottom pb-2">
-            
+
             <div>
                 <h2 class="fw-bold text-dark mb-1">Painel do Gestor</h2>
                 <p class="text-muted mb-0">Visão geral da operação e monitoramento dos equipamentos</p>
             </div>
-            
+
             <div class="d-none d-md-block">
 
                 <div class="btn-group me-3" role="group">
@@ -196,7 +196,7 @@
                     <input type="radio" class="btn-check filtro-periodo" id="btnAnual" name="periodo" value="anual">
                     <label class="btn btn-outline-secondary" for="btnAnual"><i class="bi bi-calendar me-1"></i>
                         Anual</label>
-                        
+
                 </div>
 
                 <div class="dropdown d-inline-block">
@@ -211,14 +211,14 @@
                             <hr class="dropdown-divider">
                         </li>
                     </ul>
-                
+
                 </div>
-                
+
             </div>
-             
+
         </div>
 
-        
+
         <div class="row g-3 mb-4">
             <div class="col-md-4">
                 <div class="card stat-card border-0 border-bottom border-danger border-5">
@@ -480,7 +480,7 @@
     <script>
         // variaveis globais pra usar em tudo
         let dadosGestor = null;
-        let periodoAtual = 'anual';
+        let periodoAtual = 'diario';
         let modeloAtual = 'todos';
         let chartsInstances = {
             riskChart: null,
@@ -489,7 +489,7 @@
         };
 
         function atualizarIndicadorData() {
-            const periodo = periodoAtual || 'atual';
+            const periodo = periodoAtual || 'diario';
             const dataEl = document.getElementById('indicadorData');
 
             if (!dataEl) return;
