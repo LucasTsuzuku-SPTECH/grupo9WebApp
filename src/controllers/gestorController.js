@@ -10,6 +10,10 @@ function classificarAlerta(tipoAlerta, valorLido, minPermitido, maxPermitido) {
         if (valor > max) return 'critico';
         return 'atencao';
     }
+    if (tipoAlerta === 'Abaixo'){
+        if(valor < min) return 'critico';
+        return 'atencao';
+    }
 
     return 'operacional';
 }
@@ -473,15 +477,21 @@ function agruparAlertasPorPeriodo(alertas, periodo) {
     return [];
 }
 
-// ========== rotas do controller ==========
+// rotas do controller 
 
 async function listarDiario(req, res) {
     try {
         const modelo = req.query.modelo || 'todos';
         const dados = await gestorModel.listarDiario();
         
+        // Dados FILTRADOS por modelo (para gráficos e KPIs gerais)
         const { alertas, coletasOk } = filtrarPorModelo(dados.alertas, dados.coletasOk, modelo);
         const processados = processarDadosComAlertas(alertas, coletasOk);
+        
+        // Dados SEM FILTRO (para Status por Hospital - sempre mostra todos)
+        const { alertas: alertasTodosModelos, coletasOk: coletasOkTodosModelos } = 
+            filtrarPorModelo(dados.alertas, dados.coletasOk, 'todos');
+        const processadosTodoHospital = processarDadosComAlertas(alertasTodosModelos, coletasOkTodosModelos);
         
         const { alertas: todosAlertas } = filtrarPorModelo(dados.alertas, dados.coletasOk, 'todos');
         const tendenciaFalhas = obterTendenciaFalhasPorModelo(todosAlertas, 'diario');
@@ -495,11 +505,13 @@ async function listarDiario(req, res) {
             modeloFiltrado: modelo,
             alertasPorPeriodo,
             tendenciaFalhas,
-            ...processados
+            ...processados,
+            // Sobrescrever apenas o uptimeRealPorHospital com dados SEM filtro
+            uptimeRealPorHospital: processadosTodoHospital.uptimeRealPorHospital
         });
     } catch (err) {
         console.error(err);
-        res.status(500).json({ erro: "deu ruim ao listar dados diarios", detalhes: err.message });
+        res.status(500).json({ erro: "Erro ao listar dados diários", detalhes: err.message });
     }
 }
 
@@ -510,6 +522,10 @@ async function listarSemanal(req, res) {
         
         const { alertas, coletasOk } = filtrarPorModelo(dados.alertas, dados.coletasOk, modelo);
         const processados = processarDadosComAlertas(alertas, coletasOk);
+        
+        const { alertas: alertasTodosModelos, coletasOk: coletasOkTodosModelos } = 
+            filtrarPorModelo(dados.alertas, dados.coletasOk, 'todos');
+        const processadosTodoHospital = processarDadosComAlertas(alertasTodosModelos, coletasOkTodosModelos);
         
         const { alertas: todosAlertas } = filtrarPorModelo(dados.alertas, dados.coletasOk, 'todos');
         const tendenciaFalhas = obterTendenciaFalhasPorModelo(todosAlertas, 'semanal');
@@ -523,11 +539,12 @@ async function listarSemanal(req, res) {
             modeloFiltrado: modelo,
             alertasPorPeriodo,
             tendenciaFalhas,
-            ...processados
+            ...processados,
+            uptimeRealPorHospital: processadosTodoHospital.uptimeRealPorHospital
         });
     } catch (err) {
         console.error(err);
-        res.status(500).json({ erro: "deu ruim ao listar dados semanais", detalhes: err.message });
+        res.status(500).json({ erro: "Erro ao listar dados semanais", detalhes: err.message });
     }
 }
 
@@ -538,6 +555,10 @@ async function listarMensal(req, res) {
         
         const { alertas, coletasOk } = filtrarPorModelo(dados.alertas, dados.coletasOk, modelo);
         const processados = processarDadosComAlertas(alertas, coletasOk);
+        
+        const { alertas: alertasTodosModelos, coletasOk: coletasOkTodosModelos } = 
+            filtrarPorModelo(dados.alertas, dados.coletasOk, 'todos');
+        const processadosTodoHospital = processarDadosComAlertas(alertasTodosModelos, coletasOkTodosModelos);
         
         const { alertas: todosAlertas } = filtrarPorModelo(dados.alertas, dados.coletasOk, 'todos');
         const tendenciaFalhas = obterTendenciaFalhasPorModelo(todosAlertas, 'mensal');
@@ -550,11 +571,12 @@ async function listarMensal(req, res) {
             modeloFiltrado: modelo,
             alertasPorPeriodo,
             tendenciaFalhas,
-            ...processados
+            ...processados,
+            uptimeRealPorHospital: processadosTodoHospital.uptimeRealPorHospital
         });
     } catch (err) {
         console.error(err);
-        res.status(500).json({ erro: "deu ruim ao listar dados mensais", detalhes: err.message });
+        res.status(500).json({ erro: "Erro ao listar dados mensais", detalhes: err.message });
     }
 }
 
@@ -566,6 +588,10 @@ async function listarAnual(req, res) {
         const { alertas, coletasOk } = filtrarPorModelo(dados.alertas, dados.coletasOk, modelo);
         const processados = processarDadosComAlertas(alertas, coletasOk);
         
+        const { alertas: alertasTodosModelos, coletasOk: coletasOkTodosModelos } = 
+            filtrarPorModelo(dados.alertas, dados.coletasOk, 'todos');
+        const processadosTodoHospital = processarDadosComAlertas(alertasTodosModelos, coletasOkTodosModelos);
+        
         const { alertas: todosAlertas } = filtrarPorModelo(dados.alertas, dados.coletasOk, 'todos');
         const tendenciaFalhas = obterTendenciaFalhasPorModelo(todosAlertas, 'anual');
         const alertasPorPeriodo = agruparAlertasPorPeriodo(alertas, 'anual');
@@ -576,11 +602,12 @@ async function listarAnual(req, res) {
             modeloFiltrado: modelo,
             alertasPorPeriodo,
             tendenciaFalhas,
-            ...processados
+            ...processados,
+            uptimeRealPorHospital: processadosTodoHospital.uptimeRealPorHospital
         });
     } catch (err) {
         console.error(err);
-        res.status(500).json({ erro: "deu ruim ao listar dados anuais", detalhes: err.message });
+        res.status(500).json({ erro: "Erro ao listar dados anuais", detalhes: err.message });
     }
 }
 
