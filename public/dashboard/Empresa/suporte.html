@@ -37,7 +37,7 @@
     .card-kpi {
       text-align: center;
       padding: 20px;
-      height: 300px!important;
+      height: 350px!important;
 
     }
 
@@ -468,8 +468,10 @@
 </h5>
           <div class="kpiSLACharts" id="kpiSLAChart"></div>
                     <small>Meta: 90%</small>
+                                                  <small>Concluidos no prazo/Concluidos</small>
 
-          <small>Em tempo real</small>
+
+          <small >Em tempo real</small>
           
 
 
@@ -495,6 +497,7 @@
 </h5>
           <div id="kpiTempo"></div>
                     <small>Meta:1 Dia</small>
+
 
           <small>Últimos 7 dias</small>
         </div>
@@ -541,21 +544,7 @@
             </div>
           
 
-          <!--  <div class="numeros">
-                     
-                      <div class="numero" style="background-color: #e53935">
-                        <p>Alta</p><p>50</p>
-                      </div>
-                      <div class="numero" style="background-color: #fbc02d">
-                        <p>Média</p>
-                        <p>25</p>
-                      </div>
-                      <div class="numero" style="background-color: #43a047"><p>
-                        Baixa
-                      </p><p>50</p></div>
 
-                    </div>
-                      -->
 
           <small>Em tempo real</small>
         </div>
@@ -570,6 +559,8 @@
        data-bs-toggle="tooltip"
        data-bs-html="true"
        title="
+              <b>Resolução</b>:Chamados concluidos/Chamados totais<br>
+
        <b>Verde:</b> ≥ 80% resolvidos<br>
        <b>Amarelo:</b> 60–79%<br>
        <b>Vermelho:</b> abaixo de 60%
@@ -577,6 +568,7 @@
 </h5>
           <div class="kpiResolvidosCharts" id="kpiResolvidosChart"></div>
                               <small>Meta: 80%</small>
+                              <small>Chamados concluidos/Total de chamados</small>
 
           <small>Em tempo real</small>
 
@@ -786,7 +778,7 @@ chamadosAbertos=chamados.filter(c=>c.data_conclusao==null).length
     if(p.pessoa=="Sem responsável") return;
     const emProgresso=p.totalChamados-p.totalResolvidos
     const taxaResolucao=p.totalResolvidos/p.totalChamados 
-    const workload = (p.totalChamados / chamadosAbertos) * 100
+    const workload = (emProgresso / chamadosAbertos) * 100
     console.log(p)
     console.log(taxaResolucao)
 
@@ -937,8 +929,9 @@ chamadosAbertos=chamados.filter(c=>c.data_conclusao==null).length
               fontSize: '28px',
               fontWeight: 600,
               formatter: () => valor + "%"
-            }
-          }
+            },
+            
+          },
         }
 
       },
