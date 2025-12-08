@@ -144,6 +144,49 @@
       max-height: 400px;
       overflow-y: auto;
     }
+
+    .barra-legenda-vertical {
+      width: 40px;
+      height: 260px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .rotulo-legenda {
+      text-align: center;
+      font-size: 12px;
+      font-weight: bold;
+    }
+
+    .rotulo-legenda.top {
+      color: #8B0000;
+    }
+
+    .rotulo-legenda.bottom {
+      color: #006400;
+    }
+
+    .seta {
+      font-size: 1.3em;
+      line-height: 0.8;
+    }
+
+    .barra-gradiente {
+      width: 18px;
+      height: 100%;
+      border-radius: 6px;
+      margin: 8px 0;
+
+
+      background: linear-gradient(to bottom,
+          #920000 0%,
+          #c74a17 20%,
+          #ffa600 40%,
+          #f5e172 60%,
+          #27ac27 80%,
+          #006400 100%);
+    }
   </style>
 
 </head>
@@ -286,7 +329,7 @@
 
     <section class="d-flex justify-content-center align-items-center row g-3 mb-3 KPIs">
       <div class="col-6 col-md-3 col-lg-2">
-        <div class="card kpi-card-custom h-100 " style="border-bottom: 6px solid red;">
+        <div id="AlertaDiv" class="card kpi-card-custom h-100">
           <a href="#" class="text-decoration-none text-dark d-flex flex-column h-100 p-3"
             onclick="abrirModalAlertas('Alertas')">
             <div class="d-flex align-items-center DadosKPI">
@@ -433,16 +476,42 @@
         </div>
       </div>
 
-      <div class="col-lg-10 mt-1 ContainerMapa">
+      <div class="col-lg-10 mt-1">
         <div class="card h-100">
           <div class="card-header graficoHeader">
-            <strong>
-              Mapa de Alertas por Área
-            </strong>
+            <strong>Mapa Quantidade de Alertas por Área</strong>
+            <div class="text-muted" style="font-size:.85rem">Quanto mais alerta maior a área</div>
           </div>
-          <div class="card-body d-flex justify-content-center align-items-center" style="min-height: 300px;">
-            <div id="Graficoarea" style="width: 100%; height: 100%;"></div>
+
+          <!-- Linha que contém o gráfico e a barra -->
+          <div class="card-body">
+            <div class="row h-100">
+
+              <!-- Coluna do gráfico -->
+              <div class="col-md-11 d-flex justify-content-center align-items-center" style="min-height: 300px;">
+                <div id="Graficoarea" style="width: 100%; height: 100%;"></div>
+              </div>
+
+              <!-- Coluna da barra -->
+              <div class="col-md-1 d-flex justify-content-center align-items-center">
+                <div class="barra-legenda-vertical">
+                  <div class="rotulo-legenda top">
+                    Muitos Alertas
+                    <div class="seta">▲</div>
+                  </div>
+
+                  <div class="barra-gradiente"></div>
+
+                  <div class="rotulo-legenda bottom">
+                    <div class="seta">▼</div>
+                    Menos alertas
+                  </div>
+                </div>
+              </div>
+
+            </div>
           </div>
+
         </div>
       </div>
 
@@ -485,14 +554,14 @@
       <div class="col-lg-10 mt-2 mb-3">
         <div class="card card-chart p-3">
           <div class="d-flex justify-content-between align-items-center mb-2">
-            <div><strong>Número de Alertas por hora</strong>
+            <div><strong>Número de Alertas por período</strong>
               <div class="text-muted" style="font-size:.85rem">Histórico</div>
             </div>
           </div>
-          <canvas id="chart-cpu" style="height: 400px; width: 100%;"></canvas>
+          <div id="chartPeriodoAlertas" style="width: 100%; height: 100%;">
+          </div>
         </div>
       </div>
-    </div>
 
   </main>
 
@@ -566,6 +635,95 @@
     let maquinasRestantes; //Máquinas offlines para colocar na KPI 
     let alertasDaAreaAfetada; // Área mais afetada para útilizar no modal da KPI de área mais afetada
 
+    // Plotando o gráfico primeiro para apenas atualizar os dados na função
+    // Mapa de calor
+    let chartArea = null;
+    const options = {
+      chart: {
+        type: "treemap",
+        height: "100%",
+      },
+      series: [{ data: [] }],
+      plotOptions: {
+        treemap: {
+          enableShades: true,
+          shadeIntensity: 0.4,
+          colorScale: {
+            ranges: []
+          }
+        }
+      }
+    };
+    chartArea = new ApexCharts(document.querySelector("#Graficoarea"), options);
+    chartArea.render();
+    
+    // Gráfico de alertas
+    chartAlertas = null
+    var optionsAlertas = {
+      series: [
+        {
+          data: []
+        }
+      ],
+      chart: {
+        height: 350,
+        type: 'line',
+        dropShadow: {
+          enabled: true,
+          color: '#000',
+          top: 18,
+          left: 7,
+          blur: 10,
+          opacity: 0.5
+        },
+        zoom: {
+          enabled: false
+        },
+        toolbar: {
+          show: false
+        }
+      },
+      colors: ['#77B6EA', '#545454'],
+      dataLabels: {
+        enabled: true,
+      },
+      stroke: {
+        curve: 'smooth'
+      },
+      grid: {
+        borderColor: '#e7e7e7',
+        row: {
+          colors: ['#f3f3f3', 'transparent'],
+          opacity: 0.5
+        },
+      },
+      markers: {
+        size: 1
+      },
+      xaxis: {
+        categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul'],
+        title: {
+          text: 'Mês'
+        }
+      },
+      yaxis: {
+        title: {
+          text: 'Alertas'
+        },
+      },
+      legend: {
+        position: 'top',
+        horizontalAlign: 'right',
+        floating: true,
+        offsetY: -25,
+        offsetX: -5
+      }
+    };
+
+    var chartAlertas = new ApexCharts(document.querySelector("#chartPeriodoAlertas"), optionsAlertas);
+    chartAlertas.render();
+
+
     async function atualizarDados() {
       // Pegando o csv baseado no tempo e utilizo ele na função inteira
       const alertas = await fetch(`/tecnicoHospital/${tempoSelecionado}`);
@@ -586,6 +744,13 @@
 
       //KPI de alertas
       qtdAlertas.innerHTML = alertasDoHospitalArea.length
+      if (alertasDoHospitalArea.length > 0) {
+        document.getElementById("AlertaDiv").style.borderBottom = "6px solid red";
+      }
+      else{
+        document.getElementById("AlertaDiv").style.borderBottom = "6px solid green";
+      }
+
       let contadorComponente = { "CPU": 0, "RAM": 0, "Disco": 0, "Bateria": 0, "Processos": 0 }
       for (const a of alertasDoHospitalArea) {
         if (contadorComponente[a.componente] !== undefined) {
@@ -601,7 +766,7 @@
         }
       }
       principalCausaAlerta.innerHTML = `Principal causa: <b>${maiorcomp}</b>`
-    
+
       //KPI de último alerta
       ultimaCap = alertasDoHospitalArea[alertasDoHospitalArea.length - 1]
       ultimaCapTime = ultimaCap.timestamp
@@ -654,34 +819,127 @@
 
 
       // Contando alertas por area
-      if (areaSelecionada == "todas") {
-        let contador = {};
-        for (const a of selectAreas) {
-          contador[a.area] = 0;
-        }
-        for (const a of alertasDoHospital) {
-          if (contador[a.area] !== undefined) {
-            contador[a.area]++;
-          }
-        }
-        let maiorArea = null;
-        let maiorValor = 0;
-        for (const area in contador) {
-          if (contador[area] > maiorValor) {
-            maiorValor = contador[area];
-            maiorArea = area;
-          }
-        }
-        quantidadeAlertaArea.innerHTML = `Total de alertas: <b>${maiorValor}</b>`
-        areaMaisAfetada.innerHTML = `${maiorArea == "Internacao" ? `Internação` : `${maiorArea}`}`
-        alertasDaAreaAfetada = alertasDoHospital.filter(alerta => alerta.area === maiorArea);
-
-        console.log(contador)
-        console.log(maiorArea)
+      let contador = {};
+      for (const a of selectAreas) {
+        contador[a.area] = 0;
       }
+      for (const a of alertasDoHospital) {
+        if (contador[a.area] !== undefined) {
+          contador[a.area]++;
+        }
+      }
+      let maiorArea = null;
+      let maiorValor2 = 0;
+      for (const area in contador) {
+        if (contador[area] > maiorValor2) {
+          maiorValor2 = contador[area];
+          maiorArea = area;
+        }
+      }
+      quantidadeAlertaArea.innerHTML = `Total de alertas: <b>${maiorValor2}</b>`
+      areaMaisAfetada.innerHTML = `${maiorArea == "Internacao" ? `Internação` : `${maiorArea}`}`
+      alertasDaAreaAfetada = alertasDoHospital.filter(alerta => alerta.area === maiorArea);
+
+      console.log(contador)
+      console.log(maiorArea)
+
       console.log(alertasDoHospitalArea)
       console.log(areaSelecionada)
       console.log(tempoSelecionado)
+      console.log(contador)
+
+      // Mapa de calor de áreas com mais alertas
+      var DadosXY = [];
+      for (var area in contador) {
+        DadosXY.push({ x: area, y: contador[area] });
+      }
+      var maxValor = Math.max(...Object.values(contador));
+
+      chartArea.updateOptions({
+        plotOptions: {
+          treemap: {
+            colorScale: {
+              ranges: [
+                { from: 0, to: maxValor * 0.166, color: "#006400" },
+                { from: maxValor * 0.166, to: maxValor * 0.332, color: "#27ac27" },
+                { from: maxValor * 0.332, to: maxValor * 0.498, color: "#f5e172" },
+                { from: maxValor * 0.498, to: maxValor * 0.664, color: "#ffa600" },
+                { from: maxValor * 0.664, to: maxValor * 0.83, color: "#c74a17" },
+                { from: maxValor * 0.83, to: maxValor, color: "#920000" }
+              ]
+            }
+          }
+        }
+      });
+
+
+      chartArea.updateSeries([{ data: DadosXY }]);
+
+      console.log(alertasDoHospitalArea)
+      
+      if(tempoSelecionado == "anual"){
+        let alertasPorMes = {};
+        for (let alerta of alertasDoHospitalArea) {
+            const data = new Date(alerta.timestamp);
+            const ano = data.getFullYear();
+            let mes = data.getMonth() + 1; 
+            mes = mes < 10 ? ('0' + mes) : mes
+            const periodo = `${ano}-${mes}`;
+  
+            if (!alertasPorMes[periodo]) {
+                alertasPorMes[periodo] = 0;
+            }
+            alertasPorMes[periodo]++;
+        }
+        const categories = Object.keys(alertasPorMes).sort(); 
+  
+        const dataSeries = categories.map(periodo => alertasPorMes[periodo]);
+        
+        chartAlertas.updateSeries([{ data: dataSeries }]);
+  
+        chartAlertas.updateOptions({
+          xaxis: {
+            categories: categories, 
+            title: {
+              text: 'Anual'
+            }
+          }
+        });
+      }
+
+      else if(tempoSelecionado == "mensal"){
+        let alertasPorDia = {};
+        for (let alerta of alertasDoHospitalArea) {
+            const data = new Date(alerta.timestamp);
+            const ano = data.getFullYear();
+            let mes = data.getMonth() + 1;
+            let dia = data.getDate(); 
+            mes = mes < 10 ? ('0' + mes) : mes;
+            dia = dia < 10 ? ('0' + dia) : dia; 
+            const periodo = `${ano}-${mes}-${dia}`; 
+
+            if (!alertasPorDia[periodo]) {
+                alertasPorDia[periodo] = 0;
+            }
+            alertasPorDia[periodo]++;
+        }
+        const categoriesMes = Object.keys(alertasPorDia).sort(); 
+        const dataSeries = categoriesMes.map(periodo => alertasPorDia[periodo]);
+        chartAlertas.updateSeries([{ data: dataSeries }]);
+        chartAlertas.updateOptions({
+            xaxis: {
+                categories: categoriesMes, 
+                title: {
+                    text: 'Mensal' 
+                }
+            }
+          })
+      }
+      else if(tempoSelecionado == "semanal"){
+        
+      }
+      
+
     }
 
 
@@ -691,12 +949,12 @@
       const myModal = bootstrap.Modal.getInstance(modalEl) || new bootstrap.Modal(modalEl);
       myModal.hide();
       setTimeout(() => {
-      myModal.show();
+        myModal.show();
       }, 300);
       footerModal.innerHTML = ``
 
       //KPI de alertas
-      if(exibir == "Alertas"){
+      if (exibir == "Alertas") {
         let classModal = document.getElementById('classModal');
         classModal.classList.add('modal-xl');
         modalAlertasLabel.innerHTML = `Todos os Alertas`;
@@ -747,13 +1005,13 @@
         footerModal.innerHTML = `${alertasDoHospitalArea.length > 20 ? `<p> Mostrando <b>20</b> alertas mais recentes</p>
         <button type="button" class="btn btn-secondary" onclick="abrirModalAlertas('todosDadosAlertas')">
         Ver todos os ${alertasDoHospitalArea.length} alertas →
-        </button>` : `` }`
+        </button>` : ``}`
       }
 
 
       //KPI de alerta com todos os dados
-      else if(exibir == "todosDadosAlertas"){
-                let classModal = document.getElementById('classModal');
+      else if (exibir == "todosDadosAlertas") {
+        let classModal = document.getElementById('classModal');
         classModal.classList.add('modal-xl');
         modalAlertasLabel.innerHTML = `Todos os Alertas`;
         subTitulo.innerHTML = `Do mais novo para o mais antigo`
@@ -803,7 +1061,7 @@
         footerModal.innerHTML = `${alertasDoHospitalArea.length > 20 ? `<p> Mostrando todos os alertas</p>
         <button type="button" class="btn btn-secondary" onclick="abrirModalAlertas('Alertas')">
         Ver apenas 20 alertas
-        </button>` : `` }`
+        </button>` : ``}`
       }
       // Modal da KPI de último alerta
       else if (exibir == "UltimoAlerta") {
@@ -950,7 +1208,7 @@
         footerModal.innerHTML = `${alertasDaAreaAfetada.length > 20 ? `<p> Mostrando <b>20</b> alertas mais recentes</p>
         <button type="button" class="btn btn-secondary" onclick="abrirModalAlertas('todosDadosArea')">
         Ver todos os ${alertasDaAreaAfetada.length} alertas →
-        </button>` : `` }`
+        </button>` : ``}`
       }
 
       // Todos os dados KPI de área mais afetada
@@ -1004,7 +1262,7 @@
         footerModal.innerHTML = `${alertasDaAreaAfetada.length > 20 ? `<p> Mostrando todos os alertas</p>
         <button type="button" class="btn btn-secondary" onclick="abrirModalAlertas('Area')">
         Ver apenas 20 alertas
-        </button>` : `` }`
+        </button>` : ``}`
       }
     }
 
@@ -1018,33 +1276,14 @@
     }
 
 
-
     function abrirChamado() {
       const jiraUrl = "https://suaempresa.atlassian.net/secure/CreateIssue!default.jspa";
       window.open(jiraUrl, "_blank");
     }
 
     function toggleSidebar() {
-      // Para o Offcanvas, o Bootstrap gerencia o estado (mostrar/esconder) automaticamente
-      // através dos atributos data-bs-toggle e data-bs-target.
-      // A função aqui pode ser usada para lógica adicional (se necessário).
       const icone = document.getElementById("icone");
-      // O ícone do Font Awesome pode ser trocado dependendo do estado do Offcanvas,
-      // mas o Bootstrap não gerencia isso nativamente. Vamos manter a lógica original:
       const sidebar = document.getElementById("sidebarOffcanvas");
-      // É mais fácil usar um listener do Bootstrap.
-
-      /* // Exemplo de como usar listeners do Bootstrap para trocar o ícone:
-      sidebar.addEventListener('show.bs.offcanvas', () => {
-          icone.classList.remove("fa-bars");
-          icone.classList.add("fa-xmark"); // O "X" moderno do FontAwesome é fa-xmark
-      });
-
-      sidebar.addEventListener('hide.bs.offcanvas', () => {
-          icone.classList.remove("fa-xmark");
-          icone.classList.add("fa-bars");
-      });
-      */
     }
 
     function limparSessao() {
@@ -1083,74 +1322,6 @@
       tbody.appendChild(tr);
     });
 
-    function lastMinutes(n) {
-      const now = new Date();
-      const out = [];
-      for (let i = n - 1; i >= 0; i--) {
-        const d = new Date(now.getTime() - i * 60 * 1000);
-        out.push(d.getHours().toString().padStart(2, '0') + ':' + d.getMinutes().toString().padStart(2, '0'));
-      }
-      return out;
-    }
-
-    const labels15 = lastMinutes(60);
-    function randSeries(base, variance) {
-      return labels15.map(() => Math.max(0, Math.round(base + (Math.random() - 0.5) * variance)));
-    }
-
-    const cpuCtx = document.getElementById('chart-cpu');
-    new Chart(cpuCtx, {
-      type: 'line',
-      data: {
-        labels: labels15,
-        datasets: [
-          { label: 'Alertas', data: randSeries(35, 40), tension: 0.25, fill: false }
-        ]
-      },
-      options: {
-        responsive: true,
-        interaction: { mode: 'index', intersect: false },
-        plugins: { legend: { position: 'bottom' } }
-      }
-    });
-
-
-    var options = {
-      chart: {
-        height: "100%",
-        width: "100%",
-        type: "treemap",
-      },
-      series: [
-        {
-          data: [
-            {
-              x: "UTI",
-              y: 4,
-            },
-            {
-              x: "Pronto-Socorro",
-              y: 1,
-            },
-            {
-              x: "Neonatal",
-              y: 0,
-            },
-            {
-              x: "Internação",
-              y: 0,
-            },
-            {
-              x: "Centro Cirúrgico",
-              y: 0,
-            }
-          ],
-        },
-      ],
-    }
-
-    var chart = new ApexCharts(document.querySelector("#Graficoarea"), options);
-    chart.render();
   </script>
 
 </body>
