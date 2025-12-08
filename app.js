@@ -46,6 +46,7 @@ app.use("/email", emailRouter)
 app.use("/jira", jiraRouter);
 app.use("/medidas", medidasRouter);
 app.use("/analista", analistaRouter)
+app.use("/gestor", gestorRouter)
 
 app.use("/ia", iaRouter)
 
