@@ -80,9 +80,9 @@
         <div class="main-content">
             <div class="fastActions">
                 <div>
-                    <h4 style="margin: 0px; color: white;">Filtro de períodos:</h4>
+                    <h4 style="margin: 0px; color: black;">Filtro de períodos:</h4>
                     <select onchange="updatePeriodo()" class="selects"
-                        style="height: 20px; background-color: rgb(131, 203, 195);" id="filtroPeriodo">
+                        style="height: 20px" id="filtroPeriodo">
                         <option class="opcao" value=semanal>Semanal</option>
                         <option class="opcao" value=mensal>Mensal</option>
                         <option class="opcao" value=anual>Anual</option>
@@ -90,8 +90,7 @@
                 </div>
 
                 <div style="display: flex; flex-direction: row;">
-                    <button class="Btn">Gerar relatório</button>
-                    <button class="Btn" id="btnIA" onclick="toggleAISidebar()">Analyst AI</button>
+                    <button class="BtnWhite" id="btnIA" onclick="toggleAISidebar()">Analyst AI</button>
                 </div>
             </div>
 
@@ -107,7 +106,7 @@
                 <div class="ai-body">
                     <p style="font-size: 14px;">Bem-vindo(a)! <br> Tenha uma análise mais profunda com o auxílio da
                         Analyst AI:</p>
-                    <textarea style="font-size: 16px;" id="aiInput" placeholder="Digite aqui..." rows="4"
+                    <textarea style="resize:none; font-size: 16px;" id="aiInput" placeholder="Digite aqui..." rows="4"
                         onkeydown="enterMensagemIA(event)"></textarea>
                     <button class="Btn" onclick="sendToAI()">Enviar</button>
                     <div id="aiResponse" style="font-size: 14px; margin-top:8px; color:#fff;"></div>
@@ -123,25 +122,38 @@
 
                 <!-- Filtro e KPIs -->
                 <div id="mainKPI" style="width: 100%; display: flex; flex-direction: column; justify-content: center;">
-                    <div style="width: 100%; display: flex; flex-direction: row; justify-content: center;">
-                        <div style="border-bottom: #30a799 solid 4px;" class="kpiDashMain">
-                            <h2
-                                style="display: flex; flex-direction: row; justify-content: space-between; align-items: center;">
-                                ...
-                                <i class="bi bi-exclamation-circle-fill" style="font-size: 48px; color: #30a799;"></i>
-                            </h2>
-                            <p style="height: 48px;">Componente com mais intercorrência</p>
-                        </div>
-                        <div style="border-bottom: 1px solid rgb(204, 204, 204);" class="kpiDashMain">
-                            <h2
-                                style="display: flex; flex-direction: row; justify-content: space-between; align-items: center;">
-                                ...
-                                <i class="bi bi-exclamation-circle-fill" style="font-size: 48px; color: black;"></i>
-                            </h2>
-                            <p style="height: 48px;">Total de intercorrências</p>
+                    <div
+                        style="padding-left: 20vh; width: 100%; display: flex; flex-direction: column; justify-content: center; margin-bottom: 10px;">
+                        <h3>Indicador de intercorrências:</h3>
+                        <div style="display: flex; flex-direction: row; width: 100%;">
+                            <!-- Verde -->
+                            <div class="kpiDash"
+                                style="height: 95px; border-bottom: 4px solid #30a799; width: 150px; margin: 0.6%; text-align: center;">
+                                <h2 style="font-size: 28px; margin: 20px 0;">
+                                    <span style="color: #30a799;">&lt; 30%</span>
+                                </h2>
+                                <p style="height: 48px; font-weight: 600;">Normal</p>
+                            </div>
+
+                            <!-- Amarelo -->
+                            <div class="kpiDash"
+                                style="height: 95px; border-bottom: 4px solid rgb(235, 214, 31); width: 150px; margin: 0 10px; text-align: center;">
+                                <h2 style="font-size: 28px; margin: 20px 0;">
+                                    <span style="color: rgb(235, 214, 31);">≥ 30%</span>
+                                </h2>
+                                <p style="height: 48px; font-weight: 600;">Alerta</p>
+                            </div>
+
+                            <!-- Vermelho -->
+                            <div class="kpiDash"
+                                style="height: 95px; border-bottom: 4px solid #e60e3a; width: 150px; margin: 0 10px; text-align: center;">
+                                <h2 style="font-size: 28px; margin: 20px 0;">
+                                    <span style="color: #e60e3a;">≥ 60%</span>
+                                </h2>
+                                <p style="height: 48px; font-weight: 600;">Alerta crítico</p>
+                            </div>
                         </div>
                     </div>
-
                     <div style="width: 100%; display: flex; flex-direction: row; justify-content: center;">
                         <div class="kpiDash">
                             <h2
@@ -201,7 +213,15 @@
                                 class="periodoSelected"></a>):
                         </div>
                         <div class="chartContent">
-                            <div id="grafMain1"></div>
+                            <div style="display:flex; align-items:center; gap:8px;">
+                                <button id="prevGrafMain1" class="Btn"
+                                    style="font-size: 30px; color: black; width:40px; height:28px; padding:0;">‹</button>
+                                <div id="grafMain1" style="flex: 1;"></div>
+                                <button id="nextGrafMain1" class="Btn"
+                                    style="font-size: 30px; color: black; width:40px; height:28px; padding:0;">›</button>
+                            </div>
+                            <div id="grafMain1_pageInfo" style="text-align:center; font-size:12px; margin-top:6px;">
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -212,11 +232,9 @@
             <div class="divEspecifica">
                 <h2 style="margin-left: 75px;">Visão específica:</h2>
                 <div style="width: 90%; margin-left: 75px;">
-                    <select onchange="updateHospital()" class="selects" style="background-color: #39a699;"
+                    <select onchange="hospitalSelecionado()" class="selects"
                         id="filtroHospital">
-                        <option class="opcao" value="">Selecione um hospital...</option>
-                        <option class="opcao" value="teste1">teste1</option>
-                        <option class="opcao" value="teste2">teste2</option>
+                        <option value="todos">Todos os hospitais</option>
                     </select>
                 </div>
 
@@ -226,8 +244,8 @@
                         <div class="containerHeader">Ranking de intercorrência por área <a class="hospitalSelected"></a>
                             (<a class="periodoSelected"></a>):</div>
                         <div class="tabelaWrapper">
-                            <table id="rankingModelo" class="tabela">
-                                <thead>
+                            <table class="tabela">
+                                <thead id="rankingModeloEs1">
                                     <tr>
                                         <th>Posição</th>
                                         <th>Área</th>
@@ -242,7 +260,15 @@
                         <div class="containerHeader">Percentual de intercorrências por área/modelo <a
                                 class="hospitalSelected"></a> (<a class="periodoSelected"></a>):</div>
                         <div class="chartContent">
-                            <div id="grafEsp1"></div>
+                            <div style="display:flex; align-items:center; gap:8px;">
+                                <button id="prevGrafEsp1" class="Btn"
+                                    style="font-size: 30px; color: black; width:40px; height:28px; padding:0;">‹</button>
+                                <div id="grafEsp1" style="flex: 1;"></div>
+                                <button id="nextGrafEsp1" class="Btn"
+                                    style="font-size: 30px; color: black; width:40px; height:28px; padding:0;">›</button>
+                            </div>
+                            <div id="grafEsp1_pageInfo" style="text-align:center; font-size:12px; margin-top:6px;">
+                            </div>
                         </div>
                     </div>
 
@@ -253,7 +279,7 @@
                                 class="hospitalSelected"></a>
                             (<a class="periodoSelected"></a>):</div>
                         <div class="tabelaWrapper">
-                            <table id="rankingModelo" class="tabela">
+                            <table id="rankingModeloEsp2" class="tabela">
                                 <thead>
                                     <tr>
                                         <th>Posição</th>
@@ -270,40 +296,15 @@
                                 class="hospitalSelected"></a>
                             (<a class="periodoSelected"></a>):</div>
                         <div class="chartContent">
-                            <div id="grafEsp2"></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="divPrevisao">
-                <h2 style="padding-left: 75px;">Previsão baseada no estado atual:</h2>
-
-                <div style="width: 100%; display: flex; flex-wrap: wrap; flex-direction: row; justify-content: center;">
-
-                    <div style="border: none; border-radius: 4px 0px 0px 4px; width: 40%; margin-right: 0px !important;"
-                        class="container">
-                        <div style="border-radius: 4px 0px 0px 0px;" class="containerHeader">Previsão de Intercorrências
-                            (<a class="periodoSelected"></a>):
-                        </div>
-                        <div class="chartContent">
-                            <div id="grafPrevisao"></div>
-                        </div>
-                    </div>
-
-                    <div class="previsao-container">
-                        <div class="previsao-card card-aumento">
-                            <span>
-                                <h4>Semana 1</h4><br>Previsão de Aumento: 30%
-                            </span>
-                            <i class="bi bi-graph-up-arrow previsao-icone"></i>
-                        </div>
-
-                        <div class="previsao-card card-diminuicao">
-                            <span>
-                                <h4>Semana 2</h4><br>Previsão de Diminuição: 15%
-                            </span>
-                            <i class="bi bi-graph-down-arrow previsao-icone"></i>
+                            <div style="display:flex; align-items:center; gap:8px;">
+                                <button id="prevGrafEsp2" class="Btn"
+                                    style="font-size: 30px; color: black; width:40px; height:28px; padding:0;">‹</button>
+                                <div id="grafEsp2" style="flex: 1;"></div>
+                                <button id="nextGrafEsp2" class="Btn"
+                                    style="font-size: 30px; color: black; width:40px; height:28px; padding:0;">›</button>
+                            </div>
+                            <div id="grafEsp2_pageInfo" style="text-align:center; font-size:12px; margin-top:6px;">
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -332,7 +333,7 @@
             const btnIA = document.getElementById('btnIA');
 
             if (aiSidebar && aiSidebar.classList.contains('active')) {
-                // Se o clique não foi no botão IA ou na sidebar
+
                 if (!btnIA.contains(event.target) && !aiSidebar.contains(event.target)) {
                     aiSidebar.classList.remove('active');
                     aiSidebar.setAttribute('aria-hidden', 'true');
@@ -340,8 +341,6 @@
             }
         });
     }
-
-
 
     /*sidebar--------------------------------------------------------------------*/
     function toggleSidebar() {
@@ -385,8 +384,6 @@
 
 
 
-
-
     /*IA----------------------------------------------------------------------*/
     function toggleAISidebar() {
         const ai = document.getElementById('aiSidebar');
@@ -412,11 +409,31 @@
         }
 
         resp.innerHTML = 'Processando...';
-
         gerarResposta(text);
     }
 
+    let dadosCombinados = [];
     async function gerarResposta(texto) {
+        dadosCombinados = [];
+
+        for (let i = 0; i < dadosUsados.length; i++) {
+
+            for (let j = 0; j < dadosSQL.length; j++) {
+
+                if (dadosUsados[i].numero_serie === dadosSQL[j].numero_serie) {
+
+                    dadosCombinados.push({
+                        ...dadosUsados[i],
+                        modelo: dadosSQL[j].nome
+                    });
+
+                    break;
+                }
+            }
+
+        }
+
+
         const resp = document.getElementById('aiResponse');
 
         const response = await fetch('/ia/perguntar', {
@@ -424,16 +441,16 @@
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({ texto })
+            body: JSON.stringify({
+                texto,
+                dadosCombinados
+            })
         });
 
         const data = await response.json();
-
         resp.innerHTML = data.resultado;
     }
     /*------------------------------------------------------------------------------------------------*/
-
-
 
 
 
@@ -479,12 +496,7 @@
         }
     }
     /*----------------------------------------------------------------------------------------------------*/
-
-
-
-
-
-    /*filtros------------------------------------------------------------------------------------------*/
+    /*PREPARACAO DADOS PRINCIPAIS---------------------------------------------------------------------------------------*/
     var valorFiltro;
     function updatePeriodo() {
         valorFiltro = document.getElementById("filtroPeriodo").value
@@ -501,34 +513,13 @@
             periodoSelected.innerHTML = `${exibicao}`;
         });
 
-        atualizarDados(valorFiltro)
+        atualizarDadosPrincipais(valorFiltro)
+
     }
 
-
-
-    function updateHospital() {
-        document.querySelectorAll(".hospitalSelected").forEach(function (hospitalSelected) {
-            if (document.getElementById("filtroHospital").value == '') {
-                hospitalSelected.innerHTML = ``;
-            } else {
-                hospitalSelected.innerHTML = `no ${document.getElementById("filtroHospital").value}`;
-            }
-        });
-    }
-    /*------------------------------------------------------------------------------------------------*/
-
-
-
-
-
-
-
-
-
-
-    /*atualizar dados---------------------------------------------------------------------------------------*/
-    function atualizarDados(data) {
-        var dadosUsados;
+    /*ATUALIZAR DADOS PRINCIPAIS---------------------------------------------------------------------------------------*/
+    var dadosUsados;
+    function atualizarDadosPrincipais(data) {
         if (data == 'semanal') {
             dadosUsados = dadosSemanais;
         } else if (data == 'mensal') {
@@ -539,12 +530,13 @@
 
         console.log(dadosUsados)
 
+
         atualizarKPI(dadosUsados);
         atualizarTabela1(dadosUsados);
         atualizarGraf1(dadosUsados);
-
-
+        updateHospital();
     }
+
 
     var totalIntercorrencias;
     function atualizarKPI(data) {
@@ -573,31 +565,39 @@
         }
         maisIntercorrencia = listaComponentes[indexMaior];
 
-        mainKPI.innerHTML = `<div style="width: 100%; display: flex; flex-direction: row; justify-content: center;">
-                        <div style="border-bottom: ${(qtdErros[indexMaior] * 100 / totalIntercorrencias) > 60 ? '#e60e3a' : (qtdErros[indexMaior] * 100 / totalIntercorrencias) > 30 ? 'rgb(235, 214, 31)' : '#30a799'} solid 4px;" class="kpiDashMain">
-                            <h2
-                                style="display: flex; flex-direction: row; justify-content: space-between; align-items: center;">
-                                ${maisIntercorrencia}
-                                <i class="bi bi-exclamation-circle-fill"
-                                    style="font-size: 48px; color: ${(qtdErros[indexMaior] * 100 / totalIntercorrencias) > 60 ? '#e60e3a' : (qtdErros[indexMaior] * 100 / totalIntercorrencias) > 30 ? 'rgb(235, 214, 31)' : '#30a799'};"></i>
-                            </h2>
-                            <p style="height: 48px;">Componente com mais intercorrência</p>
-                        </div>
+        mainKPI.innerHTML = ` <div
+                        style="padding-left: 20vh; width: 100%; display: flex; flex-direction: column; justify-content: center; margin-bottom: 10px;">
+                        <h3>Indicador de intercorrências:</h3>
+                        <div style="display: flex; flex-direction: row; width: 100%;">
+                            <!-- Verde -->
+                            <div class="kpiDash"
+                                style="height: 95px; border-bottom: 4px solid #30a799; width: 150px; margin: 0.6%; text-align: center;">
+                                <h2 style="font-size: 28px; margin: 20px 0;">
+                                    <span style="color: #30a799;">&lt; 30%</span>
+                                </h2>
+                                <p style="height: 48px; font-weight: 600;">Normal</p>
+                            </div>
 
-                        
-                        <div style="border-bottom: 1px solid rgb(204, 204, 204);" class="kpiDashMain">
-                            <h2
-                                style="display: flex; flex-direction: row; justify-content: space-between; align-items: center;">
-                                ${totalIntercorrencias}
-                                <i class="bi bi-exclamation-circle-fill" style="font-size: 48px; color: black;"></i>
-                            </h2>
-                            <p style="height: 48px;">Total de intercorrências</p>
+                            <!-- Amarelo -->
+                            <div class="kpiDash"
+                                style="height: 95px; border-bottom: 4px solid rgb(235, 214, 31); width: 150px; margin: 0 10px; text-align: center;">
+                                <h2 style="font-size: 28px; margin: 20px 0;">
+                                    <span style="color: rgb(235, 214, 31);">≥ 30%</span>
+                                </h2>
+                                <p style="height: 48px; font-weight: 600;">Alerta</p>
+                            </div>
+
+                            <!-- Vermelho -->
+                            <div class="kpiDash"
+                                style="height: 95px; border-bottom: 4px solid #e60e3a; width: 150px; margin: 0 10px; text-align: center;">
+                                <h2 style="font-size: 28px; margin: 20px 0;">
+                                    <span style="color: #e60e3a;">≥ 60%</span>
+                                </h2>
+                                <p style="height: 48px; font-weight: 600;">Alerta crítico</p>
+                            </div>
                         </div>
                     </div>
-
-
-
-                    <div style="width: 100%; display: flex; flex-direction: row; justify-content: center;">
+        <div style="width: 100%; display: flex; flex-direction: row; justify-content: center;">
                         <div class="kpiDash" style="border-bottom: 4px solid ${(qtdErros[0] * 100 / totalIntercorrencias) > 60 ? '#e60e3a' : (qtdErros[0] * 100 / totalIntercorrencias) > 30 ? 'rgb(235, 214, 31)' : '#30a799'}">
                             <h2
                                 style="display: flex; flex-direction: row; justify-content: space-between; align-items: center;">
@@ -606,7 +606,6 @@
                             </h2>
                             <p style="height: 48px;">Intercorrências em CPU (${qtdErros[0]}/${totalIntercorrencias})</p>
                         </div>
-
 
                         <div class="kpiDash" style="border-bottom: 4px solid ${(qtdErros[1] * 100 / totalIntercorrencias) > 60 ? '#e60e3a' : (qtdErros[1] * 100 / totalIntercorrencias) > 30 ? 'rgb(235, 214, 31)' : '#30a799'}">
                             <h2
@@ -617,7 +616,6 @@
                             <p style="height: 48px;">Intercorrências em RAM (${qtdErros[1]}/${totalIntercorrencias})</p>
                         </div>
 
-
                         <div class="kpiDash" style="border-bottom: 4px solid ${(qtdErros[2] * 100 / totalIntercorrencias) > 60 ? '#e60e3a' : (qtdErros[2] * 100 / totalIntercorrencias) > 30 ? 'rgb(235, 214, 31)' : '#30a799'}">
                             <h2
                                 style="display: flex; flex-direction: row; justify-content: space-between; align-items: center;">
@@ -626,7 +624,6 @@
                             </h2>
                             <p style="height: 48px;">Intercorrências em Disco (${qtdErros[2]}/${totalIntercorrencias})</p>
                         </div>
-
 
                         <div class="kpiDash" style="border-bottom: 4px solid ${(qtdErros[3] * 100 / totalIntercorrencias) > 60 ? '#e60e3a' : (qtdErros[3] * 100 / totalIntercorrencias) > 30 ? 'rgb(235, 214, 31)' : '#30a799'}">
                             <h2
@@ -662,6 +659,15 @@
             qtdErros.push(qtd)
         }
 
+        let ordenacao = qtdErros.map((qtd, i) => ({
+            qtdErros: qtd,
+            modelos: modelos[i]
+        }));
+
+        ordenacao.sort((a, b) => b.qtdErros - a.qtdErros);
+        qtdErros = ordenacao.map(i => i.qtdErros);
+        modelos = ordenacao.map(i => i.modelos);
+
         rankingModeloMain.innerHTML = `<th>Posição</th>
                                        <th>Modelo</th>
                                        <th>Total de Intercorrências</th>`
@@ -674,7 +680,117 @@
     }
 
 
+
     var grafMain1;
+
+    let _grafModels = [];
+    let _grafCpu = [];
+    let _grafRam = [];
+    let _grafDisco = [];
+    let _grafProc = [];
+    let _grafPageSize = 3;
+    let _grafPageIndex = 0;
+    let _grafControlsSetup = false;
+
+    function renderGrafMainPage() {
+        const start = _grafPageIndex * _grafPageSize;
+        const end = start + _grafPageSize;
+        const sliceModels = _grafModels.slice(start, end);
+        const sliceCpu = _grafCpu.slice(start, end);
+        const sliceRam = _grafRam.slice(start, end);
+        const sliceDisco = _grafDisco.slice(start, end);
+        const sliceProc = _grafProc.slice(start, end);
+
+        const dadosPage = {
+            series: [
+                { name: "CPU(%)", data: sliceCpu },
+                { name: "RAM(%)", data: sliceRam },
+                { name: "Disco(%)", data: sliceDisco },
+                { name: "Processos(%)", data: sliceProc }
+            ],
+            colors: ["#83cbc3", "#30a799", "#00796b", "#264653"],
+            chart: { type: 'bar', height: '165%', width: '110%' },
+            annotations: {
+                yaxis: [
+                    {
+                        y: 60,
+                        borderColor: '#e60e3a',
+                        label: {
+                            borderColor: '#e60e3a',
+                            style: {
+                                color: '#fff',
+                                background: '#e60e3a',
+                                fontSize: '13px'
+                            },
+                            text: 'Nível crítico 60%'
+                        }
+                    },
+                    {
+                        y: 30,
+                        borderColor: 'rgb(235, 214, 31)',
+                        label: {
+                            borderColor: 'rgb(235, 214, 31)',
+                            style: {
+                                color: '#00000',
+                                background: 'rgb(235, 214, 31)',
+                                fontSize: '13px'
+                            },
+                            text: 'Alerta 30%'
+                        }
+                    }
+                ]
+            },
+            plotOptions: {
+                bar: {
+                    horizontal: false,
+                    dataLabels: { position: 'top' },
+                    columnWidth: '85%'
+                }
+            },
+            dataLabels: {
+                enabled: true,
+                offsetX: 0,
+                style: { fontSize: '12px', colors: ['#fff'] }
+            },
+            stroke: { show: true, width: 1, colors: ['#fff'] },
+            tooltip: { shared: true, intersect: false },
+            xaxis: { categories: sliceModels }
+        };
+
+
+        if (typeof grafMain1 !== 'undefined' && grafMain1 !== null) {
+            grafMain1.destroy();
+        }
+        grafMain1 = new ApexCharts(document.querySelector("#grafMain1"), dadosPage);
+        grafMain1.render();
+
+
+        const totalPages = Math.max(1, Math.ceil(_grafModels.length / _grafPageSize));
+        document.getElementById('grafMain1_pageInfo').innerText = `Página ${_grafPageIndex + 1} de ${totalPages}`;
+        const prev = document.getElementById('prevGrafMain1');
+        const next = document.getElementById('nextGrafMain1');
+        if (prev && next) {
+            prev.disabled = _grafPageIndex <= 0;
+            next.disabled = _grafPageIndex >= totalPages - 1;
+        }
+    }
+
+    function setupGrafMainPaginationControls() {
+        if (_grafControlsSetup) return;
+        const prev = document.getElementById('prevGrafMain1');
+        const next = document.getElementById('nextGrafMain1');
+        if (prev && next) {
+            prev.addEventListener('click', function () {
+                if (_grafPageIndex > 0) { _grafPageIndex--; renderGrafMainPage(); }
+            });
+            next.addEventListener('click', function () {
+                const totalPages = Math.max(1, Math.ceil(_grafModels.length / _grafPageSize));
+                if (_grafPageIndex < totalPages - 1) { _grafPageIndex++; renderGrafMainPage(); }
+            });
+            _grafControlsSetup = true;
+        }
+    }
+
     function atualizarGraf1(data) {
         let modelos = [];
         let intercorrenciasModelo = [];
@@ -682,7 +798,6 @@
         let ramData = [];
         let discoData = [];
         let procData = [];
-
 
         for (let i = 0; i < dadosSQL.length; i++) {
             if (!modelos.includes(dadosSQL[i].nome)) {
@@ -701,6 +816,17 @@
             }
             intercorrenciasModelo.push(qtd)
         }
+
+
+        let ordenacao = intercorrenciasModelo.map((qtd, i) => ({
+            intercorrenciasModelo: qtd,
+            modelos: modelos[i]
+        }))
+
+        ordenacao.sort((a, b) => b.intercorrenciasModelo - a.intercorrenciasModelo)
+        intercorrenciasModelo = ordenacao.map((i) => i.intercorrenciasModelo)
+        modelos = ordenacao.map((i) => i.modelos)
+
 
         for (let i = 0; i < modelos.length; i++) {
             let qtdCpu = 0;
@@ -721,68 +847,27 @@
                     }
                 }
             }
-            cpuData.push((qtdCpu * 100 / intercorrenciasModelo[i]).toFixed(2))
-            ramData.push((qtdRam * 100 / intercorrenciasModelo[i]).toFixed(2))
-            discoData.push((qtdDisco * 100 / intercorrenciasModelo[i]).toFixed(2))
-            procData.push((qtdProc * 100 / intercorrenciasModelo[i]).toFixed(2))
+
+
+
+            cpuData.push((qtdCpu * 100 / intercorrenciasModelo[i]).toFixed(1))
+            ramData.push((qtdRam * 100 / intercorrenciasModelo[i]).toFixed(1))
+            discoData.push((qtdDisco * 100 / intercorrenciasModelo[i]).toFixed(1))
+            procData.push((qtdProc * 100 / intercorrenciasModelo[i]).toFixed(1))
         }
 
-        var dadosMain1 = {
-            series: [{
-                name: "CPU(%)",
-                data: cpuData
-            }, {
-                name: "RAM(%)",
-                data: ramData
-            }, {
-                name: "Disco(%)",
-                data: discoData
-            }, {
-                name: "Processos(%)",
-                data: procData
-            }],
-            colors: ["#83cbc3", "#30a799", "#00796b", "#264653"],
-            chart: {
-                type: 'bar',
-                height: '100%',
-                width: '100%'
-            },
-            plotOptions: {
-                bar: {
-                    horizontal: false,
-                    dataLabels: {
-                        position: 'top',
-                    },
-                }
-            },
-            dataLabels: {
-                enabled: true,
-                offsetX: 0,
-                style: {
-                    fontSize: '12px',
-                    colors: ['#fff']
-                }
-            },
-            stroke: {
-                show: true,
-                width: 1,
-                colors: ['#fff']
-            },
-            tooltip: {
-                shared: true,
-                intersect: false
-            },
-            xaxis: {
-                categories: modelos
-            },
-        };
 
-        if (typeof grafMain1 !== 'undefined' && grafMain1 !== null) {
-            grafMain1.destroy();
-        }
 
-        grafMain1 = new ApexCharts(document.querySelector("#grafMain1"), dadosMain1);
-        grafMain1.render();
+        _grafModels = modelos.slice();
+        _grafCpu = cpuData.map(v => Number(v));
+        _grafRam = ramData.map(v => Number(v));
+        _grafDisco = discoData.map(v => Number(v));
+        _grafProc = procData.map(v => Number(v));
+        _grafPageIndex = 0;
+
+
+        setupGrafMainPaginationControls();
+        renderGrafMainPage();
     }
 
 
@@ -791,184 +876,568 @@
 
 
 
+
+
+
+
+
     // ----------------------------------------------------------------------------------------------------------------------------
+    /*PREPARACAO DADOS ESPECIFICOS---------------------------------------------------------------------------------------*/
+    function updateHospital() {
+        let hospitais = [];
+        for (let i = 0; i < dadosUsados.length; i++) {
+            if (!hospitais.includes(dadosUsados[i]['hospital'])) {
+                hospitais.push(dadosUsados[i]['hospital']);
+            }
+        }
 
+        let selectHosp = document.getElementById('filtroHospital');
 
+        selectHosp.innerHTML = `<option value="todos">Todos os hospitais</option>`;
 
+        for (let i = 0; i < hospitais.length; i++) {
+            selectHosp.innerHTML += `<option value="${hospitais[i]}">${hospitais[i]}</option>`;
+        }
+        hospitalSelecionado()
+    }
 
+    var valorHospital;
+    function hospitalSelecionado() {
+        valorHospital = document.getElementById('filtroHospital').value;
 
+        document.querySelectorAll(".hospitalSelected").forEach(hosp => {
+            if (valorHospital == 'todos') {
+                hosp.innerHTML = `em ${valorHospital}`;
+            } else {
+                hosp.innerHTML = `no ${valorHospital}`;
+            }
+        });
 
+        atualizarDadosEspecificos(dadosUsados, valorHospital);
+    }
+    // ----------------------------------------------------------------------------------------------------------------------------
+    /*ATUALIZAR DADOS ESPECÍFICOS---------------------------------------------------------------------------------------*/
+    function atualizarDadosEspecificos(data, hosp) {
+        atualizarTabelaEsp1(data, hosp);
+        atualizarGrafEsp1(data, hosp);
+        atualizarTabelaEsp2(data, hosp);
+        atualizarGrafEsp2(data, hosp);
 
-
-
-
-
-
-
+    }
 
     /*-------------------- Visão específica 1 --------------------*/
-    var dadosEsp1 = {
-        series: [{
-            name: "Modelo 1",
-            data: [25, 23, 27, 26]
-        }, {
-            name: "Modelo 2",
-            data: [50, 52, 49, 51]
-        }, {
-            name: "Modelo 3",
-            data: [15, 14, 13, 16]
-        }, {
-            name: "Modelo 4",
-            data: [10, 11, 11, 7]
-        }],
-        colors: ["#83cbc3", "#30a799", "#00796b", "#264653"],
-        chart: {
-            type: 'bar',
-            height: '100%',
-            width: '100%'
-        },
-        plotOptions: {
-            bar: {
-                horizontal: false,
-                dataLabels: {
-                    position: 'top',
-                },
-            }
-        },
-        dataLabels: {
-            enabled: true,
-            offsetX: 0,
-            style: {
-                fontSize: '12px',
-                colors: ['#fff']
-            }
-        },
-        stroke: {
-            show: true,
-            width: 1,
-            colors: ['#fff']
-        },
-        tooltip: {
-            shared: true,
-            intersect: false
-        },
-        xaxis: {
-            categories: ["Área 1", "Área 2", "Área 3", "Área 4"]
-        },
-    };
+    let areas = [];
+    let valorAreas = [];
+    function atualizarTabelaEsp1(data, hosp) {
+        areas.length = 0;
+        valorAreas.length = 0;
 
-    var grafEsp1 = new ApexCharts(document.querySelector("#grafEsp1"), dadosEsp1);
-    grafEsp1.render();
+        for (let i = 0; i < data.length; i++) {
+            if (hosp == 'todos') {
+                if (!areas.includes(data[i]['area'])) {
+                    areas.push(data[i]['area'])
+                }
+            } else {
+                if (!areas.includes(data[i]['area']) && data[i]['hospital'] == hosp) {
+                    areas.push(data[i]['area'])
+                }
+            }
+        }
+
+        for (let i = 0; i < areas.length; i++) {
+            let qtd = 0;
+            for (let j = 0; j < data.length; j++) {
+                if (hosp == 'todos') {
+                    if (areas[i] == data[j]['area']) {
+                        qtd++;
+                    }
+                } else {
+                    if (areas[i] == data[j]['area'] && hosp == data[j]['hospital']) {
+                        qtd++
+                    }
+                }
+            }
+            valorAreas.push(qtd)
+        }
+
+        let ordenacao = valorAreas.map((v, i) => ({
+            valorAreas: v,
+            areas: areas[i]
+        }))
+
+        ordenacao.sort((a, b) => b.valorAreas - a.valorAreas)
+        valorAreas = ordenacao.map((i) => i.valorAreas)
+        areas = ordenacao.map((i) => i.areas)
+
+        rankingModeloEs1.innerHTML = `<tr>
+                                          <th>Posição</th>
+                                          <th>Área</th>
+                                          <th>Total de Intercorrências</th>
+                                     </tr>`
+
+        for (let i = 0; i < areas.length; i++) {
+            rankingModeloEs1.innerHTML += `<tr>
+                                       <td>${i + 1}</td>
+                                       <td>${areas[i]}</td>
+                                       <td>${valorAreas[i]}</td>
+                                   </tr>`
+        }
+    }
+
+
+
+    var grafEsp1 = null;
+
+    let _espSeries = [];
+    let _espPageSize = 3;
+    let _espPageIndex = 0;
+    let _espControlsSetup = false;
+    function renderGrafEspPage1() {
+        const start = _espPageIndex * _espPageSize;
+        const end = start + _espPageSize;
+        const sliceCategories = areas.slice(start, end);
+
+        const sliceSeries = _espSeries.map(s => ({
+            name: s.name,
+            data: (s.data || []).slice(start, end)
+        }));
+
+        const dadosEspPage = {
+            series: sliceSeries,
+            colors: ["#83cbc3", "#30a799", "#00796b", "#264653"],
+            chart: { type: 'bar', height: '165%', width: '110%' },
+            plotOptions: {
+                bar: {
+                    horizontal: false,
+                    dataLabels: { position: 'top' },
+                    columnWidth: '85%'
+                }
+            },
+            annotations: {
+                yaxis: [
+                    {
+                        y: 60,
+                        borderColor: '#e60e3a',
+                        label: {
+                            borderColor: '#e60e3a',
+                            style: {
+                                color: '#fff',
+                                background: '#e60e3a',
+                                fontSize: '13px'
+                            },
+                            text: 'Nível crítico 60%'
+                        }
+                    },
+                    {
+                        y: 30,
+                        borderColor: 'rgb(235, 214, 31)',
+                        label: {
+                            borderColor: 'rgb(235, 214, 31)',
+                            style: {
+                                color: '#00000',
+                                background: 'rgb(235, 214, 31)',
+                                fontSize: '13px'
+                            },
+                            text: 'Alerta 30%'
+                        }
+                    }
+                ]
+            },
+            dataLabels: {
+                enabled: true,
+                offsetX: 0,
+                style: { fontSize: '12px', colors: ['#fff'] }
+            },
+            stroke: { show: true, width: 1, colors: ['#fff'] },
+            tooltip: { shared: true, intersect: false },
+            xaxis: { categories: sliceCategories },
+        };
+
+        if (grafEsp1) grafEsp1.destroy();
+
+        grafEsp1 = new ApexCharts(document.querySelector("#grafEsp1"), dadosEspPage);
+        grafEsp1.render();
+
+        const totalPages = Math.max(1, Math.ceil(Math.max(1, areas.length) / _espPageSize));
+        const pageInfo = document.getElementById('grafEsp1_pageInfo');
+        if (pageInfo) pageInfo.innerText = `Página ${_espPageIndex + 1} de ${totalPages}`;
+
+        const prev = document.getElementById('prevGrafEsp1');
+        const next = document.getElementById('nextGrafEsp1');
+        if (prev && next) {
+            prev.disabled = _espPageIndex <= 0;
+            next.disabled = _espPageIndex >= totalPages - 1;
+        }
+    }
+
+    function setupGrafEspPaginationControls1() {
+        if (_espControlsSetup) return;
+        const prev = document.getElementById('prevGrafEsp1');
+        const next = document.getElementById('nextGrafEsp1');
+        if (prev && next) {
+            prev.addEventListener('click', function () {
+                if (_espPageIndex > 0) { _espPageIndex--; renderGrafEspPage1(); }
+            });
+            next.addEventListener('click', function () {
+                const totalPages = Math.max(1, Math.ceil(Math.max(1, areas.length) / _espPageSize));
+                if (_espPageIndex < totalPages - 1) { _espPageIndex++; renderGrafEspPage1(); }
+            });
+            _espControlsSetup = true;
+        }
+    }
+
+
+
+    function atualizarGrafEsp1(data, hosp) {
+        var series = [];
+        let modelosName = [];
+        let modelosData = [];
+
+        for (let i = 0; i < dadosSQL.length; i++) {
+            for (let j = 0; j < data.length; j++) {
+                if (hosp == 'todos') {
+                    if (dadosSQL[i].numero_serie == data[j].numero_serie) {
+                        if (!modelosName.includes(dadosSQL[i].nome)) {
+                            modelosName.push(dadosSQL[i].nome)
+                        }
+                    }
+                } else {
+                    if (dadosSQL[i].numero_serie == data[j].numero_serie && data[j].hospital == hosp) {
+                        if (!modelosName.includes(dadosSQL[i].nome)) {
+                            modelosName.push(dadosSQL[i].nome)
+                        }
+                    }
+                }
+            }
+        }
+
+        for (let i = 0; i < modelosName.length; i++) {
+            let dataQtd = [];
+
+            for (let j = 0; j < areas.length; j++) {
+                let qtd = 0;
+
+                for (let k = 0; k < dadosSQL.length; k++) {
+                    for (let l = 0; l < data.length; l++) {
+                        if (modelosName[i] === dadosSQL[k].nome && dadosSQL[k].numero_serie === data[l].numero_serie && data[l].area === areas[j]) {
+                            qtd++;
+                        }
+                    }
+                }
+                dataQtd.push(qtd);
+            }
+            modelosData.push(dataQtd);
+        }
+
+
+        for (let i = 0; i < modelosData.length; i++) {
+            for (let j = 0; j < valorAreas.length; j++) {
+                modelosData[i][j] = ((modelosData[i][j] * 100) / valorAreas[j]).toFixed(1);
+            }
+        }
+
+        for (let i = 0; i < modelosName.length; i++) {
+            let newData;
+
+            newData = {
+                name: modelosName[i] + "(%)",
+                data: modelosData[i]
+            }
+            series.push(newData)
+        }
+
+        _espSeries = series.slice();
+        _espPageIndex = 0;
+        setupGrafEspPaginationControls1();
+        renderGrafEspPage1();
+    }
+
+
+
+
 
 
 
     /*-------------------- Visão específica 2 --------------------*/
-    var dadosEsp2 = {
-        series: [{
-            name: "CPU(%)",
-            data: [25, 23, 27, 26]
-        }, {
-            name: "RAM(%)",
-            data: [50, 52, 49, 51]
-        }, {
-            name: "Disco(%)",
-            data: [15, 14, 13, 16]
-        }, {
-            name: "Processos(%)",
-            data: [10, 11, 11, 7]
-        }],
-        colors: ["#83cbc3", "#30a799", "#00796b", "#264653"],
-        chart: {
-            type: 'bar',
-            height: '100%',
-            width: '100%'
-        },
-        plotOptions: {
-            bar: {
-                horizontal: false,
-                dataLabels: {
-                    position: 'top',
-                },
-            }
-        },
-        dataLabels: {
-            enabled: true,
-            offsetX: 0,
-            style: {
-                fontSize: '12px',
-                colors: ['#fff']
-            }
-        },
-        stroke: {
-            show: true,
-            width: 1,
-            colors: ['#fff']
-        },
-        tooltip: {
-            shared: true,
-            intersect: false
-        },
-        xaxis: {
-            categories: ["Modelo 1", "Modelo 2", "Modelo 3", "Modelo 4"]
-        },
-    };
+    function atualizarTabelaEsp2(data, hosp) {
+        let modelosName = [];
+        let qtdErros = [];
 
-    var grafEsp2 = new ApexCharts(document.querySelector("#grafEsp2"), dadosEsp2);
-    grafEsp2.render();
 
-    /*-------------------- Previsão --------------------*/
-
-    var dadosPrevisao = {
-        series: [{
-            name: "Intercorrências",
-            data: [80, 95, 90, 105, 100, 110, 120, 135, 150]
-        }],
-        chart: {
-            height: '100%',
-            type: 'line',
-            zoom: {
-                enabled: false
+        for (let i = 0; i < dadosSQL.length; i++) {
+            for (let j = 0; j < data.length; j++) {
+                if (hosp == 'todos') {
+                    if (dadosSQL[i].numero_serie == data[j].numero_serie) {
+                        if (!modelosName.includes(dadosSQL[i].nome)) {
+                            modelosName.push(dadosSQL[i].nome)
+                        }
+                    }
+                } else {
+                    if (dadosSQL[i].numero_serie == data[j].numero_serie && data[j].hospital == hosp) {
+                        if (!modelosName.includes(dadosSQL[i].nome)) {
+                            modelosName.push(dadosSQL[i].nome)
+                        }
+                    }
+                }
             }
-        },
-        dataLabels: {
-            enabled: false
-        },
-        stroke: {
-            curve: 'straight'
-        },
-        markers: {
-            size: 5,
-            colors: ['#00000'],
-            strokeColors: '#fff',
-            strokeWidth: 2,
-            hover: {
-                size: 7,
-            }
-        },
-        grid: {
-            row: {
-                colors: ['#f3f3f3', 'transparent'],
-                opacity: 0.5
-            }
-        },
-        xaxis: {
-            categories: [
-                'Semana 1',
-                'Semana 2',
-                'Semana 3',
-                'Semana 4',
-                'Semana 5',
-                'Semana 6',
-                'Semana 7',
-                'Semana 8',
-                'Semana 9'
-            ]
         }
-    };
+
+        for (let i = 0; i < modelosName.length; i++) {
+            let qtd = 0;
+            for (let j = 0; j < dadosSQL.length; j++) {
+                for (let k = 0; k < data.length; k++) {
+                    if (hosp == "todos") {
+                        if (modelosName[i] == dadosSQL[j].nome && dadosSQL[j].numero_serie == data[k].numero_serie) {
+                            qtd++;
+                        }
+                    } else {
+                        if (modelosName[i] == dadosSQL[j].nome && dadosSQL[j].numero_serie == data[k].numero_serie && data[k].hospital == hosp) {
+                            qtd++;
+                        }
+                    }
+                }
+            }
+            qtdErros.push(qtd)
+        }
+
+        let ordenacao = qtdErros.map((qtd, i) => ({
+            qtdErros: qtd,
+            modelosName: modelosName[i]
+        }));
+
+        ordenacao.sort((a, b) => b.qtdErros - a.qtdErros);
+        qtdErros = ordenacao.map(i => i.qtdErros);
+        modelosName = ordenacao.map(i => i.modelosName);
+
+        rankingModeloEsp2.innerHTML = `<th>Posição</th>
+                                       <th>Modelo</th>
+                                       <th>Total de Intercorrências</th>`
+
+        for (let i = 0; i < modelosName.length; i++) {
+            rankingModeloEsp2.innerHTML += `<td>${i + 1}°</td>
+                                            <td>${modelosName[i]}</td>
+                                            <td>${qtdErros[i]}</td>`
+        }
+    }
 
 
+    var grafEsp2 = null;
 
+    let _grafEspModels = [];
+    let _grafEspCpu = [];
+    let _grafEspRam = [];
+    let _grafEspDisco = [];
+    let _grafEspProc = [];
+    let _grafEspPageSize = 3;
+    let _grafEspPageIndex = 0;
+    let _grafEspControlsSetup = false;
 
-    var grafPrevisao = new ApexCharts(document.querySelector("#grafPrevisao"), dadosPrevisao);
-    grafPrevisao.render();
+    function renderGrafEspPage2() {
+        const start = _grafEspPageIndex * _grafEspPageSize;
+        const end = start + _grafEspPageSize;
+
+        const sliceModels = _grafEspModels.slice(start, end);
+        const sliceCpu = _grafEspCpu.slice(start, end);
+        const sliceRam = _grafEspRam.slice(start, end);
+        const sliceDisco = _grafEspDisco.slice(start, end);
+        const sliceProc = _grafEspProc.slice(start, end);
+
+        const dadosPage = {
+            series: [
+                { name: "CPU(%)", data: sliceCpu },
+                { name: "RAM(%)", data: sliceRam },
+                { name: "Disco(%)", data: sliceDisco },
+                { name: "Processos(%)", data: sliceProc }
+            ],
+            colors: ["#83cbc3", "#30a799", "#00796b", "#264653"],
+            chart: { type: 'bar', height: '165%', width: '110%' },
+            plotOptions: {
+                bar: {
+                    horizontal: false,
+                    dataLabels: { position: 'top' },
+                    columnWidth: '85%'
+                }
+            },
+            annotations: {
+                yaxis: [
+                    {
+                        y: 60,
+                        borderColor: '#e60e3a',
+                        label: {
+                            borderColor: '#e60e3a',
+                            style: {
+                                color: '#fff',
+                                background: '#e60e3a',
+                                fontSize: '13px'
+                            },
+                            text: 'Nível crítico 60%'
+                        }
+                    },
+                    {
+                        y: 30,
+                        borderColor: 'rgb(235, 214, 31)',
+                        label: {
+                            borderColor: 'rgb(235, 214, 31)',
+                            style: {
+                                color: '#00000',
+                                background: 'rgb(235, 214, 31)',
+                                fontSize: '13px'
+                            },
+                            text: 'Alerta 30%'
+                        }
+                    }
+                ]
+            },
+            dataLabels: {
+                enabled: true,
+                offsetX: 0,
+                style: { fontSize: '12px', colors: ['#fff'] }
+            },
+            stroke: { show: true, width: 1, colors: ['#fff'] },
+            tooltip: { shared: true, intersect: false },
+            xaxis: { categories: sliceModels }
+        };
+
+        if (grafEsp2) {
+            grafEsp2.destroy();
+        }
+
+        grafEsp2 = new ApexCharts(document.querySelector("#grafEsp2"), dadosPage);
+        grafEsp2.render();
+
+        const totalPages = Math.max(1, Math.ceil(_grafEspModels.length / _grafEspPageSize));
+        document.getElementById('grafEsp2_pageInfo').innerText =
+            `Página ${_grafEspPageIndex + 1} de ${totalPages}`;
+
+        const prev = document.getElementById('prevGrafEsp2');
+        const next = document.getElementById('nextGrafEsp2');
+
+        if (prev && next) {
+            prev.disabled = _grafEspPageIndex <= 0;
+            next.disabled = _grafEspPageIndex >= totalPages - 1;
+        }
+    }
+
+    function setupGrafEspPaginationControls2() {
+        if (_grafEspControlsSetup) return;
+
+        const prev = document.getElementById('prevGrafEsp2');
+        const next = document.getElementById('nextGrafEsp2');
+
+        if (prev && next) {
+            prev.addEventListener('click', function () {
+                if (_grafEspPageIndex > 0) {
+                    _grafEspPageIndex--;
+                    renderGrafEspPage2();
+                }
+            });
+
+            next.addEventListener('click', function () {
+                const totalPages = Math.max(1, Math.ceil(_grafEspModels.length / _grafEspPageSize));
+                if (_grafEspPageIndex < totalPages - 1) {
+                    _grafEspPageIndex++;
+                    renderGrafEspPage2();
+                }
+            });
+
+            _grafEspControlsSetup = true;
+        }
+    }
+
+    function atualizarGrafEsp2(data, hosp) {
+        let modelos = [];
+        let intercorrenciasModelo = [];
+        let cpuData = [];
+        let ramData = [];
+        let discoData = [];
+        let procData = [];
+
+        for (let i = 0; i < dadosSQL.length; i++) {
+            for (let j = 0; j < data.length; j++) {
+                if (hosp == 'todos') {
+                    if (dadosSQL[i].numero_serie == data[j].numero_serie) {
+                        if (!modelos.includes(dadosSQL[i].nome)) modelos.push(dadosSQL[i].nome);
+                    }
+                } else {
+                    if (dadosSQL[i].numero_serie == data[j].numero_serie && data[j].hospital == hosp) {
+                        if (!modelos.includes(dadosSQL[i].nome)) modelos.push(dadosSQL[i].nome);
+                    }
+                }
+            }
+        }
+
+        for (let i = 0; i < modelos.length; i++) {
+            let qtd = 0;
+            for (let j = 0; j < dadosSQL.length; j++) {
+                for (let k = 0; k < data.length; k++) {
+                    if (hosp == 'todos') {
+                        if (modelos[i] == dadosSQL[j].nome && dadosSQL[j].numero_serie == data[k].numero_serie) {
+                            qtd++;
+                        }
+                    } else {
+                        if (modelos[i] == dadosSQL[j].nome && dadosSQL[j].numero_serie == data[k].numero_serie && data[k].hospital == hosp) {
+                            qtd++;
+                        }
+                    }
+                }
+            }
+            intercorrenciasModelo.push(qtd);
+        }
+
+        // ordenar por total
+        let ordenacao = intercorrenciasModelo.map((qtd, i) => ({
+            qtd: qtd,
+            modelo: modelos[i]
+        }));
+
+        ordenacao.sort((a, b) => b.qtd - a.qtd);
+
+        intercorrenciasModelo = ordenacao.map(o => o.qtd);
+        modelos = ordenacao.map(o => o.modelo);
+
+        // calcular % por componente por modelo
+        for (let i = 0; i < modelos.length; i++) {
+            let qtdCpu = 0;
+            let qtdRam = 0;
+            let qtdDisco = 0;
+            let qtdProc = 0;
+
+            for (let j = 0; j < dadosSQL.length; j++) {
+                for (let k = 0; k < data.length; k++) {
+                    if (modelos[i] == dadosSQL[j].nome && dadosSQL[j].numero_serie == data[k].numero_serie) {
+                        if (hosp == 'todos' || data[k].hospital == hosp) {
+                            if (data[k].componente === "CPU") qtdCpu++;
+                            else if (data[k].componente === "RAM") qtdRam++;
+                            else if (data[k].componente === "Disco") qtdDisco++;
+                            else if (data[k].componente === "Processos") qtdProc++;
+                        }
+                    }
+                }
+            }
+
+            const total = intercorrenciasModelo[i] || 0;
+            if (total === 0) {
+                cpuData.push(0);
+                ramData.push(0);
+                discoData.push(0);
+                procData.push(0);
+            } else {
+                qtdCpu += (total - (qtdCpu + qtdRam + qtdDisco + qtdProc));
+                cpuData.push(Number((qtdCpu * 100 / total).toFixed(1)));
+                ramData.push(Number((qtdRam * 100 / total).toFixed(1)));
+                discoData.push(Number((qtdDisco * 100 / total).toFixed(1)));
+                procData.push(Number((qtdProc * 100 / total).toFixed(1)));
+            }
+        }
+
+        _grafEspModels = modelos.slice();
+        _grafEspCpu = cpuData.slice();
+        _grafEspRam = ramData.slice();
+        _grafEspDisco = discoData.slice();
+        _grafEspProc = procData.slice();
+        _grafEspPageIndex = 0;
+
+        setupGrafEspPaginationControls2();
+        renderGrafEspPage2();
+    }
 </script>
