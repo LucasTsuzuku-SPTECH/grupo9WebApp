@@ -33,21 +33,21 @@ function buscarMonitoramento(req, res) {
             let mapaDeAreas = {};
             let mapaDeParametros = {};
             listaDoBanco.forEach(function (registro) {
-                const idVentiladorSerial = registro.numero_serie; 
-                
+                const idVentiladorSerial = registro.numero_serie;
+
                 if (!mapaDeAreas[registro.nome_area]) {
                     mapaDeAreas[registro.nome_area] = {
                         nome: registro.nome_area,
                         total: 0, estaveis: 0, alertas: 0, listaIds: new Set()
                     };
                 }
-                
+
                 if (!mapaDeParametros[idVentiladorSerial]) mapaDeParametros[idVentiladorSerial] = [];
                 if (registro.nomeComponente) {
-                    mapaDeParametros[idVentiladorSerial].push({ 
-                        componente: registro.nomeComponente, 
-                        max: parseFloat(registro.parametroMax), 
-                        min: parseFloat(registro.parametroMin)  
+                    mapaDeParametros[idVentiladorSerial].push({
+                        componente: registro.nomeComponente,
+                        max: parseFloat(registro.parametroMax),
+                        min: parseFloat(registro.parametroMin)
                     });
                 }
                 mapaDeAreas[registro.nome_area].listaIds.add(idVentiladorSerial);
@@ -55,33 +55,33 @@ function buscarMonitoramento(req, res) {
 
 
             let idsComAlerta = new Set();
-            
+
             listaCsv.forEach(leitura => {
-                const idVentiladorSerial = leitura.numero_serie; 
+                const idVentiladorSerial = leitura.numero_serie;
 
                 if (idVentiladorSerial && mapaDeParametros[idVentiladorSerial]) {
-                    
+
                     const nomeComponenteLido = leitura.componente;
                     const limitesDoBanco = mapaDeParametros[idVentiladorSerial] || [];
-                    
+
                     let valorLidoLimpo = leitura.valor_lido;
-                    valorLidoLimpo = valorLidoLimpo.replace(/[^0-9.,-]+/g, '').trim(); 
-                    valorLidoLimpo = parseFloat(valorLidoLimpo.replace(',', '.')); 
-                    
+                    valorLidoLimpo = valorLidoLimpo.replace(/[^0-9.,-]+/g, '').trim();
+                    valorLidoLimpo = parseFloat(valorLidoLimpo.replace(',', '.'));
+
                     let temAlertaValido = false;
-                    
+
                     for (let i = 0; i < limitesDoBanco.length; i++) {
                         let limite = limitesDoBanco[i];
-                        
+
                         if (limite.componente.toUpperCase() === nomeComponenteLido.toUpperCase()) {
-                            
-                            if (!isNaN(valorLidoLimpo) && (valorLidoLimpo > limite.max || valorLidoLimpo < limite.min)) { 
+
+                            if (!isNaN(valorLidoLimpo) && (valorLidoLimpo > limite.max || valorLidoLimpo < limite.min)) {
                                 temAlertaValido = true;
-                                break; 
+                                break;
                             }
                         }
                     }
-                    
+
                     if (temAlertaValido) {
                         idsComAlerta.add(idVentiladorSerial);
                     }
@@ -91,18 +91,18 @@ function buscarMonitoramento(req, res) {
 
             for (let nomeArea in mapaDeAreas) {
                 let area = mapaDeAreas[nomeArea];
-                
+
                 area.total = 0;
                 area.alertas = 0;
                 area.estaveis = 0;
 
                 area.listaIds.forEach(function (idVentiladorString) {
-                    area.total++; 
-                    
-                    if (idsComAlerta.has(idVentiladorString)) { 
-                        area.alertas++; 
+                    area.total++;
+
+                    if (idsComAlerta.has(idVentiladorString)) {
+                        area.alertas++;
                     } else {
-                        area.estaveis++; 
+                        area.estaveis++;
                     }
                 });
             }
@@ -119,7 +119,7 @@ function buscarMonitoramento(req, res) {
                     podeDoar = Math.floor(area.estaveis * 0.80);
                 }
                 else if (risco > 10) {
-                    precisaReceber = Math.ceil(area.alertas / 2); 
+                    precisaReceber = Math.ceil(area.alertas / 2);
                 }
 
                 return {
@@ -141,7 +141,7 @@ function buscarMonitoramento(req, res) {
             doadores.sort((a, b) => b.podeDoar - a.podeDoar);
 
             necessitados.forEach(function (receptor) {
-                let falta = receptor.precisaReceber; 
+                let falta = receptor.precisaReceber;
 
                 for (let i = 0; i < doadores.length; i++) {
                     let doador = doadores[i];
@@ -151,8 +151,8 @@ function buscarMonitoramento(req, res) {
 
                     let qtdPassada = Math.min(falta, doador.podeDoar);
 
-                    doador.podeDoar -= qtdPassada; 
-                    falta -= qtdPassada; 
+                    doador.podeDoar -= qtdPassada;
+                    falta -= qtdPassada;
 
                     receptor.origemDoacao.push({
                         nome: doador.nome,
@@ -175,7 +175,7 @@ function buscarMonitoramento(req, res) {
                     valorPrecisaFront = area.precisaReceber;
 
                     let totalRecebido = area.origemDoacao.reduce((acc, curr) => acc + curr.qtd, 0);
-                    valorAcao = area.precisaReceber; 
+                    valorAcao = area.precisaReceber;
 
                     if (totalRecebido > 0) {
                         let fontes = area.origemDoacao.map(o => `${o.qtd} unidades da ${o.nome}`).join(', ');
@@ -241,7 +241,7 @@ function buscarMonitoramento(req, res) {
 }
 
 function buscarUmidade(req, res) {
-    
+
     medidaModel.buscarUmidadeS3().then(resultado => {
         if (resultado && resultado.length > 0) {
             let labels = [], dados = [], cores = [], maior = -1, pico = -1;

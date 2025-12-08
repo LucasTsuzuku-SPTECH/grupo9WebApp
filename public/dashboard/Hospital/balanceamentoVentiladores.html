@@ -70,15 +70,15 @@
                                         principal</a>
                                 </li>
                                 <li class="nav-item-selected" style="width: 100%;">
-                                    <a class="nav-link active" style="padding: 5px; color: #f5f6fa;  font-size: 22px;"
+                                    <a class="nav-link active" style="padding: 5px; color: #f5f6fa; font-size: 22px;"
                                         href="./balanceamentoVentiladores.html">Balanceamento</a>
                                 </li>
                                 <li class="nav-item" style="width: 100%;">
-                                    <a class="nav-link active" style="padding: 5px; color: #f5f6fa;  font-size: 22px;"
+                                    <a class="nav-link active" style="padding: 5px; color: #f5f6fa; font-size: 22px;"
                                         href="./controleSalas.html">Salas</a>
                                 </li>
                                 <li class="nav-item" style="width: 100%;">
-                                    <a class="nav-link active" style="padding: 5px; color: #f5f6fa;  font-size: 22px;"
+                                    <a class="nav-link active" style="padding: 5px; color: #f5f6fa; font-size: 22px;"
                                         href="./contas.html">Contas</a>
                                 </li>
                             </ul>
@@ -101,7 +101,7 @@
                         </div>
                     </div>
                 </div>
-            </nav>
+        </nav>
 
         <div class="conteudo-monitoramento">
             <div class="container-monitoramento">
@@ -285,9 +285,7 @@
                     if (resposta.ok) {
                         resposta.json().then(function (dados) {
                             console.log("Dados recebidos:", dados);
-                            // CHAMADA PARA ATUALIZAR O HORÁRIO DA TELA
-                            atualizarHorarioTela(); 
-                            // ------------------------------------------------
+                            atualizarHorarioTela();
                             atualizarDashboardHardware(dados);
                         });
                     } else {
@@ -491,10 +489,7 @@
                 .then(function (resposta) {
                     if (resposta.ok) {
                         resposta.json().then(function (dados) {
-                            // ------------------------------------------------
-                            // CHAMADA PARA ATUALIZAR O HORÁRIO DA TELA
                             atualizarHorarioTela();
-                            // ------------------------------------------------
                             atualizarGraficoUmidade(dados);
                             atualizarTextoRisco(dados.analiseRisco);
                         });
@@ -562,7 +557,7 @@
 
         // Configura o intervalo de atualização (função adicionada no onload)
         function configurarPeriodoAtualizacao() {
-            // Atualiza os dados a cada 5 segundos (5000ms) - Ajuste o tempo conforme necessário
+            // Atualiza os dados a cada 5 segundos 
             setInterval(() => {
                 // A função atualizarHorarioTela() será chamada dentro das funções de fetch (.then)
                 obterDadosMonitoramento();

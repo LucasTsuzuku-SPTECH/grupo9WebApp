@@ -32,7 +32,8 @@ body {
   max-width: 1600px;
   margin: 0 auto;
   padding: 0 32px 36px;
-  width: 100%; /* Adicione esta linha */
+  width: 100%;
+  /* Adicione esta linha */
 }
 
 /* --- CARD PRINCIPAL --- */
@@ -251,16 +252,16 @@ body {
 /* NOVO ESTILO: Borda fina em volta + Borda grossa colorida embaixo */
 .cartao-kpi {
   background: white;
-  border-radius: 8px; 
+  border-radius: 8px;
   padding: 20px 30px;
   /* A Borda fina cinza que você pediu */
-  border: 1px solid #dee2e6; 
-  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-  
+  border: 1px solid #dee2e6;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+
   /* Mantém a borda de baixo grossa, a cor é definida nas subclasses */
-  border-bottom-width: 6px; 
+  border-bottom-width: 6px;
   border-bottom-style: solid;
-  
+
   height: 180px;
   display: flex;
   align-items: center;
@@ -304,6 +305,7 @@ body {
 .subtitulo-kpi {
   font-size: 0.75rem;
   color: #888;
+  margin-bottom: 0px;
 }
 
 .lado-grafico-kpi {
