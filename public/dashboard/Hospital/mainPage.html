@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="pt-br">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,6 +11,7 @@
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script src="https://kit.fontawesome.com/9f7414eb10.js" crossorigin="anonymous"></script>
   <script src="../../js/sessao.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   <style>
     .corPrincipal {
       background: #264653;
@@ -142,9 +144,96 @@
       max-height: 400px;
       overflow-y: auto;
     }
+
+    .barra-legenda-vertical {
+      width: 40px;
+      height: 260px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .barra-legenda-vertical-kpi {
+      width: 20px;
+      height: 150px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .rotulo-legenda {
+      text-align: center;
+      font-size: 12px;
+      font-weight: bold;
+    }
+
+    .rotulo-legenda.top {
+      color: #8B0000;
+    }
+
+    .rotulo-legenda.bottom {
+      color: #006400;
+    }
+
+    .seta {
+      font-size: 1.3em;
+      line-height: 0.8;
+    }
+
+    .barra-gradiente {
+      width: 18px;
+      height: 100%;
+      border-radius: 6px;
+      margin: 8px 0;
+
+
+      background: linear-gradient(to bottom,
+          #920000 0%,
+          #c74a17 20%,
+          #ffa600 40%,
+          #f5e172 60%,
+          #27ac27 80%,
+          #006400 100%);
+    }
+
+    .barra-gradiente-kpi {
+      width: 18px;
+      height: 100%;
+      border-radius: 6px;
+      margin: 8px 0;
+
+
+      background:
+        repeating-linear-gradient(to bottom,
+          #920000 0 20px,
+          #006400 20px 40px);
+    }
+    .tooltip-inner {
+    max-width: 240px !important;
+    text-align: left;
+    font-size: 14px;
+    padding: 10px 12px;
+    }
+    .link{
+      text-decoration: none;
+      color: inherit;
+    }
+.info-icon {
+  width: 18px;
+  height: 18px;
+  cursor: pointer;
+  opacity: 0.8;
+  margin-left: 4px;
+}
+
+.info-icon:hover {
+  opacity: 1;
+}
+    
   </style>
 
 </head>
+
 <body onload="ONLOAD(), atualizarDados()">
 
   <nav class="navbar corPrincipal fixed-top py-3">
@@ -248,23 +337,27 @@
             <div class="me-3 mb-2 mb-md-0">
               <label for="filtroTempo" class="form-label mb-0 visually-hidden">Período:</label>
               <div class="btn-group" role="group" aria-label="Filtro de Período">
-                <input type="radio" class="btn-check btnTempo" name="filtroTempo" id="tempoHora" autocomplete="off" data-tempo="Hora" checked>
-                <label class="btn btn-outline-primary btn-sm" for="tempoHora">Hora</label>
+                <input type="radio" class="btn-check btnTempo" name="filtroTempo" id="tempoHora" autocomplete="off"
+                  data-tempo="ultimaHora">
+                <label class="btn btn-outline-primary btn-sm" for="tempoHora">Última Hora</label>
 
-                <input type="radio" class="btn-check btnTempo" name="filtroTempo" id="tempoDia" autocomplete="off" data-tempo="diario">
-                <label class="btn btn-outline-primary btn-sm" for="tempoDia">Dia</label>
+                <input type="radio" class="btn-check btnTempo" name="filtroTempo" id="tempoDia" autocomplete="off"
+                  data-tempo="diario" checked>
+                <label class="btn btn-outline-primary btn-sm" for="tempoDia">Diário</label>
 
-                <input type="radio" class="btn-check btnTempo" name="filtroTempo" id="tempoSemana" autocomplete="off" data-tempo="semanal">
-                <label class="btn btn-outline-primary btn-sm" for="tempoSemana">Semana</label>
+                <input type="radio" class="btn-check btnTempo" name="filtroTempo" id="tempoSemana" autocomplete="off"
+                  data-tempo="semanal">
+                <label class="btn btn-outline-primary btn-sm" for="tempoSemana">Semanal</label>
 
-                <input type="radio" class="btn-check btnTempo" name="filtroTempo" id="tempoMes" autocomplete="off" data-tempo="mensal">
-                <label class="btn btn-outline-primary btn-sm" for="tempoMes">Mês</label>
+                <input type="radio" class="btn-check btnTempo" name="filtroTempo" id="tempoMes" autocomplete="off"
+                  data-tempo="mensal">
+                <label class="btn btn-outline-primary btn-sm" for="tempoMes">Mensal</label>
 
-                <input type="radio" class="btn-check btnTempo" name="filtroTempo" id="tempoAno" autocomplete="off" data-tempo="anual">
-                <label class="btn btn-outline-primary btn-sm" for="tempoAno">Ano</label>
+                <input type="radio" class="btn-check btnTempo" name="filtroTempo" id="tempoAno" autocomplete="off"
+                  data-tempo="anual">
+                <label class="btn btn-outline-primary btn-sm" for="tempoAno">Anual</label>
               </div>
             </div>
-
             <div>
               <label for="filtroArea" class="form-label mb-0 visually-hidden">Área:</label>
               <select class="form-select form-select-sm" id="filtroArea" aria-label="Filtro de Área">
@@ -277,159 +370,127 @@
       </div>
     </div>
 
-    <section class="d-flex justify-content-center align-items-center row g-3 mb-3 KPIs">
-      <div class="col-6 col-md-3 col-lg-2">
-        <div class="card kpi-card-custom h-100 " style="border-bottom: 6px solid red;">
-          <a href="#" class="text-decoration-none text-dark d-flex flex-column h-100 p-3"
-            onclick="abrirModalAlertas('Alertas')">
-            <div class="d-flex align-items-center DadosKPI">
-              <div>
-                <p class="mb-0">Alertas <b>Ativos</b></p>
-                <h3 class="display-6 mb-0">03</h3>
-                <div class="mt-2 text-muted" style="font-size:.85rem"><p class="mb-0">Principal causa: <b>RAM</b></p></div>
-              </div>
-            </div>
-          </a>
-        </div>
-      </div>
-      <div class="col-6 col-md-3 col-lg-2">
-        <div class="card kpi-card-custom h-100">
-          <a href="#" class="text-decoration-none text-dark d-flex flex-column h-100 p-3"
-          onclick="abrirModalAlertas('UltimoAlerta')">
-            <div class="d-flex justify-content-between align-items-center DadosKPI">
-              <div>
-                <p class="mb-0">Tempo desde o último alerta:</p>
-                <h5 id="tempoUltimoAlerta" class="display-6 mb-0">...</h5>
-                <div class="mt-2 text-muted" style="font-size:.85rem">
-                  <p id="tipoAlertaAcionado" class="mb-0">Tipo: </p>
+    <section class="KPIs mb-3">
+      <div class="row g-3 justify-content-center align-items-center">
+        <div class="col-6 col-md-3 col-lg-2 d-flex justify-content-center">
+          <div id="AlertaDiv" class="card kpi-card-custom h-100 w-100">
+            <a href="#" class="text-decoration-none text-dark d-flex flex-column h-100 p-3"
+              onclick="abrirModalAlertas('Alertas')">
+
+              <div class="d-flex align-items-center DadosKPI">
+                <div>
+                  <p class="mb-0" id="totalDeAlertas">Total de <b>Alertas</b>
+                    <img src="https://cdn-icons-png.flaticon.com/512/1828/1828859.png"
+                    class="info-icon"
+                    data-bs-toggle="tooltip"
+                    data-bs-html="true"
+                    title='
+                      <b>Significado das cores:</b><br>
+                      <span style="color: red;">&#9632;</span> Vermelho: Possui alertas<br>
+                      <span style="color: green;">&#9632;</span> Verde: Sem alertas
+                    '>
+                  </p>
+                  <h3 class="display-6 mb-0" id="qtdAlertas">...</h3>
+
+                  <div class="mt-2 text-muted" style="font-size:.85rem">
+                    <p class="mb-0" id="principalCausaAlerta">Principal causa: ...</p>
+                  </div>
                 </div>
               </div>
-            </div>
-          </a>
+
+            </a>
+          </div>
         </div>
-      </div>
-      <div class="col-6 col-md-3 col-lg-2">
-        <div class="card kpi-card-custom h-100">
-          <a href="#" class="text-decoration-none text-dark d-flex flex-column h-100 p-3"
-          onclick="abrirModalAlertas('MaquinasOFF')">
-            <div class="d-flex justify-content-between align-items-center DadosKPI">
-              <div>
-                <p class="mb-0">Máquinas Monitoradas</p>
-                <h3 class="display-6 mb-0">20</h3>
-                <div class="mt-2 text-muted" style="font-size:.85rem"><p class="mb-0" id="">Máquinas offline: </p></div>
+
+        <div class="col-6 col-md-3 col-lg-2 d-flex justify-content-center">
+          <div id="AlertaDiv" class="card kpi-card-custom h-100 w-100">
+            <a href="#" class="text-decoration-none text-dark d-flex flex-column h-100 p-3"
+              onclick="abrirModalAlertas('UltimoAlerta')">
+              <div class="d-flex justify-content-between align-items-center DadosKPI">
+                <div>
+                  <p class="mb-0">Tempo desde o último alerta:</p>
+                  <h5 id="tempoUltimoAlerta" class="display-6 mb-0">...</h5>
+
+                  <div class="mt-2 text-muted" style="font-size:.85rem">
+                    <p id="tipoAlertaAcionado" class="mb-0">Tipo: </p>
+                  </div>
+                </div>
               </div>
-            </div>
-          </a>
+            </a>
+          </div>
         </div>
-      </div>
-      <div class="col-6 col-md-3 col-lg-2">
-        <div class="card kpi-card-custom h-100">
-          <a href="#" class="text-decoration-none text-dark d-flex flex-column h-100 p-3"
-          onclick="abrirModalAlertas('Area')">
-            <div class="d-flex justify-content-between align-items-center DadosKPI">
-              <div>
-                <p class="mb-0">Área mais afetada</p>
-                <h3 class="display-6 mb-0" id="areaMaisAfetada">...</h3>
-                <div class="mt-2 text-muted" style="font-size:.85rem"><p class="mb-0" id="quantidadeAlertaArea">Total de máquinas críticas: </p></div>
+
+        <div class="col-6 col-md-3 col-lg-2 d-flex justify-content-center">
+          <div id="AlertaDiv" class="card kpi-card-custom h-100 w-100">
+            <a href="#" class="text-decoration-none text-dark d-flex flex-column h-100 p-3"
+              onclick="abrirModalAlertas('MaquinasOFF')">
+              <div class="d-flex justify-content-between align-items-center DadosKPI">
+                <div>
+                  <p class="mb-0">Máquinas sem capturas</p>
+                  <h3 class="display-6 mb-0" id="MaquinasOffline">...</h3>
+
+                  <div class="mt-2 text-muted" style="font-size:.85rem">
+                    <p class="mb-0" id="MaquinasOnline">Máquinas Monitoradas: </p>
+                  </div>
+                </div>
               </div>
-            </div>
-          </a>
+            </a>
+          </div>
         </div>
+
+        <div class="col-6 col-md-3 col-lg-2 d-flex justify-content-center">
+          <div id="AlertaDiv" class="card kpi-card-custom h-100 w-100">
+            <a href="#" class="text-decoration-none text-dark d-flex flex-column h-100 p-3"
+              onclick="abrirModalAlertas('Area')">
+              <div class="d-flex justify-content-between align-items-center DadosKPI">
+                <div>
+                  <p class="mb-0">Área com mais alertas</p>
+                  <h3 class="display-6 mb-0" id="areaMaisAfetada">...</h3>
+
+                  <div class="mt-2 text-muted" style="font-size:.85rem">
+                    <p class="mb-0" id="quantidadeAlertaArea">Total de alertas:</p>
+                  </div>
+                </div>
+              </div>
+            </a>
+          </div>
+        </div>
+
       </div>
     </section>
 
     <div class="d-flex justify-content-center align-items-center flex-column g-3 mb-3">
-
-      <div class="col-lg-10 mt-2 mb-3 Containertabela">
-        <div class="card p-3 h-100">
-          <div class="d-flex justify-content-between align-items-center mb-2">
-            <div>
-              <strong>Últimos Alertas</strong>
-              <div class="text-muted" style="font-size:.85rem">Eventos mais recentes</div>
-            </div>
-            <div>
-              <div class="btn-group">
-              </div>
-            </div>
-          </div>
-
-          <div class="card-body p-0">
-            <div class="table-responsive table-responsive-custom">
-              <table class="table table-hover mb-0">
-                <thead>
-                  <tr>
-                    <th>Data</th>
-                    <th>Nº Série</th>
-                    <th>Modelo</th>
-                    <th>Área</th>
-                    <th style="width: 25%;">Parâmetro Atingido</th>
-                    <th>Consumo</th>
-                    <th>Unidade</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td>30/10/2025 12:00</td>
-                    <td>VNT-DRG-0001</td>
-                    <td>Dräger Evita Infinity V500</td>
-                    <td>UTI</td>
-                    <td>RAM</td>
-                    <td>91</td>
-                    <td>%</td>
-                  </tr>
-                  <tr>
-                    <td>30/10/2025 11:47</td>
-                    <td>VNT-DRG-0106</td>
-                    <td>Hamilton-C6</td>
-                    <td>UTI</td>
-                    <td>CPU</td>
-                    <td>90</td>
-                    <td>%</td>
-                  </tr>
-                  <tr>
-                    <td>30/10/2025 11:40</td>
-                    <td>VNT-DRG-212</td>
-                    <td>Hamilton-C6</td>
-                    <td>UTI</td>
-                    <td>RAM</td>
-                    <td>87</td>
-                    <td>%</td>
-                  </tr>
-                  <tr>
-                    <td>30/10/2025 11:20</td>
-                    <td>VNT-DRG-506</td>
-                    <td>Hamilton-C6</td>
-                    <td>UTI</td>
-                    <td>RAM</td>
-                    <td>81</td>
-                    <td>%</td>
-                  </tr>
-                  <tr>
-                    <td>30/10/2025 11:10</td>
-                    <td>VGG-HGL-0137</td>
-                    <td>Magnamed OxyMag</td>
-                    <td>Pronto-Socorro</td>
-                    <td>Bateria</td>
-                    <td>14</td>
-                    <td>%</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="col-lg-10 mt-1 ContainerMapa">
+      <div id="mapaDeCalor" class="col-lg-10 mt-1">
         <div class="card h-100">
           <div class="card-header graficoHeader">
-            <strong>
-              Mapa de Alertas por Área
-            </strong>
+            <strong>Mapa Quantidade de Alertas por Área</strong>
+            <div class="text-muted" style="font-size:.85rem">Quanto mais alerta maior a área</div>
           </div>
-          <div class="card-body d-flex justify-content-center align-items-center" style="min-height: 300px;">
-            <div id="Graficoarea" style="width: 100%; height: 100%;"></div>
+
+          <div class="card-body">
+            <div class="row h-100">
+              <div class="col-md-11 d-flex justify-content-center align-items-center" style="min-height: 300px;">
+                <div id="Graficoarea" style="width: 100%; height: 100%;"></div>
+              </div>
+              <div class="col-md-1 d-flex justify-content-center align-items-center">
+                <div class="barra-legenda-vertical">
+                  <div class="rotulo-legenda top">
+                    Muitos Alertas
+                    <div class="seta">▲</div>
+                  </div>
+
+                  <div class="barra-gradiente"></div>
+
+                  <div class="rotulo-legenda bottom">
+                    <div class="seta">▼</div>
+                    Menos alertas
+                  </div>
+                </div>
+              </div>
+
+            </div>
           </div>
+
         </div>
       </div>
 
@@ -440,31 +501,12 @@
               <strong>Tabela de máquinas monitoradas</strong>
               <div class="text-muted" style="font-size:.85rem">Visão geral rápida</div>
             </div>
-            <div class="d-flex align-items-center">
-              <input type="search" class="form-control form-control-sm me-2" style="width: 150px;"
-                placeholder="Pesquisar...">
-
+            <div class="d-flex align-items-center"> 
               <div class="btn-group">
               </div>
             </div>
           </div>
-          <div class="table-responsive">
-            <table class="table table-hover devices-table">
-              <thead>
-                <tr>
-                  <th>Nome</th>
-                  <th>CPU</th>
-                  <th>RAM</th>
-                  <th>Disco</th>
-                  <th>Bateria</th>
-                  <th>Processos</th>
-                  <th>Status</th>
-                </tr>
-              </thead>
-              <tbody id="devices-body">
-              </tbody>
-            </table>
-          </div>
+          <div id="tabelaMonitoradas"></div>
         </div>
       </div>
 
@@ -472,28 +514,32 @@
       <div class="col-lg-10 mt-2 mb-3">
         <div class="card card-chart p-3">
           <div class="d-flex justify-content-between align-items-center mb-2">
-            <div><strong>Número de Alertas por hora</strong>
+            <div><strong>Número de Alertas por período</strong>
               <div class="text-muted" style="font-size:.85rem">Histórico</div>
             </div>
           </div>
-          <canvas id="chart-cpu" style="height: 400px; width: 100%;"></canvas>
+          <div id="chartPeriodoAlertas" style="width: 100%; height: 100%;">
+          </div>
         </div>
       </div>
-    </div>
 
   </main>
 
   <div class="modal fade" id="modalAlertas" tabindex="-1" aria-labelledby="modalAlertasLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
+    <div id="classModal" class="modal-dialog modal-dialog-centered">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="modalAlertasLabel">Carregando...</h5>
+          <div>
+            <h5 class="modal-title" id="modalAlertasLabel">Carregando...</h5>
+            <div class="text-muted" style="font-size:.85rem" id="subTitulo"></div>
+          </div>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
             onclick="fecharModalAlertas()"></button>
         </div>
-        <div class="modal-body" id="conteudoModal">
+        <div class="modal-body" id="conteudoModal">Nenhum resultado...
         </div>
         <div class="modal-footer">
+          <div id="footerModal" class="d-flex flex-column align-items-center justify-content-center w-100"></div>
           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"
             onclick="fecharModalAlertas()">Fechar</button>
         </div>
@@ -507,13 +553,16 @@
   <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
 
   <script>
+    const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]');
+    const tooltipList = [...tooltipTriggerList].map(
+    el => new bootstrap.Tooltip(el)
+    );  
 
-    // Nome do hospital
-    let ultimaCap;
-    let nomeHospital;
-    let selectAreas;
-
+    let nomeHospital; // Utilizo para filtrar pelo hospital atual em outras funções
+    let selectAreas; // Utilizo as áreas para filtrar em outras funções
+    let ventiladoresHospitalAtual; //Utilizo para a KPI de maquinas monitoradas
     async function ONLOAD() {
+      // Hospital atual
       const resposta = await fetch(`/controle/hospitais/${sessionStorage.getItem("FK")}`);
       const hospitalData = await resposta.json();
       nomeHospital = hospitalData[0].nomeHospital
@@ -524,29 +573,186 @@
       const respostaAreas = await fetch(`/tecnicoHospital/areas/${sessionStorage.getItem("FK")}`);
       selectAreas = await respostaAreas.json()
       const select = document.getElementById('filtroArea');
-      console.log(selectAreas)
-      for(const alerta of selectAreas){
+      for (const alerta of selectAreas) {
         const novaOpcao = document.createElement('option');
         novaOpcao.value = alerta.area;
         novaOpcao.text = alerta.area;
         select.appendChild(novaOpcao);
       }
 
+      // Todos os ventiladores daquele hospital
+      const respostaVentilador = await fetch(`/tecnicoHospital/ventiladores/${sessionStorage.getItem("FK")}`)
+      ventiladoresHospitalAtual = await respostaVentilador.json()
 
-      // Última captura
-      const KPItempo = await fetch(`/tecnicoHospital/mensal`);
-      let dados = await KPItempo.json()
-      const alertasDoHospital = dados.filter(alerta => alerta.hospital === nomeHospital); 
-      ultimaCap = dados[dados.length-1]
+    }
+
+
+    // Visão top down
+    let areaSelecionada = "todas";
+    let tempoSelecionado = "diario";
+    document.querySelectorAll(".btnTempo").forEach(btn => { btn.addEventListener("click", () => { tempoSelecionado = btn.dataset.tempo; atualizarDados(); }); });
+    document.getElementById("filtroArea").addEventListener("change", e => { areaSelecionada = e.target.value; atualizarDados(); });
+
+
+    let alertasDoHospitalArea; // Últilizo na KPI de alertas
+    let ultimaCap; // Utilizo a última captura em outras funções
+    let maquinasRestantes; //Máquinas offlines para colocar na KPI 
+    let alertasDaAreaAfetada; // Área mais afetada para útilizar no modal da KPI de área mais afetada
+
+    // Plotando o gráfico primeiro para apenas atualizar os dados na função
+
+    // Mapa de calor
+    let chartArea = null;
+    const options = {
+      chart: {
+        type: "treemap",
+        height: "100%",
+      },
+      series: [{ data: [] }],
+      plotOptions: {
+        treemap: {
+          enableShades: true,
+          shadeIntensity: 0.4,
+          colorScale: {
+            ranges: []
+          }
+        }
+      }
+    };
+    chartArea = new ApexCharts(document.querySelector("#Graficoarea"), options);
+    chartArea.render();
+
+    // Gráfico de alertas
+    chartAlertas = null
+    var optionsAlertas = {
+      series: [
+        {
+          data: []
+        }
+      ],
+      chart: {
+        height: 350,
+        type: 'line',
+        dropShadow: {
+          enabled: true,
+          color: '#000',
+          top: 18,
+          left: 7,
+          blur: 10,
+          opacity: 0.5
+        },
+        zoom: {
+          enabled: false
+        },
+        toolbar: {
+          show: false
+        }
+      },
+      colors: ['#77B6EA', '#545454'],
+      dataLabels: {
+        enabled: true,
+      },
+      stroke: {
+        curve: 'smooth'
+      },
+      grid: {
+        borderColor: '#e7e7e7',
+        row: {
+          colors: ['#f3f3f3', 'transparent'],
+          opacity: 0.5
+        },
+      },
+      markers: {
+        size: 1
+      },
+      xaxis: {
+        categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul'],
+        title: {
+          text: 'Mês'
+        }
+      },
+      yaxis: {
+        title: {
+          text: 'Alertas'
+        },
+      },
+      legend: {
+        position: 'top',
+        horizontalAlign: 'right',
+        floating: true,
+        offsetY: -25,
+        offsetX: -5
+      }
+    };
+
+    var chartAlertas = new ApexCharts(document.querySelector("#chartPeriodoAlertas"), optionsAlertas);
+    chartAlertas.render();
+
+
+    async function atualizarDados() {
+      Swal.fire({
+        title: 'Processando...',
+        allowOutsideClick: false,
+        allowEscapeKey: false,
+        didOpen: () => {
+          Swal.showLoading();
+        }
+      });
+
+      // Pegando o csv baseado no tempo e utilizo ele na função inteira
+      const alertas = await fetch(`/tecnicoHospital/${tempoSelecionado}`);
+      let dados = await alertas.json()
+      if (dados.length == 0) {
+        Swal.fire({
+          icon: 'error',
+          title: 'Sem Dados!',
+          text: 'Esta seleção de tempo está sem dados, tente outra!'
+        })
+        return
+      }
+      //Aplicando os filtros
+      const alertasDoHospital = dados.filter(alerta => alerta.hospital === nomeHospital);
+      console.log(areaSelecionada)
+      console.log(selectAreas)
+      areaSelecionada == "todas" ? alertasDoHospitalArea = alertasDoHospital : alertasDoHospitalArea = alertasDoHospital.filter(alerta => alerta.area.toLowerCase() === areaSelecionada.toLowerCase());
+
+      //KPI de alertas
+      qtdAlertas.innerHTML = alertasDoHospitalArea.length
+      if (alertasDoHospitalArea.length > 0) {
+        document.getElementById("AlertaDiv").style.borderBottom = "6px solid red";
+      }
+      else {
+        document.getElementById("AlertaDiv").style.borderBottom = "6px solid green";
+      }
+
+      let contadorComponente = { "CPU": 0, "RAM": 0, "Disco": 0, "Bateria": 0, "Processos": 0 }
+      for (const a of alertasDoHospitalArea) {
+        if (contadorComponente[a.componente] !== undefined) {
+          contadorComponente[a.componente]++;
+        }
+      }
+      let maiorcomp = null;
+      let maiorValor = 0;
+      for (const comp in contadorComponente) {
+        if (contadorComponente[comp] > maiorValor) {
+          maiorValor = contadorComponente[comp];
+          maiorcomp = comp;
+        }
+      }
+      principalCausaAlerta.innerHTML = `Principal causa: <b>${maiorcomp}</b>`
+
+      //KPI de último alerta
+      ultimaCap = alertasDoHospitalArea[alertasDoHospitalArea.length - 1]
       ultimaCapTime = ultimaCap.timestamp
       tipoAlerta = ultimaCap.componente
+      areaDoAlerta = ultimaCap.area
       let agora = new Date(ultimaCapTime);
       let dataFormatada = agora.toLocaleDateString();
       let horaFormatada = agora.toLocaleTimeString();
       let elementoData = document.getElementById("data-ultima-captura");
-      elementoData.textContent = ` ${dataFormatada} ${horaFormatada}`;
+      elementoData.innerHTML = ` ${dataFormatada} ${horaFormatada}`;
 
-      // KPI tempo desde o último alerta, ele não muda então deixei ele separado
+      // KPI tempo desde o último alerta
       const dataCap = new Date(ultimaCapTime)
       const dataAtual = new Date();
       const diferencaEmMS = dataAtual.getTime() - dataCap.getTime();
@@ -559,47 +765,479 @@
       const milissegundosRestantesDaHora = diferencaEmMS % msPorHora;
       const minutos = Math.floor(milissegundosRestantesDaHora / msPorMinuto);
       tempoUltimoAlerta.innerHTML = `${dias}d ${horas}h ${minutos}m`
-      tipoAlertaAcionado.innerHTML += `<b>${tipoAlerta}</b>`
-    }
+      tipoAlertaAcionado.innerHTML = `Tipo: <b>${tipoAlerta}</b>${areaSelecionada == "todas" ? ` - Área: <b>${areaDoAlerta}</b>` : ``}`
+
+      // Contando máquinas Online e offline
+      console.log(ventiladoresHospitalAtual)
+      
+      let ventiladoresHospitalAtualFiltrados = ventiladoresHospitalAtual
+      if (areaSelecionada != "todas") {
+        ventiladoresHospitalAtualFiltrados = ventiladoresHospitalAtualFiltrados.filter(ventilador => ventilador.area == areaSelecionada)
+      }
+      maquinasRestantes = [...ventiladoresHospitalAtualFiltrados];
+      
+      let qtdMaquinasOnline = 0;
+      let maquinasOnline = [];
+
+      for (let i = 0; i < alertasDoHospitalArea.length; i++) {
+        const NumeroSerieDaVez = alertasDoHospitalArea[i].numero_serie;
+        for (let j = 0; j < maquinasRestantes.length; j++) {
+          if (maquinasRestantes[j].numero_serie === NumeroSerieDaVez) {
+            maquinasOnline.push(maquinasRestantes[j]);
+            maquinasRestantes.splice(j, 1);
+            qtdMaquinasOnline++
+            break;
+          }
+        }
+      }
+      let maquinasOnlineAlertas = maquinasOnline.map(maquina => {
+        const qtdAlertas = alertasDoHospitalArea.filter(
+          alerta => alerta.numero_serie === maquina.numero_serie
+        ).length;
+        return {
+          ...maquina,
+          qtd_alertas: qtdAlertas
+        };
+      });
+
+      console.log(maquinasOnline)
+      let qtdMaquinasOffline = maquinasRestantes.length;
+      MaquinasOnline.innerHTML = `Máquinas Monitoradas: <b>${qtdMaquinasOnline}</b>`
+      MaquinasOffline.innerHTML = qtdMaquinasOffline
 
 
-    // Visão top down
-    let areaSelecionada = "todas";  
-    let tempoSelecionado = "Hora";
-    document.querySelectorAll(".btnTempo").forEach(btn => { btn.addEventListener("click", () => { tempoSelecionado = btn.dataset.tempo; atualizarDados(); }); });
-    document.getElementById("filtroArea").addEventListener("change", e => { areaSelecionada = e.target.value; atualizarDados(); });
-
-    async function atualizarDados(){
-      const alertas = await fetch(`/tecnicoHospital/${tempoSelecionado}`);
-      let dados = await alertas.json()
-      const alertasDoHospital = dados.filter(alerta => alerta.hospital === nomeHospital);
-      let alertasDoHospitalAreas;
-      console.log(selectAreas)
-      areaSelecionada == "todas" ? alertasDoHospitalAreas = alertasDoHospital : alertasDoHospitalAreas = alertasDoHospital.filter(alerta => alerta.area.toLowerCase() === areaSelecionada.toLowerCase());
       // Contando alertas por area
       let contador = {};
       for (const a of selectAreas) {
         contador[a.area] = 0;
       }
-      console.log(contador)
       for (const a of alertasDoHospital) {
         if (contador[a.area] !== undefined) {
           contador[a.area]++;
         }
       }
-      console.log(contador)
+      let maiorArea = null;
+      let maiorValor2 = 0;
+      for (const area in contador) {
+        if (contador[area] > maiorValor2) {
+          maiorValor2 = contador[area];
+          maiorArea = area;
+        }
+      }
+      quantidadeAlertaArea.innerHTML = `Total de alertas: <b>${maiorValor2}</b>`
+      areaMaisAfetada.innerHTML = `${maiorArea == "Internacao" ? `Internação` : `${maiorArea}`}`
+      alertasDaAreaAfetada = alertasDoHospital.filter(alerta => alerta.area === maiorArea);
 
-      console.log(alertasDoHospitalAreas)
+      console.log(contador)
+      console.log(maiorArea)
+
+      console.log(alertasDoHospitalArea)
       console.log(areaSelecionada)
       console.log(tempoSelecionado)
+      console.log(contador)
+
+      // Mapa de calor de áreas com mais alertas
+      if (areaSelecionada == 'todas') {
+        mapaDeCalor.classList.remove('d-none');
+        var DadosXY = [];
+        for (var area in contador) {
+          DadosXY.push({ x: area, y: contador[area] });
+        }
+        var maxValor = Math.max(...Object.values(contador));
+
+        chartArea.updateOptions({
+          plotOptions: {
+            treemap: {
+              colorScale: {
+                ranges: [
+                  { from: 0, to: maxValor * 0.166, color: "#006400" },
+                  { from: maxValor * 0.166, to: maxValor * 0.332, color: "#27ac27" },
+                  { from: maxValor * 0.332, to: maxValor * 0.498, color: "#f5e172" },
+                  { from: maxValor * 0.498, to: maxValor * 0.664, color: "#ffa600" },
+                  { from: maxValor * 0.664, to: maxValor * 0.83, color: "#c74a17" },
+                  { from: maxValor * 0.83, to: maxValor, color: "#920000" }
+                ]
+              }
+            }
+          }
+        });
+        chartArea.updateSeries([{ data: DadosXY }]);
+      } else { mapaDeCalor.classList.add('d-none'); }
+
+      // Tabela de máquinas monitoradas
+      let html = `
+      <div class="card-body p-0">
+        <div class="table-responsive table-responsive-custom">
+          <table class="table table-hover devices-table mb-0">
+            <thead>
+              <tr>
+                <th>Nº Série</th>
+                <th>Modelo</th>
+                <th>Área</th>
+                <th>Sala</th>
+                <th style="width: 30px;">Quantidade de Alertas</th>
+              </tr>
+            </thead>
+            <tbody>
+      `;
+        maquinasOnlineAlertas.forEach(alerta => {
+          html += `
+          <tr>
+            <td>${alerta.numero_serie}</td>
+            <td>${alerta.nome_modelo}</td>
+            <td>${alerta.area}</td>
+            <td>${alerta.numero}</td>
+            <td >${alerta.qtd_alertas}</td>
+          </tr>
+        `;
+        });
+
+        html += `
+            </tbody>
+          </table>
+        </div>
+      </div>
+      `;
+
+      tabelaMonitoradas.innerHTML = html;
+      //Gráfico de alertas por periodo
+      console.log(alertasDoHospitalArea)
+
+      if (tempoSelecionado == "anual") {
+        let alertasPorMes = {};
+        for (let alerta of alertasDoHospitalArea) {
+          const data = new Date(alerta.timestamp);
+          const ano = data.getFullYear();
+          let mes = data.getMonth() + 1;
+          mes = mes < 10 ? ('0' + mes) : mes
+          const periodo = `${ano}-${mes}`;
+
+          if (!alertasPorMes[periodo]) {
+            alertasPorMes[periodo] = 0;
+          }
+          alertasPorMes[periodo]++;
+        }
+        const categories = Object.keys(alertasPorMes).sort();
+        const dataSeries = categories.map(periodo => alertasPorMes[periodo]);
+        let soma = 0;
+        for (let i = 0; i < dataSeries.length; i++) {
+          soma += dataSeries[i];
+        }
+        let media = soma / dataSeries.length;
+
+        chartAlertas.updateSeries([{ data: dataSeries }]);
+        chartAlertas.updateOptions({
+          xaxis: {
+            categories: categories,
+            title: {
+              text: 'Anual'
+            }
+          },
+          annotations: {
+            yaxis: [
+              {
+                y: media,
+                borderColor: '#FF0000',
+                strokeDashArray: 4,
+                label: {
+                  borderColor: '#FF0000',
+                  style: {
+                    color: '#fff',
+                    background: '#FF0000'
+                  },
+                  text: `Média: ${media.toFixed(2)}`
+                }
+              }
+            ]
+          }
+        });
+      }
+
+      else if (tempoSelecionado == "mensal") {
+        let alertasPorDia = {};
+        for (let alerta of alertasDoHospitalArea) {
+          const data = new Date(alerta.timestamp);
+          const ano = data.getFullYear();
+          let mes = data.getMonth() + 1;
+          let dia = data.getDate();
+          mes = mes < 10 ? ('0' + mes) : mes;
+          dia = dia < 10 ? ('0' + dia) : dia;
+          const periodo = `${ano}-${mes}-${dia}`;
+
+          if (!alertasPorDia[periodo]) {
+            alertasPorDia[periodo] = 0;
+          }
+          alertasPorDia[periodo]++;
+        }
+        const categoriesMes = Object.keys(alertasPorDia).sort();
+        const dataSeries = categoriesMes.map(periodo => alertasPorDia[periodo]);
+        let soma = 0;
+        for (let i = 0; i < dataSeries.length; i++) {
+          soma += dataSeries[i];
+        }
+        let media = soma / dataSeries.length;
+
+        chartAlertas.updateSeries([{ data: dataSeries }]);
+        chartAlertas.updateOptions({
+          xaxis: {
+            categories: categoriesMes,
+            title: {
+              text: 'Mensal'
+            }
+          },
+          annotations: {
+            yaxis: [
+              {
+                y: media,
+                borderColor: '#FF0000',
+                strokeDashArray: 4,
+                label: {
+                  borderColor: '#FF0000',
+                  style: {
+                    color: '#fff',
+                    background: '#FF0000'
+                  },
+                  text: `Média: ${media.toFixed(2)}`
+                }
+              }
+            ]
+          }
+        })
+      }
+      else if (tempoSelecionado == "semanal") {
+        let alertasPorDiaDaSemana = {};
+
+        const NOME_DIAS = ["Segunda", "Terça", "Quarta", "Quinta", "Sexta", "Sábado", "Domingo"];
+        NOME_DIAS.forEach(dia => {
+          alertasPorDiaDaSemana[dia] = 0;
+        });
+        for (let alerta of alertasDoHospitalArea) {
+          const data = new Date(alerta.timestamp);
+          let diaIndex = data.getDay();
+          const indiceAjustado = (diaIndex === 0) ? 6 : diaIndex - 1;
+
+          const nomeDoDia = NOME_DIAS[indiceAjustado];
+
+          alertasPorDiaDaSemana[nomeDoDia]++;
+        }
+
+
+        const categoriesDiaSemana = NOME_DIAS;
+        const dataSeries = categoriesDiaSemana.map(dia => alertasPorDiaDaSemana[dia]);
+        let soma = 0;
+        for (let i = 0; i < dataSeries.length; i++) {
+          soma += dataSeries[i];
+        }
+        let media = soma / dataSeries.length;
+
+        chartAlertas.updateSeries([{ data: dataSeries }]);
+
+        chartAlertas.updateOptions({
+          xaxis: {
+            categories: categoriesDiaSemana,
+            title: {
+              text: 'Dia da Semana'
+            }
+          },
+          annotations: {
+            yaxis: [
+              {
+                y: media,
+                borderColor: '#FF0000',
+                strokeDashArray: 4,
+                label: {
+                  borderColor: '#FF0000',
+                  style: {
+                    color: '#fff',
+                    background: '#FF0000'
+                  },
+                  text: `Média: ${media.toFixed(2)}`
+                }
+              }
+            ]
+          }
+        })
+
+      }
+      else if (tempoSelecionado == "diario") {
+        let alertasPorHora = {};
+        for (let h = 0; h < 24; h++) {
+          const horaFormatada = h < 10 ? ('0' + h) : String(h);
+          alertasPorHora[horaFormatada] = 0;
+        }
+        for (let alerta of alertasDoHospitalArea) {
+          const data = new Date(alerta.timestamp);
+          let hora = data.getHours();
+          const horaFormatada = hora < 10 ? ('0' + hora) : String(hora);
+          if (alertasPorHora.hasOwnProperty(horaFormatada)) {
+            alertasPorHora[horaFormatada]++;
+          }
+        }
+
+        const categoriesHora = Object.keys(alertasPorHora).sort();
+        const dataSeries = categoriesHora.map(hora => alertasPorHora[hora]);
+        let soma = 0;
+        for (let i = 0; i < dataSeries.length; i++) {
+          soma += dataSeries[i];
+        }
+        let media = soma / dataSeries.length;
+
+        chartAlertas.updateSeries([{ data: dataSeries }]);
+        chartAlertas.updateOptions({
+          xaxis: {
+            categories: categoriesHora,
+            title: {
+              text: 'Hora do Dia (24h)'
+            }
+          },
+          annotations: {
+            yaxis: [
+              {
+                y: media,
+                borderColor: '#FF0000',
+                strokeDashArray: 4,
+                label: {
+                  borderColor: '#FF0000',
+                  style: {
+                    color: '#fff',
+                    background: '#FF0000'
+                  },
+                  text: `Média: ${media.toFixed(2)}`
+                }
+              }
+            ]
+          }
+        });
+      }
+      Swal.close();
     }
 
 
 
     function abrirModalAlertas(exibir) {
-      const myModal = new bootstrap.Modal(document.getElementById('modalAlertas'));
-      myModal.show();
-      if(exibir == "UltimoAlerta"){
+      const modalEl = document.getElementById('modalAlertas');
+      const myModal = bootstrap.Modal.getInstance(modalEl) || new bootstrap.Modal(modalEl);
+      myModal.hide();
+      setTimeout(() => {
+        myModal.show();
+      }, 300);
+      footerModal.innerHTML = ``
+
+      //KPI de alertas
+      if (exibir == "Alertas") {
+        let classModal = document.getElementById('classModal');
+        classModal.classList.add('modal-xl');
+        modalAlertasLabel.innerHTML = `Todos os Alertas`;
+        subTitulo.innerHTML = `Do mais novo para o mais antigo`
+        let html = `
+        <div class="card-body p-0">
+          <div class="table-responsive table-responsive-custom">
+            <table class="table table-hover devices-table mb-0">
+              <thead>
+                <tr>
+                  <th>Data/Hora</th>
+                  <th>Nº Série</th>
+                  <th>Área</th>
+                  <th>Componente</th>
+                  <th>Alerta</th>
+                  <th>Valor Lido</th>
+                  <th>Limite</th>
+                </tr>
+              </thead>
+              <tbody>
+        `;
+        alertasDoHospitalArea.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+        let alertasExibidos = alertasDoHospitalArea.slice(0, 20);
+        alertasExibidos.forEach(alerta => {
+          html += `
+          <tr>
+            <td>${alerta.timestamp}</td>
+            <td>${alerta.numero_serie}</td>
+            <td>${alerta.area}</td>
+            <td>${alerta.componente}</td>
+            <td>${alerta.tipo_alerta}</td>
+            <td><span style="color: red;">${alerta.valor_lido}</span></td>
+            <td>${alerta.tipo_alerta.toLowerCase() == "abaixo"
+              ? `<span>${alerta.min_permitido}</span>`
+              : `<span>${alerta.max_permitido}</span>`} ${alerta.componente == "Disco" ? ` - GB` : alerta.componente == "Processos" ? ` - Inteiro` : ` - %`}
+            </td>
+          </tr>
+        `;
+        });
+
+        html += `
+        </tbody>
+        </table>
+        </div>
+        </div>
+      `;
+        conteudoModal.innerHTML = html;
+        footerModal.innerHTML = `${alertasDoHospitalArea.length > 20 ? `<p> Mostrando <b>20</b> alertas mais recentes</p>
+        <button type="button" class="btn btn-secondary" onclick="abrirModalAlertas('todosDadosAlertas')">
+        Ver todos os ${alertasDoHospitalArea.length} alertas →
+        </button>` : ``}`
+      }
+
+
+      //KPI de alerta com todos os dados
+      else if (exibir == "todosDadosAlertas") {
+        let classModal = document.getElementById('classModal');
+        classModal.classList.add('modal-xl');
+        modalAlertasLabel.innerHTML = `Todos os Alertas`;
+        subTitulo.innerHTML = `Do mais novo para o mais antigo`
+        let html = `
+        <div class="card-body p-0">
+          <div class="table-responsive table-responsive-custom">
+            <table class="table table-hover devices-table mb-0">
+              <thead>
+                <tr>
+                  <th>Data/Hora</th>
+                  <th>Nº Série</th>
+                  <th>Área</th>
+                  <th>Componente</th>
+                  <th>Alerta</th>
+                  <th>Valor Lido</th>
+                  <th>Limite</th>
+                </tr>
+              </thead>
+              <tbody>
+        `;
+        alertasDoHospitalArea.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+        alertasDoHospitalArea.forEach(alerta => {
+          html += `
+          <tr>
+            <td>${alerta.timestamp}</td>
+            <td>${alerta.numero_serie}</td>
+            <td>${alerta.area}</td>
+            <td>${alerta.componente}</td>
+            <td>${alerta.tipo_alerta}</td>
+            <td><span style="color: red;">${alerta.valor_lido}</span></td>
+            <td>${alerta.tipo_alerta.toLowerCase() == "abaixo"
+              ? `<span>${alerta.min_permitido}</span>`
+              : `<span>${alerta.max_permitido}</span>`} ${alerta.componente == "Disco" ? ` - GB` : alerta.componente == "Processos" ? ` - Inteiro` : ` - %`}
+            </td>
+          </tr>
+        `;
+        });
+
+        html += `
+        </tbody>
+        </table>
+        </div>
+        </div>
+      `;
+
+        conteudoModal.innerHTML = html;
+        footerModal.innerHTML = `${alertasDoHospitalArea.length > 20 ? `<p> Mostrando todos os alertas</p>
+        <button type="button" class="btn btn-secondary" onclick="abrirModalAlertas('Alertas')">
+        Ver apenas 20 alertas
+        </button>` : ``}`
+      }
+      // Modal da KPI de último alerta
+      else if (exibir == "UltimoAlerta") {
+        let classModal = document.getElementById('classModal');
+        classModal.classList.remove('modal-xl');
+        classModal.classList.remove('modal-lg');
         modalAlertasLabel.innerHTML = `Último alerta:`
         conteudoModal.innerHTML = `
         <table class="table table-sm table-striped">
@@ -622,30 +1260,182 @@
                 </tr>
                 <tr>
                     <th scope="row">Tipo de Alerta</th>
-                    <td >${ultimaCap.tipo_alerta} do ${ultimaCap.tipo_alerta.toLowerCase() == "abaixo" 
-                            ? `<span>Mínimo</span>` 
-                            : `<span>Máximo</span>`}</td>
-                </tr>
-                <tr>
-                    <th scope="row">Limite ${ultimaCap.tipo_alerta.toLowerCase() == "abaixo" 
-                            ? `<span>(Min)</span>` 
-                            : `<span>(Max)</span>`}</th>
-                    <td >  ${ultimaCap.tipo_alerta.toLowerCase() == "abaixo" 
-                            ? `<span>${ultimaCap.min_permitido}</span>` 
-                            : `<span>${ultimaCap.max_permitido}</span>`}</td>
+                    <td >${ultimaCap.tipo_alerta} do ${ultimaCap.tipo_alerta.toLowerCase() == "abaixo"
+            ? `<span>Mínimo</span>`
+            : `<span>Máximo</span>`}</td>
                 </tr>
                 <tr>
                     <th scope="row">Valor Capturado</th>
-                    <td>${ultimaCap.valor_lido}</td>
+                    <td><span style="color: red;">${ultimaCap.valor_lido}</span></td>
+                </tr>
+                <tr>
+                    <th scope="row">Limite ${ultimaCap.tipo_alerta.toLowerCase() == "abaixo"
+            ? `<span>(Min)</span>`
+            : `<span>(Max)</span>`}</th>
+                    <td >  ${ultimaCap.tipo_alerta.toLowerCase() == "abaixo"
+            ? `<span>${ultimaCap.min_permitido}</span>`
+            : `<span>${ultimaCap.max_permitido}</span>`} ${ultimaCap.componente == "Disco" ? ` - GB` : ultimaCap.componente == "Processos" ? ` - Inteiro` : ` - %`}
+                    </td>
                 </tr>
             </tbody>
         </table>
         <p class="text-muted small mt-3">
             Atenção: O componente ${ultimaCap.componente} apresentou o valor ${ultimaCap.valor_lido} na área ${ultimaCap.area}.
         </p>
-    `;
+      `;
+      }
+
+      //KPI Máquinas offlines
+      else if (exibir == "MaquinasOFF") {
+        let classModal = document.getElementById('classModal');
+        classModal.classList.add('modal-lg');
+        classModal.classList.remove('modal-xl');
+        modalAlertasLabel.innerHTML = `Ventiladores OFFLINES:`;
+        subTitulo.innerHTML = `Máquinas do seu hospital que se encontram sem sinal`
+        let html = `
+      <div class="card-body p-0">
+        <div class="table-responsive table-responsive-custom">
+          <table class="table table-hover devices-table mb-0">
+            <thead>
+              <tr>
+                <th>Nº Série</th>
+                <th>Modelo</th>
+                <th>Área</th>
+                <th>Sala</th>
+              </tr>
+            </thead>
+            <tbody>
+      `;
+        maquinasRestantes.forEach(alerta => {
+          html += `
+          <tr>
+            <td>${alerta.numero_serie}</td>
+            <td>${alerta.nome_modelo}</td>
+            <td>${alerta.area}</td>
+            <td>${alerta.numero}</td>
+          </tr>
+        `;
+        });
+
+        html += `
+            </tbody>
+          </table>
+        </div>
+      </div>
+      `;
+
+        conteudoModal.innerHTML = html;
+      }
+      // KPI de área mais afetada
+      else if (exibir == "Area") {
+        let classModal = document.getElementById('classModal');
+        classModal.classList.add('modal-xl');
+        modalAlertasLabel.innerHTML = `Alertas da área mais afetada:`;
+        subTitulo.innerHTML = `Do mais novo para o mais antigo`
+        let html = `
+        <div class="card-body p-0">
+          <div class="table-responsive table-responsive-custom">
+            <table class="table table-hover devices-table mb-0">
+              <thead>
+                <tr>
+                  <th>Data/Hora</th>
+                  <th>Nº Série</th>
+                  <th>Área</th>
+                  <th>Componente</th>
+                  <th>Alerta</th>
+                  <th>Valor Lido</th>
+                  <th>Limite</th>
+                </tr>
+              </thead>
+              <tbody>
+        `;
+        alertasDaAreaAfetada.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+        let alertasExibidos = alertasDaAreaAfetada.slice(0, 20);
+        alertasExibidos.forEach(alerta => {
+          html += `
+          <tr>
+            <td>${alerta.timestamp}</td>
+            <td>${alerta.numero_serie}</td>
+            <td>${alerta.area}</td>
+            <td>${alerta.componente}</td>
+            <td>${alerta.tipo_alerta}</td>
+            <td><span style="color: red;">${alerta.valor_lido}</span></td>
+            <td>${alerta.tipo_alerta.toLowerCase() == "abaixo"
+              ? `<span>${alerta.min_permitido}</span>`
+              : `<span>${alerta.max_permitido}</span>`} ${alerta.componente == "Disco" ? ` - GB` : alerta.componente == "Processos" ? ` - Inteiro` : ` - %`}
+            </td>
+          </tr>
+        `;
+        });
+
+        html += `
+        </tbody>
+        </table>
+        </div>
+        </div>
+      `;
+        conteudoModal.innerHTML = html;
+        footerModal.innerHTML = `${alertasDaAreaAfetada.length > 20 ? `<p> Mostrando <b>20</b> alertas mais recentes</p>
+        <button type="button" class="btn btn-secondary" onclick="abrirModalAlertas('todosDadosArea')">
+        Ver todos os ${alertasDaAreaAfetada.length} alertas →
+        </button>` : ``}`
+      }
+
+      // Todos os dados KPI de área mais afetada
+      else if (exibir == "todosDadosArea") {
+        let classModal = document.getElementById('classModal');
+        classModal.classList.add('modal-xl');
+        modalAlertasLabel.innerHTML = `Alertas da área mais afetada:`;
+        let html = `
+        <div class="card-body p-0">
+          <div class="table-responsive table-responsive-custom">
+            <table class="table table-hover devices-table mb-0">
+              <thead>
+                <tr>
+                  <th>Data/Hora</th>
+                  <th>Nº Série</th>
+                  <th>Área</th>
+                  <th>Componente</th>
+                  <th>Alerta</th>
+                  <th>Valor Lido</th>
+                  <th>Limite</th>
+                </tr>
+              </thead>
+              <tbody>
+        `;
+        alertasDaAreaAfetada.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+        alertasDaAreaAfetada.forEach(alerta => {
+          html += `
+          <tr>
+            <td>${alerta.timestamp}</td>
+            <td>${alerta.numero_serie}</td>
+            <td>${alerta.area}</td>
+            <td>${alerta.componente}</td>
+            <td>${alerta.tipo_alerta}</td>
+            <td><span style="color: red;">${alerta.valor_lido}</span></td>
+            <td>${alerta.tipo_alerta.toLowerCase() == "abaixo"
+              ? `<span>${alerta.min_permitido}</span>`
+              : `<span>${alerta.max_permitido}</span>`} ${alerta.componente == "Disco" ? ` - GB` : alerta.componente == "Processos" ? ` - Inteiro` : ` - %`}
+            </td>
+          </tr>
+        `;
+        });
+
+        html += `
+        </tbody>
+        </table>
+        </div>
+        </div>
+      `;
+
+        conteudoModal.innerHTML = html;
+        footerModal.innerHTML = `${alertasDaAreaAfetada.length > 20 ? `<p> Mostrando todos os alertas</p>
+        <button type="button" class="btn btn-secondary" onclick="abrirModalAlertas('Area')">
+        Ver apenas 20 alertas
+        </button>` : ``}`
       }
     }
+
 
     function fecharModalAlertas() {
       const modalElement = document.getElementById('modalAlertas');
@@ -656,33 +1446,14 @@
     }
 
 
-
     function abrirChamado() {
       const jiraUrl = "https://suaempresa.atlassian.net/secure/CreateIssue!default.jspa";
       window.open(jiraUrl, "_blank");
     }
 
     function toggleSidebar() {
-      // Para o Offcanvas, o Bootstrap gerencia o estado (mostrar/esconder) automaticamente
-      // através dos atributos data-bs-toggle e data-bs-target.
-      // A função aqui pode ser usada para lógica adicional (se necessário).
       const icone = document.getElementById("icone");
-      // O ícone do Font Awesome pode ser trocado dependendo do estado do Offcanvas,
-      // mas o Bootstrap não gerencia isso nativamente. Vamos manter a lógica original:
       const sidebar = document.getElementById("sidebarOffcanvas");
-      // É mais fácil usar um listener do Bootstrap.
-
-      /* // Exemplo de como usar listeners do Bootstrap para trocar o ícone:
-      sidebar.addEventListener('show.bs.offcanvas', () => {
-          icone.classList.remove("fa-bars");
-          icone.classList.add("fa-xmark"); // O "X" moderno do FontAwesome é fa-xmark
-      });
-
-      sidebar.addEventListener('hide.bs.offcanvas', () => {
-          icone.classList.remove("fa-xmark");
-          icone.classList.add("fa-bars");
-      });
-      */
     }
 
     function limparSessao() {
@@ -692,103 +1463,6 @@
       window.location.href = "../../index.html";
     }
 
-
-    const devices = [
-      { nome: 'Vent-01', cpu: 35, ram: 42, disk: 28, batt: 94, procs: 72, status: 'OK' },
-      { nome: 'Vent-03', cpu: 62, ram: 63, disk: 61, batt: 78, procs: 114, status: 'ATENÇÃO' },
-      { nome: 'Vent-07', cpu: 88, ram: 83, disk: 91, batt: 12, procs: 132, status: 'CRÍTICO' },
-      { nome: 'Vent-12', cpu: 79, ram: 71, disk: 55, batt: 44, procs: 98, status: 'ATENÇÃO' }
-    ];
-
-    function statusBadge(status) {
-      if (status === 'CRÍTICO') return '<span class="badge bg-danger">CRÍTICO</span>';
-      if (status === 'ATENÇÃO') return '<span class="badge bg-warning text-dark">ATENÇÃO</span>';
-      return '<span class="badge bg-success">OK</span>';
-    }
-
-    const tbody = document.getElementById('devices-body');
-    devices.forEach(d => {
-      const tr = document.createElement('tr');
-      tr.innerHTML = `
-        <td><strong>${d.nome}</strong><div class="text-muted" style="font-size:.8rem">UTI-Ala 3</div></td>
-        <td>${d.cpu}%</td>
-        <td>${d.ram}%</td>
-        <td>${d.disk}%</td>
-        <td>${d.batt}%</td>
-        <td>${d.procs}</td>
-        <td>${statusBadge(d.status)}</td>
-      `;
-      tbody.appendChild(tr);
-    });
-
-    function lastMinutes(n) {
-      const now = new Date();
-      const out = [];
-      for (let i = n - 1; i >= 0; i--) {
-        const d = new Date(now.getTime() - i * 60 * 1000);
-        out.push(d.getHours().toString().padStart(2, '0') + ':' + d.getMinutes().toString().padStart(2, '0'));
-      }
-      return out;
-    }
-
-    const labels15 = lastMinutes(60);
-    function randSeries(base, variance) {
-      return labels15.map(() => Math.max(0, Math.round(base + (Math.random() - 0.5) * variance)));
-    }
-
-    const cpuCtx = document.getElementById('chart-cpu');
-    new Chart(cpuCtx, {
-      type: 'line',
-      data: {
-        labels: labels15,
-        datasets: [
-          { label: 'Alertas', data: randSeries(35, 40), tension: 0.25, fill: false }
-        ]
-      },
-      options: {
-        responsive: true,
-        interaction: { mode: 'index', intersect: false },
-        plugins: { legend: { position: 'bottom' } }
-      }
-    });
-
-
-    var options = {
-      chart: {
-        height: "100%",
-        width: "100%",
-        type: "treemap",
-      },
-      series: [
-        {
-          data: [
-            {
-              x: "UTI",
-              y: 4,
-            },
-            {
-              x: "Pronto-Socorro",
-              y: 1,
-            },
-            {
-              x: "Neonatal",
-              y: 0,
-            },
-            {
-              x: "Internação",
-              y: 0,
-            },
-            {
-              x: "Centro Cirúrgico",
-              y: 0,
-            }
-          ],
-        },
-      ],
-    }
-
-    var chart = new ApexCharts(document.querySelector("#Graficoarea"), options);
-    chart.render();
   </script>
 
 </body>
