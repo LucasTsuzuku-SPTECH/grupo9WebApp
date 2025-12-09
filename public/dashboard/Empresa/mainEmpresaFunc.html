@@ -54,7 +54,7 @@
                 <ul class="navbar-nav justify-content-start flex-grow-1 pe-3">
                     <li class="nav-item-selected" style="width: 100%;">
                         <a id="navMain" class="nav-link active" style="padding: 4px; color: #f5f6fa; font-size: 18px;"
-                            href="./mainPage.html">Página principal</a>
+                            href="./mainEmpresaFunc.html">Página principal</a>
                     </li>
                     <li class="nav-item" style="width: 100%;">
                         <a class="nav-link active" style="padding: 4px; color: #f5f6fa; font-size: 18px;"
@@ -64,6 +64,9 @@
                         <a class="nav-link active" style="padding: 4px; color: #f5f6fa; font-size: 18px;"
                             href="./contas.html">Contas</a>
                     </li>
+                    <li class="nav-item" style="width: 100%;">
+                        <a class="nav-link active" style="padding: 4px; color: #f5f6fa; font-size: 18px;"
+                            href="./suporte.html">Suporte</a>
                 </ul>
                 <ul class="navbar-nav d-flex flex-column pe-1">
                     <li class="nav-item d-flex justify-content-center" style="width: 100%;">
@@ -81,8 +84,7 @@
             <div class="fastActions">
                 <div>
                     <h4 style="margin: 0px; color: black;">Filtro de períodos:</h4>
-                    <select onchange="updatePeriodo()" class="selects"
-                        style="height: 20px" id="filtroPeriodo">
+                    <select onchange="updatePeriodo()" class="selects" style="height: 20px" id="filtroPeriodo">
                         <option class="opcao" value=semanal>Semanal</option>
                         <option class="opcao" value=mensal>Mensal</option>
                         <option class="opcao" value=anual>Anual</option>
@@ -232,8 +234,7 @@
             <div class="divEspecifica">
                 <h2 style="margin-left: 75px;">Visão específica:</h2>
                 <div style="width: 90%; margin-left: 75px;">
-                    <select onchange="hospitalSelecionado()" class="selects"
-                        id="filtroHospital">
+                    <select onchange="hospitalSelecionado()" class="selects" id="filtroHospital">
                         <option value="todos">Todos os hospitais</option>
                     </select>
                 </div>
