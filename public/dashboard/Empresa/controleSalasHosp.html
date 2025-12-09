@@ -189,49 +189,10 @@
                 <a href="./contas.html">Contas</a>
             </nav>
         </div>
-
+        <br><br>
         <div id="nomeHospAtual"></div>
         <!-- Seção de filtro e KPI -->
         <div style="display: flex; justify-content: space-between; align-items: center; padding: 20px;">
-
-
-            <!-- KPIs de hospitais -->
-            <div class="kpi">
-                <div
-                    style="display: flex; flex-direction: column; align-items: center; margin-left: 1%; margin-right: 1%;">
-                    <h3> Última Atualização:</h3>
-                    <p id="data-atual"></p>
-                </div>
-                <!-- Select de Filtro -->
-                <select id="filtroCriticidade">
-                    <option value="todos">Todos</option>
-                    <option value="critico">Crítico</option>
-                    <option value="alerta">Alerta</option>
-                    <option value="estavel">Estável</option>
-                </select>
-                <div class="item" style=" background-color: #35BBAB; border: 2px solid black;">
-                    <p id="qtd_ttl">Quantidade Salas:</p>
-                    <h3 id="qtde_total">0</h3>
-                </div>
-                <div class="item" style="background-color: rgba(255, 0, 0, 0.2); border: 2px solid red;">
-                    <p id="qtd_deCriticos">Quantidade Salas Críticos:</p>
-                    <h3 id="qtde_critico">0</h3>
-                </div>
-                <div class="item" style="background-color: rgba(255, 255, 0, 0.2); border: 2px solid rgb(255, 255, 0);">
-                    <p id="Qtd_deAlertas">Quantidade Salas Alertas:</p>
-                    <h3 id="qtde_alerta">0</h3>
-                </div>
-                <div class="item" style="background-color: rgba(0, 185, 0, 0.2); border: 2px solid rgb(0, 207, 0);">
-                    <p id="qtd_deEstaveis">Quantidade Salas Estáveis:</p>
-                    <h3 id="qtde_estavel">0</h3>
-                </div>
-                <div
-                    style="display: flex; flex-direction: column; align-items: center; margin-left: 1%; margin-right: 1%;  ">
-                    <span style="width: 100%; margin: 2px;" class="status critico">Critico ≥ 2 Alertas</span>
-                    <span style="width: 100%; margin: 2px;" class="status alerta">Alerta = 1 Alerta</span>
-                    <span style="width: 100%; margin: 2px;" class="status estavel">Estável = 0 Alerta</span>
-                </div>
-            </div>
         </div>
 
         <div id="div_botoes" style="padding: 20px; display: flex; gap: 10px; flex-wrap: wrap;">
@@ -418,15 +379,6 @@
         navMain.href = "./mainEmpresaFunc.html"
     }
 
-    /* Definindo o horário na dash*/
-    let agora = new Date();
-
-    let dataFormatada = agora.toLocaleDateString();
-    let horaFormatada = agora.toLocaleTimeString();
-
-    let elementoData = document.getElementById("data-atual");
-
-    elementoData.textContent = `${dataFormatada} ${horaFormatada}`;
     nomeHospAtual.innerHTML = `<h1 style="margin: 4vh 0vh 2vh 4vh; font-size:40px">${sessionStorage.getItem('NOME_HOSPITAL_ATUAL')}</h1>`
 
 
@@ -540,7 +492,7 @@
                         divSala.dataset.status = salas[i].statusSala;
                         divSala.innerHTML = `
                 <h3>Sala ${salas[i].numero}</h3>
-                <span class="status ${salas[i].statusSala}">${salas[i].statusSala}</span>
+                
                 `;
 
 
@@ -566,7 +518,6 @@
         ventiladoresEncontrados = [];
         parametrosEncontrados = [];
         const container = document.querySelector(".conteudo-principal2");
-        document.getElementById("filtroCriticidade").style.display = "none";
         container.style.justifyContent = "center";
         container.innerHTML = `<div id="validaVentiladores"></div>`;
         div_botoes.innerHTML = `
@@ -588,10 +539,6 @@
                 font-size: 14px;" type="text" placeholder="Digite um número de série...🔍︎">
                 `
 
-        qtd_ttl.innerHTML = "Quantidade Ventiladores:"
-        qtd_deCriticos.innerHTML = "Quantidade Ventiladores Críticos:"
-        Qtd_deAlertas.innerHTML = "Quantidade Ventiladores em Alertas:"
-        qtd_deEstaveis.innerHTML = "Quantidade Ventiladores Estáveis:"
 
 
 
@@ -642,8 +589,8 @@
                                 <strong>Modelo:</strong> ${v.nome_modelo}<br>
                             </div>
                             <div style="display:flex; flex-direction:column; align-items:center; min-width:80px; margin: 5px ;border: 1px solid #ccc; background: #f9f9f9; padding: 10px 20px; border-radius: 10px;">
-                                <span><strong>Quantidade Alertas de Hoje:</strong> ${v.alertas}</span>
-                                <span class="status ${statusClass}">${statusClass}</span>
+                                
+                                
                             </div>
                         </div>
 
@@ -677,10 +624,6 @@
 
 
 
-        document.getElementById("qtde_total").innerText = total;
-        document.getElementById("qtde_estavel").innerText = estavel;
-        document.getElementById("qtde_alerta").innerText = alerta;
-        document.getElementById("qtde_critico").innerText = critico;
     }
 
 
@@ -736,8 +679,8 @@
                     <strong>Modelo:</strong> ${ventiladorEncontrado.nome_modelo}<br>
                 </div>
                 <div style="display:flex; flex-direction:column; align-items:center; min-width:80px; margin: 5px ;border: 1px solid #ccc; background: #f9f9f9; padding: 10px 20px; border-radius: 10px;">
-                    <span><strong>Quantidade Alertas de Hoje:</strong> ${ventiladorEncontrado.alertas}</span>
-                    <span class="status ${statusClass}">${statusClass}</span>
+                    
+                    
                 </div>
             </div>
 
@@ -877,8 +820,8 @@
                                 <strong>Modelo:</strong> ${v.nome_modelo}<br>
                             </div>
                             <div style="display:flex; flex-direction:column; align-items:center; min-width:80px; margin: 5px ;border: 1px solid #ccc; background: #f9f9f9; padding: 10px 20px; border-radius: 10px;">
-                                <span><strong>Quantidade Alertas de Hoje:</strong> 0</span>
-                                <span class="status ${statusClass}">${statusClass}</span>
+                                
+                            
                             </div>
                         </div>
 
@@ -1282,7 +1225,6 @@
     /* ------------------ Inicialização ------------------ */
     window.onload = () => {
         carregarSalasHosp().then(filtrarSalasHospitais);
-        document.getElementById("filtroCriticidade").addEventListener("change", filtrarSalasHospitais);
     };
 
     // Abrir/Fechar modais

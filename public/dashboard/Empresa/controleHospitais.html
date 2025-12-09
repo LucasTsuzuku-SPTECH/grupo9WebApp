@@ -177,43 +177,7 @@
         <br><br><br><br>
         <!-- Seção de filtro e KPI -->
         <div style="display: flex; justify-content: space-between; align-items: center; padding: 20px;">
-            <!-- KPIs de hospitais -->
-            <div class="kpi">
-                <div
-                    style="display: flex; flex-direction: column; align-items: center; margin-left: 1%; margin-right: 1%;">
-                    <h3> Última Atualização:</h3>
-                    <p id="data-atual"></p>
 
-                </div>
-                <!-- Select de Filtro -->
-                <select id="filtroCriticidade">
-                    <option value="tudo">Todos</option>
-                    <option value="critico">Crítico</option>
-                    <option value="alerta">Alerta</option>
-                    <option value="estavel">Estável</option>
-                </select>
-                <div class="item" style=" border: 2px solid black;">
-                    <p>Quantidade Hospitais:</p>
-                    <h3 id="qtde_total">0</h3>
-                </div>
-                <div class="item" style="background-color: rgba(255, 0, 0, 0.2); border: 2px solid red;">
-                    <p>Quantidade Hospitais Críticos:</p>
-                    <h3 id="qtde_critico">0</h3>
-                </div>
-                <div class="item" style="background-color: rgba(255, 255, 0, 0.2); border: 2px solid rgb(255, 255, 0);">
-                    <p>Quantidade Hospitais Alertas:</p>
-                    <h3 id="qtde_alerta">0</h3>
-                </div>
-                <div class="item" style="background-color: rgba(0, 185, 0, 0.2); border: 2px solid rgb(0, 207, 0);">
-                    <p>Quantidade Hospitais Estáveis:</p>
-                    <h3 id="qtde_estavel">0</h3>
-                </div>
-                <div
-                    style="display: flex; flex-direction: column; align-items: center; margin-left: 1%; margin-right: 1%;  ">
-                    <span style="width: 100%; margin: 2px;" class="status critico">Critico ≥ 2 Alertas</span>
-                    <span style="width: 100%; margin: 2px;" class="status alerta">Alerta = 1 Alerta</span>
-                    <span style="width: 100%; margin: 2px;" class="status estavel">Estável = 0 Alerta</span>
-                </div>
             </div>
         </div>
 
@@ -337,15 +301,6 @@
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 <script>
-    /* Definindo o horário na dash*/
-    let agora = new Date();
-
-    let dataFormatada = agora.toLocaleDateString();
-    let horaFormatada = agora.toLocaleTimeString();
-
-    let elementoData = document.getElementById("data-atual");
-
-    elementoData.textContent = `${dataFormatada} ${horaFormatada}`;
 
     if (sessionStorage.CARGO_USUARIO != "adminEmpresa") {
         document.getElementById("add_hospital").style.display = "none";
@@ -406,7 +361,6 @@
                 divHospital.dataset.status = hospital.statusHospital;
                 divHospital.innerHTML = `
                 <h3>${hospital.nomeHospital}</h3>
-                <span class = "status ${hospital.statusHospital}">${hospital.statusHospital}</span>
                 `;
                 divHospital.addEventListener("click", () => { sessionStorage.ID_HOSPITAL_ATUAL = hospital.idHospital; sessionStorage.NOME_HOSPITAL_ATUAL = hospital.nomeHospital; window.location = "controleSalasHosp.html"; });
                 container.appendChild(divHospital);
