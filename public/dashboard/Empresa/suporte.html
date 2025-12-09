@@ -610,6 +610,8 @@
     <div class="card shadow-sm p-3">
       <h5 class="mb-3">Backlog ao longo do tempo (Burndown)</h5>
       <div id="burndown" style="height: 320px;"></div>
+    <small style="margin: auto;">Meta: Backlog com no máximo 70 chamados</small>
+
     </div>
   </div>
 </div>
@@ -1171,46 +1173,11 @@ function plotarGraficoSLA() {
 
 
 
-  // ================================
-  // Gráfico de Barras
-  // ================================
-  var graficoChamadosOptions = {
-    series: [
-      { name: "Criados", data: [12, 17, 14, 20, 10, 8, 22] },
-      { name: "Resolvidos", data: [10, 15, 12, 18, 9, 7, 20] }
-    ],
-    chart: { type: 'bar', height: 300 },
-    xaxis: {
-      categories: ["Seg", "Ter", "Qua", "Qui", "Sex", "Sab", "Dom"]
-    }
-  };
-  var graficoChamados = new ApexCharts(document.querySelector("#graficoChamados"), graficoChamadosOptions);
-  graficoChamados.render();
 
 
-  // ================================
-  // Heatmap - Categorias x Status
-  // ================================
-  var heatmapOptions = {
-    chart: { height: 300, type: 'heatmap' },
-    series: [
-      { name: "Erro Técnico", data: [5, 10, 2, 7] },
-      { name: "Atualização", data: [3, 8, 1, 4] },
-      { name: "Configuração", data: [6, 12, 3, 9] }
-    ],
-    xaxis: {
-      categories: ["Aberto", "Em Andamento", "Aguardando Cliente", "Resolvido"]
-    },
-    dataLabels: { enabled: false }
-  };
-  var heatmap = new ApexCharts(document.querySelector("#heatmap"), heatmapOptions);
-  heatmap.render();
+  
 
 
-  // ================================
-  // Preenchendo KPIs
-  // (Você atualiza aqui com sua API depois)
-  // ================================
 
 </script>
 <script src="../js/chart.js"></script>
@@ -1295,7 +1262,7 @@ console.log(chamadosCache)
 
   chamado.forEach(chamado => {
 
-    const dCriado = new Date (chamado.data_criacao.substring(0, 10)).toLocaleDateString();
+    const dCriado = new Date (chamado.data_criacao).toLocaleDateString();
     if (!criadosPorDia[dCriado]) {
       criadosPorDia[dCriado] = 0;
     }
@@ -1304,7 +1271,7 @@ console.log(chamadosCache)
 
     const resolvido =chamado.data_conclusao;
     if (resolvido) {
-      const dResolvido = new Date(resolvido.substring(0, 10)).toLocaleDateString();
+      const dResolvido = new Date(resolvido).toLocaleDateString();
       if (!resolvidosPorDia[dResolvido]) {
         resolvidosPorDia[dResolvido] = 0;
       }
@@ -1418,7 +1385,6 @@ alertas.forEach(alerta=>{
     prioridade="High"
   }
  
-  //criarAlerta(alerta.valor_lido, alerta.componente, alerta.hospital, alerta.min_permitido, alerta.max_permitido, alerta.area, alerta.numero_serie, alerta.timestamp,prioridade)
 })
   return alertas
   
@@ -1465,7 +1431,7 @@ console.log(prioridade)
 }
 
 async function processarTodosOsAlertas() {
-  const alertas = await buscarAlertasJira(); // mantém sua lógica atual
+  const alertas = await buscarAlertasJira()
 
   const resposta = await fetch("/jira/processarAlertas", {
     method: "POST",
@@ -1496,7 +1462,7 @@ processarTodosOsAlertas();
         track: {
           background: "#e7e7e7",
           strokeWidth: '97%',
-          margin: 5, // margin is in pixels
+          margin: 5, 
           dropShadow: {
             enabled: true,
             top: 2,
