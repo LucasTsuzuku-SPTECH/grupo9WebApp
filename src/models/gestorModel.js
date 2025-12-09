@@ -104,15 +104,8 @@ async function listarSemanal() {
     const { ano, mes } = obterAnoMesAtual();
     const agora = new Date();
     var semana = dataMoment().week()
-    var semanaAtual = semana - 1;
-   console.log(semanaAtual)
-   console.log(semanaAtual)
-   console.log(semanaAtual)
-   console.log(semanaAtual)
-   console.log(semanaAtual)
-   console.log(semanaAtual)
-   console.log(semanaAtual)
-   console.log(semanaAtual)
+    var semanaAtual = semana;
+
 
     try {
         const alertas = await buscarArquivoS3(
@@ -142,15 +135,17 @@ async function listarSemanal() {
 // Buscar dados DIÁRIOS
 async function listarDiario() {
     const { ano, mes } = obterAnoMesAtual();
-    var dia = String(new Date().getDate()).padStart(2, '0');
+    var dia = dataMoment().subtract(1, 'days').format('DD');
     var semana = dataMoment().week()
-    var semanaAtual = semana - 1;
+    var semanaAtual = semana;
+
+ 
 
 
     try {
         const alertas = await buscarArquivoS3(
             process.env.AWS_BUCKET_NAME,
-            `AlertasHistorico/${ano}/${mes}/Semana${semanaAtual}/${dia}/alertasDoDia.csv`
+            `AlertasHistorico/${ano}/${mes}/Semana${semanaAtual}/${dia}/alertaDoDia.csv`
         );
 
         const coletasOk = await buscarArquivoS3(
