@@ -41,9 +41,14 @@ async function listarUltimaHora() {
 
 
 async function listarDiario() {
+    var ano = new Date().getFullYear()
+    var mes = new Date().getMonth()+1;
+    var mesAtual = mes < 10 ? ('0' + mes) : mes
+    var semanaAtual = dataMoment().week()
+
     const params = {
         Bucket: process.env.BUCKET_CLIENT,
-        Key: `Alertas/alertaDiario.csv`
+        Key: `AlertasHistorico/${ano}/${mesAtual}/Semana${semanaAtual}/08/alertaDoDia.csv`
     };
 
     const command = new GetObjectCommand(params);
