@@ -23,66 +23,67 @@ background: #264653;
 <body onload="puxarDados()">
   <div class="div-pai">
 
- <nav class="navbar corPrincipal fixed-top py-3">
-    <div class="container-fluid justify-content-start ">
-      <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar"
-        aria-controls="offcanvasNavbar" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon text-white"></span>
-      </button>
-      <div class="containerTitulo">
-        <div class="logo-titulo">
-          <img src="/assets/imgs/Zephyrus_2png.png" style="width: 50px;" alt="">
-          <h1 class="titulo">Zephyrus</h1>
-        </div>
+  <!-- Cabeçalho -->
+        <nav class="navbar corPrincipal fixed-top py-3">
+            <div class="container-fluid justify-content-start">
+                <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas"
+                    data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="containerTitulo">
+                    <div class="logo-titulo">
+                        <img src="/assets/imgs/Zephyrus_2png.png" style="width: 50px;" alt="">
+                        <h1 class="titulo">Zephyrus</h1>
+                    </div>
+                </div>
+            </div>
+        </nav>
 
+        <!-- Menu Offcanvas -->
         <div class="offcanvas offcanvas-start corPrincipal" tabindex="-1" id="offcanvasNavbar"
-          aria-labelledby="offcanvasNavbarLabel">
-          <img src="/assets/imgs/Zephyrus_2png.png"
-            style="width: 170px; align-self: center; margin-bottom: 10px; margin-top: 20px;" alt="">
-          <div class="offcanvas-header" style="border-bottom:2px solid rgba(255, 255, 255, 0.5);">
-            <h4 class="offcanvas-title " style="color: #f5f6fa; " id="offcanvasNavbarLabel">Menu</h4>
-            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas"
-              aria-label="Close"></button>
-          </div>
-          <div class="offcanvas-body d-flex flex-column">
-            <ul class="navbar-nav justify-content-start flex-grow-1 pe-3">
-              <li class="nav-item" style="width: 100%;">
-                <a class="nav-link active" style="padding: 5px; color: #f5f6fa; font-size: 22px;"
-                  href="./mainPage.html">Página
-                  principal</a>
-              </li>
-              <li class="nav-item" style="width: 100%;">
-                <a class="nav-link active" style="padding: 5px; color: #f5f6fa;  font-size: 22px;"
-                  href="./balanceamentoVentiladores.html">Balanceamento</a>
-              </li>
-              <li class="nav-item" style="width: 100%;">
-                <a class="nav-link active" style="padding: 5px; color: #f5f6fa;  font-size: 22px;"
-                  href="./controleSalas.html">Salas</a>
-              </li>
-              <li class="nav-item-selected" style="width: 100%;">
-                <a class="nav-link active" style="padding: 5px; color: #f5f6fa;  font-size: 22px;"
-                  href="./contas.html">Contas</a>
-              </li>
-            </ul>
-            <ul class="navbar-nav d-flex flex-column flex-grow-1 pe-3">
-              <li class="nav-item mt-auto d-flex justify-content-center" style="width: 100%;">
-                <a class="btn-suporte" href="/index">
-                  <img style="width: 40px;" src="/assets/imgs/headphoneIcon.png" alt="">
-                  Abrir chamado
-                </a>
-              </li>
-              <li class="nav-item d-flex justify-content-center" style="width: 100%;">
-                <a class="btn-sair" href="/index.html" onclick="sessionStorage.clear()">
-                  <img class="icon" src="https://cdn-icons-png.flaticon.com/512/1828/1828479.png" alt="Logout">
-                  Sair
-                </a>
-              </li>
-
-            </ul>
-          </div>
+            aria-labelledby="offcanvasNavbarLabel">
+            <img src="/assets/imgs/Zephyrus_2png.png"
+                style="width: 136px; align-self: center; margin-bottom: 8px; margin-top: 16px;" alt="">
+            <div class="offcanvas-header" style="border-bottom:2px solid rgba(255, 255, 255, 0.5);">
+                <h4 class="offcanvas-title" style="color: #f5f6fa;" id="offcanvasNavbarLabel">Menu</h4>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas"
+                    aria-label="Close"></button>
+            </div>
+            <div class="offcanvas-body d-flex flex-column">
+                <ul class="navbar-nav justify-content-start flex-grow-1 pe-3">
+                    <li class="nav-item" style="width: 100%;">
+                        <a class="nav-link active" style="padding: 4px; color: #f5f6fa; font-size: 18px;"
+                            href="./mainPage.html">Página principal</a>
+                    </li>
+                    <li class="nav-item" style="width: 100%;">
+                        <a class="nav-link active" style="padding: 4px; color: #f5f6fa; font-size: 18px;"
+                            href="./balanceamentoVentiladores.html">Balanceamento</a>
+                    </li>
+                    <li class="nav-item" style="width: 100%;">
+                        <a class="nav-link active" style="padding: 4px; color: #f5f6fa; font-size: 18px;"
+                            href="./controleSalas.html">Salas</a>
+                    </li>
+                    <li class="nav-item-selected" style="width: 100%;">
+                        <a class="nav-link active" style="padding: 4px; color: #f5f6fa; font-size: 18px;"
+                            href="./contas.html">Contas</a>
+                </ul>
+                <ul class="navbar-nav d-flex flex-column pe-1">
+                    <li class="nav-item mt-auto d-flex justify-content-center" style="width: 100%;">
+                        <a class="btn-suporte" href="/index">
+                            <img style="width: 40px;" src="/assets/imgs/headphoneIcon.png" alt="">
+                            Abrir chamado
+                        </a>
+                    </li>
+                    <li class="nav-item d-flex justify-content-center" style="width: 100%;">
+                        <a class="btn-sair" href="/index.html" onclick="sessionStorage.clear()">
+                            <img class="icon" src="https://cdn-icons-png.flaticon.com/512/1828/1828479.png"
+                                alt="Logout">
+                            Sair
+                        </a>
+                    </li>
+                </ul>
+            </div>
         </div>
-      </div>
-  </nav>
 
     <div class="conteudo-principal">
 

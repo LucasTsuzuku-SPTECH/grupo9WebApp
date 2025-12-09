@@ -19,40 +19,40 @@
 
     <style>
         /* estilos gerais e do filtro */
-            /* ... estilos existentes ... */
-    
-    /* Customizar tooltips */
-    .tooltip-inner {
-        background-color: #1f2937;
-        border-radius: 6px;
-        padding: 8px 12px;
-        font-size: 0.875rem;
-        font-weight: 500;
-        max-width: 200px;
-        text-align: center;
-    }
+        /* ... estilos existentes ... */
 
-    .tooltip.show {
-        opacity: 1;
-    }
+        /* Customizar tooltips */
+        .tooltip-inner {
+            background-color: #1f2937;
+            border-radius: 6px;
+            padding: 8px 12px;
+            font-size: 0.875rem;
+            font-weight: 500;
+            max-width: 200px;
+            text-align: center;
+        }
 
-    .bs-tooltip-top .tooltip-arrow::before {
-        border-top-color: #1f2937;
-    }
+        .tooltip.show {
+            opacity: 1;
+        }
 
-    .bs-tooltip-bottom .tooltip-arrow::before {
-        border-bottom-color: #1f2937;
-    }
+        .bs-tooltip-top .tooltip-arrow::before {
+            border-top-color: #1f2937;
+        }
 
-    /* Cor do texto do tooltip */
-    .tooltip-inner {
-        color: #ffffff;
-    }
+        .bs-tooltip-bottom .tooltip-arrow::before {
+            border-bottom-color: #1f2937;
+        }
 
-    /* Sombra no tooltip */
-    .tooltip.show {
-        filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.15));
-    }
+        /* Cor do texto do tooltip */
+        .tooltip-inner {
+            color: #ffffff;
+        }
+
+        /* Sombra no tooltip */
+        .tooltip.show {
+            filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.15));
+        }
 
         .btn-group {
             gap: 0.5rem;
@@ -141,62 +141,60 @@
 </head>
 
 <body>
+    <!-- Cabeçalho -->
     <nav class="navbar corPrincipal fixed-top py-3">
-        <div class="container-fluid justify-content-start ">
+        <div class="container-fluid justify-content-start">
             <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar"
                 aria-controls="offcanvasNavbar" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon text-white"></span>
+                <span class="navbar-toggler-icon"></span>
             </button>
             <div class="containerTitulo">
                 <div class="logo-titulo">
                     <img src="/assets/imgs/Zephyrus_2png.png" style="width: 50px;" alt="">
                     <h1 class="titulo">Zephyrus</h1>
                 </div>
-
-                <div class="offcanvas offcanvas-start corPrincipal" tabindex="-1" id="offcanvasNavbar"
-                    aria-labelledby="offcanvasNavbarLabel">
-                    <img src="/assets/imgs/Zephyrus_2png.png"
-                        style="width: 170px; align-self: center; margin-bottom: 10px; margin-top: 20px;" alt="">
-                    <div class="offcanvas-header" style="border-bottom:2px solid rgba(255, 255, 255, 0.5);">
-                        <h4 class="offcanvas-title " style="color: #f5f6fa; " id="offcanvasNavbarLabel">Menu</h4>
-                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas"
-                            aria-label="Close"></button>
-                    </div>
-                    <div class="offcanvas-body d-flex flex-column">
-                        <ul class="navbar-nav justify-content-start flex-grow-1 pe-3">
-                            <li class="nav-item-selected" style="width: 100%;">
-                                <a id="navMain" class="nav-link active"
-                                    style="padding: 5px; color: #f5f6fa; font-size: 22px;" href="./mainPage.html">Página
-                                    principal</a>
-                            </li>
-                            <li class="nav-item" style="width: 100%;">
-                                <a class="nav-link active" style="padding: 5px; color: #f5f6fa;  font-size: 22px;"
-                                    href="./controleHospitais.html"></a>
-                            </li>
-                            <li class="nav-item" style="width: 100%;">
-                                <a class="nav-link active" style="padding: 5px; color: #f5f6fa;  font-size: 22px;"
-                                    href="./contas.html"></a>
-                            </li>
-                        </ul>
-                        <ul class="navbar-nav d-flex flex-column flex-grow-1 pe-3">
-                            <li class="nav-item mt-auto d-flex justify-content-center" style="width: 100%;">
-                                <a class="btn-suporte" href="/index">
-                                    <img style="width: 40px;" src="/assets/imgs/headphoneIcon.png" alt="">
-                                  
-                                </a>
-                            </li>
-                            <li class="nav-item d-flex justify-content-center" style="width: 100%;">
-                                <a class="btn-sair" href="/index.html" onclick="sessionStorage.clear()">
-                                    <img class="icon" src="https://cdn-icons-png.flaticon.com/512/1828/1828479.png"
-                                        alt="Logout">
-                                    Sair
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
             </div>
+        </div>
     </nav>
+
+    <!-- Menu Offcanvas -->
+    <div class="offcanvas offcanvas-start corPrincipal" tabindex="-1" id="offcanvasNavbar"
+        aria-labelledby="offcanvasNavbarLabel">
+        <img src="/assets/imgs/Zephyrus_2png.png"
+            style="width: 136px; align-self: center; margin-bottom: 8px; margin-top: 16px;" alt="">
+        <div class="offcanvas-header" style="border-bottom:2px solid rgba(255, 255, 255, 0.5);">
+            <h4 class="offcanvas-title" style="color: #f5f6fa;" id="offcanvasNavbarLabel">Menu</h4>
+            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas"
+                aria-label="Close"></button>
+        </div>
+        <div class="offcanvas-body d-flex flex-column">
+            <ul class="navbar-nav justify-content-start flex-grow-1 pe-3">
+                <li class="nav-item-selected" style="width: 100%;">
+                    <a id="navMain" class="nav-link active" style="padding: 4px; color: #f5f6fa; font-size: 18px;"
+                        href="./dashboardGestor.html">Página principal</a>
+                </li>
+                <li class="nav-item" style="width: 100%;">
+                    <a class="nav-link active" style="padding: 4px; color: #f5f6fa; font-size: 18px;"
+                        href="./controleHospitais.html">Hospitais</a>
+                </li>
+                <li class="nav-item" style="width: 100%;">
+                    <a class="nav-link active" style="padding: 4px; color: #f5f6fa; font-size: 18px;"
+                        href="./contas.html">Contas</a>
+                </li>
+                <li class="nav-item" style="width: 100%;">
+                    <a class="nav-link active" style="padding: 4px; color: #f5f6fa; font-size: 18px;"
+                        href="./suporte.html">Suporte</a>
+            </ul>
+            <ul class="navbar-nav d-flex flex-column pe-1">
+                <li class="nav-item d-flex justify-content-center" style="width: 100%;">
+                    <a class="btn-sair" href="/index.html" onclick="sessionStorage.clear()">
+                        <img class="icon" src="https://cdn-icons-png.flaticon.com/512/1828/1828479.png" alt="Logout">
+                        Sair
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
 
     <br><br><br><br>
 
@@ -261,10 +259,8 @@
                         <div class="d-flex justify-content-between align-items-center">
                             <div>
                                 <p class="text-muted small mb-1">Coletas Críticas</p>
-                                <p class="stat-value text-danger" id="criticosValue" 
-                                   data-bs-toggle="tooltip" 
-                                   data-bs-placement="top" 
-                                   title="Crítico: > 80%">2%</p>
+                                <p class="stat-value text-danger" id="criticosValue" data-bs-toggle="tooltip"
+                                    data-bs-placement="top" title="Crítico: > 80%">2%</p>
                             </div>
                             <div class="bg-danger bg-opacity-10 p-3 rounded">
                                 <i class="bi bi-x-circle stat-icon text-danger"></i>
@@ -279,10 +275,8 @@
                         <div class="d-flex justify-content-between align-items-center">
                             <div>
                                 <p class="text-muted small mb-1">Coletas em Atenção</p>
-                                <p class="stat-value text-warning" id="atencaoValue" 
-                                   data-bs-toggle="tooltip" 
-                                   data-bs-placement="top" 
-                                   title="Atenção: entre 75% e 80%">6%</p>
+                                <p class="stat-value text-warning" id="atencaoValue" data-bs-toggle="tooltip"
+                                    data-bs-placement="top" title="Atenção: entre 75% e 80%">6%</p>
                             </div>
                             <div class="bg-warning bg-opacity-10 p-3 rounded">
                                 <i class="bi bi-exclamation-triangle stat-icon text-warning"></i>
@@ -297,10 +291,8 @@
                         <div class="d-flex justify-content-between align-items-center">
                             <div>
                                 <p class="text-muted small mb-1">Coletas Operacionais</p>
-                                <p class="stat-value text-success" id="operacionaisValue" 
-                                   data-bs-toggle="tooltip" 
-                                   data-bs-placement="top" 
-                                   title="Operacional: abaixo de 75%">0%</p>
+                                <p class="stat-value text-success" id="operacionaisValue" data-bs-toggle="tooltip"
+                                    data-bs-placement="top" title="Operacional: abaixo de 75%">0%</p>
                             </div>
                             <div class="bg-success bg-opacity-10 p-3 rounded">
                                 <i class="bi bi-check-circle stat-icon text-success"></i>
@@ -1022,13 +1014,13 @@
             atualizarIndicadorData(); // Inicializar com data padrão
             carregarDadosGestor();
             setInterval(carregarDadosGestor, 300000);
-                const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
-    tooltipTriggerList.map(function (tooltipTriggerEl) {
-        return new bootstrap.Tooltip(tooltipTriggerEl, {
-            trigger: 'hover',
-            delay: { show: 200, hide: 100 }
-        });
-    });
+            const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+            tooltipTriggerList.map(function (tooltipTriggerEl) {
+                return new bootstrap.Tooltip(tooltipTriggerEl, {
+                    trigger: 'hover',
+                    delay: { show: 200, hide: 100 }
+                });
+            });
         });
     </script>
 </body>
