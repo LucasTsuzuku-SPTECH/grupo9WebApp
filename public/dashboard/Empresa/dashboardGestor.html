@@ -19,6 +19,41 @@
 
     <style>
         /* estilos gerais e do filtro */
+            /* ... estilos existentes ... */
+    
+    /* Customizar tooltips */
+    .tooltip-inner {
+        background-color: #1f2937;
+        border-radius: 6px;
+        padding: 8px 12px;
+        font-size: 0.875rem;
+        font-weight: 500;
+        max-width: 200px;
+        text-align: center;
+    }
+
+    .tooltip.show {
+        opacity: 1;
+    }
+
+    .bs-tooltip-top .tooltip-arrow::before {
+        border-top-color: #1f2937;
+    }
+
+    .bs-tooltip-bottom .tooltip-arrow::before {
+        border-bottom-color: #1f2937;
+    }
+
+    /* Cor do texto do tooltip */
+    .tooltip-inner {
+        color: #ffffff;
+    }
+
+    /* Sombra no tooltip */
+    .tooltip.show {
+        filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.15));
+    }
+
         .btn-group {
             gap: 0.5rem;
         }
@@ -136,18 +171,18 @@
                             </li>
                             <li class="nav-item" style="width: 100%;">
                                 <a class="nav-link active" style="padding: 5px; color: #f5f6fa;  font-size: 22px;"
-                                    href="./controleHospitais.html">Hospitais</a>
+                                    href="./controleHospitais.html"></a>
                             </li>
                             <li class="nav-item" style="width: 100%;">
                                 <a class="nav-link active" style="padding: 5px; color: #f5f6fa;  font-size: 22px;"
-                                    href="./contas.html">Contas</a>
+                                    href="./contas.html"></a>
                             </li>
                         </ul>
                         <ul class="navbar-nav d-flex flex-column flex-grow-1 pe-3">
                             <li class="nav-item mt-auto d-flex justify-content-center" style="width: 100%;">
                                 <a class="btn-suporte" href="/index">
                                     <img style="width: 40px;" src="/assets/imgs/headphoneIcon.png" alt="">
-                                    Abrir chamado
+                                  
                                 </a>
                             </li>
                             <li class="nav-item d-flex justify-content-center" style="width: 100%;">
@@ -226,8 +261,10 @@
                         <div class="d-flex justify-content-between align-items-center">
                             <div>
                                 <p class="text-muted small mb-1">Coletas Críticas</p>
-                                <p class="stat-value text-danger" id="criticosValue" data-bs-toggle="tooltip"
-                                    data-bs-placement="top" title="">2%</p>
+                                <p class="stat-value text-danger" id="criticosValue" 
+                                   data-bs-toggle="tooltip" 
+                                   data-bs-placement="top" 
+                                   title="Crítico: > 80%">2%</p>
                             </div>
                             <div class="bg-danger bg-opacity-10 p-3 rounded">
                                 <i class="bi bi-x-circle stat-icon text-danger"></i>
@@ -242,8 +279,10 @@
                         <div class="d-flex justify-content-between align-items-center">
                             <div>
                                 <p class="text-muted small mb-1">Coletas em Atenção</p>
-                                <p class="stat-value text-warning" id="atencaoValue" data-bs-toggle="tooltip"
-                                    data-bs-placement="top" title="">6%</p>
+                                <p class="stat-value text-warning" id="atencaoValue" 
+                                   data-bs-toggle="tooltip" 
+                                   data-bs-placement="top" 
+                                   title="Atenção: entre 75% e 80%">6%</p>
                             </div>
                             <div class="bg-warning bg-opacity-10 p-3 rounded">
                                 <i class="bi bi-exclamation-triangle stat-icon text-warning"></i>
@@ -258,8 +297,10 @@
                         <div class="d-flex justify-content-between align-items-center">
                             <div>
                                 <p class="text-muted small mb-1">Coletas Operacionais</p>
-                                <p class="stat-value text-success" id="operacionaisValue" data-bs-toggle="tooltip"
-                                    data-bs-placement="top" title="">0%</p>
+                                <p class="stat-value text-success" id="operacionaisValue" 
+                                   data-bs-toggle="tooltip" 
+                                   data-bs-placement="top" 
+                                   title="Operacional: abaixo de 75%">0%</p>
                             </div>
                             <div class="bg-success bg-opacity-10 p-3 rounded">
                                 <i class="bi bi-check-circle stat-icon text-success"></i>
@@ -981,6 +1022,13 @@
             atualizarIndicadorData(); // Inicializar com data padrão
             carregarDadosGestor();
             setInterval(carregarDadosGestor, 300000);
+                const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+    tooltipTriggerList.map(function (tooltipTriggerEl) {
+        return new bootstrap.Tooltip(tooltipTriggerEl, {
+            trigger: 'hover',
+            delay: { show: 200, hide: 100 }
+        });
+    });
         });
     </script>
 </body>
