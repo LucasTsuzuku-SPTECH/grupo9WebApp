@@ -13,24 +13,31 @@
 
   <style>
     .tooltip-inner {
-      max-width: 240px !important;
-      text-align: left;
-      font-size: 14px;
-      padding: 10px 12px;
-    }
-
-    .link {
-      text-decoration: none;
-      color: inherit;
-    }
-
-    .info-icon {
-      width: 17px;
-      margin-left: 6px;
+  max-width: 240px !important;
+  text-align: left;
+  font-size: 14px;
+  padding: 10px 12px;
+}
+.link{
+  text-decoration: none;
+  color: inherit;
+}
+.info-icon {
+  width: 17px;
+  margin-left: 6px;
+  cursor: pointer;
+  filter: invert(40%);
+}
+.buscarChamados {
+      background-color: #30a799;
+      color: #fff;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 5px;
       cursor: pointer;
-      filter: invert(40%);
+      font-size: 16px;
+      margin-bottom: 20px;
     }
-
     body {
       background: #f5f6fa;
       padding-top: 100px;
@@ -408,8 +415,38 @@
       </button>
       <div class="containerTitulo">
         <div class="logo-titulo">
-          <img src="/assets/imgs/Zephyrus_2png.png" style="width: 50px;" alt="">
+          <img src="/Web-Site_Zephyrus/public/assets/imgs/Zephyrus_2png.png" style="width: 50px;" alt="">
           <h1 class="titulo">Zephyrus</h1>
+        </div>
+
+        <div class="offcanvas offcanvas-start corPrincipal" tabindex="-1" id="offcanvasNavbar"
+          aria-labelledby="offcanvasNavbarLabel">
+          <img src="/Web-Site_Zephyrus/public/assets/imgs/Zephyrus_2png.png"
+            style="width: 170px; align-self: center; margin-bottom: 10px; margin-top: 20px;" alt="">
+          <div class="offcanvas-header" style="border-bottom:2px solid rgba(255, 255, 255, 0.5);">
+            <h4 class="offcanvas-title " style="color: #f5f6fa; " id="offcanvasNavbarLabel">Menu</h4>
+            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas"
+              aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body d-flex flex-column">
+            <ul class="navbar-nav justify-content-start flex-grow-1 pe-3">
+              <li class="nav-item-selected" style="width: 100%;">
+                <a id="navMain" class="nav-link active" style="padding: 5px; color: #f5f6fa; font-size: 22px;"
+                  href="./mainPage.html">Página
+                  principal</a>
+              </li>
+             
+            </ul>
+            <ul class="navbar-nav d-flex flex-column flex-grow-1 pe-3">
+            
+              <li class="nav-item d-flex justify-content-center" style="width: 100%;">
+                <a class="btn-sair" href="/index.html" onclick="sessionStorage.clear()">
+                  <img class="icon" src="https://cdn-icons-png.flaticon.com/512/1828/1828479.png" alt="Logout">
+                  Sair
+                </a>
+              </li>
+            </ul>
+          </div>
         </div>
       </div>
     </div>
@@ -457,6 +494,8 @@
   <div class="container-fluid px-5">
     <h1>Dashboard Suporte</h1>
     <h6 id="ultimaAtualizacao"></h6>
+    <button class="buscarChamados" onclick="processarTodosOsAlertas()
+">Gerar chamados</button>
     <!-- KPIs -->
     <div class="row kpi-row">
 
@@ -1056,14 +1095,14 @@
   //GRAFICO DA KPI DE TEMPO
 
   function plotarGraficoTempo() {
-    const { mediaFormatada, tempos } = processarTempoMedioDeResolucao();
+    const { mediaFormatada, tempos,media } = processarTempoMedioDeResolucao();
 
-    let cor = ""
-    if (mediaFormatada <= 1440) {
-      cor = "#43a047"
+    let cor=""
+    if(media<=1440){
+      cor="#43a047"
     }
-    else if (mediaFormatada > 1440 && mediaFormatada <= 2880) {
-      cor = "#fbc02d"
+    else if(media>1440 && mediaFormatada<=2880){
+      cor="#fbc02d"
     }
     else {
       cor = "#e53935"
@@ -1175,7 +1214,7 @@
     const { media, tempos } = calularTempoMedioDeResolucao(chamadosUltimos7Dias);
     const mediaFormatada = formatarTempo(media);
 
-    return { mediaFormatada, tempos };
+    return { mediaFormatada, tempos ,media};
   }
 
 
@@ -1446,10 +1485,9 @@
       body: JSON.stringify(alertas)
     });
 
-    const resultado = await resposta.json();
-    console.log("Resultado:", resultado);
-  }
-  processarTodosOsAlertas();
+  const resultado = await resposta.json();
+  console.log("Resultado:", resultado);
+}
 
 
 

@@ -12,7 +12,7 @@ const s3Client = new S3Client({
 function buscarChamadosS3() {
     const params = {
         Bucket: process.env.BUCKET_CLIENT,
-        Key: "Alertas/alertaDiario.csv" 
+        Key: "AlertasHistorico/2025/12/Semana50/08/alertaDoDia.csv" 
     };
 
     const command = new GetObjectCommand(params);
