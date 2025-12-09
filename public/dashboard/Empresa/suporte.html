@@ -605,6 +605,15 @@
         </div>
       </div>
     </div>
+    <div class="row mt-4">
+  <div class="col-md-12">
+    <div class="card shadow-sm p-3">
+      <h5 class="mb-3">Backlog ao longo do tempo (Burndown)</h5>
+      <div id="burndown" style="height: 320px;"></div>
+    </div>
+  </div>
+</div>
+
         <div class="row mt-4">
       <div class="col-md-12">
         <div class="card shadow-sm p-3" style="max-height: 500px; overflow-y: auto;margin-bottom: 50px;">
@@ -655,13 +664,16 @@
     plotarGraficoResolucao();
         plotarGraficoSLA();
 preencherTabelaProdutividade()
-    processarProdutividade()
+    processarProdutividade(),
+    gerarBurndown(),
+    plotarBurndown()
 
   };
   const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]');
   const tooltipList = [...tooltipTriggerList].map(
     el => new bootstrap.Tooltip(el)
-  );
+  )
+   
 
   function processarProdutividade(){
     const chamados=chamadosCache
@@ -1274,6 +1286,120 @@ async function buscarAlertasDuplicadosJira(numeroSerie, componente) {
     
   } catch (e) {
       }
+}function gerarBurndown() {
+
+  const chamado = chamadosCache
+console.log(chamadosCache)
+  const criadosPorDia = {};
+  const resolvidosPorDia = {};
+
+  chamado.forEach(chamado => {
+
+    const dCriado = new Date (chamado.data_criacao.substring(0, 10)).toLocaleDateString();
+    if (!criadosPorDia[dCriado]) {
+      criadosPorDia[dCriado] = 0;
+    }
+    criadosPorDia[dCriado]++;
+    console.log(dCriado)
+
+    const resolvido =chamado.data_conclusao;
+    if (resolvido) {
+      const dResolvido = new Date(resolvido.substring(0, 10)).toLocaleDateString();
+      if (!resolvidosPorDia[dResolvido]) {
+        resolvidosPorDia[dResolvido] = 0;
+      }
+
+      resolvidosPorDia[dResolvido]++;
+      console.log()
+    }
+  });
+
+  const dias = [];
+
+  for (const dia in criadosPorDia) {
+    if (!dias.includes(dia)) dias.push(dia)
+  }
+  for (const dia in resolvidosPorDia) {
+    if (!dias.includes(dia)) dias.push(dia)
+  }
+
+  dias.sort()
+
+  let backlogAcumulado = 0;
+  const serieBacklog = [];
+
+  dias.forEach(dia => {
+    const criados = criadosPorDia[dia] || 0
+    const resolvidos = resolvidosPorDia[dia] || 0
+
+    backlogAcumulado += criados - resolvidos;
+
+    serieBacklog.push(backlogAcumulado);
+  })
+  console.log({ dias, serieBacklog });
+
+  return { dias, backlog: serieBacklog };
+}
+function plotarBurndown() {
+  const { dias, backlog } =  gerarBurndown();
+new ApexCharts(document.querySelector("#burndown"), {
+  series: [{
+    name: "Backlog",
+    data: backlog
+  }],
+  chart: {
+    type: "area",
+    height: 260,
+    toolbar: { show: false },
+    zoom: { enabled: false },
+    dropShadow: {
+      enabled: true,
+      top: 4,
+      left: 0,
+      blur: 4,
+      opacity: 0.2
+    }
+  },
+  stroke: {
+    width: 3,
+    curve: "smooth"
+  },
+  markers: {
+    size: 4,
+    hover: { size: 7 }
+  },
+  colors: ["#556cd6"],
+  fill: {
+    type: "gradient",
+    gradient: {
+      shadeIntensity: 1,
+      opacityFrom: 0.4,
+      opacityTo: 0.05,
+      stops: [0, 90, 100]
+    }
+  },
+  grid: {
+    borderColor: "#e0e0e0",
+    strokeDashArray: 4
+  },
+  xaxis: {
+    categories: dias,
+    labels: {
+      rotate: -45,
+      style: { fontSize: "12px" }
+    }
+  },
+  yaxis: {
+    labels: { style: { fontSize: "12px" } },
+    title: { text: "Chamados em aberto" }
+  },
+  tooltip: {
+    theme: "light",
+    y: { formatter: val => `${val} chamados` }
+  },
+}).render();
+
+
 }
 
 async function buscarAlertasJira(params) {

@@ -1,6 +1,7 @@
 
     const emailJira="zephyrus2g@gmail.com"
-    const tokenJira="";
+        const tokenJira=process.env.TOKEN_JIRA;
+
     const dominioJira="zephyrus2g1.atlassian.net";
     const auth=btoa(`${emailJira}:${tokenJira}`)
 
