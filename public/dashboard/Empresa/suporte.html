@@ -28,7 +28,16 @@
   cursor: pointer;
   filter: invert(40%);
 }
-
+.buscarChamados {
+      background-color: #30a799;
+      color: #fff;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 16px;
+      margin-bottom: 20px;
+    }
     body {
       background: #f5f6fa;
       padding-top: 100px;
@@ -411,7 +420,7 @@
   <div class="offcanvas offcanvas-start bg-dark text-white" tabindex="-1" id="sidebarOffcanvas"
     aria-labelledby="sidebarOffcanvasLabel">
     <div class="offcanvas-header justify-content-center">
-      <img src="/assets/imgs/Zephyrus_2png.png" alt="Logo" style="height: 40px;">
+      <img src="/Web-Site_Zephyrus/public/assets/imgs/Zephyrus_2png.png" alt="Logo" style="height: 40px;">
       <button type="button" class="btn-close text-reset btn-close-white" data-bs-dismiss="offcanvas"
         aria-label="Close"></button>
     </div>
@@ -419,14 +428,10 @@
       <h5 class="offcanvas-title mb-3" id="sidebarOffcanvasLabel">Menu</h5>
       <nav class="nav flex-column flex-grow-1">
         <a class="nav-link text-white active bg-primary" href="./mainPage.html">Página principal</a>
-        <a class="nav-link text-white" href="./controleSalas.html">Salas</a>
-        <a class="nav-link text-white" href="./contas.html">Contas</a>
+
       </nav>
       <div class="mt-auto pt-3 border-top">
-        <a class="btn btn-outline-light w-100" href="https://suaempresa.atlassian.net/secure/CreateIssue!default.jspa"
-          target="_blank">
-          Abrir Chamado <i class="fa-solid fa-headset"></i>
-        </a>
+
       </div>
     </div>
   </div>
@@ -435,6 +440,8 @@
   <div class="container-fluid px-5">
     <h1>Dashboard Suporte</h1>
     <h6 id="ultimaAtualizacao"></h6>
+    <button class="buscarChamados" onclick="processarTodosOsAlertas()
+">Gerar chamados</button>
     <!-- KPIs -->
     <div class="row kpi-row">
 
@@ -1037,13 +1044,13 @@ function plotarGraficoSLA() {
   //GRAFICO DA KPI DE TEMPO
 
   function plotarGraficoTempo() {
-    const { mediaFormatada, tempos } = processarTempoMedioDeResolucao();
+    const { mediaFormatada, tempos,media } = processarTempoMedioDeResolucao();
 
     let cor=""
-    if(mediaFormatada<=1440){
+    if(media<=1440){
       cor="#43a047"
     }
-    else if(mediaFormatada>1440 && mediaFormatada<=2880){
+    else if(media>1440 && mediaFormatada<=2880){
       cor="#fbc02d"
     }
     else{
@@ -1156,7 +1163,7 @@ function plotarGraficoSLA() {
     const { media, tempos } = calularTempoMedioDeResolucao(chamadosUltimos7Dias);
     const mediaFormatada = formatarTempo(media);
 
-    return { mediaFormatada, tempos };
+    return { mediaFormatada, tempos ,media};
   }
 
 
@@ -1430,7 +1437,6 @@ async function processarTodosOsAlertas() {
   const resultado = await resposta.json();
   console.log("Resultado:", resultado);
 }
-processarTodosOsAlertas();
 
 
 

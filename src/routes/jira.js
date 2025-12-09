@@ -1,15 +1,16 @@
 var express = require("express");
 var router = express.Router();
 var jiraController = require("../controllers/jiraController");
-    router.get("/buscarChamadosJira", jiraController.buscarChamadosJira);
 
-
+router.get("/buscarChamadosJira", jiraController.buscarChamadosJira);
 router.get("/verificar/:numeroSerie/:componente", jiraController.verificarChamado);
 router.post("/criar", jiraController.criarChamado);
-const emailJira="zephyrus2g@gmail.com"
-    const tokenJira=process.env.TOKEN_JIRA;
-    const dominioJira="zephyrus2g1.atlassian.net";
-    const auth=btoa(`${emailJira}:${tokenJira}`)
+
+const emailJira = "zephyrus2g@gmail.com";
+const tokenJira = process.env.TOKEN_JIRA;
+const dominioJira = "zephyrus2g1.atlassian.net";
+const auth = btoa(`${emailJira}:${tokenJira}`);
+
 router.post("/processarAlertas", async (req, res) => {
   const alertas = req.body;
 
@@ -24,7 +25,7 @@ router.post("/processarAlertas", async (req, res) => {
       body: JSON.stringify({
         jql: `project = "Chamados zephyrus"`,
         maxResults: 1000,
-        fields: ["customfield_10125", "customfield_10126"]  
+        fields: ["customfield_10125", "customfield_10126"]
       })
     });
 
@@ -55,7 +56,6 @@ router.post("/processarAlertas", async (req, res) => {
         prioridade = "Medium";
       }
 
-      
       const issue = {
         fields: {
           project: { key: "KAN" },
@@ -81,20 +81,21 @@ router.post("/processarAlertas", async (req, res) => {
       });
 
       criados++;
-      await new Promise(r => setTimeout(r, 250)); 
 
-    res.json({
+      await new Promise(r => setTimeout(r, 250));
+    }
+
+    return res.json({
       status: "ok",
       criados,
       ignorados,
       total: alertas.length
     });
 
-  } }catch (erro) {
+  } catch (erro) {
     console.error("Erro ao processar alertas:", erro);
-    res.status(500).json({ erro: "Erro ao processar alertas" });
-  };
-    });
-    
+    return res.status(500).json({ erro: "Erro ao processar alertas" });
+  }
+});
 
 module.exports = router;
