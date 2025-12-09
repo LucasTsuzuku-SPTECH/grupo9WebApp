@@ -12,16 +12,10 @@ const s3Client = new S3Client({
     }
 });
 
-async function listarDiario() {
-    var anoAtual = new Date().getFullYear()
-    var mes = new Date().getMonth()+1;
-    var mesAtual = mes < 10 ? ('0' + mes) : mes
-    var semanaAtual = dataMoment.week()
-    var diaAtual = dataMoment.days
-
+async function listarUltimaHora() {
     const params = {
         Bucket: process.env.BUCKET_CLIENT,
-        Key: `AlertasHistorico/${anoAtual}/${mesAtual}/Semana${semanaAtual}/alertaDaSemana.csv`
+        Key: `Alertas/alertaDiario.csv`
     };
 
     const command = new GetObjectCommand(params);
@@ -34,6 +28,33 @@ async function listarDiario() {
         skip_empty_lines: true
     });
 
+    const agora = new Date();
+    const umaHoraAtras = new Date(agora.getTime() - 60 * 60 * 1000);
+
+    const filtrados = dataJSON.filter(item => {
+        const dataItem = new Date(item.timestamp.replace(" ", "T"));
+        return dataItem >= umaHoraAtras;
+    });
+    
+    return filtrados
+}
+
+
+async function listarDiario() {
+    const params = {
+        Bucket: process.env.BUCKET_CLIENT,
+        Key: `Alertas/alertaDiario.csv`
+    };
+
+    const command = new GetObjectCommand(params);
+
+    var resultado = await s3Client.send(command);
+    var csvString = await resultado.Body.transformToString();
+
+    const dataJSON = parse.parse(csvString, {
+        columns: true,
+        skip_empty_lines: true
+    });
     return dataJSON
 }
 
@@ -118,11 +139,28 @@ function listarAreas(fkHospital){
 }
 
 
+function listarVentiladores(fkHospital){
+    console.log("ACESSEI O Model Ventiladores");
+    var instrucaoSql=`SELECT v.idVentilador, v.numero_serie, m.nome AS nome_modelo,
+               h.nomeHospital AS nome_hospital, h.idHospital as idHospital, 
+                s.idSala as idSala, s.numero as numero , s.area as area
+        FROM Ventilador v
+        JOIN Modelo m ON v.fkModelo = m.idModelo
+        JOIN Sala s ON v.fkSala = s.idSala
+        JOIN Hospital h ON s.fkHospital = h.idHospital
+        WHERE h.idHospital = ${fkHospital}
+        ORDER BY idSala; `
+    return database.executar(instrucaoSql); 
+}
+
+
 
 module.exports = {
+    listarUltimaHora,
     listarDiario,
     listarSemanal,
     listarMensal,
     listarAnual,
-    listarAreas
+    listarAreas,
+    listarVentiladores
 };

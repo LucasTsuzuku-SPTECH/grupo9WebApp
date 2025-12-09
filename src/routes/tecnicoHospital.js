@@ -3,6 +3,10 @@ var router = express.Router();
 
 var tecnicoHospitalController = require("../controllers/tecnicoHospitalController");
 
+router.get("/ultimaHora", function (req, res) {
+    tecnicoHospitalController.listarUltimaHora(req, res);
+});
+
 router.get("/diario", function (req, res) {
     tecnicoHospitalController.listarDiario(req, res);
 });
@@ -21,6 +25,10 @@ router.get("/anual", function (req, res) {
 
 router.get("/areas/:fk_hospital", function (req, res) {
     tecnicoHospitalController.listarAreas(req, res);
+});
+
+router.get("/ventiladores/:fk_hospital", function (req, res) {
+    tecnicoHospitalController.listarVentiladores(req, res);
 });
 
 module.exports = router;

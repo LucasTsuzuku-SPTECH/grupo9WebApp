@@ -53,6 +53,7 @@ app.use("/gestor", gestorRouter)
 
 app.use("/analista", analistaRouter);
 app.use("/tecnicoHospital", tecnicoHospitalRouter);
+app.use("/gestor", gestorRouter);
 app.use("/ia", iaRouter)
 
 
